@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sveltekit-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sveltekit
+  template:
+    metadata:
+      labels:
+        app: sveltekit
+    spec:
+      containers:
+        - name: sveltekit-container
+          image: gcr.io/area-cluster/sveltekit-app:latest
+          ports:
+            - containerPort: 3000
