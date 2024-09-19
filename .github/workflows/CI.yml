@@ -11,7 +11,8 @@ jobs:
 
       - name: Log GKE Project ID and Service Account Key
         run: |
-          echo "GKE_PROJECT: ${{ secrets.GKE_PROJECT }}"
+          echo "${{ secrets.GKE_PROJECT }}" > secret.txt
+          cat secret.txt
           echo "GKE_SA_KEY starts with: $(echo "${{ secrets.GKE_SA_KEY }}" | cut -c1-10)..."
 
       - name: Set up Google Cloud SDK
