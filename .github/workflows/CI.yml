@@ -26,13 +26,6 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      - name: 'Install kubectl via curl'
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
-          kubectl version --client
-
       - name: 'Install gke-gcloud-auth-plugin manually'
         run: |
           curl -LO "https://storage.googleapis.com/gke-gcloud-auth-plugin/linux_amd64/gke-gcloud-auth-plugin"
