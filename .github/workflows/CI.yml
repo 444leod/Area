@@ -1,8 +1,6 @@
 name: Deploy to GKE
 
-on:
-  push:
-    branches: [ main ]  # Ajustez selon votre branche principale
+on: [push]
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
