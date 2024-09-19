@@ -9,6 +9,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Log GCP Project ID and Service Account Key
+        run: |
+          echo "GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}"
+          echo "GCP_SA_KEY starts with: $(echo ${{ secrets.GCP_SA_KEY }} | cut -c1-10)..."
+          # Ajoute plus de logs pour afficher les premières lignes du secret
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
@@ -19,17 +25,19 @@ jobs:
       - name: Authenticate Docker with GCR
         run: |
           echo ${{ secrets.GCP_SA_KEY }} | base64 --decode > ${HOME}/gcloud-key.json
-          cat ${HOME}/gcloud-key.json
+          cat ${HOME}/gcloud-key.json # Vérifie le contenu décodé
           gcloud auth activate-service-account --key-file=${HOME}/gcloud-key.json
           gcloud auth configure-docker
 
       - name: Build Docker image
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/sveltekit-app:${{ github.sha }} .
+          docker images # Log la liste des images disponibles
 
       - name: Push Docker image to GCR
         run: |
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/sveltekit-app:${{ github.sha }}
+          docker tag # Log la confirmation de l'image taguée
 
       - name: Set up kubectl
         run: |
