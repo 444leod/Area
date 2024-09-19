@@ -9,11 +9,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Log GCP Project ID and Service Account Key
+      - name: Log GKE Project ID and Service Account Key
         run: |
-          echo "GCP_PROJECT_ID: ${{ secrets.GKE_PROJECT }}"
-          echo "GCP_SA_KEY starts with: $(echo ${{ secrets.GKE_SA_KEY }} | cut -c1-10)..."
-          # Ajoute plus de logs pour afficher les premières lignes du secret
+          echo "GKE_PROJECT: ${{ secrets.GKE_PROJECT }}"
+          echo "GKE_SA_KEY starts with: $(echo "${{ secrets.GKE_SA_KEY }}" | cut -c1-10)..."
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
