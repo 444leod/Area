@@ -1,6 +1,12 @@
 name: Deploy to GKE
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
@@ -28,18 +34,8 @@ jobs:
         with:
           install_components: 'gke-gcloud-auth-plugin'
 
-      - name: Verify gke-gcloud-auth-plugin
-        run: gcloud components list | grep gke-gcloud-auth-plugin
-
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
-
-      - name: 'Debug: Check permissions'
-        run: |
-          gcloud auth list
-          gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format='table(bindings.role)' --filter="bindings.members:$(gcloud config get-value account)"
-          gcloud artifacts repositories list --project=$PROJECT_ID
-          gcloud container clusters list --project=$PROJECT_ID
 
       # Configure Docker to use the gcloud command-line tool as a credential helper
       - run: |-
