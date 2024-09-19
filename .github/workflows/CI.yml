@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GKE_PROJECT }}/sveltekit-app:${{ github.sha }} ./frontend
+          docker build -t gcr.io/area-cluster/sveltekit-app:${{ github.sha }} ./frontend
           docker images
 
       - name: Push Docker image to GCR
