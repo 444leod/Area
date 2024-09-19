@@ -30,12 +30,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GKE_PROJECT }}/sveltekit-app:${{ github.sha }} .
-          docker images # Log la liste des images disponibles
+          docker build -t gcr.io/${{ secrets.GKE_PROJECT }}/sveltekit-app:${{ github.sha }} ./frontend
+          docker images
 
       - name: Push Docker image to GCR
         run: |
-          docker push gcr.io/${{ secrets.GKE_PROJECT }}/sveltekit-app:${{ github.sha }}
+          docker push gcr.io/${{ secrets.GKE_PROJECT }}/sveltekit-app:${{ github.sha }} 
           docker tag # Log la confirmation de l'image taguée
 
       - name: Set up kubectl
