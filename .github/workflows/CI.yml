@@ -29,6 +29,13 @@ jobs:
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
 
+      - name: 'Debug: Check permissions'
+        run: |
+          gcloud auth list
+          gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format='table(bindings.role)' --filter="bindings.members:$(gcloud config get-value account)"
+          gcloud artifacts repositories list --project=$PROJECT_ID
+          gcloud container clusters list --project=$PROJECT_ID
+
       # Configure Docker to use the gcloud command-line tool as a credential helper
       - run: |-
           gcloud --quiet auth configure-docker
