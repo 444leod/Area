@@ -18,3 +18,10 @@ docker push gcr.io/area-cluster/sveltekit-app:latest
 #inside the /Area/frontend/prodConfig folder
 kubectl apply -f sveltekit-deployment.yaml
 kubectl apply -f sveltekit-service.yaml
+
+#inside the /Database folder
+docker buildx build --platform linux/amd64 -t mongo-app:latest .
+docker tag mongo-app:latest gcr.io/area-cluster/mongo-app:latest
+docker push gcr.io/area-cluster/mongo-app:latest
+#inside the /Database/prodConfig folder
+kubectl apply -f setupMongo.yaml
