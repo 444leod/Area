@@ -1,0 +1,20 @@
+gcloud auth login
+gcloud services enable container.googleapis.com
+gcloud container clusters create area-cluster \
+  --min-nodes=1 \
+  --max-nodes=2 \
+  --enable-autoscaling \
+  --machine-type=e2-medium \
+  --disk-size=50GB \
+  --zone=europe-west1-b
+#Get all the credentials
+gcloud container clusters get-credentials area-cluster --zone europe-west1-b
+#Check the nodes
+kubectl get nodes
+#inside the Area/frontend folder
+docker buildx build --platform linux/amd64 -t sveltekit-app:latest .
+docker tag sveltekit-app:latest gcr.io/area-cluster/sveltekit-app:latest
+docker push gcr.io/area-cluster/sveltekit-app:latest
+#inside the /Area/frontend/prodConfig folder
+kubectl apply -f sveltekit-deployment.yaml
+kubectl apply -f sveltekit-service.yaml
