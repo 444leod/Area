@@ -29,6 +29,11 @@ jobs:
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
 
+      - name: 'Install gke-gcloud-auth-plugin'
+        run: |
+          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
       - name: 'Debug: Check permissions'
         run: |
           gcloud auth list
@@ -53,10 +58,6 @@ jobs:
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
-
-      - name: Set GKE auth plugin
-        run: |
-          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
       # Deploy the Docker image to the GKE cluster without Kustomize
       - name: Deploy
