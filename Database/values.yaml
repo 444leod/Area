@@ -1,0 +1,11 @@
+auth:
+  enabled: true
+  rootPassword: area
+  username: area
+  password: area
+  database: area
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "standard"

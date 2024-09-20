@@ -1,6 +1,5 @@
-# issuer-lets-encrypt-production.yaml
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-production
 spec:
@@ -12,4 +11,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            name: web-ingress
+            class: gce
