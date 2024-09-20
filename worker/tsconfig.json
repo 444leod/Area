@@ -3,11 +3,10 @@
     "target": "es2018",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "paths": {
-      "@area/types": ["../types"]
+      "@shared/*": ["../shared/*", "./shared/*"]
     }
   },
   "include": ["src/**/*"],

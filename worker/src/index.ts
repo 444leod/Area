@@ -1,5 +1,5 @@
 // In frontend or worker
-import { User } from '@area/types';
+import { User } from '@shared/user.dto';
 
 const user: User = {
     id: '1',
