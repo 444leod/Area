@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { User } from "@area/types";
+	import type { User } from "@shared/user.dto";
 	const user: User = {
 		id: "1",
 		name: "zljvnzv",
