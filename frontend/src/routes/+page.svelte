@@ -14,7 +14,7 @@
 		<h1 class="h1">Let's get cracking bones!</h1>
 		<p>hello ca marche j'adore la vie</p>
 		<h1 class="h1">
-			Bienvenu sur notre AREA !!!
+			Bienvenue sur notre AREA !!!
 		</h1>
 		<p>
 			{JSON.stringify(user)}
