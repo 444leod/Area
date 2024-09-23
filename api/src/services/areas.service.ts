@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Db, MongoClient } from "mongodb";
+import { Db, InsertOneResult, MongoClient, ObjectId } from "mongodb";
 import { SendEmailDTO } from '@shared/dto/send_mail.dto'
 
 @Injectable()
@@ -17,13 +17,13 @@ export class AreasService {
     });
   }
 
-  createArea(dto: SendEmailDTO) {
+  async createArea(dto: SendEmailDTO) : Promise<ObjectId> {
     const areas = this.db.collection('areas');
     const actions = this.db.collection('actions');
     const reactions = this.db.collection('reactons');
     const webhooks = this.db.collection('webhooks');
 
-    (async () => {
+    const result = await (async () => {
       const actionResult = await actions.insertOne({});
       const reactionResult = await reactions.insertOne(dto);
 
@@ -34,13 +34,12 @@ export class AreasService {
         action_id: actionResult.insertedId,
         reaction_id: reactionResult.insertedId
       });
-      const hookResult = await webhooks.insertOne({
+      return await webhooks.insertOne({
         action_id: actionResult.insertedId,
         reaction_id: reactionResult.insertedId,
         area_id: areaResult.insertedId
       });
     })();
-
+    return result.insertedId;
   }
-
 }
