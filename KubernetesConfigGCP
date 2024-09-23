@@ -12,9 +12,9 @@ gcloud container clusters get-credentials area-cluster --zone europe-west1-b
 #Check the nodes
 kubectl get nodes
 #inside the Area/frontend folder
-docker buildx build --platform linux/amd64 -t sveltekit-app:latest .
-docker tag sveltekit-app:latest gcr.io/area-cluster/sveltekit-app:latest
-docker push gcr.io/area-cluster/sveltekit-app:latest
+docker buildx build --platform linux/amd64 -t frontend:latest .
+docker tag frontend:latest gcr.io/area-cluster/frontend:latest
+docker push gcr.io/area-cluster/frontend:latest
 #inside the /Area/frontend/prodConfig folder
-kubectl apply -f sveltekit-deployment.yaml
-kubectl apply -f sveltekit-service.yaml
+kubectl apply -f frontend/prodConfig/sveltekit-deployment.yaml
+kubectl apply -f frontend/prodConfig/sveltekit-service.yaml
