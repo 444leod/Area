@@ -1,5 +1,6 @@
-import {isSendEmailDTO, sendEmailDTO} from "../../types/reactions/emails/sendEmailDTO";
-import { ReactionFunction, ReactionFunctionObject} from "../reactionFunction";
+import { SendEmailDTO } from '@shared/dto/send_mail.dto'
+import { isSendEmailDTO } from "../../types/reactions/emails/sendEmailDTO";
+import { ReactionFunction, ReactionFunctionObject } from "../reactionFunction";
 import nodemailer from "nodemailer";
 
 export const sendEmail: ReactionFunction = async (obj: ReactionFunctionObject) => {
@@ -10,7 +11,7 @@ export const sendEmail: ReactionFunction = async (obj: ReactionFunctionObject) =
         return
     }
 
-    const emailInformation: sendEmailDTO = reaction.data
+    const emailInformation: SendEmailDTO = reaction.data
 
     const transporter = nodemailer.createTransport({
         service: process.env.MAIL_SERVICE_SENDER_HOST,
