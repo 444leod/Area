@@ -5,6 +5,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { AreasModule } from './modules/areas.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
