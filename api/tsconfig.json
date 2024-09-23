@@ -18,7 +18,7 @@
     "noFallthroughCasesInSwitch": false,
 		"paths": {
 		  "@shared/*": ["../shared/*", "./shared/*"],
-		  "@api/*": ["../api/src/*", "./api/src/*"],
+		  "@api/*": ["./src/*"],
 		},
   }
 }
