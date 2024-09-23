@@ -19,7 +19,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "nodemailer": "^6.9.15"
+    "nodemailer": "^6.9.15",
     "acorn": "^8.12.1",
     "acorn-walk": "^8.3.4",
     "arg": "^4.1.3",
