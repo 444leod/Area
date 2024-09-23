@@ -1,21 +1,22 @@
-import { Controller, Post, Body, Headers, Param } from "@nestjs/common";
-import { WebhookService } from "@api/services/webhooks.service";
+import { Controller, Post, Body, Headers, Param, HttpCode } from "@nestjs/common";
+import { WebhookService, WebhookResponse } from "@api/services/webhooks.service";
+import { ObjectId } from "mongodb";
 
-@Controller('webhook')
+@Controller('webhooks')
 export class WebhookController {
-  constructor(private readonly webhookService: WebhookService) {}
+  constructor(private readonly webhookService: WebhookService) { }
 
   @Post(':id')
+  @HttpCode(200)
   async activateWebhook(
     @Body() body: any,
     @Param('id') id: string,
     @Headers() headers: any
-  ) {
-    const payload = {
+  ): Promise<WebhookResponse> {
+    return await this.webhookService.activate({
+      id: new ObjectId(id),
       headers,
       body,
-      w_id: id
-    };
-    return await this.webhookService.activate(payload);
+    });
   }
 }

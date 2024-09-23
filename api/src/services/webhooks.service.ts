@@ -1,9 +1,18 @@
-import { Injectable } from "@nestjs/common";
-import { Db, MongoClient, ObjectId } from "mongodb";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Db, MongoClient, ObjectId } from 'mongodb';
+
+export interface WebhookPayload {
+  id: ObjectId;
+  headers: [string, string];
+  body: [string, string];
+}
+
+export interface WebhookResponse {
+  success: boolean;
+}
 
 @Injectable()
 export class WebhookService {
-
   private db: Db;
 
   constructor() {
@@ -16,38 +25,20 @@ export class WebhookService {
     });
   }
 
-  async activate(payload: { headers: any; body: any; w_id: string }) {
-    try {
-      const webhookCollection = this.db.collection('webhooks');
-      const area = await webhookCollection.findOne({ _id: new ObjectId(payload.w_id) });
+  async activate(payload: WebhookPayload): Promise<WebhookResponse> {
+    const hook_collection = this.db.collection('webhooks');
+    const area = await hook_collection.findOne({ _id: payload.id });
 
-      if (!area) {
-        throw new Error('Area not found');
-      }
-
-      const webhookActivateCollection = this.db.collection('webhook_activation');
-      const webhookActivate = {
-        content: payload.body,
-        headers: payload.headers,
-        areaId: area._id,
-        createdAt: new Date()
-      };
-
-      const result = await webhookActivateCollection.insertOne(webhookActivate);
-
-      return {
-        success: true,
-        activationId: result.insertedId,
-        message: 'Webhook activated successfully'
-      };
-    } catch (error) {
-      console.error('Error activating webhook:', error);
-      return {
-        success: false,
-        message: 'Failed to activate webhook',
-        error: error.message
-      };
+    if (!area) {
+      throw new HttpException('AREA not found', HttpStatus.NOT_FOUND);
     }
-  }
 
+    const act_collection = this.db.collection('webhook_activation');
+
+    const result = await act_collection.insertOne(payload);
+
+    return {
+      success: true,
+    };
+  }
 }
