@@ -9,8 +9,10 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: area-cluster
   GKE_ZONE: europe-west1-b
-  DEPLOYMENT_NAME: sveltekit-deployment
-  IMAGE: sveltekit-app
+  FRONTEND_DEPLOYMENT_NAME: sveltekit-deployment
+  BACKEND_DEPLOYMENT_NAME: nestjs-deployment
+  FRONTEND_IMAGE: sveltekit-app
+  BACKEND_IMAGE: nestjs-app
 
 jobs:
   setup-build-publish-deploy:
@@ -38,24 +40,42 @@ jobs:
       - run: |-
           gcloud --quiet auth configure-docker
 
-      # Build the Docker image
-      - name: Build
+      # Build and push the Frontend Docker image
+      - name: Build Frontend
         run: |-
           docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            -f frontend/Dockerfile \
+            --tag "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
-            -f frontend/Dockerfile .
+            .
+          docker push "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA"
 
-      # Push the Docker image to Google Container Registry
-      - name: Publish
+      # Build and push the Backend Docker image
+      - name: Build Backend
         run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+          docker build \
+            -f frontend/Dockerfile \
+            --tag "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+          docker push "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA"
 
-      # Deploy the Docker image to the GKE cluster without Kustomize
+      # Deploy the Docker images to the GKE cluster
       - name: Deploy
         run: |-
           gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
-          kubectl set image deployment/$DEPLOYMENT_NAME sveltekit-container=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
-          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl set image deployment/$FRONTEND_DEPLOYMENT_NAME sveltekit-container=gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA
+          kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
+          kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
+          kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl get services -o wide
+
+      # Apply the Kubernetes configurations
+      - name: Apply Kubernetes configurations
+        run: |-
+          kubectl apply -f frontend/prodConfig/sveltekit-deployment.yaml
+          kubectl apply -f frontend/prodConfig/sveltekit-service.yaml
+          kubectl apply -f api/prodConfig/nestjs-deployment.yaml
+          kubectl apply -f api/prodConfig/nestjs-service.yaml
