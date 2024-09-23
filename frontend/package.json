@@ -38,8 +38,5 @@
     "vite": "^5.0.3",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "dependencies": {
-    "@area/types": "workspace:*"
-  },
   "type": "module"
 }
