@@ -1,5 +1,4 @@
-// In frontend or worker
-import {reactionsMap} from "./reactions/reactionsMap";
+// import {reactionsMap} from "./reactions/reactionsMap";
 
 const { MongoClient, Db } = require('mongodb');
 require('dotenv').config();
@@ -11,7 +10,8 @@ async function run(database: typeof Db) {
       const reactions = await reactionsCollection.find({}).toArray();
 
       for (const reaction of reactions) {
-        const func = reactionsMap[reaction.type || ""];
+        // const func = reactionsMap[reaction.type || ""];
+        const func = (reaction: any) => {};
         if (func) {
           await func(reaction);
         } else {
