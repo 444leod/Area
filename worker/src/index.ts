@@ -35,7 +35,7 @@ async function main() {
   try {
     // Connexion à MongoDB
     await client.connect();
-    const database = client.db('local');
+    const database = client.db('area');
 
     await run(database);
     setInterval(
