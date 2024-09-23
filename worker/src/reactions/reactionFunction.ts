@@ -1,0 +1,1 @@
+export type ReactionFunction = (arg: any) => Promise<void>;
