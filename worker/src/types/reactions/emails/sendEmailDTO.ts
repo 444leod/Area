@@ -1,10 +1,6 @@
-interface sendEmailDTO {
-    to: string;
-    subject: string;
-    body: string;
-}
+import { SendEmailDTO } from '@shared/dto/send_mail.dto'
 
-function isSendEmailDTO(obj: any): obj is sendEmailDTO {
+function isSendEmailDTO(obj: any): obj is SendEmailDTO {
     return (
         typeof obj === 'object' &&
             typeof obj.body === 'string' &&
@@ -13,4 +9,4 @@ function isSendEmailDTO(obj: any): obj is sendEmailDTO {
     )
 }
 
-export { sendEmailDTO, isSendEmailDTO };
+export { isSendEmailDTO };
