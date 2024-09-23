@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Db, MongoClient, ObjectId } from 'mongodb';
 
 export interface WebhookPayload {
-  id: ObjectId;
+  webhook_id: ObjectId;
   headers: [string, string];
   body: [string, string];
 }
@@ -27,14 +27,16 @@ export class WebhookService {
 
   async activate(payload: WebhookPayload): Promise<WebhookResponse> {
     const hook_collection = this.db.collection('webhooks');
-    const area = await hook_collection.findOne({ _id: payload.id });
+    const hook = await hook_collection.findOne({ _id: payload.webhook_id });
 
-    if (!area) {
-      throw new HttpException('AREA not found', HttpStatus.NOT_FOUND);
+    if (!hook) {
+      throw new HttpException('Content not found', HttpStatus.NOT_FOUND);
     }
 
-    const act_collection = this.db.collection('webhook_activations');
+    if ((hook.type as string).startsWith('github') && payload.headers['x-github-event'] == 'ping')
+      return;
 
+    const act_collection = this.db.collection('webhook_activations');
     const result = await act_collection.insertOne(payload);
 
     return {

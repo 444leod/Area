@@ -14,7 +14,7 @@ export class WebhookController {
     @Headers() headers: any
   ): Promise<WebhookResponse> {
     return await this.webhookService.activate({
-      id: new ObjectId(id),
+      webhook_id: new ObjectId(id),
       headers,
       body,
     });
