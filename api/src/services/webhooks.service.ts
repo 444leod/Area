@@ -1,13 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { mongo } from "mongoose";
 import { Db, MongoClient, ObjectId } from "mongodb";
 
 @Injectable()
 export class WebhookService {
 
-  private db : any;
+  private db: Db;
 
-  constructor () {
+  constructor() {
     const base_db_uri = process.env.DB_URI || '';
     console.log('DB URI = ' + base_db_uri);
     const client = new MongoClient(base_db_uri);
@@ -15,11 +14,6 @@ export class WebhookService {
     client.connect().then(() => {
       this.db = client.db('area');
     });
-  }
-
-
-  createArea() {
-    //
   }
 
   async activate(payload: { headers: any; body: any; w_id: string }) {

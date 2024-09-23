@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Headers, Param } from "@nestjs/common";
-import { WebhookService } from "src/services/webhooks.service";
+import { WebhookService } from "@api/services/webhooks.service";
 
 @Controller('webhook')
 export class WebhookController {
