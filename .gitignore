@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 key.json
+pnpm-lock.yaml
+package-lock.json

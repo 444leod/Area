@@ -1,13 +1,14 @@
-FROM node:lts-alpine as build
-WORKDIR /app
-COPY ./package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+FROM node:22-alpine
 
-FROM node:lts-alpine AS production
-COPY --from=build /app/build .
-COPY --from=build /app/package.json .
-COPY --from=build /app/package-lock.json .
-EXPOSE 3000
-CMD ["node", "."]
+WORKDIR /app
+
+COPY frontend/package.json .
+RUN npm i
+
+COPY frontend .
+COPY shared shared
+RUN npm run build
+EXPOSE 4173
+
+# Should be enough for a POC
+CMD npm run preview
