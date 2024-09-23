@@ -1,15 +1,15 @@
 interface sendEmailDTO {
     to: string;
     subject: string;
-    body: string;
+    content: string;
 }
 
 function isSendEmailDTO(obj: any): obj is sendEmailDTO {
     return (
         typeof obj === 'object' &&
-            typeof obj.body === 'string' &&
+            typeof obj.to === 'string' &&
             typeof obj.subject === 'string' &&
-            typeof obj.body === 'string'
+            typeof obj.content === 'string'
     )
 }
 

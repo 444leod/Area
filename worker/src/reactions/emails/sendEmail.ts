@@ -1,8 +1,10 @@
 import {isSendEmailDTO, sendEmailDTO} from "../../types/reactions/emails/sendEmailDTO";
-import { ReactionFunction} from "../reactionFunction";
-const nodemailer = require("nodemailer");
+import { ReactionFunction, ReactionFunctionObject} from "../reactionFunction";
+import nodemailer from "nodemailer";
 
-export const sendEmail: ReactionFunction = async (reaction: any) => {
+export const sendEmail: ReactionFunction = async (obj: ReactionFunctionObject) => {
+    const reaction = obj.reactionObject
+
     if (!isSendEmailDTO(reaction.data)) {
         console.error(`Reaction ${reaction._id} is not valid`)
         return
@@ -22,7 +24,7 @@ export const sendEmail: ReactionFunction = async (reaction: any) => {
         from: process.env.MAIL_SERVICE_SENDER_USER,
         to: emailInformation.to,
         subject: emailInformation.subject,
-        text: emailInformation.body
+        text: emailInformation.content
     }
 
     return transporter.sendMail(fullMail)
