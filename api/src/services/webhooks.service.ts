@@ -33,7 +33,7 @@ export class WebhookService {
       throw new HttpException('AREA not found', HttpStatus.NOT_FOUND);
     }
 
-    const act_collection = this.db.collection('webhook_activation');
+    const act_collection = this.db.collection('webhook_activations');
 
     const result = await act_collection.insertOne(payload);
 
