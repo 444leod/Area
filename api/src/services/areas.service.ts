@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { mongo } from "mongoose";
 import { Db, MongoClient } from "mongodb";
+import { SendEmailDTO } from '@shared/dto/send_mail.dto'
 
 @Injectable()
 export class AreasService {
 
-  private db : any;
+  private db : Db;
 
   constructor () {
     const base_db_uri = process.env.DB_URI || '';
@@ -17,20 +17,30 @@ export class AreasService {
     });
   }
 
+  createArea(dto: SendEmailDTO) {
+    const areas = this.db.collection('areas');
+    const actions = this.db.collection('actions');
+    const reactions = this.db.collection('reactons');
+    const webhooks = this.db.collection('webhooks');
 
-  createArea() {
-    //
-  }
+    (async () => {
+      const actionResult = await actions.insertOne({});
+      const reactionResult = await reactions.insertOne(dto);
 
-  async example() {
-    const collection = this.db.collection('user');
-    await collection.insertOne({
-      name: 'Elliot',
-      age: 20
-    });
-    const result = collection.find().toArray();
-    console.log(result);
-    return result;
+      console.log(actionResult);
+      console.log(reactionResult);
+
+      const areaResult = await areas.insertOne({
+        action_id: actionResult.insertedId,
+        reaction_id: reactionResult.insertedId
+      });
+      const hookResult = await webhooks.insertOne({
+        action_id: actionResult.insertedId,
+        reaction_id: reactionResult.insertedId,
+        area_id: areaResult.insertedId
+      });
+    })();
+
   }
 
 }
