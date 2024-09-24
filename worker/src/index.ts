@@ -1,22 +1,79 @@
 import {reactionsMap} from "./reactions/reactionsMap";
-
-const { MongoClient, Db } = require('mongodb');
+import { triggerWebhook } from "./webhooks/triggerWebhook";
+import { MongoClient, Db, ObjectId } from 'mongodb';
 require('dotenv').config();
 
-async function run(database: typeof Db) {
+async function getAreaByWebhookId(database: Db, webhookId: string) {
+  const result = await database.collection("areas").aggregate([
+    { $match: { webhook_id: webhookId } },
+    {
+        $lookup: {
+            from: "reactions",
+            localField: "reaction_id",
+            foreignField: "_id",
+            as: "reaction"
+        }
+    },
+    {
+        $lookup: {
+            from: "webhooks",
+            localField: "webhook_id",
+            foreignField: "_id",
+            as: "webhook"
+        }
+    }
+  ]).toArray();
+
+  return result[0];
+}
+
+async function getAreaByActionId(database: Db, actionId: string) {
+  const result = await database.collection("areas").aggregate([
+      { $match: { action_id: actionId } },
+      {
+          $lookup: {
+              from: "reactions",
+              localField: "reaction_id",
+              foreignField: "_id",
+              as: "reaction"
+          }
+      },
+      {
+          $lookup: {
+              from: "actions",
+              localField: "action_id",
+              foreignField: "_id",
+              as: "action"
+          }
+      }
+  ]).toArray();
+
+  return result[0];
+}
+
+async function run(database: Db) {
     try {
-      const reactionsCollection = database.collection("reactions");
+      // const actionsCollection = database.collection("actions");
 
-      const reactions = await reactionsCollection.find({}).toArray();
+      // const actions = await actionsCollection.find({}).toArray();
 
-      for (const reaction of reactions) {
-        const func = reactionsMap[reaction.type || ""];
-        if (func) {
-          await func(reaction);
-        } else {
-          console.error(`type ${reaction.type} not found`);
+      // for (const reaction of actions) {
+      //   const area = await getAreaByActionId(database, reaction.action_id);
+      //   if (area) {
+      //     await triggerAction(area, reaction);
+      // }
+
+      const webhooksCollection = database.collection("webhook_activations");
+
+      const webhooks = await webhooksCollection.find({}).toArray();
+
+      for (const webhook of webhooks) {
+        const area = await getAreaByWebhookId(database, webhook.webhook_id);
+        if (area) {
+          await triggerWebhook(area, webhook);
         }
       }
+      webhooksCollection.deleteMany({});
     } catch (err) {
       console.error('Error in run function:', err);
     }

@@ -1,9 +1,11 @@
 import { SendEmailDTO } from '@shared/dto/send_mail.dto'
 import { isSendEmailDTO } from "../../types/reactions/emails/sendEmailDTO";
-import { ReactionFunction } from "../reactionFunction";
-const nodemailer = require("nodemailer");
+import { ReactionFunction, ReactionFunctionObject } from "../reactionFunction";
+import nodemailer from "nodemailer";
 
-export const sendEmail: ReactionFunction = async (reaction: any) => {
+export const sendEmail: ReactionFunction = async (obj: ReactionFunctionObject) => {
+    const reaction = obj.reactionObject
+
     if (!isSendEmailDTO(reaction.data)) {
         console.error(`Reaction ${reaction._id} is not valid`)
         return
