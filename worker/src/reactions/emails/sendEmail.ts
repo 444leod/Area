@@ -25,7 +25,7 @@ export const sendEmail: ReactionFunction = async (obj: ReactionFunctionObject) =
         from: process.env.MAIL_SERVICE_SENDER_USER,
         to: emailInformation.to,
         subject: emailInformation.subject,
-        text: emailInformation.content
+        text: emailInformation.body
     }
 
     return transporter.sendMail(fullMail)

@@ -5,7 +5,7 @@ function isSendEmailDTO(obj: any): obj is SendEmailDTO {
         typeof obj === 'object' &&
             typeof obj.to === 'string' &&
             typeof obj.subject === 'string' &&
-            typeof obj.content === 'string'
+            typeof obj.body === 'string'
     )
 }
 
