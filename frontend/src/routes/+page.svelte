@@ -6,24 +6,37 @@
     let body = '';
 
     async function sendEmail(event: Event) {
-        event.preventDefault();
-        const response = await fetch('http://localhost:3000/areas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ to, subject, body }),
-        });
+		event.preventDefault();
 
-        if (response.ok) {
-            alert('Email sent successfully!');
-            to = '';
-            subject = '';
-            body = '';
-        } else {
-            alert('Failed to send email. Please try again.');
-        }
-    }
+		try {
+			const response = await fetch('http://localhost:3000/areas', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ to, subject, body }),
+			});
+
+			if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			console.log('Response data:', data);
+
+			if (data.webhook_id) {
+			alert(`Email sent successfully! Webhook ID: ${data.webhook_id}`);
+			to = '';
+			subject = '';
+			body = '';
+			} else {
+			alert('Email sent, but no webhook ID received.');
+			}
+		} catch (error) {
+			console.error('Error:', error);
+			alert('Failed to send email. Please try again.');
+		}
+	}
 </script>
 
 <div class="container mx-auto p-10 space-y-4">
