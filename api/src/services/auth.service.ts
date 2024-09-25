@@ -61,6 +61,7 @@ export class AuthService {
     const user = {
       email,
       password: hashedPassword
+      //TODO: update with new database schema
     }
 
     const token = await this.generateJwt(user);
