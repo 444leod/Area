@@ -1,4 +1,4 @@
-import { SendEmailDTO } from '@shared/dto/send_mail.dto'
+import { SendEmailDTO } from '@shared/dtos/reactions/send_email.dto'
 import { isSendEmailDTO } from "../../types/reactions/emails/sendEmailDTO";
 import { ReactionFunction, ReactionFunctionObject } from "../reactionFunction";
 import nodemailer from "nodemailer";

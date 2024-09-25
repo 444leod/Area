@@ -1,0 +1,22 @@
+{
+  "name": "queue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "send": "npx ts-node orchestrator.ts",
+    "worker": "npx ts-node worker.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/amqplib": "^0.10.5",
+    "@types/node": "^22.6.1",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.4"
+  }
+}

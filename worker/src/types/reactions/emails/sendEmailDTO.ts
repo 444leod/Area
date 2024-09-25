@@ -1,4 +1,4 @@
-import { SendEmailDTO } from '@shared/dto/send_mail.dto'
+import { SendEmailDTO } from '@shared/dtos/reactions/send_email.dto'
 
 function isSendEmailDTO(obj: any): obj is SendEmailDTO {
     return (

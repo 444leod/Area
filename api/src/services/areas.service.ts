@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Db, InsertOneResult, MongoClient, ObjectId } from 'mongodb';
-import { SendEmailDTO } from '@shared/dto/send_mail.dto';
+import { SendEmailDTO } from '@shared/dtos/reactions/send_email.dto';
 
 @Injectable()
 export class AreasService {

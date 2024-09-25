@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { SendEmailDTO } from '@shared/dto/send_mail.dto';
-import { SendEmailResponse } from '@shared/dto/send_email.response';
+import { SendEmailDTO } from '@shared/dtos/reactions/send_email.dto';
+import { SendEmailResponse } from '@shared/dtos/send_email.response';
 import { AreasService } from '@api/services/areas.service';
 
 @Controller('/areas')
