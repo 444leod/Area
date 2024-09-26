@@ -46,6 +46,11 @@ export class RabbitMQConnection {
     this.channel.sendToQueue(this.rmqQueue, Buffer.from(JSON.stringify(area)));
   }
 
+  async queueStats() {
+    const stats = await this.channel.checkQueue(this.rmqQueue);
+    return stats;
+  }
+
   async consumeArea(handleArea: (area: AreaDTO) => void) {
     await this.channel.assertQueue(this.rmqQueue, {
       durable: true,

@@ -1,3 +1,4 @@
+import { AreaDTO } from "@shared/dtos/area.dto";
 import { ActionTypes } from "@shared/dtos/actions/action_types.dto";
 import { ReactionTypes } from "@shared/dtos/reactions/reaction_types.dto";
 import { RabbitMQConnection } from "@shared/utils/RabbitMQConnection";
@@ -6,9 +7,19 @@ import { ObjectId } from "mongodb";
 const connection = new RabbitMQConnection();
 
 async function main() {
+  const groupAreaSend = (areas: AreaDTO[]) => {
+    areas.forEach((area) => {
+      connection.sendAreaToQueue(area);
+    });
+  };
+
+  const queueIsEmpty = async () => {
+    return (await connection.queueStats()).messageCount == 0;
+  };
+
   await connection.connect();
-  console.log("sending area to queue");
-  connection.sendAreaToQueue({
+
+  const exemple_area: AreaDTO = {
     _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
     action: {
       _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
@@ -32,8 +43,22 @@ async function main() {
       },
     },
     active: true,
-  });
-  console.log("Area sent to queue");
+  };
+
+  setInterval(async () => {
+    if (await queueIsEmpty()) {
+      console.log("Sending areas to queue");
+      groupAreaSend([
+        exemple_area,
+        exemple_area,
+        exemple_area,
+        // get data from Mongo 
+      ]);
+      console.log("Areas sent to queue");
+    } else {
+      console.log("Not sending, queue is not empty");
+    }
+  }, 100); // 1/10th of a sec between checks 
 }
 
 main().catch((err) => {
