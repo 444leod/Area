@@ -1,4 +1,5 @@
 import * as amqp from "amqplib/callback_api";
+import {RabbitMQConnection} from "@shared/utils/RabbitMQConnection";
 
 amqp.connect(
   "amqp://localhost",
@@ -26,7 +27,10 @@ amqp.connect(
         channel.consume(
           queue,
           (msg: amqp.Message | null) => {
-            console.log(" [x] Received area: %s", msg?.content.toString());
+            const content = msg?.content.toString();
+            console.log(" [x] Received area: %s", content);
+            // Do the work here
+            console.log(" [x] %s Done", content);
           },
           {
             noAck: true,
