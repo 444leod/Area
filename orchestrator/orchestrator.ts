@@ -5,12 +5,14 @@ import { ObjectId } from "mongodb";
 
 const connection = new RabbitMQConnection();
 
-connection.connect().then(() => {
+async function main() {
+  await connection.connect();
+  console.log("sending area to queue");
   connection.sendAreaToQueue({
-    _id: ObjectId.createFromHexString("deadbeef"),
+    _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
     action: {
-      _id: ObjectId.createFromHexString("deadbeef"),
-      service_id: ObjectId.createFromHexString("deadbeef"),
+      _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
+      service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       informations: {
         type: ActionTypes.EXEMPLE_ACTION,
         exempleField: "exemple",
@@ -22,8 +24,8 @@ connection.connect().then(() => {
       isWebhook: false,
     },
     reaction: {
-      _id: ObjectId.createFromHexString("deadbeef"),
-      service_id: ObjectId.createFromHexString("deadbeef"),
+      _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
+      service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       informations: {
         type: ReactionTypes.EXEMPLE_REACTION,
         exempleField: "exemple",
@@ -31,9 +33,9 @@ connection.connect().then(() => {
     },
     active: true,
   });
-  connection.consumeArea(
-    (area) => {
-      console.log(area);
-    }
-  )
+  console.log("Area sent to queue");
+}
+
+main().catch((err) => {
+  console.error(err);
 });
