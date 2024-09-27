@@ -4,10 +4,10 @@ import { config } from "dotenv";
 
 config();
 
-export class RabbitMQConnection {
+export class RabbitMQService {
   connection!: Connection;
   channel!: Channel;
-  private connected!: Boolean;
+  private connected: Boolean = false;
   private rmqQueue!: string;
 
 
@@ -26,21 +26,17 @@ export class RabbitMQConnection {
 
     this.rmqQueue = process.env.RMQ_QUEUE;
 
-    console.log(`Connecting to Rabbit-MQ Server`);
     this.connection = await client.connect(
       `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`
     );
 
-    console.log(`Rabbit MQ Connection is ready`);
 
     this.channel = await this.connection.createChannel();
     this.connected = true;
-    console.log(`Created RabbitMQ Channel successfully`);
   }
 
   async sendAreaToQueue(area: AreaDTO) {
     if (!this.channel) {
-      console.log(`Channel not found, trying to create new channel..`);
       await this.connect();
     }
     this.channel.sendToQueue(this.rmqQueue, Buffer.from(JSON.stringify(area)));
