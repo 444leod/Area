@@ -1,8 +1,5 @@
 import client, { Connection, Channel } from "amqplib";
 import { AreaDTO } from "../dtos/area.dto";
-import { config } from "dotenv";
-
-config();
 
 export class RabbitMQService {
   connection!: Connection;

@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import { AreaDTO } from "@shared/dtos/area.dto";
 import { ActionTypes } from "@shared/dtos/actions/action_types.dto";
 import { ReactionTypes } from "@shared/dtos/reactions/reaction_types.dto";
 import { RabbitMQService } from "@shared/utils/RabbitMQService";
 import { ObjectId } from "mongodb";
+
+dotenv.config();
 
 const rmqConnection = new RabbitMQService();
 
