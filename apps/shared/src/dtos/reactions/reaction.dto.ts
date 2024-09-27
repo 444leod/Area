@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { AnyReactionDTO } from "./any_reaction.dto"
+import { AnyReactionDTO } from "./any-reaction.dto"
 
 export interface ReactionDTO {
     _id: ObjectId;

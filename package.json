@@ -21,7 +21,10 @@
 
     "front:build": "npm run build -w @area/frontend",
     "front:start": "node apps/frontend/build",
-    "front:dev": "npm run dev -w @area/frontend"
+    "front:dev": "npm run dev -w @area/frontend",
+
+    "task-manager:build": "npm run build -w @area/frontend",
+    "task-manager:start": ""
   },
   "devDependencies": {
     "rimraf": "3.0.2",

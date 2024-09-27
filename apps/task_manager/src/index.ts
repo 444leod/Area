@@ -1,8 +1,10 @@
-import dotenv from 'dotenv';
-import { AreaDTO } from "@shared/dtos/area.dto";
-import { ActionTypes } from "@shared/dtos/actions/action_types.dto";
-import { ReactionTypes } from "@shared/dtos/reactions/reaction_types.dto";
-import { RabbitMQService } from "@shared/utils/RabbitMQService";
+import dotenv from "dotenv";
+import {
+  AreaDTO,
+  ActionTypes,
+  ReactionTypes,
+  RabbitMQService,
+} from "@area/shared";
 import { ObjectId } from "mongodb";
 
 dotenv.config();
@@ -25,18 +27,18 @@ async function main() {
   await rmqConnection.connect();
 
   // mock data
-  const exemple_area: AreaDTO = {
+  const example_area: AreaDTO = {
     _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
     action: {
       _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       informations: {
-        type: ActionTypes.EXEMPLE_ACTION,
-        exempleField: "exemple",
+        type: ActionTypes.EXAMPLE_ACTION,
+        exampleField: "example",
       },
       history: {
-        type: ActionTypes.EXEMPLE_ACTION,
-        exempleHistory: [],
+        type: ActionTypes.EXAMPLE_ACTION,
+        exampleHistory: [],
       },
       isWebhook: false,
     },
@@ -44,8 +46,8 @@ async function main() {
       _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
       informations: {
-        type: ReactionTypes.EXEMPLE_REACTION,
-        exempleField: "exemple",
+        type: ReactionTypes.EXAMPLE_REACTION,
+        exampleField: "example",
       },
     },
     active: true,
@@ -55,16 +57,16 @@ async function main() {
     if (await queueIsEmpty()) {
       console.log("Sending areas to queue");
       groupAreaSend([
-        exemple_area,
-        exemple_area,
-        exemple_area,
-        // get data from Mongo 
+        example_area,
+        example_area,
+        example_area,
+        // get data from Mongo
       ]);
       console.log("Areas sent to queue");
     } else {
       console.log("Not sending, queue is not empty");
     }
-  }, 100); // 1/10th of a sec between checks 
+  }, 100); // 1/10th of a sec between checks
 }
 
 main().catch((err) => {

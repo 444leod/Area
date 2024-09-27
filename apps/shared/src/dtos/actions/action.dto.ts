@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { AnyActionDTO } from "./any_action.dto"
-import { AnyHistoryDTO } from "../history/any_history.dto";
+import { AnyActionDTO } from "./any-action.dto"
+import { AnyHistoryDTO } from "../history/any-history.dto";
 
 export interface ActionDTO {
     _id: ObjectId;

@@ -17,7 +17,7 @@ export class RabbitMQService {
 
     if (!rmqUser || !rmqPass || !rmqHost || !process.env.RMQ_QUEUE) {
       throw new Error(
-        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined in .env"
+        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables"
       );
     }
 

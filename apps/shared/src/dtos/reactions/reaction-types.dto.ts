@@ -1,4 +1,4 @@
 export enum ReactionTypes {
-    EXEMPLE_REACTION = 'EXEMPLE_REACTION',
+    EXAMPLE_REACTION = 'EXAMPLE_REACTION',
     SEND_EMAIL = 'SEND_EMAIL',
 }
