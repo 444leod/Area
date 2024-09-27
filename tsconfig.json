@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+
+    "target": "es2016",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // Type checking
+    "strict": true,
+
+    // Modfules
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    // Emitions
+    "declaration": true,
+    "removeComments": true,
+    "sourceMap": true,
+
+    // Others
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "skipLibCheck": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "types": ["node"]
+  }
+}
