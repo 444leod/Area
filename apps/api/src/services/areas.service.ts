@@ -8,11 +8,12 @@ export class AreasService {
 
   constructor() {
     const base_db_uri = process.env.DB_URI || '';
-    console.log('DB URI = ' + base_db_uri);
     const client = new MongoClient(base_db_uri);
 
     client.connect().then(() => {
       this.db = client.db('area');
+    }).catch(() => {
+      console.error("Connection to DB failed.");
     });
   }
 

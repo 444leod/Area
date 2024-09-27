@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from '@api/services/auth.service';
-import {User} from "@shared/dto/user.dto"
+import { AuthService } from '../services/auth.service';
+import { User } from "@area/shared"
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

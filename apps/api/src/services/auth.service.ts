@@ -13,6 +13,8 @@ export class AuthService {
 
     client.connect().then(() => {
       this.db = client.db('area');
+    }).catch(() => {
+      console.error("Connection to DB failed.");
     });
   }
 

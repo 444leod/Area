@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AreasModule } from './areas.module';
 import { WebhooksModule } from './webhooks.module';
-import { authModule } from './auth.module';
+import { AuthModule } from './auth.module';
 
 @Module({
-  imports: [ AreasModule, WebhooksModule, authModule ],
+  imports: [ AuthModule, AreasModule, WebhooksModule ],
   controllers: [],
   providers: [],
 })

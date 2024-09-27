@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { SendEmailDTO } from "@area/shared";
 import { AreasService } from "../services/areas.service";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Areas')
 @Controller("/areas")
 export class AreasController {
   constructor(private readonly areasService: AreasService) {}

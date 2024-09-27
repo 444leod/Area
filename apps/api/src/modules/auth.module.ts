@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { AuthController } from "@api/controllers/auth.controller";
-import { AuthService } from "@api/services/auth.service";
+import { AuthController } from "../controllers/auth.controller";
+import { AuthService } from "../services/auth.service";
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -22,4 +22,4 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [AuthController],
   providers: [AuthService],
 })
-export class authModule {}
+export class AuthModule {}
