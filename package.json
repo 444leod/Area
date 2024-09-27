@@ -1,0 +1,31 @@
+{
+  "name": "area",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "workspaces": [
+    "libs/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "install": "npm run libs:build",
+    "libs:build": "tsc -b apps/shared",
+    "libs:clean": "npm run lib:clean --workspaces --if-present",
+    "libs:lint": "npm run lib:lint --workspaces --if-present",
+
+    "api:build": "npm run build -w @area/api",
+    "api:start": "npm run start -w @area/api",
+    "api:dev": "npm run start:dev -w @area/api",
+
+    "front:build": "npm run build -w @area/frontend",
+    "front:start": "node apps/frontend/build",
+    "front:dev": "npm run dev -w @area/frontend"
+  },
+  "devDependencies": {
+    "rimraf": "3.0.2",
+    "tslib": "^2.4.0",
+    "typescript": "^4.9.5"
+  }
+}
