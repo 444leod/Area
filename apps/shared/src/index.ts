@@ -1,2 +1,2 @@
-export * from './dto/send-mail.dto'
-export * from './dto/user.dto'
+export * from './dtos'
+export * from './utils'
