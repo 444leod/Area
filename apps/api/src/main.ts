@@ -4,7 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -20,7 +20,12 @@ async function bootstrap() {
     .setVersion("0.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("swagger", app, document);
+  const options : SwaggerCustomOptions = {
+    swaggerOptions: {
+      defaultModelsExpandDepth: 5
+    }
+  }
+  SwaggerModule.setup("swagger", app, document, options);
 
   app.enableCors();
 
