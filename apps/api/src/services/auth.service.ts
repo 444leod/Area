@@ -13,17 +13,17 @@ export class AuthService {
   private db: Db;
 
   constructor(private readonly jwtService: JwtService) {
-    const host = process.env.MONGO_HOST || "";
-    const port = parseInt(process.env.MONGO_PORT) || 27017;
-    const user = process.env.MONGO_USER || "";
-    const password = process.env.MONGO_PASSWORD || "";
-    const authSource = process.env.MONGO_AUTH_SOURCE || "";
+    const host = process.env.MONGODB_HOST || "";
+    const port = parseInt(process.env.MONGODB_PORT) || 27017;
+    const user = process.env.MONGODB_USER || "";
+    const password = process.env.MONGODB_PASSWORD || "";
+    const authSource = process.env.MONGODB_AUTH_SOURCE || "";
 
     const uri = `mongodb://${user}:${password}@${host}:${port}/?authSource=${authSource}`;
 
     this.client = new MongoClient(uri, {
       tls: true,
-      tlsCAFile: process.env.MONGO_CA_FILE || "",
+      tlsCAFile: process.env.MONGODB_CA_FILE || "",
       tlsAllowInvalidCertificates: true,
     });
   }
