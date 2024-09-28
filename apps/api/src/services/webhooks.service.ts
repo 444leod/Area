@@ -27,7 +27,7 @@ export class WebhookService {
 
     this.client = new MongoClient(uri, {
       tls: true,
-      tlsCAFile: "/etc/ssl/mongodb-ca.pem",
+      tlsCAFile: process.env.MONGO_CA_FILE || "",
       tlsAllowInvalidCertificates: true,
     });
   }
