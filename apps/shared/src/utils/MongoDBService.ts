@@ -49,12 +49,12 @@ export class MongoDBService {
         this._connected = false;
     }
 
-    public client(): MongoClient | undefined {
-        return this._connected ? this._client : undefined;
+    public client(): MongoClient | null {
+        return this._connected ? this._client : null;
     }
 
-    public db(): Db | undefined {
-        return this._connected ? this._db : undefined;
+    public db(): Db | null {
+        return this._connected ? this._db : null;
     }
 
     async executeWithSession<T>(operation: (session: any) => Promise<T>): Promise<T> {
