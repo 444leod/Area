@@ -11,7 +11,7 @@ export const actions: Actions = {
 		const password = formData.get('password');
 		const confirmPassword = formData.get('confirmPassword');
 		const name = formData.get('name');
-        console.log('formData:', formData);
+		console.log('formData:', formData);
 		// Basic validation
 		if (!email || !password || !confirmPassword || !name) {
 			return fail(400, { error: 'All fields are required' });
@@ -33,7 +33,7 @@ export const actions: Actions = {
 					password
 				})
 			});
-            console.log(await response.json());
+			console.log(await response.json());
 			if (!response.ok) {
 				const errorData = await response.json();
 				return fail(response.status, { error: errorData.message || 'Registration failed' });
