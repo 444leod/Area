@@ -2,11 +2,11 @@
 	import { writable } from 'svelte/store';
 	import { Zap, ArrowRight } from 'lucide-svelte';
 	import { fade } from 'svelte/transition';
-	import ProgressBar from '$lib/components/ProgressBar.svelte';
-	import MobileIndicator from '$lib/components/MobileIndicator.svelte';
-	import AppCard from '$lib/components/AppCard.svelte';
-	import AutomationSummary from '$lib/components/AutomationSummary.svelte';
-	import TriggerBtn from '$lib/components/TriggerBtn.svelte';
+	import ProgressBar from '$lib/components/new-area/ProgressBar.svelte';
+	import MobileIndicator from '$lib/components/new-area/MobileIndicator.svelte';
+	import AppCard from '$lib/components/new-area/AppCard.svelte';
+	import AutomationSummary from '$lib/components/new-area/AutomationSummary.svelte';
+	import TriggerBtn from '$lib/components/new-area/TriggerBtn.svelte';
 
 	// Mock data for available apps with triggers and actions
 	const apps = [

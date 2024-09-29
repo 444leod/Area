@@ -5,7 +5,7 @@
 	export let onClick: () => void;
 </script>
 
-<div
+<button
 	in:fly={{ y: 50, duration: 300, delay: app.id * 50 }}
 	class="card variant-soft-hover cursor-pointer transition-all duration-200 hover:scale-105"
 	on:click={onClick}
@@ -16,4 +16,4 @@
 	<section class="p-2 md:p-4 text-center">
 		<h3 class="text-sm md:text-base">{app.name}</h3>
 	</section>
-</div>
+</button>
