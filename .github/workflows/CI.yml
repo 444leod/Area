@@ -61,7 +61,7 @@ jobs:
         run: |-
           gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
           kubectl set image deployment/$FRONTEND_DEPLOYMENT_NAME sveltekit-container=gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA
-          kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nest-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
+          kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
           kubectl rollout restart deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl get services -o wide
