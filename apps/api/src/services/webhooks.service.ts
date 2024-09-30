@@ -1,5 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Db, MongoClient, ObjectId } from 'mongodb';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Db, MongoClient, ObjectId } from "mongodb";
 
 export interface WebhookPayload {
   webhook_id: ObjectId;
@@ -13,31 +13,41 @@ export interface WebhookResponse {
 
 @Injectable()
 export class WebhookService {
+  private client: MongoClient;
   private db: Db;
 
   constructor() {
-    const base_db_uri = process.env.DB_URI || '';
-    const client = new MongoClient(base_db_uri);
+    const host = process.env.MONGODB_HOST || "";
+    const port = parseInt(process.env.MONGODB_PORT) || 27017;
+    const user = process.env.MONGODB_USER || "";
+    const password = process.env.MONGODB_PASSWORD || "";
+    const authSource = process.env.MONGODB_AUTH_SOURCE || "";
 
-    client.connect().then(() => {
-      this.db = client.db('area');
-    }).catch(() => {
-      console.error("Connection to DB failed.");
+    const uri = `mongodb://${user}:${password}@${host}:${port}/?authSource=${authSource}`;
+
+    this.client = new MongoClient(uri, {
+      tls: true,
+      tlsCAFile: process.env.MONGODB_CA_FILE || "",
+      tlsAllowInvalidCertificates: true,
     });
   }
 
+
   async activate(payload: WebhookPayload): Promise<WebhookResponse> {
-    const hook_collection = this.db.collection('webhooks');
+    const hook_collection = this.db.collection("webhooks");
     const hook = await hook_collection.findOne({ _id: payload.webhook_id });
 
     if (!hook) {
-      throw new HttpException('Content not found', HttpStatus.NOT_FOUND);
+      throw new HttpException("Content not found", HttpStatus.NOT_FOUND);
     }
 
-    if ((hook.type as string).startsWith('github') && payload.headers['x-github-event'] == 'ping')
+    if (
+      (hook.type as string).startsWith("github") &&
+      payload.headers["x-github-event"] == "ping"
+    )
       return;
 
-    const act_collection = this.db.collection('webhook_activations');
+    const act_collection = this.db.collection("webhook_activations");
     const result = await act_collection.insertOne(payload);
 
     return {
