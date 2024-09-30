@@ -1,9 +1,5 @@
 name: Deploy to GKE
-
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
@@ -11,14 +7,13 @@ env:
   GKE_ZONE: europe-west1-b
   FRONTEND_DEPLOYMENT_NAME: sveltekit-deployment
   BACKEND_DEPLOYMENT_NAME: nestjs-deployment
-  FRONTEND_IMAGE: sveltekit-app
-  BACKEND_IMAGE: nestjs-app
+  FRONTEND_IMAGE: frontend
+  BACKEND_IMAGE: backend
 
 jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -44,23 +39,23 @@ jobs:
       - name: Build Frontend
         run: |-
           docker build \
-            -f frontend/Dockerfile \
-            --tag "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" \
+            -t "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA" \
+            -f apps/frontend/Dockerfile \
             .
           docker push "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA"
+          docker tag "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA" "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:latest"
+          docker push "gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:latest"
 
       # Build and push the Backend Docker image
       - name: Build Backend
         run: |-
           docker build \
-            -f frontend/Dockerfile \
-            --tag "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" \
+            -t "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA" \
+            -f apps/api/Dockerfile \
             .
           docker push "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA"
+          docker tag "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA" "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:latest"
+          docker push "gcr.io/$PROJECT_ID/$BACKEND_IMAGE:latest"
 
       # Deploy the Docker images to the GKE cluster
       - name: Deploy
@@ -68,6 +63,8 @@ jobs:
           gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
           kubectl set image deployment/$FRONTEND_DEPLOYMENT_NAME sveltekit-container=gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA
           kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
+          kubectl rollout restart deployment/$FRONTEND_DEPLOYMENT_NAME
+          kubectl rollout restart deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl get services -o wide
@@ -75,7 +72,7 @@ jobs:
       # Apply the Kubernetes configurations
       - name: Apply Kubernetes configurations
         run: |-
-          kubectl apply -f frontend/prodConfig/sveltekit-deployment.yaml
-          kubectl apply -f frontend/prodConfig/sveltekit-service.yaml
-          kubectl apply -f api/prodConfig/nestjs-deployment.yaml
-          kubectl apply -f api/prodConfig/nestjs-service.yaml
+          kubectl apply -f apps/frontend/prodConfig/sveltekit-deployment.yaml
+          kubectl apply -f apps/frontend/prodConfig/sveltekit-service.yaml
+          kubectl apply -f apps/api/prodConfig/nestjs-deployment.yaml
+          kubectl apply -f apps/api/prodConfig/nestjs-service.yaml
