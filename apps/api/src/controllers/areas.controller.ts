@@ -18,6 +18,6 @@ export class AreasController {
   }
   @Get("/ping")
   async ping() {
-    return ("pong ici laaaa");
+    return ("pong test test");
   }
 }
