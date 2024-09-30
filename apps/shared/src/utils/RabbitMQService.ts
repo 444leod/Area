@@ -1,5 +1,5 @@
-import client, { Connection, Channel } from "amqplib";
-import { AreaDTO } from "../dtos/area.dto";
+import client, {Channel, Connection} from "amqplib";
+import {AreaDTO} from "../dtos/area.dto";
 
 export class RabbitMQService {
   connection!: Connection;
@@ -29,6 +29,11 @@ export class RabbitMQService {
 
 
     this.channel = await this.connection.createChannel();
+
+    await this.channel.assertQueue(this.rmqQueue, {
+      durable: false,
+    });
+
     this.connected = true;
   }
 
@@ -40,13 +45,12 @@ export class RabbitMQService {
   }
 
   async queueStats() {
-    const stats = await this.channel.checkQueue(this.rmqQueue);
-    return stats;
+    return await this.channel.checkQueue(this.rmqQueue);
   }
 
   async consumeArea(handleArea: (area: AreaDTO) => void) {
     await this.channel.assertQueue(this.rmqQueue, {
-      durable: true,
+      durable: false,
     });
 
     this.channel.consume(
