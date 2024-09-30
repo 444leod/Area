@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: nestjs-container
-          image: gcr.io/area-cluster/api:latest
+          image: gcr.io/area-cluster/backend:${GITHUB_SHA}
           ports:
             - containerPort: 3001
+          imagePullPolicy: Always
