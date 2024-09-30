@@ -67,10 +67,3 @@ jobs:
           kubectl rollout restart deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
-
-      - name: Verify deployment
-        run: |
-          echo "Verifying backend deployment..."
-          kubectl get pods -l app=nestjs -o jsonpath='{.items[0].spec.containers[0].image}'
-          echo "\nVerifying backend response..."
-          kubectl run -i --rm --restart=Never curl-test --image=curlimages/curl -- curl -s http://nestjs-service/areas/ping

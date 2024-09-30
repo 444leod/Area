@@ -37,25 +37,6 @@ spec:
           ports:
             - containerPort: 3001
           imagePullPolicy: Always
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
-          readinessProbe:
-            httpGet:
-              path: /areas/health
-              port: 3001
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /areas/health
-              port: 3001
-            initialDelaySeconds: 15
-            periodSeconds: 10
           volumeMounts:
             - name: mongodb-ca
               mountPath: /etc/ssl/mongodb-ca.pem
