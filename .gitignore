@@ -74,4 +74,4 @@ pnpm-lock.yaml
 package-lock.json
 .idea
 .vscode
-**/dist/
+dist/
