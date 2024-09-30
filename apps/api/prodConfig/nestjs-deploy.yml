@@ -13,7 +13,7 @@ spec:
         app: nestjs
     spec:
       containers:
-      - name: nestjs-container
-        image: gcr.io/area-cluster/nestjs:latest
-        ports:
-        - containerPort: 3000
+        - name: nestjs-container
+          image: gcr.io/area-cluster/api:latest
+          ports:
+            - containerPort: 3001

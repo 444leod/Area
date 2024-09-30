@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { SendEmailDTO } from "@area/shared";
 import { AreasService } from "../services/areas.service";
 import { ApiTags } from "@nestjs/swagger";
@@ -15,5 +15,9 @@ export class AreasController {
         await this.areasService.createArea(createAreaDto)
       ).toString(),
     };
+  }
+  @Get("/ping")
+  async ping() {
+    return ("pong");
   }
 }
