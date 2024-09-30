@@ -64,6 +64,8 @@ jobs:
           kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
           kubectl rollout restart deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
+          kubectl rollout restart deployment/$BACKEND_DEPLOYMENT_NAME
+          kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl get services -o wide
 
       # Apply the Kubernetes configurations
