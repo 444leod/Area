@@ -31,7 +31,7 @@
 <div class="container mx-auto px-4 py-12">
 	{#if visible}
 		<h1 in:fly={{ y: -50, duration: 1000 }} class="h1 text-center p-5 text-primary-500">
-			Welcome to the BoogieBomb Area !!!
+			Welcome to the BoogieBomb Area !!! c'est gg ?
 		</h1>
 		<p in:fade={{ delay: 500, duration: 1000 }} class="text-center text-xl mt-4 mb-8">
 			Automate your workflow. Connect your apps. Boost your productivity.

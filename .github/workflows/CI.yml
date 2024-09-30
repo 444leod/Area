@@ -56,5 +56,5 @@ jobs:
       # Apply the Kubernetes configurations
       - name: Apply Kubernetes configurations
         run: |-
-          kubectl apply -f apps/frontend/prodConfig/sveltekit-deploy.yaml
-          kubectl apply -f apps/frontend/prodConfig/sveltekit-service.yaml
+          kubectl apply -f apps/frontend/prodConfig/sveltekit-deploy.yml
+          kubectl apply -f apps/frontend/prodConfig/sveltekit-service.yml
