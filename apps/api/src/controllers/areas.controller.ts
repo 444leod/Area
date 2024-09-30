@@ -18,7 +18,7 @@ export class AreasController {
   }
   @Get("/ping")
   async ping() {
-    return ("pong test test");
+    return ("pong test lalalalala");
   }
   @Get("/health")
   async health() {
