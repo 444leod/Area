@@ -15,7 +15,7 @@ docker build -t api -f apps/api/Dockerfile .
 
 ### Front-end
 ```sh
-docker build -t api -f apps/frontend/Dockerfile .
+docker build -t frontend -f apps/frontend/Dockerfile .
 ```
 
 ### Queue
