@@ -7,7 +7,7 @@ env:
   GKE_ZONE: europe-west1-b
   FRONTEND_DEPLOYMENT_NAME: sveltekit-deployment
   FRONTEND_IMAGE: frontend
-  BACKEND_DEPLOYMENT_NAME: nest-deployment
+  BACKEND_DEPLOYMENT_NAME: nestjs-deployment
   BACKEND_IMAGE: backend
 
 jobs:
