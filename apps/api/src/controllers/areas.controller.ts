@@ -22,6 +22,6 @@ export class AreasController {
   }
   @Get("/health")
   async health() {
-    return ("healthy");
+    return ("healthy here");
   }
 }
