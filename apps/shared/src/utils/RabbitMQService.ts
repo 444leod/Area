@@ -29,6 +29,9 @@ export class RabbitMQService {
 
 
     this.channel = await this.connection.createChannel();
+    await this.channel.assertQueue(this.rmqQueue, {
+      durable: false,
+    });
     this.connected = true;
   }
 
@@ -46,7 +49,7 @@ export class RabbitMQService {
 
   async consumeArea(handleArea: (area: AreaDTO) => void) {
     await this.channel.assertQueue(this.rmqQueue, {
-      durable: true,
+      durable: false,
     });
 
     this.channel.consume(
