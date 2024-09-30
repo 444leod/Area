@@ -15,6 +15,55 @@ spec:
       containers:
         - name: nestjs-container
           image: gcr.io/area-cluster/backend:${GITHUB_SHA}
+          env:
+            - name: MONGODB_HOST
+              value: "138.68.183.159"
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+            - name: MONGODB_AUTH_SOURCE
+              value: "admin"
+            - name: MONGODB_DB_NAME
+              value: "area"
           ports:
             - containerPort: 3001
           imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /areas/health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /areas/health
+              port: 3001
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: mongodb-ca
+              mountPath: /etc/ssl/mongodb-ca.pem
+              subPath: mongodb-ca.pem
+      volumes:
+        - name: mongodb-ca
+          secret:
+            secretName: mongodb-ca-secret
+            items:
+              - key: ca.pem
+                path: mongodb-ca.pem
