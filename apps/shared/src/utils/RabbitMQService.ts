@@ -1,5 +1,5 @@
-import client, {Channel, Connection} from "amqplib";
-import {AreaDTO} from "../dtos/area.dto";
+import client, { Channel, Connection } from 'amqplib';
+import { AreaDTO } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
@@ -53,7 +53,7 @@ export class RabbitMQService {
       durable: false,
     });
 
-    this.channel.consume(
+    await this.channel.consume(
       this.rmqQueue,
       (msg: any) => {
         {
