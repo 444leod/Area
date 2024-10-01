@@ -66,6 +66,8 @@ jobs:
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
+          sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/task_manager/prodConfig/task-manager.yml
+
 
       - name: Apply Kubernetes configurations
         run: |

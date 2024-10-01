@@ -24,12 +24,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mongodb-secret
-                  key: username
+                  key: MONGODB_USER
             - name: MONGODB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mongodb-secret
-                  key: password
+                  key: MONGODB_PASSWORD
             - name: MONGODB_AUTH_SOURCE
               value: "admin"
             - name: MONGODB_DB_NAME
