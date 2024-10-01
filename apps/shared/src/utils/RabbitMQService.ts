@@ -11,8 +11,8 @@ export class RabbitMQService {
   async connect() {
     if (this.connected && this.channel) return;
 
-    const rmqUser = process.env.RMQ_USER;
-    const rmqPass = process.env.RMQ_PASS;
+    const rmqUser = process.env.RABBITMQ_DEFAULT_USER;
+    const rmqPass = process.env.RABBITMQ_DEAFAULT_PASS;
     const rmqHost = process.env.RMQ_HOST;
 
     if (!rmqUser || !rmqPass || !rmqHost || !process.env.RMQ_QUEUE) {

@@ -49,6 +49,11 @@ jobs:
           docker build -t "gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA" -f apps/queue/Dockerfile .
           docker push "gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA"
 
+      - name: Build and push Task Manager Docker image
+        run: |
+          docker build -t "gcr.io/$PROJECT_ID/manager:$GITHUB_SHA" -f apps/task_manager/Dockerfile .
+          docker push "gcr.io/$PROJECT_ID/manager:$GITHUB_SHA"
+
       - name: Get GKE Credentials
         run: gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
 
@@ -57,9 +62,11 @@ jobs:
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
+          sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/task_manager/prodConfig/task-manager-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
+          sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/task_manager/prodConfig/task-manager-deploy.yml
 
       - name: Apply Kubernetes configurations
         run: |
@@ -69,6 +76,8 @@ jobs:
           kubectl apply -f apps/api/prodConfig/nestjs-service.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-deploy.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-service.yml
+          kubectl apply -f apps/task_manager/prodConfig/task-manager-deploy.yml
+          kubectl apply -f apps/task_manager/prodConfig/task-manager-service.yml
 
       - name: Update deployments
         run: |

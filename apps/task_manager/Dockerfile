@@ -1,8 +1,15 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY task_manager/tsconfig.json .
-COPY task_manager/package.json .
+
+COPY apps/shared apps/shared
+COPY apps/task_manager apps/task_manager
+COPY package.json .
+COPY tsconfig*.json .
+
 RUN npm i
-COPY task_manager/src src
-COPY shared shared
-CMD npm run start
+RUN npm install -g typescript
+RUN tsc -b apps/shared
+
+RUN npm run libs:build
+
+CMD npm run task-manager:start

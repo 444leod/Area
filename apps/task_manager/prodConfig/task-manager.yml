@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-manager-deployment
+  labels:
+    app: task-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-manager
+  template:
+    metadata:
+      labels:
+        app: task-manager
+    spec:
+      containers:
+        - name: task-manager-container
+          image: gcr.io/$PROJECT_ID/manager:$GITHUB_SHA
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_DEAFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEAFAULT_PASS
+            - name: RMQ_HOST
+              value: "localhost"
+            - name: RMQ_QUEUE
+              value: "queue"
+            - name: MONGODB_HOST
+              value: "138.68.183.159"
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGODB_USER
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGODB_PASSWORD
+            - name: MONGODB_AUTH_SOURCE
+              value: "admin"
+            - name: MONGODB_DB_NAME
+              value: "admin"
+            - name: MONGODB_TLS_CA_FILE
+              value: "./mongodb-ca.pem"
