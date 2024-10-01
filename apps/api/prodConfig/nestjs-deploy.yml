@@ -46,5 +46,5 @@ spec:
           secret:
             secretName: mongodb-ca-secret
             items:
-              - key: ca.pem
+              - key: mongodb-ca.pem
                 path: mongodb-ca.pem
