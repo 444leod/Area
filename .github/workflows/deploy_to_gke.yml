@@ -62,7 +62,7 @@ jobs:
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
-          sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/task_manager/prodConfig/task-manager-deploy.yml
+          sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/task_manager/prodConfig/task-manager.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
@@ -75,7 +75,7 @@ jobs:
           kubectl apply -f apps/api/prodConfig/nestjs-service.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-deploy.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-service.yml
-          kubectl apply -f apps/task_manager/prodConfig/task-manager-deploy.yml
+          kubectl apply -f apps/task_manager/prodConfig/task-manager.yml
           kubectl apply -f apps/task_manager/prodConfig/task-manager-service.yml
 
       - name: Update deployments
