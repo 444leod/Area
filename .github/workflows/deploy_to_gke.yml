@@ -46,7 +46,7 @@ jobs:
 
       - name: Build and push RabbitMQ Docker image
         run: |
-          docker build -t "gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA" -f apps/rabbitmq/Dockerfile .
+          docker build -t "gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA" -f apps/queue/Dockerfile .
           docker push "gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA"
 
 
