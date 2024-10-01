@@ -1,0 +1,21 @@
+services:
+  # database:
+
+  queue:
+    build:
+      # context: .
+      dockerfile: ./apps/queue/Dockerfile
+    image: queue
+    container_name: queue
+    expose:
+      - 5672
+    ports:
+      - 5672:5672
+    environment:
+
+  # manager:
+  # worker:
+  # server:
+  # client_mobile:
+  # client_web:
+
