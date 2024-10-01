@@ -27,7 +27,9 @@ See [the queue README page.](apps/queue/README.md)
 ### Task-manager
 ```sh
 docker build -t manager -f apps/task_manager/Dockerfile .
+docker run --env-file .env  --network=${port} manager
 ```
+`port` is network name, it's "host" or "bridge" or else depending on your environment. For dev environment, it's "host". 
 
 ### Worker
 ```sh
