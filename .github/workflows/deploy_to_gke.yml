@@ -76,7 +76,6 @@ jobs:
           kubectl apply -f apps/queue/prodConfig/rabbitmq-deploy.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-service.yml
           kubectl apply -f apps/task_manager/prodConfig/task-manager.yml
-          kubectl apply -f apps/task_manager/prodConfig/task-manager-service.yml
 
       - name: Update deployments
         run: |
