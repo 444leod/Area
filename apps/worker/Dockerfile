@@ -12,4 +12,4 @@ RUN tsc -b apps/shared
 
 RUN npm run libs:build
 
-CMD npm run start:worker
+CMD npm run worker:start

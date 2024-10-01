@@ -54,6 +54,11 @@ jobs:
           docker build -t "gcr.io/$PROJECT_ID/manager:$GITHUB_SHA" -f apps/task_manager/Dockerfile .
           docker push "gcr.io/$PROJECT_ID/manager:$GITHUB_SHA"
 
+      - name: Build and push Worker Docker image
+        run: |
+          docker build -t "gcr.io/$PROJECT_ID/worker:$GITHUB_SHA" -f apps/worker/Dockerfile .
+          docker push "gcr.io/$PROJECT_ID/worker:$GITHUB_SHA"
+
       - name: Get GKE Credentials
         run: gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
 
@@ -63,10 +68,12 @@ jobs:
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
           sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/task_manager/prodConfig/task-manager.yml
+          sed -i 's|\$PROJECT_ID|'$PROJECT_ID'|g' apps/worker/prodConfig/worker-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/api/prodConfig/nestjs-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/task_manager/prodConfig/task-manager.yml
+          sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/worker/prodConfig/worker-deploy.yml
 
 
       - name: Apply Kubernetes configurations
@@ -78,6 +85,7 @@ jobs:
           kubectl apply -f apps/queue/prodConfig/rabbitmq-deploy.yml
           kubectl apply -f apps/queue/prodConfig/rabbitmq-service.yml
           kubectl apply -f apps/task_manager/prodConfig/task-manager.yml
+          kubectl apply -f apps/worker/prodConfig/worker-deploy.yml
 
       - name: Update deployments
         run: |
@@ -85,11 +93,14 @@ jobs:
           kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
           kubectl set image deployment/rabbitmq-deployment rabbitmq-container=gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA
           kubectl set image deployment/task-manager-deployment task-manager-container=gcr.io/$PROJECT_ID/manager:$GITHUB_SHA
+          kubectl set image deployment/worker-deployment worker-container=gcr.io/$PROJECT_ID/worker:$GITHUB_SHA
           kubectl rollout restart deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout restart deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout restart deployment/rabbitmq-deployment
           kubectl rollout restart deployment/task-manager-deployment
+          kubectl rollout restart deployment/worker-deployment
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/rabbitmq-deployment
           kubectl rollout status deployment/task-manager-deployment
+          kubectl rollout status deployment/worker-deployment
