@@ -23,11 +23,11 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_USER
-            - name: RABBITMQ_DEAFAULT_PASS
+            - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
-                  key: RABBITMQ_DEAFAULT_PASS
+                  key: RABBITMQ_DEFAULT_PASS
             - name: RMQ_HOST
               value: "localhost"
             - name: RMQ_QUEUE
