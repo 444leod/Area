@@ -25,7 +25,10 @@
     "front:dev": "npm run dev -w @area/frontend",
     "front:format": "npm run format -w @area/frontend",
 
-    "task-manager:start": "npm run start -w @area/manager"
+    "task-manager:start": "npm run start -w @area/manager",
+
+    "worker:start": "npm run start -w @area/worker",
+    "worker:example_worker": "npm run example_worker -w @area/worker"
   },
   "devDependencies": {
     "rimraf": "3.0.2",

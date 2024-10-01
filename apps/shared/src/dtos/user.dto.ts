@@ -1,20 +1,23 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { Prop, Schema } from "@nestjs/mongoose";
+import { AreaDTO } from "./area.dto";
+import { ObjectId } from "mongodb";
 
+@Schema({versionKey: false})
 export class User {
-  id: string;
+  _id: ObjectId;
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  name: string;
+  @Prop()
+  first_name: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  @ApiProperty()
+  @Prop()
+  last_name: string;
+
+  @Prop()
   email: string;
 
-  @IsNotEmpty()
-  @ApiProperty()
+  @Prop()
   password: string;
+
+  @Prop()
+  areas: AreaDTO[];
 }

@@ -1,0 +1,208 @@
+[
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "icon": "deadbeef",
+    "email_adress": "jonh.doe@gmail.com",
+    "password": "password",
+    "authentification": [
+      {
+        "type": "typeAuth0",
+        "data": {}
+      },
+      {
+        "type": "typeAuth1",
+        "data": {}
+      },
+      {
+        "type": "typeAuth2",
+        "data": {}
+      }
+    ],
+    "area": [
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": false
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": true
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      }
+    ]
+  },
+  {
+    "first_name": "John2",
+    "last_name": "Doe2",
+    "icon": "deadbeef",
+    "email_adress": "jonh.doe@gmail.com",
+    "password": "password",
+    "authentification": [
+      {
+        "type": "typeAuth0",
+        "data": {}
+      },
+      {
+        "type": "typeAuth1",
+        "data": {}
+      },
+      {
+        "type": "typeAuth2",
+        "data": {}
+      }
+    ],
+    "area": [
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": false
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": false
+      },
+      {
+        "action": {
+          "informations": {
+            "type": "EXAMPLE_ACTION",
+            "exampleField": "exampleValue"
+          },
+          "history": {
+            "type": "EXAMPLE_ACTION",
+            "exampleHistory": ["exampleHistory"]
+          },
+          "isWebhook": true
+        },
+        "reaction": {
+          "informations": {
+            "type": "EXAMPLE_REACTION",
+            "exampleField": "exampleValue"
+          }
+        },
+        "active": true
+      }
+    ]
+  }
+]

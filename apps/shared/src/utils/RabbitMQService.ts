@@ -1,5 +1,5 @@
-import client, { Connection, Channel } from "amqplib";
-import { AreaDTO } from "../dtos/area.dto";
+import client, { Channel, Connection } from 'amqplib';
+import { AreaDTO } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
@@ -8,7 +8,7 @@ export class RabbitMQService {
   private rmqQueue!: string;
 
 
-  async connect() {
+  async connect(): Promise<void> {
     if (this.connected && this.channel) return;
 
     const rmqUser = process.env.RABBITMQ_DEFAULT_USER;
@@ -29,27 +29,29 @@ export class RabbitMQService {
 
 
     this.channel = await this.connection.createChannel();
+    await this.channel.assertQueue(this.rmqQueue, {
+      durable: false,
+    });
     this.connected = true;
   }
 
-  async sendAreaToQueue(area: AreaDTO) {
+  async sendAreaToQueue(area: AreaDTO): Promise<void> {
     if (!this.channel) {
       await this.connect();
     }
     this.channel.sendToQueue(this.rmqQueue, Buffer.from(JSON.stringify(area)));
   }
 
-  async queueStats() {
-    const stats = await this.channel.checkQueue(this.rmqQueue);
-    return stats;
+  async queueStats(): Promise<client.Replies.AssertQueue> {
+    return await this.channel.checkQueue(this.rmqQueue);
   }
 
-  async consumeArea(handleArea: (area: AreaDTO) => void) {
+  async consumeArea(handleArea: (area: AreaDTO) => void): Promise<void> {
     await this.channel.assertQueue(this.rmqQueue, {
-      durable: true,
+      durable: false,
     });
 
-    this.channel.consume(
+    await this.channel.consume(
       this.rmqQueue,
       (msg: any) => {
         {

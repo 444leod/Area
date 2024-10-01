@@ -1,72 +1,67 @@
 import dotenv from "dotenv";
 import {
   AreaDTO,
-  ActionTypes,
-  ReactionTypes,
   RabbitMQService,
+  MongoDBService,
 } from "@area/shared";
-import { ObjectId } from "mongodb";
 
 dotenv.config();
 
-const rmqConnection = new RabbitMQService();
+const rabbitMQ = new RabbitMQService();
+const mongoDB = new MongoDBService();
 
-//THIS IS STILL WIP, WILL BE DONE ON PR 42 (2/2)
-//Console log will remain in the mean time
 async function main() {
+  await rabbitMQ.connect();
+  await mongoDB.connect();
+
   const groupAreaSend = (areas: AreaDTO[]) => {
     areas.forEach((area) => {
-      rmqConnection.sendAreaToQueue(area);
+      rabbitMQ.sendAreaToQueue(area);
     });
   };
 
   const queueIsEmpty = async () => {
-    return (await rmqConnection.queueStats()).messageCount == 0;
+    return (await rabbitMQ.queueStats()).messageCount == 0;
   };
 
-  await rmqConnection.connect();
-
-  // mock data
-  const example_area: AreaDTO = {
-    _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
-    action: {
-      _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
-      service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
-      informations: {
-        type: ActionTypes.EXAMPLE_ACTION,
-        exampleField: "example",
-      },
-      history: {
-        type: ActionTypes.EXAMPLE_ACTION,
-        exampleHistory: [],
-      },
-      isWebhook: false,
-    },
-    reaction: {
-      _id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
-      service_id: ObjectId.createFromHexString("deadbeefdeadbeefdeadbeef"),
-      informations: {
-        type: ReactionTypes.EXAMPLE_REACTION,
-        exampleField: "example",
-      },
-    },
-    active: true,
-  };
-
-  setInterval(async () => {
-    if (await queueIsEmpty()) {
-      console.log("Sending areas to queue");
-      groupAreaSend([
-        example_area,
-        example_area,
-        example_area,
-        // get data from Mongo
-      ]);
-      console.log("Areas sent to queue");
-    } else {
-      console.log("Not sending, queue is not empty");
-    }
-  }, 100); // 1/10th of a sec between checks
+  try {
+    const myQuery = async (): Promise<any> => {
+      return await mongoDB.executeWithSession(async () => {
+        return await mongoDB
+          .db()
+          ?.collection("users")
+          .aggregate([
+            { $unwind: "$area" },
+            {
+              $match: {
+                "area.active": true,
+                "area.action.isWebhook": false,
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                area: 1,
+              },
+            },
+          ])
+          .toArray();
+      });
+    };
+    const getFilteredRes = async () => (await myQuery()).map((obj: any) => {
+      return obj.area;
+    });
+    setInterval(async () => {
+      if (await queueIsEmpty()) {
+        const res = await getFilteredRes();
+        groupAreaSend(res);
+      }
+    }, 1000); // 1 sec between checks
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await mongoDB.close();
+  }
 }
 
 main().catch((err) => {
