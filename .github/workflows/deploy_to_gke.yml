@@ -84,9 +84,12 @@ jobs:
           kubectl set image deployment/$FRONTEND_DEPLOYMENT_NAME sveltekit-container=gcr.io/$PROJECT_ID/$FRONTEND_IMAGE:$GITHUB_SHA
           kubectl set image deployment/$BACKEND_DEPLOYMENT_NAME nestjs-container=gcr.io/$PROJECT_ID/$BACKEND_IMAGE:$GITHUB_SHA
           kubectl set image deployment/rabbitmq-deployment rabbitmq-container=gcr.io/$PROJECT_ID/rabbitmq:$GITHUB_SHA
+          kubectl set image deployment/task-manager-deployment task-manager-container=gcr.io/$PROJECT_ID/manager:$GITHUB_SHA
           kubectl rollout restart deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout restart deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout restart deployment/rabbitmq-deployment
+          kubectl rollout restart deployment/task-manager-deployment
           kubectl rollout status deployment/$FRONTEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/$BACKEND_DEPLOYMENT_NAME
           kubectl rollout status deployment/rabbitmq-deployment
+          kubectl rollout status deployment/task-manager-deployment
