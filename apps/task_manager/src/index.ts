@@ -57,9 +57,7 @@ async function main() {
       });
     setInterval(async () => {
       if (await queueIsEmpty()) {
-        const res = await getFilteredRes();
-        console.log(res);
-        groupAreaSend(res);
+        groupAreaSend(await getFilteredRes());
       }
     }, 1000); // 1 sec between checks
   } catch (err) {
