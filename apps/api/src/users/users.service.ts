@@ -1,9 +1,8 @@
 import { AreaDTO, User, UserRegistrationDto } from "@area/shared";
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, Document } from "mongoose";
+import { Model } from "mongoose";
 import * as bcrypt from "bcryptjs";
-import { UserDocument } from "./user.schema";
 
 @Injectable()
 export class UsersService {
