@@ -3,5 +3,5 @@ import { ObjectId } from "mongodb";
 
 export interface AreaPacket {
     userId: ObjectId;
-    areas: AreaDTO;
+    area: AreaDTO;
 }
