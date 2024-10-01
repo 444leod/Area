@@ -57,6 +57,7 @@ jobs:
         run: |
           sed -i 's|${GITHUB_SHA}|'$GITHUB_SHA'|g' apps/frontend/prodConfig/sveltekit-deploy.yml
           sed -i 's|${GITHUB_SHA}|'$GITHUB_SHA'|g' apps/api/prodConfig/nestjs-deploy.yml
+          sed -i 's|${GITHUB_SHA}|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
 
       - name: Apply Kubernetes configurations
         run: |
@@ -64,8 +65,8 @@ jobs:
           kubectl apply -f apps/frontend/prodConfig/sveltekit-service.yml
           kubectl apply -f apps/api/prodConfig/nestjs-deploy.yml
           kubectl apply -f apps/api/prodConfig/nestjs-service.yml
-          kubectl apply -f apps/rabbitmq/prodConfig/rabbitmq-deploy.yml
-          kubectl apply -f apps/rabbitmq/prodConfig/rabbitmq-service.yml
+          kubectl apply -f apps/queue/prodConfig/rabbitmq-deploy.yml
+          kubectl apply -f apps/queue/prodConfig/rabbitmq-service.yml
 
       - name: Update deployments
         run: |
