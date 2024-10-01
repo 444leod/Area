@@ -1,5 +1,5 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { AreaDTO } from "./area.dto";
+import { AreaDTO } from "../area";
 import { ObjectId } from "mongodb";
 
 @Schema({versionKey: false})

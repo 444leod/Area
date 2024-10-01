@@ -8,7 +8,7 @@ export class UsersController {
 
     @UseGuards(AuthGuard)
     @Get('profile')
-    getUserProfile(@Request() req) {
-        return this.usersService.findByEmail(req.user.email);
+    async getUserProfile(@Request() req) {
+        return await this.usersService.findByEmail(req.user.email);
     }
 }
