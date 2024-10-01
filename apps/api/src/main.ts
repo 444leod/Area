@@ -1,4 +1,5 @@
-import { AppModule } from "./modules/app.module";
+import { ValidationPipe } from "@nestjs/common";
+import { AppModule } from "./app.module";
 import { NestFactory } from "@nestjs/core";
 import {
   FastifyAdapter,
@@ -31,6 +32,7 @@ async function bootstrap() {
   };
   SwaggerModule.setup("swagger", app, document, options);
 
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
 
   await app.listen(3000, "0.0.0.0");
