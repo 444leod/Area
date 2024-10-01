@@ -1,5 +1,5 @@
-import client, { Connection, Channel } from "amqplib";
-import { AreaDTO } from "../dtos/area.dto";
+import client, { Channel, Connection } from 'amqplib';
+import { AreaDTO } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
