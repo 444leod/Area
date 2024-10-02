@@ -16,4 +16,4 @@ spec:
         - name: sveltekit-container
           image: gcr.io/area-cluster/frontend:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 8081
