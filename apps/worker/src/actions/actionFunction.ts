@@ -1,3 +1,3 @@
-import { MongoDBService, AreaDTO } from '@area/shared';
+import { MongoDBService, Area } from '@area/shared';
 
-export type ActionFunction = (area: AreaDTO, database: MongoDBService) => Promise<AreaDTO> | undefined;
+export type ActionFunction = (area: Area, database: MongoDBService) => Promise<Area> | undefined;

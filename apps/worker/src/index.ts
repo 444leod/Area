@@ -1,4 +1,4 @@
-import { AreaDTO, RabbitMQService, MongoDBService } from '@area/shared';
+import { Area, RabbitMQService, MongoDBService } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actionsMap';
 import { reactionsMap } from './reactions/reactionsMap';
@@ -29,7 +29,7 @@ async function run() {
 
 run().catch(console.dir);
 
-async function handleArea(area: AreaDTO) {
+async function handleArea(area: Area) {
     const actionType = area.action?.informations?.type;
     const reactionType = area.reaction?.informations?.type;
 

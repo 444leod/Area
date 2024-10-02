@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import {
-  AreaDTO,
+  Area,
   RabbitMQService,
   MongoDBService,
 } from "@area/shared";
@@ -14,7 +14,7 @@ async function main() {
   await rabbitMQ.connect();
   await mongoDB.connect();
 
-  const groupAreaSend = (areas: AreaDTO[]) => {
+  const groupAreaSend = (areas: Area[]) => {
     areas.forEach((area) => {
       rabbitMQ.sendAreaToQueue(area);
     });
