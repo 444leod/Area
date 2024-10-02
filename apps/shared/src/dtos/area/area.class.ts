@@ -8,3 +8,9 @@ export class Area {
     reaction: Reaction;
     active: boolean;
 }
+
+export class AreaDto {
+    active: boolean;
+    action: ActionDto;
+    reaction: Reaction;
+}
