@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import {
-  AreaDTO,
+  AreaPacket,
   RabbitMQService,
   MongoDBService,
 } from "@area/shared";
@@ -14,7 +14,7 @@ async function main() {
   await rabbitMQ.connect();
   await mongoDB.connect();
 
-  const groupAreaSend = (areas: AreaDTO[]) => {
+  const groupAreaSend = (areas: AreaPacket[]) => {
     areas.forEach((area) => {
       rabbitMQ.sendAreaToQueue(area);
     });
@@ -40,7 +40,6 @@ async function main() {
             },
             {
               $project: {
-                _id: 0,
                 area: 1,
               },
             },
@@ -48,13 +47,17 @@ async function main() {
           .toArray();
       });
     };
-    const getFilteredRes = async () => (await myQuery()).map((obj: any) => {
-      return obj.area;
-    });
+    const getFilteredRes = async (): Promise<AreaPacket[]> =>
+      (await myQuery()).map((obj: any) => {
+        const areaPacket: AreaPacket = {
+          userId: obj._id,
+          area: obj.area,
+        };
+        return areaPacket;
+      });
     setInterval(async () => {
       if (await queueIsEmpty()) {
-        const res = await getFilteredRes();
-        groupAreaSend(res);
+        groupAreaSend(await getFilteredRes());
       }
     }, 1000); // 1 sec between checks
   } catch (err) {

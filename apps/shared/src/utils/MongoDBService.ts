@@ -1,4 +1,4 @@
-import {Db, MongoClient} from 'mongodb';
+import {Db, MongoClient, ClientSession} from 'mongodb';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
@@ -57,15 +57,15 @@ export class MongoDBService {
         return this._connected ? this._db : null;
     }
 
-    async executeWithSession<T>(operation: (session: any) => Promise<T>): Promise<T> {
+    async executeWithSession<T>(operation: (session: ClientSession) => Promise<T>): Promise<T> {
         if (!this._connected) {
             await this.connect();
         }
-        const session = this._client.startSession();
+        const session: ClientSession = this._client.startSession();
         try {
             return await session.withTransaction(async () => {
                 return operation(session);
-            });
+            }) as T;
         } finally {
             await session.endSession();
         }
