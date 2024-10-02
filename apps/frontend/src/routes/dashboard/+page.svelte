@@ -66,8 +66,6 @@
 			</div>
 		{/each}
 	</div>
-
-	<!-- Automations List -->
 	<div class="card variant-soft p-4 mb-8">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
 			<h2 class="h2 mb-2 sm:mb-0">Your Automations</h2>
@@ -78,7 +76,6 @@
 		</div>
 
 		{#if isSmallScreen}
-			<!-- Card view for small screens -->
 			<div class="space-y-4">
 				{#each areas as area}
 					<div class="card p-4 variant-soft">
@@ -102,7 +99,6 @@
 				{/each}
 			</div>
 		{:else}
-			<!-- Table view for larger screens -->
 			<table class="table table-compact table-hover">
 				<thead>
 					<tr>
