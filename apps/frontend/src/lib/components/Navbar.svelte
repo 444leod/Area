@@ -24,10 +24,6 @@
 				<UserPlus class="mr-2" size={18} />
 				<span class="hidden sm:inline"> Sign Up </span>
 			</a>
-			<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary">
-				<LayoutDashboardIcon class="mr-2" size={18} />
-				<span class="hidden sm:inline"> Dashboard </span>
-			</a>
 			<LightSwitch />
 		</div>
 
@@ -59,14 +55,6 @@
 				>
 					<UserPlus class="mr-2" size={18} />
 					Sign Up
-				</a>
-				<a
-					href="/dashboard"
-					class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
-					on:click={toggleMenu}
-				>
-					<LayoutDashboardIcon class="mr-2" size={18} />
-					Dashboard
 				</a>
 				<div class="flex items-center justify-between">
 					<span>Theme</span>

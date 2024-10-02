@@ -50,7 +50,7 @@ async function main() {
     const getFilteredRes = async (): Promise<AreaPacket[]> =>
       (await myQuery()).map((obj: any) => {
         const areaPacket: AreaPacket = {
-          userId: obj._id,
+          user_id: obj._id,
           area: obj.area,
         };
         return areaPacket;

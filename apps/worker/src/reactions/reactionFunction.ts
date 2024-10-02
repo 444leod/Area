@@ -1,3 +1,3 @@
-import { MongoDBService, AreaDTO } from '@area/shared';
+import { MongoDBService, Area } from '@area/shared';
 
-export type ReactionFunction = (area: AreaDTO, database: MongoDBService) => Promise<void>;
+export type ReactionFunction = (area: Area, database: MongoDBService) => Promise<void>;
