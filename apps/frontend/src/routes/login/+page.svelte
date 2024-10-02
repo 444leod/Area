@@ -7,10 +7,6 @@
 	let email = '';
 	let password = '';
 
-	function GoogleConnection() {
-		console.log("ici")
-		goto(`${import.meta.env.VITE_API_URL}auth/google`)
-	}
 </script>
 
 <div class="flex items-center justify-center p-6">
