@@ -2,13 +2,14 @@
 	import { enhance } from '$app/forms';
 	import { Mail, Lock, LogIn } from 'lucide-svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 	let email = '';
 	let password = '';
 
-	function handleGoogleLogin() {
-		// Handle Google login
-		console.log('Google login clicked');
+	function GoogleConnection() {
+		console.log("ici")
+		goto(`${import.meta.env.VITE_API_URL}auth/google`)
 	}
 </script>
 
@@ -54,10 +55,12 @@
 			{/if}
 		</form>
 		<div class="divider my-4">OR</div>
-		<button on:click={handleGoogleLogin} class="btn variant-soft w-full">
-			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
-			Continue with Google
-		</button>
+		<a href="{import.meta.env.VITE_API_URL}auth/google">
+			<button class="btn variant-soft w-full">
+				<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
+				Continue with Google
+			</button>
+		</a>
 		<div class="mt-4 text-center">
 			<a href="/forgot-password" class="anchor">Forgot password?</a>
 		</div>
