@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException
 } from "@nestjs/common";
-import { FastifyRequest } from 'fastify';
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
