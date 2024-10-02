@@ -1,7 +1,7 @@
 import { Area, User, UserRegistrationDto } from "@area/shared";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, ObjectId } from "mongoose";
 import * as bcrypt from "bcryptjs";
 
 @Injectable()
@@ -21,6 +21,10 @@ export class UsersService {
       return await newUser.save();
     }
     return user;
+  }
+
+  async findById(id: string | ObjectId) : Promise<User | undefined> {
+    return await this.userModel.findById(id).exec();
   }
 
   async findByEmail(email: string): Promise<User | undefined> {

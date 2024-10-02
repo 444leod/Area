@@ -2,14 +2,17 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
+  Param,
   Post,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
 import {
-  ApiBody,
   ApiCreatedResponse,
   ApiHeader,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -18,6 +21,7 @@ import { AuthGuard } from "../auth/auth.guard";
 import { Area, AreaCreationDto, AreaDto } from "@area/shared";
 import { UsersService } from "../users/users.service";
 import { AreasHelper } from "./areas.helper";
+import { ObjectId } from "mongodb";
 
 @ApiTags("Areas")
 @Controller("/areas")
@@ -30,6 +34,7 @@ export class AreasController {
   @ApiHeader({
     name: "authorization",
     description: "User API token, given at user login. (Bearer token)",
+    required: true,
   })
   @ApiCreatedResponse({
     description: "The AREA was successfully created.",
@@ -68,11 +73,13 @@ export class AreasController {
   @ApiHeader({
     name: "authorization",
     description: "User API token, given at Log-In. (Bearer token)",
+    required: true,
   })
   @ApiOkResponse({
     description: "The data was successfully fetched.",
     example: [
       {
+        _id: "deadbeefdeadbeefdeadbeef",
         active: true,
         action: {
           service_id: "deadbeefdeadbeefdeadbeef",
@@ -90,6 +97,7 @@ export class AreasController {
         },
       },
       {
+        _id: "...",
         active: false,
         action: {},
         reaction: {},
@@ -102,19 +110,55 @@ export class AreasController {
   @Get()
   @UseGuards(AuthGuard)
   async getUserAreas(@Request() req): Promise<AreaDto[]> {
-    const user = await this.usersService.findByEmail(req.user.email);
-    return user.areas.map((area, _) => {
-      return {
-        active: area.active,
-        action: {
-          service_id: area.action.service_id,
-          informations: area.action.informations,
+    const user = await this.usersService.findById(req.user.sub);
+    if (!user) throw new UnauthorizedException("Unknown user");
+    return user.areas.map((area, _) => this.areasHelper.toDto(area));
+  }
+
+  @ApiHeader({
+    name: "authorization",
+    description: "User API token, given at user login. (Bearer token)",
+    required: true,
+  })
+  @ApiOkResponse({
+    description: "The data was successfully fetched.",
+    example: {
+      _id: "deadbeefdeadbeefdeadbeef",
+      active: true,
+      action: {
+        isWebhook: false,
+        service_id: "deadbeefdeadbeefdeadbeef",
+        informations: {
+          type: "EXAMPLE_TYPE",
+          field: "exampleFieldData",
         },
-        reaction: {
-          service_id: area.reaction.service_id,
-          informations: area.reaction.informations,
+        history: {
+          type: "EXAMPLE_TYPE",
+          exampleHistory: []
+        }
+      },
+      reaction: {
+        service_id: "deadbeefdeadbeefdeadbeef",
+        informations: {
+          type: "EXAMPLE_TYPE",
+          field: "exampleFieldData",
         },
-      } as AreaDto;
-    });
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: "No token provided, or token isn't valid.",
+  })
+  @ApiNotFoundResponse({
+    description: "User's AREA Not found."
+  })
+  @Get("/:id")
+  @UseGuards(AuthGuard)
+  async getAreaById(@Request() req, @Param("id") id: string): Promise<Area> {
+    const user = await this.usersService.findById(req.user.sub);
+    if (!user) throw new UnauthorizedException("Unknown user");
+    const area = user.areas.find((_a) => _a._id.toHexString() === id);
+    if (!area) throw new NotFoundException("AREA not found");
+    return area;
   }
 }
