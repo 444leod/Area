@@ -23,7 +23,7 @@ export class AreasHelper {
             informations: dto.reaction
         }
         return {
-            // id: new ObjectId() // Might be bad practice to gen OIDs this way...
+            _id: new ObjectId(),
             action: action,
             reaction: reaction,
             active: true
