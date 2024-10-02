@@ -1,10 +1,8 @@
-import { ActionTypes, AreaDTO, AreaCreationDto, ReactionTypes } from '@area/shared';
+import { ActionTypes, Area, AreaCreationDto, ReactionTypes, Reaction, Action } from '@area/shared';
 import { Injectable } from '@nestjs/common';
 import { ActionBuilder } from './builders/actions/action.builder';
 import { ExampleActionBuilder } from './builders/actions/example.builder';
 import { ObjectId } from 'mongodb';
-import { ReactionBuilder } from './builders/reactions/reaction.builder';
-import { ExampleReactionBuilder } from './builders/reactions/example.builder';
 
 @Injectable()
 export class AreasHelper {
@@ -12,19 +10,23 @@ export class AreasHelper {
         EXAMPLE_ACTION: new ExampleActionBuilder
     }
 
-    private _reactions_builders : Record<ReactionTypes, ReactionBuilder> = {
-        EXAMPLE_REACTION: new ExampleReactionBuilder,
+    // TODO : replace with DB services
+    private _reactions_services : Record<ReactionTypes, ObjectId | undefined> = {
+        EXAMPLE_REACTION: undefined,
         SEND_EMAIL: undefined
     }
 
-    build(dto: AreaCreationDto) : AreaDTO {
-        const action = this._actions_builders[dto.action.type]?.build(dto.action);
-        const reaction = this._reactions_builders[dto.reaction.type]?.build(dto.reaction);
+    build(dto: AreaCreationDto) : Area {
+        const action : Action = this._actions_builders[dto.action.type]?.build(dto.action);
+        const reaction : Reaction = {
+            service_id: this._reactions_services[dto.reaction.type],
+            informations: dto.reaction
+        }
         return {
-            _id: new ObjectId(),
+            // id: new ObjectId() // Might be bad practice to gen OIDs this way...
             action: action,
             reaction: reaction,
             active: true
-        };
+        } as Area;
     }
 }

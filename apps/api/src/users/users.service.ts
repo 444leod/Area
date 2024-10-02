@@ -1,4 +1,4 @@
-import { AreaDTO, User, UserRegistrationDto } from "@area/shared";
+import { Area, User, UserRegistrationDto } from "@area/shared";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -18,7 +18,7 @@ export class UsersService {
     return await this.userModel.findOne({ email: email }).exec();
   }
 
-  async addAreaToUser(user: {email: string}, area: AreaDTO) : Promise<User> {
+  async addAreaToUser(user: {email: string}, area: Area) : Promise<User> {
     const u = await this.userModel.findOne({email: user.email});
     u.areas.push(area);
     return await u.save();

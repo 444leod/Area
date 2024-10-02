@@ -1,7 +1,11 @@
-// THIS IS ONLY FOR EXAMPLE, YOU CAN DELETE THIS FILE AFTER MORE REACTIONS ARE CREATED
-import { ReactionTypes } from "./reaction-types.dto";
+import { IsNotEmpty, IsString } from "class-validator";
+import { BaseReactionInfos } from "./reaction-infos.class";
+import { ReactionTypes } from "./reaction-types.enum";
 
-export interface ExampleReactionDTO {
+export class ExampleReactionInfos extends BaseReactionInfos {
     type: ReactionTypes.EXAMPLE_REACTION;
+
+    @IsString()
+    @IsNotEmpty()
     exampleField: string;
 }

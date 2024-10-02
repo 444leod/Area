@@ -1,4 +1,4 @@
-export * from './any-action.dto'
-export * from './action-types.dto'
-export * from './action.dto'
+export * from './action-infos.class'
+export * from './action-types.enum'
+export * from './action.class'
 export * from './example-action.dto'

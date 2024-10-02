@@ -19,5 +19,6 @@ export class AreasController {
   async createArea(@Request() req, @Body() dto: AreaCreationDto) {
     const area = this.areasHelper.build(dto);
     this.usersService.addAreaToUser(req.user, area);
+    return area;
   }
 }

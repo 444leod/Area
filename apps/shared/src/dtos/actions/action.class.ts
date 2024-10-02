@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
-import { AnyActionDTO } from "./any-action.dto"
+import { ActionInfos } from "./action-infos.class"
 import { AnyHistoryDTO } from "../history/any-history.dto";
 
-export interface ActionDTO {
+export class Action {
     service_id: ObjectId;
-    informations: AnyActionDTO;
+    informations: ActionInfos;
     history: AnyHistoryDTO;
     isWebhook: boolean;
 }

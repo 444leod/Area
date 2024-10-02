@@ -1,5 +1,5 @@
-import { ActionDTO, AnyActionDTO } from "@area/shared";
+import { Action, ActionInfos } from "@area/shared";
 
 export abstract class ActionBuilder {
-    abstract build (dto: AnyActionDTO) : ActionDTO;
+    abstract build (dto: ActionInfos) : Action;
 }
