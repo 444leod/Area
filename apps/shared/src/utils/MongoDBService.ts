@@ -1,7 +1,6 @@
-import {Db, MongoClient} from 'mongodb';
+import {Db, MongoClient, ClientSession} from 'mongodb';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import { ClientSession } from 'mongoose';
 
 dotenv.config();
 
