@@ -14,10 +14,27 @@ services:
       - "15672:15672"
     env_file:
       - ./apps/queue/.env
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+# docker run --env-file .env  --network="host" manager
+
+  manager:
+    build:
+      context: ./apps/task_manager
+    image: manager
+    container_name: manager
+    env_file:
+      - ./apps/task_manager/.env
+    depends_on:
+      queue:
+        condition: service_healthy
+    network_mode: "host"
 
 
-
-  # manager:
   # worker:
   # server:
   # client_mobile:
