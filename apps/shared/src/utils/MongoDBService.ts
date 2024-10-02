@@ -101,10 +101,12 @@ export class MongoDBService {
 
     async updateAreaHistory(userId: ObjectId, area: AreaDTO): Promise<void> {
         await this.executeWithSession(async () => {
-            const res = await this._db.collection('users').updateOne(
-                { _id: userId, 'areas._id': area._id },
-                { $set: { 'areas.$.action.history': area.action.history } });
-            console.log(res);
+            console.log("userid ", userId, " area_id ", area._id)
+
+            const res = await this._client.db('dev').collection('users').updateOne(
+                { _id: new ObjectId(userId), 'area._id': new ObjectId(area._id) },
+                { $set: { 'area.$.action.history': area.action.history } }
+            );
         });
     }
 }
