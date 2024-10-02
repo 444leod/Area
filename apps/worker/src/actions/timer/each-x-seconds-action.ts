@@ -9,18 +9,13 @@ export const handleEachXSecondsAction: ActionFunction = async (packet: AreaPacke
     let execute: boolean = false;
 
     if (history.lastExecutionTimestamp === undefined) {
+        execute = true;
+    } else if (Date.now() - history.lastExecutionTimestamp >= action.seconds * 1000) {
         history.lastExecutionTimestamp = Date.now();
         execute = true;
-    } else {
-        console.log('elapsed seconds since last execution:', (Date.now() - history.lastExecutionTimestamp) / 1000);
-        if (Date.now() - history.lastExecutionTimestamp >= action.seconds * 1000) {
-            history.lastExecutionTimestamp = Date.now();
-            execute = true;
-        }
     }
 
     if (!execute) return null;
-    console.log('modified');
 
     packet.area.action.history = history;
 

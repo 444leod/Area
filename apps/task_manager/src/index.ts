@@ -5,12 +5,10 @@ dotenv.config();
 
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
-let numb = 1;
 
 async function main() {
     await rabbitMQ.connect();
     await mongoDB.connect();
-    console.log('Connected to RabbitMQ and MongoDB');
 
     const groupAreaSend = (areas: AreaPacket[]) => {
         areas.forEach((area) => {
@@ -56,7 +54,6 @@ async function main() {
         setInterval(async () => {
             if (await queueIsEmpty()) {
                 numb++;
-                console.log(`Queue is empty, sending areas ${numb}`);
                 groupAreaSend(await getFilteredRes());
             }
         }, 1000); // 1 sec between checks
