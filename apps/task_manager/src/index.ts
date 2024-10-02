@@ -53,7 +53,6 @@ async function main() {
             });
         setInterval(async () => {
             if (await queueIsEmpty()) {
-                numb++;
                 groupAreaSend(await getFilteredRes());
             }
         }, 1000); // 1 sec between checks
