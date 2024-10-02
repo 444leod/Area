@@ -3,15 +3,19 @@ services:
 
   queue:
     build:
-      # context: .
-      dockerfile: ./apps/queue/Dockerfile
+      context: ./apps/queue
     image: queue
     container_name: queue
     expose:
       - 5672
+      - 15672
     ports:
-      - 5672:5672
-    environment:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ./apps/queue/.env
+
+
 
   # manager:
   # worker:
