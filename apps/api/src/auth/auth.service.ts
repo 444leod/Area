@@ -14,11 +14,28 @@ export class AuthService {
   async login(dto: UserLoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user)
-      throw new NotFoundException();
+      throw new NotFoundException("User not found");
 
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid)
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid password");
+
+    const payload = { sub: user._id.toHexString(), email: user.email };
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async googleLogin(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    const user = await this.usersService.findOrCreateUser({
+      email: req.user.email,
+      first_name: req.user.firstName,
+      last_name: req.user.lastName,
+    });
 
     const payload = { sub: user._id.toHexString(), email: user.email };
     return {

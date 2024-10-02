@@ -27,7 +27,7 @@ export class AuthController {
     const loginResponse = await this.authService.googleLogin(req);
   
     if (loginResponse === 'No user from google') {
-      return res.redirect('http://ton-frontend.com/auth/error');
+      throw new BadRequestException();
     }
   
     const token = loginResponse.token;

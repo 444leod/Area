@@ -8,16 +8,14 @@ export const actions: Actions = {
     const formData = await request.formData();
     const email = formData.get('email');
     const password = formData.get('password');
-	const first_name = formData.get('first_name');
-	const last_name = formData.get('last_name');
 
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password, first_name, last_name })
+        body: JSON.stringify({ email, password })
       });
 
       if (!response.ok) {
@@ -25,12 +23,15 @@ export const actions: Actions = {
       }
 
       const data = await response.json();
+      console.log('Login successful:', data);
+
+      // Stocker le token dans un cookie
       cookies.set('token', data.token, {
         path: '/',
         httpOnly: true,
         sameSite: 'strict',
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60 * 60 * 24 * 7
+        maxAge: 60 * 60 * 24 * 7 // 1 semaine
       });
     } catch (error) {
       console.error('Unexpected error during login:', error);

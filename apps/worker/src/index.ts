@@ -1,4 +1,4 @@
-import { AreaDTO, RabbitMQService, MongoDBService } from '@area/shared';
+import { AreaDTO, AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actionsMap';
 import { reactionsMap } from './reactions/reactionsMap';
@@ -29,9 +29,9 @@ async function run() {
 
 run().catch(console.dir);
 
-async function handleArea(area: AreaDTO) {
-    const actionType = area.action?.informations?.type;
-    const reactionType = area.reaction?.informations?.type;
+async function handleArea(areaPacket: AreaPacket) {
+    const actionType = areaPacket.area.action?.informations?.type;
+    const reactionType = areaPacket.area.reaction?.informations?.type;
 
     if (!actionType || !reactionType) {
         throw new Error('Badly formed area.');
@@ -46,7 +46,7 @@ async function handleArea(area: AreaDTO) {
         throw new Error(`Reaction ${reactionType} not supported.`);
     }
 
-    const res = await actionFunction(area, mongoDB);
+    const res = await actionFunction(areaPacket.area, mongoDB);
 
     if (!res) {
         return;
