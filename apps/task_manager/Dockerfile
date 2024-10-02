@@ -8,7 +8,7 @@ COPY tsconfig*.json .
 
 RUN npm i
 RUN npm install -g typescript
-RUN tsc -b apps/shared 
+RUN tsc -b apps/shared
 
 RUN npm run libs:build
 
