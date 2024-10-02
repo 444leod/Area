@@ -14,11 +14,11 @@ export class AuthService {
   async login(dto: UserLoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user)
-      throw new NotFoundException();
+      throw new NotFoundException("User not found");
 
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid)
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid password");
 
     const payload = { sub: user._id.toHexString(), email: user.email };
     return {
