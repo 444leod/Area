@@ -1,8 +1,8 @@
-import { ReactionFunctions } from './reaction-functions';
+import { ReactionFunction } from './reaction-function';
 import { handleExampleReaction } from './example/example';
 
 type ReactionMap = {
-    [string: string]: ReactionFunctions;
+    [string: string]: ReactionFunction;
 };
 
 export const reactionsMap: ReactionMap = {

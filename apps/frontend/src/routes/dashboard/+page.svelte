@@ -1,5 +1,7 @@
 <script>
-	import { Zap, PlusCircle, Settings, BarChart2 } from 'lucide-svelte';
+	import { Zap, PlusCircle, Settings, BarChart2, LogOut } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	let automations = [
 		{ id: 1, name: 'New Email to Slack', status: 'active', runs: 152, lastRun: '2h ago' },
@@ -21,20 +23,35 @@
 		);
 	}
 
-	// Reactive declaration to determine if we're on a small screen
 	$: isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
 
-	// Function to handle window resize
 	function handleResize() {
 		isSmallScreen = window.innerWidth < 640;
 	}
+
+	async function handleLogout() {
+        const response = await fetch('/api/logout', { method: 'POST' });
+        if (response.ok) {
+            goto('/login');
+        }
+    }
+	onMount(() => {
+		if (!document.cookie.includes('token=')) {
+			goto('/login');
+		}
+	});
 </script>
 
 <svelte:window on:resize={handleResize} />
 
 <div class="container mx-auto px-4 py-8">
-	<h1 class="h1 mb-8">Dashboard</h1>
-
+	<div class="flex flex-row items-center justify-between">
+		<h1 class="h1 mb-8">Dashboard</h1>
+		<button class="btn variant-filled-error" on:click={handleLogout}>
+			<LogOut class="w-4 h-4 mr-2" />
+			Logout
+		</button>
+	</div>
 	<!-- Quick Stats -->
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 		{#each Object.entries(stats) as [key, value]}

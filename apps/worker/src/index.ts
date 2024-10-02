@@ -37,7 +37,6 @@ async function handleArea(areaPacket: AreaPacket) {
         throw new Error('Badly formed area.');
     }
 
-    console.log(`Handling area with action ${actionType} and reaction ${reactionType}`);
     const actionFunction = actionsMap[actionType];
     if (!actionFunction) {
         throw new Error(`Action ${actionType} not supported.`);

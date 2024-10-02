@@ -1,6 +1,6 @@
-import { ActionFunctions } from '../action-functions';
+import { ActionFunction } from '../action-function';
 import { AreaPacket } from '@area/shared';
 
-export const handleExampleAction: ActionFunctions = async (packet: AreaPacket) => {
+export const handleExampleAction: ActionFunction = async (packet: AreaPacket) => {
     return packet;
 };

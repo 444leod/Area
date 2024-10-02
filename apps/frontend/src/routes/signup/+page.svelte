@@ -8,7 +8,8 @@
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
-	let name = '';
+	let first_name = '';
+	let last_name = '';
 
 	function handleGoogleSignup() {
 		// Handle Google signup
@@ -26,10 +27,17 @@
 			{/if}
 
 			<label class="label">
-				<span>Full Name</span>
+				<span>Fist Name</span>
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim"><User /></div>
-					<input name="name" type="text" placeholder="John Doe" bind:value={name} required />
+					<input name="first_name" type="text" placeholder="John" bind:value={first_name} required />
+				</div>
+			</label>
+			<label class="label">
+				<span>Last Name</span>
+				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+					<div class="input-group-shim"><User /></div>
+					<input name="last_name" type="text" placeholder="Doe" bind:value={last_name} required />	
 				</div>
 			</label>
 

@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 WORKDIR /app
 
-EXPOSE 3000
+EXPOSE 3001
 
 COPY apps/shared apps/shared
 COPY apps/api apps/api

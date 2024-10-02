@@ -48,7 +48,7 @@ async function main() {
         const getFilteredRes = async (): Promise<AreaPacket[]> =>
             (await myQuery()).map((obj: any) => {
                 const areaPacket: AreaPacket = {
-                    userId: obj._id,
+                    user_id: obj._id,
                     area: obj.area,
                 };
                 return areaPacket;
@@ -59,7 +59,7 @@ async function main() {
                 console.log(`Queue is empty, sending areas ${numb}`);
                 groupAreaSend(await getFilteredRes());
             }
-        }, 10000); // 1 sec between checks
+        }, 1000); // 1 sec between checks
     } catch (err) {
         console.error(err);
     } finally {

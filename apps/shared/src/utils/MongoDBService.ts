@@ -1,5 +1,5 @@
-import { Db, MongoClient, ObjectId } from 'mongodb';
-import { AreaDTO } from '../dtos';
+import { Db, MongoClient, ObjectId, ClientSession } from 'mongodb';
+import { Area } from '../dtos';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
@@ -64,15 +64,15 @@ export class MongoDBService {
         return this._db;
     }
 
-    async executeWithSession<T>(operation: (session: any) => Promise<T>): Promise<T> {
+    async executeWithSession<T>(operation: (session: ClientSession) => Promise<T>): Promise<T> {
         if (!this._connected) {
             await this.connect();
         }
-        const session = this._client.startSession();
+        const session: ClientSession = this._client.startSession();
         try {
             return await session.withTransaction(async () => {
                 return operation(session);
-            });
+            }) as T;
         } finally {
             await session.endSession();
         }
@@ -99,11 +99,9 @@ export class MongoDBService {
         });
     }
 
-    async updateAreaHistory(userId: ObjectId, area: AreaDTO): Promise<void> {
+    async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
         await this.executeWithSession(async () => {
-            console.log("userid ", userId, " area_id ", area._id)
-
-            const res = await this._client.db('dev').collection('users').updateOne(
+            await this._db.collection('users').updateOne(
                 { _id: new ObjectId(userId), 'area._id': new ObjectId(area._id) },
                 { $set: { 'area.$.action.history': area.action.history } }
             );
