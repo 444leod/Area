@@ -1,8 +1,7 @@
-import { Body, Controller, NotFoundException, Post, Request, UseGuards } from "@nestjs/common";
-import { AreasService } from "./areas.service";
+import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "../auth/auth.guard";
-import { AreaCreationDto } from "@area/shared";
+import { Area, AreaCreationDto, AreaDto } from "@area/shared";
 import { UsersService } from "../users/users.service";
 import { AreasHelper } from "./areas.helper";
 
@@ -16,9 +15,27 @@ export class AreasController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async createArea(@Request() req, @Body() dto: AreaCreationDto) {
+  async createArea(@Request() req, @Body() dto: AreaCreationDto) : Promise<Area> {
     const area = this.areasHelper.build(dto);
     this.usersService.addAreaToUser(req.user, area);
     return area;
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  async getUserAreas(@Request() req) : Promise<AreaDto[]> {
+    const user = await this.usersService.findByEmail(req.user.email);
+    return user.areas.map((area, _) => {
+      return {
+        active: area.active,
+        action: {
+          service_id: area.action.service_id,
+          informations: area.action.informations
+        },
+        reaction: {
+          service_id: area.reaction.service_id,
+          informations: area.reaction.informations
+        }
+      } as AreaDto});
   }
 }

@@ -8,3 +8,8 @@ export class Action {
     history: AnyHistoryDTO;
     isWebhook: boolean;
 }
+
+export class ActionDto {
+    service_id: string;
+    informations: ActionInfos;
+}

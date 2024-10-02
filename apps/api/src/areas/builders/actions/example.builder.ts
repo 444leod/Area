@@ -6,7 +6,7 @@ export class ExampleActionBuilder implements ActionBuilder {
     build(dto: ExampleActionInfos) : Action {
         return {
             isWebhook: false,
-            service_id: new ObjectId(),
+            service_id: undefined,
             informations: dto,
             history: {
                 type: ActionTypes.EXAMPLE_ACTION,
