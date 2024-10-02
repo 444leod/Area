@@ -14,6 +14,15 @@ export class UsersService {
     return await user.save();
   }
 
+  async findOrCreateUser(userData: { email: string; first_name: string; last_name: string }): Promise<User> {
+    let user = await this.findByEmail(userData.email);
+    if (!user) {
+      const newUser = new this.userModel(userData);
+      return await newUser.save();
+    }
+    return user;
+  }
+
   async findByEmail(email: string): Promise<User | undefined> {
     return await this.userModel.findOne({ email: email }).exec();
   }
