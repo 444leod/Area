@@ -11,12 +11,12 @@
 	let stats = {
 		totalAutomations: areas.length,
 		activeAutomations: areas.filter((area) => area.active).length,
-		totalRuns: 0, // This information is not provided by the API
-		successRate: '99.5%' // This information is not provided by the API
+		totalRuns: 0, // TODO  information is not provided by the API
+		successRate: '99.5%' // TODO  information is not provided by the API
 	};
 
 	function toggleAutomationStatus(area) {
-		// This function should be updated to call an API to toggle the status
+		// TODO This function should be updated to call an API to toggle the status
 		area.active = !area.active;
 		areas = [...areas]; // Trigger reactivity
 		stats.activeAutomations = areas.filter((area) => area.active).length;
