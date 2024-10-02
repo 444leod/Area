@@ -5,6 +5,7 @@ EXPOSE 3000
 
 COPY apps/shared apps/shared
 COPY apps/api apps/api
+COPY mongodb-ca.pem apps/api
 COPY package.json .
 COPY tsconfig*.json .
 

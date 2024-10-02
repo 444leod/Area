@@ -20,11 +20,9 @@ services:
       timeout: 10s
       retries: 5
 
-# docker run --env-file .env  --network="host" manager
-
   manager:
     build:
-      context: ./apps/task_manager
+      dockerfile: ./apps/task_manager/Dockerfile
     image: manager
     container_name: manager
     env_file:
@@ -32,11 +30,36 @@ services:
     depends_on:
       queue:
         condition: service_healthy
+    network_mode: "host"      
+
+  worker:
+    build:
+      dockerfile: ./apps/worker/Dockerfile
+    image: worker
+    container_name: worker
+    env_file:
+      - ./apps/worker/.env
+    depends_on:
+      queue:
+        condition: service_healthy
     network_mode: "host"
 
+  server:
+    build:
+      dockerfile: ./apps/api/Dockerfile
+    image: server
+    container_name: server
+    env_file:
+      - ./apps/api/.env
+    depends_on:
+      queue:
+        condition: service_healthy
+      manager:
+        condition: service_started
+      worker:
+        condition: service_started
+    network_mode: "host"
 
-  # worker:
-  # server:
   # client_mobile:
   # client_web:
 
