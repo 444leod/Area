@@ -27,11 +27,12 @@ See [the queue README page.](apps/queue/README.md)
 ### Task-manager
 ```sh
 docker build -t manager -f apps/task_manager/Dockerfile .
-docker run --env-file .env  --network=${port} manager
+docker run --env-file apps/task_manager/.env  --network=${port} manager
 ```
 `port` is network name, it's "host" or "bridge" or else depending on your environment. For dev environment, it's "host". 
 
 ### Worker
 ```sh
 docker build -t worker -f apps/worker/Dockerfile .
+docker run --env-file apps/worker/.env  --network=${port} worker
 ```
