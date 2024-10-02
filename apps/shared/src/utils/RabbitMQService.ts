@@ -1,5 +1,5 @@
 import client, { Channel, Connection } from 'amqplib';
-import { Area } from '../dtos';
+import { AreaPacket } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
@@ -35,7 +35,7 @@ export class RabbitMQService {
     this.connected = true;
   }
 
-  async sendAreaToQueue(area: Area): Promise<void> {
+  async sendAreaToQueue(area: AreaPacket): Promise<void> {
     if (!this.channel) {
       await this.connect();
     }
@@ -46,7 +46,7 @@ export class RabbitMQService {
     return await this.channel.checkQueue(this.rmqQueue);
   }
 
-  async consumeArea(handleArea: (area: Area) => void): Promise<void> {
+  async consumeArea(handleArea: (area: AreaPacket) => void): Promise<void> {
     await this.channel.assertQueue(this.rmqQueue, {
       durable: false,
     });
@@ -59,7 +59,7 @@ export class RabbitMQService {
             return console.error(`Invalid incoming message`);
           }
           try {
-            const area: Area = JSON.parse(msg.content.toString());
+            const area: AreaPacket = JSON.parse(msg.content.toString());
             handleArea(area);
           } catch (error) {
             console.error(`Error in handling area: ${error}`);
