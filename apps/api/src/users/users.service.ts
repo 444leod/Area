@@ -31,8 +31,8 @@ export class UsersService {
     return await this.userModel.findOne({ email: email }).exec();
   }
 
-  async addAreaToUser(user: {email: string}, area: Area) : Promise<User> {
-    const u = await this.userModel.findOne({email: user.email});
+  async addAreaToUser(user: {sub: string}, area: Area) : Promise<User> {
+    const u = await this.userModel.findById(user.sub);
     u.areas.push(area);
     return await u.save();
   }
