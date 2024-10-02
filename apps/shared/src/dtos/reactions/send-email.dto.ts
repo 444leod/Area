@@ -1,19 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { ReactionTypes } from "./reaction-types.dto";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ReactionTypes } from "./reaction-types.enum";
+import { BaseReactionInfos } from "./reaction-infos.class";
 
-export class SendEmailDTO {
+export class SendEmailReactionInfos extends BaseReactionInfos {
   type: ReactionTypes.SEND_EMAIL;
-  @ApiProperty()
+
   @IsEmail()
   @IsNotEmpty()
   to: string;
 
-  @ApiProperty()
   @IsString()
-  subject: string;
+  @IsOptional()
+  subject?: string;
 
-  @ApiProperty()
   @IsString()
-  body: string;
+  @IsOptional()
+  body?: string;
 }

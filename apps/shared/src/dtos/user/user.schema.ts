@@ -1,5 +1,5 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { AreaDTO } from "./area.dto";
+import { Area } from "../area";
 import { ObjectId } from "mongodb";
 
 @Schema({versionKey: false})
@@ -19,5 +19,5 @@ export class User {
   password: string;
 
   @Prop()
-  areas: AreaDTO[];
+  areas: Area[];
 }

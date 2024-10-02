@@ -1,4 +1,4 @@
-import { AreaDTO, AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
+import { Area, AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actionsMap';
 import { reactionsMap } from './reactions/reactionsMap';
