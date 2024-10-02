@@ -10,11 +10,6 @@
 	let confirmPassword = '';
 	let first_name = '';
 	let last_name = '';
-
-	function handleGoogleSignup() {
-		// Handle Google signup
-		console.log('Google signup clicked');
-	}
 </script>
 
 <div class="flex items-center justify-center p-6">
@@ -97,10 +92,12 @@
 
 		<div class="divider my-4">OR</div>
 
-		<button on:click={handleGoogleSignup} class="btn variant-soft w-full">
-			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
-			Sign up with Google
-		</button>
+		<a href="{import.meta.env.VITE_API_URL}/auth/google">
+			<button class="btn variant-soft w-full">
+				<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
+				Continue with Google
+			</button>
+		</a>
 
 		<div class="mt-4 text-center">
 			Already have an account? <a href="/login" class="anchor">Log in</a>
