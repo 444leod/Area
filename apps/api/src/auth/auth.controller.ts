@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpCode, HttpStatus, Post, Get, Req, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, HttpCode, Res, HttpStatus, Post, Get, Req, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
@@ -23,8 +23,15 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req);
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const loginResponse = await this.authService.googleLogin(req);
+  
+    if (loginResponse === 'No user from google') {
+      return res.redirect('http://ton-frontend.com/auth/error');
+    }
+  
+    const token = loginResponse.token;
+    return res.redirect(`${process.env.GOOGLE_REDIRECT_URL}?token=${token}`);
   }
 
 
