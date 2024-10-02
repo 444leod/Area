@@ -59,7 +59,41 @@ services:
       worker:
         condition: service_started
     network_mode: "host"
+    ports:
+      - "8080:8080"
 
+  # Need a app/script to build the .apk file.
+  # With the associated Dockerfile, the file should be put into the (shared) volume.
+  # This file in the shared volume is used by the client_web service to serve the .apk file. (http://localhost:8081/client.apk)
   # client_mobile:
-  # client_web:
+  #   build:
+  #     dockerfile: ./apps/frontend/Dockerfile
+  #   image: frontend
+  #   container_name: frontend
+  #   env_file:
+  #     - ./apps/frontend/.env
+  #   volumes:
+  #     - apk-volume:/shared
+  #   network_mode: "host"
+
+  client_web:
+    build:
+      dockerfile: ./apps/frontend/Dockerfile
+    image: frontend
+    container_name: frontend
+    env_file:
+      - ./apps/frontend/.env
+    depends_on:
+      # client_mobile:
+      #   condition: service_started
+      server:
+        condition: service_started
+    volumes:
+      - apk-volume:/shared 
+    network_mode: "bridge"
+    ports:
+      - "8081:8081"
+
+volumes:
+  apk-volume:
 
