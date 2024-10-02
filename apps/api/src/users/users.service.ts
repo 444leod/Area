@@ -1,5 +1,5 @@
 import { Area, User, UserRegistrationDto } from "@area/shared";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, ObjectId } from "mongoose";
 import * as bcrypt from "bcryptjs";
@@ -34,6 +34,14 @@ export class UsersService {
   async addAreaToUser(user: {sub: string}, area: Area) : Promise<User> {
     const u = await this.userModel.findById(user.sub);
     u.areas.push(area);
+    return await u.save();
+  }
+
+  async removeAreaFromUser(user: {sub: string}, id: string) : Promise<User> {
+    const u = await this.userModel.findById(user.sub);
+    if (!u.areas.find(a => a._id.toHexString() === id))
+      throw new NotFoundException("AREA not found");
+    u.areas = u.areas.filter(a => a._id.toHexString() !== id);
     return await u.save();
   }
 }

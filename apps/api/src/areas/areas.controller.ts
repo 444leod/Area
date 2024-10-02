@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -64,10 +65,10 @@ export class AreasController {
   async createArea(
     @Request() req,
     @Body() dto: AreaCreationDto
-  ): Promise<Area> {
+  ): Promise<AreaDto> {
     const area = this.areasHelper.build(dto);
     this.usersService.addAreaToUser(req.user, area);
-    return area;
+    return this.areasHelper.toDto(area);
   }
 
   @ApiHeader({
@@ -134,8 +135,8 @@ export class AreasController {
         },
         history: {
           type: "EXAMPLE_TYPE",
-          exampleHistory: []
-        }
+          exampleHistory: [],
+        },
       },
       reaction: {
         service_id: "deadbeefdeadbeefdeadbeef",
@@ -150,7 +151,7 @@ export class AreasController {
     description: "No token provided, or token isn't valid.",
   })
   @ApiNotFoundResponse({
-    description: "User's AREA Not found."
+    description: "User's AREA Not found.",
   })
   @Get("/:id")
   @UseGuards(AuthGuard)
@@ -160,5 +161,25 @@ export class AreasController {
     const area = user.areas.find((_a) => _a._id.toHexString() === id);
     if (!area) throw new NotFoundException("AREA not found");
     return area;
+  }
+
+  @ApiHeader({
+    name: "authorization",
+    description: "User API token, given at user login. (Bearer token)",
+    required: true,
+  })
+  @ApiOkResponse({
+    description: "Content was successfully deleted.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "No token provided, or token isn't valid.",
+  })
+  @ApiNotFoundResponse({
+    description: "User's AREA Not found.",
+  })
+  @Delete("/:id")
+  @UseGuards(AuthGuard)
+  async deleteAreaById(@Request() req, @Param("id") id: string) {
+    await this.usersService.removeAreaFromUser(req.user, id);
   }
 }
