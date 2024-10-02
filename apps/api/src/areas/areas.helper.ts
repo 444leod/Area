@@ -42,7 +42,7 @@ export class AreasHelper {
 
   toDto(area: Area): AreaDto {
     return {
-      id: area._id,
+      _id: area._id,
       active: area.active,
       action: {
         service_id: area.action.service_id,

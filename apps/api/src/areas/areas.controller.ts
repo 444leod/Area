@@ -5,6 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
   Request,
   UnauthorizedException,
@@ -156,11 +157,7 @@ export class AreasController {
   @Get("/:id")
   @UseGuards(AuthGuard)
   async getAreaById(@Request() req, @Param("id") id: string): Promise<Area> {
-    const user = await this.usersService.findById(req.user.sub);
-    if (!user) throw new UnauthorizedException("Unknown user");
-    const area = user.areas.find((_a) => _a._id.toHexString() === id);
-    if (!area) throw new NotFoundException("AREA not found");
-    return area;
+    return await this.usersService.getUserArea(req.user, new ObjectId(id));
   }
 
   @ApiHeader({
@@ -180,6 +177,30 @@ export class AreasController {
   @Delete("/:id")
   @UseGuards(AuthGuard)
   async deleteAreaById(@Request() req, @Param("id") id: string) {
-    await this.usersService.removeAreaFromUser(req.user, id);
+    await this.usersService.removeAreaFromUser(req.user, new ObjectId(id));
+  }
+
+  @ApiHeader({
+    name: "authorization",
+    description: "User API token, given at user login. (Bearer token)",
+    required: true,
+  })
+  @ApiOkResponse({
+    description: "Content was successfully updated.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "No token provided, or token isn't valid.",
+  })
+  @ApiNotFoundResponse({
+    description: "User's AREA Not found.",
+  })
+  @Patch("/:id/toggle")
+  @UseGuards(AuthGuard)
+  async toggleArea(@Request() req, @Param("id") id: string): Promise<AreaDto> {
+    const updated = await this.usersService.toggleUserArea(
+      req.user,
+      new ObjectId(id)
+    );
+    return this.areasHelper.toDto(updated);
   }
 }

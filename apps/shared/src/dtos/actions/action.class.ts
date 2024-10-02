@@ -10,6 +10,6 @@ export class Action {
 }
 
 export class ActionDto {
-    service_id: string;
+    service_id: ObjectId;
     informations: ActionInfos;
 }
