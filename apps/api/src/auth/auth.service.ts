@@ -43,6 +43,23 @@ export class AuthService {
     };
   }
 
+  async googleLogin(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    const user = await this.usersService.findOrCreateUser({
+      email: req.user.email,
+      first_name: req.user.firstName,
+      last_name: req.user.lastName,
+    });
+
+    const payload = { sub: user._id.toHexString(), email: user.email };
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
+  }
+
   async register(dto: UserRegistrationDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (user != undefined)
