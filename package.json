@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "description": "",
   "author": "",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "workspaces": [
-    "libs/*",
-    "apps/*"
+    "apps/api",
+    "apps/frontend",
+    "apps/queue",
+    "apps/shared",
+    "apps/task_manager",
+    "apps/worker"
   ],
   "scripts": {
     "install": "npm run libs:build",
