@@ -1,49 +1,33 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
-	import { Zap, ArrowRight } from 'lucide-svelte';
-	import { fade } from 'svelte/transition';
+	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
+	import { Zap, ArrowRight, CheckCircle } from 'lucide-svelte';
+	import { fade, fly } from 'svelte/transition';
 	import ProgressBar from '$lib/components/new-area/ProgressBar.svelte';
 	import MobileIndicator from '$lib/components/new-area/MobileIndicator.svelte';
 	import AppCard from '$lib/components/new-area/AppCard.svelte';
 	import AutomationSummary from '$lib/components/new-area/AutomationSummary.svelte';
 	import TriggerBtn from '$lib/components/new-area/TriggerBtn.svelte';
 
-	// Mock data for available apps with triggers and actions
+	export let data: PageData;
+
+	// Available apps with triggers and actions
 	const apps = [
 		{
 			id: 1,
-			name: 'Gmail',
-			icon: '📧',
-			triggers: ['New Email', 'Email Marked as Important', 'Email with Attachment'],
-			actions: ['Send Email', 'Create Draft', 'Add Label to Email']
+			name: 'Example App',
+			icon: '🔧',
+			triggers: ['EXAMPLE_ACTION'],
+			actions: []
 		},
 		{
 			id: 2,
-			name: 'Slack',
-			icon: '💬',
-			triggers: ['New Message', 'Channel Created', 'File Uploaded'],
-			actions: ['Send Message', 'Create Channel', 'Upload File']
-		},
-		{
-			id: 3,
-			name: 'Trello',
-			icon: '📌',
-			triggers: ['Card Created', 'Card Moved', 'Due Date Approaching'],
-			actions: ['Create Card', 'Move Card', 'Add Comment to Card']
-		},
-		{
-			id: 4,
-			name: 'Twitter',
-			icon: '🐦',
-			triggers: ['New Tweet', 'New Follower', 'Mentioned in Tweet'],
-			actions: ['Post Tweet', 'Send Direct Message', 'Like Tweet']
-		},
-		{
-			id: 5,
-			name: 'Dropbox',
-			icon: '📁',
-			triggers: ['New File', 'File Modified', 'File Shared'],
-			actions: ['Upload File', 'Create Folder', 'Share File']
+			name: 'Email App',
+			icon: '📧',
+			triggers: [],
+			actions: ['SEND_EMAIL']
 		}
 	];
 
@@ -60,12 +44,14 @@
 	// Store for the current step
 	let currentStep = writable(0);
 
-	// Stores for selected apps, triggers, actions, and automation name
+	// Stores for selected apps, triggers, actions, and automation details
 	let triggerApp = writable(null);
 	let selectedTrigger = writable(null);
 	let actionApp = writable(null);
 	let selectedAction = writable(null);
 	let automationName = writable('');
+	let actionDetails = writable({});
+	let reactionDetails = writable({});
 
 	function nextStep() {
 		currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
@@ -87,20 +73,27 @@
 	function selectTriggerOrAction(item, type) {
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
+			actionDetails.set({ type: item, exampleField: '' });
 		} else {
 			selectedAction.set(item);
+			reactionDetails.set({ type: item, to: '', subject: '' });
 		}
 		nextStep();
 	}
 
-	function finishSetup() {
-		alert('Automation created successfully!');
-		currentStep.set(0);
-		triggerApp.set(null);
-		selectedTrigger.set(null);
-		actionApp.set(null);
-		selectedAction.set(null);
-		automationName.set('');
+	let formMessage = '';
+	let showSuccessAnimation = false;
+
+	function handleCreateAreaResult(result) {
+		if (result.type === 'success') {
+			showSuccessAnimation = true;
+			formMessage = 'Automation created successfully!';
+			setTimeout(() => {
+				goto('/dashboard');
+			}, 2000); // Redirect after 2 seconds
+		} else {
+			formMessage = `Failed to create automation: ${result.data?.message || 'Unknown error'}`;
+		}
 	}
 </script>
 
@@ -115,12 +108,18 @@
 	/>
 
 	<div class="card variant-soft p-4 md:p-6">
-		{#if $currentStep === 0 || $currentStep === 2}
+		{#if showSuccessAnimation}
+			<div class="flex flex-col items-center justify-center h-64" in:fly={{ y: 50, duration: 500 }}>
+				<CheckCircle class="w-24 h-24 text-success mb-4" />
+				<h2 class="h2 text-center text-success">Automation Created Successfully!</h2>
+				<p class="mt-2">Redirecting to Dashboard...</p>
+			</div>
+		{:else if $currentStep === 0 || $currentStep === 2}
 			<h2 class="h2 mb-4 text-center" in:fade>
 				Choose {$currentStep === 0 ? 'a Trigger' : 'an Action'} App
 			</h2>
 			<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-				{#each apps as app (app.id)}
+				{#each apps.filter( (app) => ($currentStep === 0 ? app.triggers.length > 0 : app.actions.length > 0) ) as app (app.id)}
 					<AppCard
 						{app}
 						onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
@@ -152,17 +151,40 @@
 					placeholder="Enter a name for your automation"
 				/>
 			</div>
-			<div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
-				<div class="mb-4 md:mb-0">
-					<p class="font-semibold">Trigger: {$triggerApp?.name} - {$selectedTrigger}</p>
-					<p class="text-surface-600 text-sm">When this happens...</p>
+			{#if $selectedTrigger === 'EXAMPLE_ACTION'}
+				<div class="mb-4">
+					<label for="example-field" class="label">Example Field</label>
+					<input
+						id="example-field"
+						type="text"
+						class="input w-full"
+						bind:value={$actionDetails.exampleField}
+						placeholder="Enter example field value"
+					/>
 				</div>
-				<ArrowRight class="hidden md:block" />
-				<div class="mt-4 md:mt-0">
-					<p class="font-semibold">Action: {$actionApp?.name} - {$selectedAction}</p>
-					<p class="text-surface-600 text-sm">Do this...</p>
+			{/if}
+			{#if $selectedAction === 'SEND_EMAIL'}
+				<div class="mb-4">
+					<label for="email-to" class="label">To</label>
+					<input
+						id="email-to"
+						type="email"
+						class="input w-full"
+						bind:value={$reactionDetails.to}
+						placeholder="Enter recipient email"
+					/>
 				</div>
-			</div>
+				<div class="mb-4">
+					<label for="email-subject" class="label">Subject</label>
+					<input
+						id="email-subject"
+						type="text"
+						class="input w-full"
+						bind:value={$reactionDetails.subject}
+						placeholder="Enter email subject"
+					/>
+				</div>
+			{/if}
 			<button class="btn variant-filled-primary w-full" on:click={nextStep}>Continue</button>
 		{:else if $currentStep === 5}
 			<h2 class="h2 mb-4 text-center">Test & Review</h2>
@@ -173,19 +195,43 @@
 				actionApp={$actionApp?.name}
 				selectedAction={$selectedAction}
 			/>
-			<button class="btn variant-filled-primary w-full" on:click={finishSetup}>
-				<Zap class="w-4 h-4 mr-2" />
-				Activate Automation
-			</button>
+			<form
+				method="POST"
+				action="?/createArea"
+				use:enhance={() => {
+					return async ({ result }) => {
+						handleCreateAreaResult(result);
+					};
+				}}
+			>
+				<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
+				<input type="hidden" name="reactionDetails" value={JSON.stringify($reactionDetails)} />
+				<button type="submit" class="btn variant-filled-primary w-full">
+					<Zap class="w-4 h-4 mr-2" />
+					Activate Automation
+				</button>
+			</form>
+			{#if formMessage}
+				<p class="mt-4 text-center" class:text-error={formMessage.includes('Failed')}>
+					{formMessage}
+				</p>
+			{/if}
 		{/if}
 	</div>
+
 	<!-- Navigation buttons -->
 	<div class="flex justify-between mt-8">
-		<button class="btn variant-soft" on:click={prevStep} disabled={$currentStep === 0}>
+		<button
+			class="btn variant-soft"
+			on:click={prevStep}
+			disabled={$currentStep === 0 || showSuccessAnimation}
+		>
 			Back
 		</button>
 		{#if $currentStep < steps.length - 1 && $currentStep !== 1 && $currentStep !== 3}
-			<button class="btn variant-filled-primary" on:click={nextStep}>Next</button>
+			<button class="btn variant-filled-primary" on:click={nextStep} disabled={showSuccessAnimation}
+				>Next</button
+			>
 		{/if}
 	</div>
 </div>

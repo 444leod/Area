@@ -1,26 +1,25 @@
-<script>
+<script lang="ts">
 	import { Zap, PlusCircle, Settings, BarChart2, LogOut } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-	let automations = [
-		{ id: 1, name: 'New Email to Slack', status: 'active', runs: 152, lastRun: '2h ago' },
-		{ id: 2, name: 'GitHub Issues to Trello', status: 'active', runs: 89, lastRun: '5m ago' },
-		{ id: 3, name: 'Twitter Mentions to Discord', status: 'paused', runs: 367, lastRun: '1d ago' },
-		{ id: 4, name: 'New Dropbox File to Gmail', status: 'active', runs: 56, lastRun: '30m ago' }
-	];
+	export let data: PageData;
+
+	let areas = data.services;
 
 	let stats = {
-		totalAutomations: 4,
-		activeAutomations: 3,
-		totalRuns: 664,
-		successRate: '99.5%'
+		totalAutomations: areas.length,
+		activeAutomations: areas.filter((area) => area.active).length,
+		totalRuns: 0, // TODO  information is not provided by the API
+		successRate: '99.5%' // TODO  information is not provided by the API
 	};
 
-	function toggleAutomationStatus(id) {
-		automations = automations.map((auto) =>
-			auto.id === id ? { ...auto, status: auto.status === 'active' ? 'paused' : 'active' } : auto
-		);
+	function toggleAutomationStatus(area) {
+		// TODO This function should be updated to call an API to toggle the status
+		area.active = !area.active;
+		areas = [...areas]; // Trigger reactivity
+		stats.activeAutomations = areas.filter((area) => area.active).length;
 	}
 
 	$: isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
@@ -30,16 +29,21 @@
 	}
 
 	async function handleLogout() {
-        const response = await fetch('/api/logout', { method: 'POST' });
-        if (response.ok) {
-            goto('/login');
-        }
-    }
+		const response = await fetch('/api/logout', { method: 'POST' });
+		if (response.ok) {
+			goto('/login');
+		}
+	}
+
 	onMount(() => {
-		if (!document.cookie.includes('token=')) {
+		if (!document.cookie.split('; ').find((row) => row.startsWith('twinproperties-_zldp='))) {
 			goto('/login');
 		}
 	});
+
+	function getAreaName(area) {
+		return `${area.action.informations.type} to ${area.reaction.informations.type}`;
+	}
 </script>
 
 <svelte:window on:resize={handleResize} />
@@ -47,12 +51,11 @@
 <div class="container mx-auto px-4 py-8">
 	<div class="flex flex-row items-center justify-between">
 		<h1 class="h1 mb-8">Dashboard</h1>
-		<button class="btn variant-filled-error" on:click={handleLogout}>
+		<button class="btn variant-soft-secondary " on:click={handleLogout}>
 			<LogOut class="w-4 h-4 mr-2" />
 			Logout
 		</button>
 	</div>
-	<!-- Quick Stats -->
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 		{#each Object.entries(stats) as [key, value]}
 			<div class="card p-4 variant-soft">
@@ -63,8 +66,6 @@
 			</div>
 		{/each}
 	</div>
-
-	<!-- Automations List -->
 	<div class="card variant-soft p-4 mb-8">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
 			<h2 class="h2 mb-2 sm:mb-0">Your Automations</h2>
@@ -75,30 +76,20 @@
 		</div>
 
 		{#if isSmallScreen}
-			<!-- Card view for small screens -->
 			<div class="space-y-4">
-				{#each automations as auto}
+				{#each areas as area}
 					<div class="card p-4 variant-soft">
-						<h3 class="font-bold mb-2">{auto.name}</h3>
+						<h3 class="font-bold mb-2">{getAreaName(area)}</h3>
 						<div class="flex justify-between items-center mb-2">
 							<span
-								class="badge {auto.status === 'active'
-									? 'variant-filled-success'
-									: 'variant-filled-warning'}"
+								class="badge {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
 							>
-								{auto.status}
+								{area.active ? 'Active' : 'Paused'}
 							</span>
-							<span>Runs: {auto.runs}</span>
-						</div>
-						<div class="flex justify-between items-center mb-4">
-							<span>Last Run: {auto.lastRun}</span>
 						</div>
 						<div class="flex justify-between">
-							<button
-								class="btn btn-sm variant-soft"
-								on:click={() => toggleAutomationStatus(auto.id)}
-							>
-								{auto.status === 'active' ? 'Pause' : 'Activate'}
+							<button class="btn btn-sm variant-soft" on:click={() => toggleAutomationStatus(area)}>
+								{area.active ? 'Pause' : 'Activate'}
 							</button>
 							<button class="btn btn-sm variant-soft">
 								<Settings class="w-4 h-4" />
@@ -108,38 +99,31 @@
 				{/each}
 			</div>
 		{:else}
-			<!-- Table view for larger screens -->
 			<table class="table table-compact table-hover">
 				<thead>
 					<tr>
 						<th>Name</th>
 						<th>Status</th>
-						<th>Runs</th>
-						<th>Last Run</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					{#each automations as auto}
+					{#each areas as area}
 						<tr>
-							<td>{auto.name}</td>
+							<td>{getAreaName(area)}</td>
 							<td>
 								<span
-									class="badge {auto.status === 'active'
-										? 'variant-filled-success'
-										: 'variant-filled-warning'}"
+									class="badge {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
 								>
-									{auto.status}
+									{area.active ? 'Active' : 'Paused'}
 								</span>
 							</td>
-							<td>{auto.runs}</td>
-							<td>{auto.lastRun}</td>
 							<td>
 								<button
 									class="btn btn-sm variant-soft"
-									on:click={() => toggleAutomationStatus(auto.id)}
+									on:click={() => toggleAutomationStatus(area)}
 								>
-									{auto.status === 'active' ? 'Pause' : 'Activate'}
+									{area.active ? 'Pause' : 'Activate'}
 								</button>
 								<button class="btn btn-sm variant-soft ml-2">
 									<Settings class="w-4 h-4" />
