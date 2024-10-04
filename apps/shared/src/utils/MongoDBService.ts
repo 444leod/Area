@@ -50,14 +50,14 @@ export class MongoDBService {
         this._connected = false;
     }
 
-    public client(): MongoClient {
+    public get client() {
         if (!this._connected) {
             throw new Error('Not connected to MongoDB');
         }
         return this._client;
     }
 
-    public db(): Db {
+    public get db() {
         if (!this._connected) {
             throw new Error('Not connected to MongoDB');
         }

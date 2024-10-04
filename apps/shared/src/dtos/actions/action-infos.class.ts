@@ -8,4 +8,4 @@ export class BaseActionInfos {
     type: ActionTypes
 }
 
-export type ActionInfos = ExampleActionInfos | EachXSecondsActionInfos; // | T | U | V | ...
+export type ActionInfos = ExampleActionInfos | EachXSecondsActionInfos;

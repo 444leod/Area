@@ -19,7 +19,7 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(handleArea).then(() => {});
+        await rabbitMQ.consumeArea(handleArea);
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     } finally {
