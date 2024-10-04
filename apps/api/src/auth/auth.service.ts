@@ -30,7 +30,6 @@ export class AuthService {
     if (!req.user) {
       return 'No user from google';
     }
-    console.log(req.user);
 
     const user = await this.usersService.findOrCreateUser({
       email: req.user.email,
