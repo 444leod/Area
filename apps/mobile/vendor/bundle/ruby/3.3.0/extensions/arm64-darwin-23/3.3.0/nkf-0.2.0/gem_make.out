@@ -1,0 +1,18 @@
+current directory: /Users/jean-baptisteazan/Documents/Area/apps/mobile/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+/Users/jean-baptisteazan/.rbenv/versions/3.3.1/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/jean-baptisteazan/Documents/Area/apps/mobile/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20241003-30228-zkyez9 sitelibdir\=./.gem.20241003-30228-zkyez9 clean
+
+current directory: /Users/jean-baptisteazan/Documents/Area/apps/mobile/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20241003-30228-zkyez9 sitelibdir\=./.gem.20241003-30228-zkyez9
+compiling nkf.c
+linking shared-object nkf.bundle
+
+current directory: /Users/jean-baptisteazan/Documents/Area/apps/mobile/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20241003-30228-zkyez9 sitelibdir\=./.gem.20241003-30228-zkyez9 install
+/usr/bin/install -c -m 0755 nkf.bundle ./.gem.20241003-30228-zkyez9
+
+current directory: /Users/jean-baptisteazan/Documents/Area/apps/mobile/vendor/bundle/ruby/3.3.0/gems/nkf-0.2.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20241003-30228-zkyez9 sitelibdir\=./.gem.20241003-30228-zkyez9 clean
