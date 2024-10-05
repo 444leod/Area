@@ -28,6 +28,7 @@
     "front:start": "node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",
     "front:format": "npm run format -w @area/frontend",
+    "front:test": "npm run test -w @area/frontend",
 
     "task-manager:start": "npm run start -w @area/manager",
 
