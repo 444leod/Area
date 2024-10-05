@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,21 @@ export default function LoginScreen() {
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const router = useRouter();
 
+  useEffect(() => {
+    checkExistingToken();
+  }, []);
+
+  const checkExistingToken = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      if (userToken) {
+        router.replace("/(app)/");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification du token:", error);
+    }
+  };
+
   const handleLogin = async () => {
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -34,9 +49,8 @@ export default function LoginScreen() {
           password: password,
         }),
       });
-      console.log(await response.json())
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         await AsyncStorage.setItem("userToken", data.token);
         router.push('/(app)/');
       } else {
@@ -61,8 +75,8 @@ export default function LoginScreen() {
         entering={FadeInUp.duration(1000).springify()}
         style={styles.titleContainer}
       >
-        <Text style={styles.title}>Bienvenue</Text>
-        <Text style={styles.subtitle}>Connectez-vous pour continuer</Text>
+        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subtitle}>Connect to your account</Text>
       </Animated.View>
 
       <Animated.View
