@@ -10,12 +10,14 @@ import {
 import { Injectable } from "@nestjs/common";
 import { ActionBuilder } from "./builders/actions/action.builder";
 import { ExampleActionBuilder } from "./builders/actions/example.builder";
+import { EachXSecondsActionBuilder } from "./builders/actions/each-x-sec.builder copy";
 import { ObjectId } from "mongodb";
 
 @Injectable()
 export class AreasHelper {
   private _actions_builders: Record<ActionTypes, ActionBuilder> = {
     EXAMPLE_ACTION: new ExampleActionBuilder(),
+    EACH_X_SECONDS: new EachXSecondsActionBuilder()
   };
 
   // TODO : replace with DB services
