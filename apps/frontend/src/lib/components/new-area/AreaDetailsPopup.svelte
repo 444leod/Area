@@ -12,8 +12,8 @@
     let error: string | null = null;
     let deleteLoading = false;
     let toggleLoading = false;
-    const API_URL = import.meta.env.VITE_API_URL;
-    
+
+    console.log("token", token);
     const dispatch = createEventDispatcher();
   
     onMount(async () => {
