@@ -3,11 +3,11 @@ import type { Actions, PageServerLoad } from './$types';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export const load: PageServerLoad = async ({ fetch, cookies }) => {
-	const token = cookies.get('token');
-	if (!token) {
-		throw error(401, 'Unauthorized');
-	}
+export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
+    const token = url.searchParams.get('token') || cookies.get('token');
+    if (!token) {
+        throw error(401, 'Unauthorized');
+    }
 	try {
 		const response = await fetch(`${API_URL}/areas`, {
 			headers: {

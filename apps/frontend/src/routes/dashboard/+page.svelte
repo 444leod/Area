@@ -35,12 +35,6 @@
 		}
 	}
 
-	onMount(() => {
-		if (!document.cookie.split('; ').find((row) => row.startsWith('twinproperties-_zldp='))) {
-			goto('/login');
-		}
-	});
-
 	function getAreaName(area) {
 		return `${area.action.informations.type} to ${area.reaction.informations.type}`;
 	}
