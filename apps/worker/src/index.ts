@@ -1,7 +1,7 @@
-import { Area, AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
+import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 import dotenv from 'dotenv';
-import { actionsMap } from './actions/actionsMap';
-import { reactionsMap } from './reactions/reactionsMap';
+import { actionsMap } from './actions/actions-map';
+import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(handleArea).then(() => {});
+        await rabbitMQ.consumeArea(handleArea);
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     } finally {
@@ -30,8 +30,8 @@ async function run() {
 run().catch(console.dir);
 
 async function handleArea(areaPacket: AreaPacket) {
-    const actionType = areaPacket.area.action?.informations?.type;
-    const reactionType = areaPacket.area.reaction?.informations?.type;
+    const actionType = areaPacket?.area.action?.informations?.type;
+    const reactionType = areaPacket?.area.reaction?.informations?.type;
 
     if (!actionType || !reactionType) {
         throw new Error('Badly formed area.');
@@ -46,7 +46,7 @@ async function handleArea(areaPacket: AreaPacket) {
         throw new Error(`Reaction ${reactionType} not supported.`);
     }
 
-    const res = await actionFunction(areaPacket.area, mongoDB);
+    const res = await actionFunction(areaPacket, mongoDB);
 
     if (!res) {
         return;

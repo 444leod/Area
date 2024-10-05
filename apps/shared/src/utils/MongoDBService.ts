@@ -1,4 +1,5 @@
-import {Db, MongoClient, ClientSession} from 'mongodb';
+import { Db, MongoClient, ObjectId, ClientSession } from 'mongodb';
+import { Area } from '../dtos';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
@@ -49,12 +50,18 @@ export class MongoDBService {
         this._connected = false;
     }
 
-    public client(): MongoClient | null {
-        return this._connected ? this._client : null;
+    public get client() {
+        if (!this._connected) {
+            throw new Error('Not connected to MongoDB');
+        }
+        return this._client;
     }
 
-    public db(): Db | null {
-        return this._connected ? this._db : null;
+    public get db() {
+        if (!this._connected) {
+            throw new Error('Not connected to MongoDB');
+        }
+        return this._db;
     }
 
     async executeWithSession<T>(operation: (session: ClientSession) => Promise<T>): Promise<T> {
@@ -89,6 +96,15 @@ export class MongoDBService {
     async deleteCollection(collectionName: string): Promise<void> {
         await this.executeWithSession(async () => {
             await this._db.collection(collectionName).drop();
+        });
+    }
+
+    async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
+        await this.executeWithSession(async () => {
+            await this._db.collection('users').updateOne(
+                { _id: new ObjectId(userId), 'area._id': new ObjectId(area._id) },
+                { $set: { 'area.$.action.history': area.action.history } }
+            );
         });
     }
 }

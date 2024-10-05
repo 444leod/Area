@@ -1,5 +1,5 @@
 import { IsEnum } from "class-validator";
-import { ExampleReactionInfos } from "./example-reaction.dto";
+import { ExampleReactionInfos } from "./example-reaction.class";
 import { ReactionTypes } from "./reaction-types.enum";
 import { SendEmailReactionInfos } from "./send-email.dto";
 
