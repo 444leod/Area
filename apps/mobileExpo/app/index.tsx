@@ -27,10 +27,8 @@ export default function LoginScreen() {
   }, []);
 
   const checkExistingToken = async () => {
-    console.log("Vérification du token...");
     try {
       const userToken = await AsyncStorage.getItem("userToken");
-      console.log("Token:", userToken);
       if (userToken) {
         router.replace("/(auth)/");
       }

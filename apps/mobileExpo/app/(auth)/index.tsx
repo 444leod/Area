@@ -25,7 +25,6 @@ export default function DashboardScreen() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('AREAs:', JSON.stringify(data));
         setAreas(data);
       } else {
         throw new Error('Erreur lors de la récupération des AREAs');
