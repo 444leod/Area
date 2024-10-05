@@ -29,7 +29,10 @@ export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
 		}
 
 		const services = await response.json();
-		return { services };
+		return { 
+			services,
+			token
+		};
 	} catch (err) {
 		console.error('Error fetching services:', err);
 		throw error(500, 'Internal Server Error');

@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { Zap, PlusCircle, Settings, BarChart2, LogOut } from 'lucide-svelte';
+	import { Zap, PlusCircle, Settings, BarChart2, LogOut, Info } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import AreaDetailsPopup from '$lib/components/new-area/AreaDetailsPopup.svelte';
 
 	export let data: PageData;
 
 	let areas = data.services;
+	let selectedAreaId: string | null = null;
+	let showDetailsPopup = false;
 
 	let stats = {
 		totalAutomations: areas.length,
 		activeAutomations: areas.filter((area) => area.active).length,
-		totalRuns: 0, // TODO  information is not provided by the API
-		successRate: '99.5%' // TODO  information is not provided by the API
+		totalRuns: 0,
+		successRate: '99.5%'
 	};
 
 	function toggleAutomationStatus(area) {
-		// TODO This function should be updated to call an API to toggle the status
 		area.active = !area.active;
-		areas = [...areas]; // Trigger reactivity
+		areas = [...areas];
 		stats.activeAutomations = areas.filter((area) => area.active).length;
 	}
 
@@ -37,6 +39,16 @@
 
 	function getAreaName(area) {
 		return `${area.action.informations.type} to ${area.reaction.informations.type}`;
+	}
+
+	function showAreaDetails(areaId: string) {
+		selectedAreaId = areaId;
+		showDetailsPopup = true;
+	}
+
+	function closeDetailsPopup() {
+		showDetailsPopup = false;
+		selectedAreaId = null;
 	}
 </script>
 
@@ -85,8 +97,8 @@
 							<button class="btn btn-sm variant-soft" on:click={() => toggleAutomationStatus(area)}>
 								{area.active ? 'Pause' : 'Activate'}
 							</button>
-							<button class="btn btn-sm variant-soft">
-								<Settings class="w-4 h-4" />
+							<button class="btn btn-sm variant-soft" on:click={() => showAreaDetails(area._id)}>
+								<Info class="w-4 h-4" />
 							</button>
 						</div>
 					</div>
@@ -119,8 +131,8 @@
 								>
 									{area.active ? 'Pause' : 'Activate'}
 								</button>
-								<button class="btn btn-sm variant-soft ml-2">
-									<Settings class="w-4 h-4" />
+								<button class="btn btn-sm variant-soft ml-2" on:click={() => showAreaDetails(area._id)}>
+									<Info class="w-4 h-4" />
 								</button>
 							</td>
 						</tr>
@@ -138,3 +150,7 @@
 		</div>
 	</div>
 </div>
+
+{#if showDetailsPopup && selectedAreaId}
+	<AreaDetailsPopup areaId={selectedAreaId} token={data.token}  on:close={closeDetailsPopup}/>
+{/if}
