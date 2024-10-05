@@ -27,10 +27,12 @@ export default function LoginScreen() {
   }, []);
 
   const checkExistingToken = async () => {
+    console.log("Vérification du token...");
     try {
       const userToken = await AsyncStorage.getItem("userToken");
+      console.log("Token:", userToken);
       if (userToken) {
-        router.replace("/(app)/");
+        router.replace("/(auth)/");
       }
     } catch (error) {
       console.error("Erreur lors de la vérification du token:", error);
@@ -52,7 +54,7 @@ export default function LoginScreen() {
       const data = await response.json();
       if (response.ok) {
         await AsyncStorage.setItem("userToken", data.token);
-        router.push('/(app)/');
+        router.push('/(auth)/');
       } else {
         throw new Error("Erreur de connexion");
       }
@@ -63,6 +65,11 @@ export default function LoginScreen() {
         "Impossible de se connecter. Veuillez vérifier vos identifiants.",
       );
     }
+  };
+
+  const handleSignup = () => {
+    // Naviguer vers l'écran d'inscription
+    router.push('/Signup');
   };
 
   return (
@@ -100,6 +107,9 @@ export default function LoginScreen() {
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Se connecter</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+          <Text style={styles.signupButtonText}>S'inscrire</Text>
         </TouchableOpacity>
       </Animated.View>
     </SafeAreaView>
@@ -148,8 +158,22 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 15,
     alignItems: "center",
+    marginBottom: 10,
   },
   buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  signupButton: {
+    backgroundColor: "transparent",
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: "white",
+    padding: 15,
+    alignItems: "center",
+  },
+  signupButtonText: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",

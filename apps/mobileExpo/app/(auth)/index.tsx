@@ -4,25 +4,8 @@ import { Card, Title, Paragraph, Button, FAB, useTheme, ActivityIndicator } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-type Area = {
-  _id: string;
-  action: {
-    service_id: string;
-    informations: {
-      type: string;
-      [key: string]: any;
-    };
-  };
-  reaction: {
-    service_id: string;
-    informations: {
-      type: string;
-      [key: string]: any;
-    };
-  };
-  active: boolean;
-};
+import type { Area } from '@/types/';
+import { AreaItem } from '@/components/AreaItem';
 
 export default function DashboardScreen() {
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -42,6 +25,7 @@ export default function DashboardScreen() {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log('AREAs:', JSON.stringify(data));
         setAreas(data);
       } else {
         throw new Error('Erreur lors de la récupération des AREAs');
@@ -58,52 +42,16 @@ export default function DashboardScreen() {
     fetchAreas();
   }, [fetchAreas]);
 
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchAreas();
     setRefreshing(false);
   }, [fetchAreas]);
 
-  const renderAreaItem = ({ item, index }: { item: Area; index: number }) => {
-    const translateY = new Animated.Value(50);
-    const opacity = new Animated.Value(0);
-
-    Animated.parallel([
-      Animated.timing(translateY, {
-        toValue: 0,
-        duration: 300,
-        delay: index * 100,
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacity, {
-        toValue: 1,
-        duration: 300,
-        delay: index * 100,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    return (
-      <Animated.View style={[styles.cardContainer, { opacity, transform: [{ translateY }] }]}>
-        <Card style={styles.card}>
-          <Card.Content>
-            <View style={styles.cardHeader}>
-              <MaterialCommunityIcons name={getIconName(item.action.informations.type)} size={24} color={theme.colors.primary} />
-              <Title style={styles.cardTitle}>{`${item.action.informations.type} → ${item.reaction.informations.type}`}</Title>
-            </View>
-            <Paragraph style={styles.cardStatus}>
-              Statut: <Paragraph style={{ color: item.active ? theme.colors.primary : theme.colors.error }}>{item.active ? 'Actif' : 'Inactif'}</Paragraph>
-            </Paragraph>
-          </Card.Content>
-          <Card.Actions>
-            <Button mode="outlined" onPress={() => toggleAreaStatus(item._id)} style={styles.cardButton}>
-              {item.active ? 'Désactiver' : 'Activer'}
-            </Button>
-          </Card.Actions>
-        </Card>
-      </Animated.View>
-    );
-  };
+  const renderAreaItem = ({ item }: { item: Area }) => (
+    <AreaItem item={item} toggleAreaStatus={toggleAreaStatus} getIconName={getIconName} />
+  );
 
   const toggleAreaStatus = async (areaId: string) => {
     // Implémentez ici la logique pour activer/désactiver une AREA
@@ -154,11 +102,6 @@ export default function DashboardScreen() {
             <Paragraph style={styles.emptyText}>Aucune AREA trouvée. Créez-en une nouvelle !</Paragraph>
           </View>
         }
-      />
-      <FAB
-        style={[styles.fab, { backgroundColor: theme.colors.primary }]}
-        icon="plus"
-        onPress={() => router.push('/(app)/newArea')}
       />
     </View>
   );
