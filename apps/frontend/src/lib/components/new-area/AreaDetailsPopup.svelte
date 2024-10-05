@@ -68,7 +68,7 @@
 </script>
 
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-surface-100 p-6 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-surface-50-900-token p-6 rounded-lg w-[90%] md:max-w-4xl md:w-full max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-primary-500">AREA Details</h2>
             <button on:click={close} class="text-surface-600 hover:text-surface-900">
@@ -83,10 +83,10 @@
         {:else if error}
             <p class="text-error-500 text-center">{error}</p>
         {:else if area}
-            <div class="space-y-6 text-surface-700">
+            <div class="space-y-6 text-surface-700-200-token">
                 <div class="flex justify-between items-center">
                     <div>
-                        <span class="text-sm font-semibold text-surface-500">ID: {area._id}</span>
+                        <span class="text-sm font-semibold text-surface-700-200-token">ID: {area._id}</span>
                         <h3 class="text-xl font-bold mt-1">Area Workflow</h3>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -169,7 +169,7 @@
                 </div>
             </div>
         {:else}
-            <p class="text-center text-surface-500">No data available</p>
+            <p class="text-center text-surface-700-200-token">No data available</p>
         {/if}
     </div>
 </div>
