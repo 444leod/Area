@@ -29,10 +29,15 @@
     function initBackground() {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        container.appendChild(canvas);
+        document.body.insertBefore(canvas, document.body.firstChild);
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
         const particles = [];
         const particleCount = 100;
@@ -132,12 +137,10 @@
     }
 </script>
 
-<div class="relative min-h-screen bg-surface-50-900-token" bind:this={container}>
-    <canvas class="absolute inset-0 z-0" aria-hidden="true"></canvas>
-
+<div class="relative min-h-screen" bind:this={container}>
     <div class="container mx-auto px-4 py-12 relative z-10">
         <div class="max-w-4xl mx-auto">
-            <h1 class="h1 mb-12 text-center">User Profile</h1>
+            <h1 class="h1 mb-12 text-center">Your Profile</h1>
             
             <div class="card profile-card p-8 mb-12">
                 <div class="flex flex-col md:flex-row items-center mb-8">
@@ -222,7 +225,13 @@
 </div>
 
 <style>
-    canvas {
+    :global(canvas) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
         pointer-events: none;
     }
 </style>
