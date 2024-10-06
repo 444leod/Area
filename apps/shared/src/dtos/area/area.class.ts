@@ -10,6 +10,7 @@ export class Area {
 }
 
 export class AreaDto {
+    _id: ObjectId;
     active: boolean;
     action: ActionDto;
     reaction: Reaction;

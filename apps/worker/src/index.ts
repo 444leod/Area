@@ -8,6 +8,8 @@ dotenv.config();
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
+let isRunning = true;
+
 async function run() {
     try {
         await mongoDB.connect();
@@ -19,10 +21,23 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        await rabbitMQ.consumeArea(handleArea);
+        rabbitMQ.consumeArea(handleArea).then(() => {});
+
+        process.on('SIGINT', async () => {
+            isRunning = false;
+        });
+
+        process.on('SIGTERM', async () => {
+            isRunning = false;
+        });
+
+        while (isRunning) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
+        console.error('Something went wrong: ', error);
     } finally {
+        await rabbitMQ.close();
         await mongoDB.close();
     }
 }
