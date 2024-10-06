@@ -76,3 +76,4 @@ package-lock.json
 .vscode
 dist/
 *.pem
+/apps/queue/run.sh
