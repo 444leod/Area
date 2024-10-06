@@ -13,6 +13,11 @@ import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import { makeRedirectUri } from 'expo-auth-session';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,15 +27,30 @@ export default function LoginScreen() {
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const router = useRouter();
 
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    redirectUri: makeRedirectUri({
+      scheme: 'area',
+      path: 'flowName=GeneralOAuthFlow'
+    }),
+    scopes: ['profile', 'email']
+  });
+
   useEffect(() => {
     checkExistingToken();
   }, []);
 
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      if (!authentication) return;
+      exchangeGoogleTokenForJWT(authentication.accessToken);
+    }
+  }, [response]);
+
   const checkExistingToken = async () => {
-    console.log("Vérification du token...");
     try {
       const userToken = await AsyncStorage.getItem("userToken");
-      console.log("Token:", userToken);
       if (userToken) {
         router.replace("/(auth)/");
       }
@@ -67,8 +87,30 @@ export default function LoginScreen() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    promptAsync();
+  };
+
+  const exchangeGoogleTokenForJWT = async (googleToken: string) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/google/callback?token=${googleToken}`);
+      const data = await response.json();
+      if (response.ok) {
+        await AsyncStorage.setItem("userToken", data.token);
+        router.push('/(auth)/');
+      } else {
+        throw new Error("Erreur lors de l'échange du token Google");
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'échange du token Google:", error);
+      Alert.alert(
+        "Erreur",
+        "Impossible de se connecter avec Google. Veuillez réessayer.",
+      );
+    }
+  };
+
   const handleSignup = () => {
-    // Naviguer vers l'écran d'inscription
     router.push('/Signup');
   };
 
@@ -108,6 +150,9 @@ export default function LoginScreen() {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Se connecter</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+          <Text style={styles.buttonText}>Se connecter avec Google</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
           <Text style={styles.signupButtonText}>S'inscrire</Text>
         </TouchableOpacity>
@@ -137,6 +182,13 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "bold",
     color: "white",
+    marginBottom: 10,
+  },
+  googleButton: {
+    backgroundColor: "#4285F4",
+    borderRadius: 25,
+    padding: 15,
+    alignItems: "center",
     marginBottom: 10,
   },
   subtitle: {

@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>myapp</string>
+          <string>area</string>
           <string>com.jbazan.mobileExpo</string>
         </array>
       </dict>

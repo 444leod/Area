@@ -4,10 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 export default function AuthLayout() {
   return (
     <Tabs>
-      <Tabs.Screen
+    <Tabs.Screen
         name="index"
         options={{
-          title: "Dashboard",
+          title: "Home",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
