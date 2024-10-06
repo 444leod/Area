@@ -1,14 +1,15 @@
-import { ActionTypes, Area, AreaCreationDto, ReactionTypes, Reaction, Action } from '@area/shared';
+import { ActionTypes, Area, AreaCreationDto, ReactionTypes, Reaction, Action, AreaDto } from '@area/shared';
 import { Injectable } from '@nestjs/common';
 import { ActionBuilder } from './builders/actions/action.builder';
 import { ExampleActionBuilder } from './builders/actions/example.builder';
+import { EachXSecondsActionBuilder } from './builders/actions/each-x-sec.builder';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class AreasHelper {
     private _actions_builders: Record<ActionTypes, ActionBuilder> = {
         EXAMPLE_ACTION: new ExampleActionBuilder(),
-        EACH_X_SECONDS: new ExampleActionBuilder(),
+        EACH_X_SECONDS: new EachXSecondsActionBuilder(),
     };
 
     // TODO : replace with DB services
@@ -30,5 +31,20 @@ export class AreasHelper {
             reaction: reaction,
             active: true,
         } as Area;
+    }
+
+    toDto(area: Area): AreaDto {
+        return {
+            _id: area._id,
+            active: area.active,
+            action: {
+                service_id: area.action.service_id,
+                informations: area.action.informations,
+            },
+            reaction: {
+                service_id: area.reaction.service_id,
+                informations: area.reaction.informations,
+            },
+        };
     }
 }
