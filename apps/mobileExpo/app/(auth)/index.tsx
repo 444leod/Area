@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, FlatList, Alert, RefreshControl, Animated, TouchableOpacity } from 'react-native';
-import { Card, Title, Paragraph, Button, FAB, useTheme, ActivityIndicator } from 'react-native-paper';
+import { View, StyleSheet, FlatList, Alert, RefreshControl, TouchableOpacity } from 'react-native';
+import { Card, Title, Paragraph, Button, useTheme, ActivityIndicator } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import type { Area } from '@/types/';
 import { AreaItem } from '@/components/AreaItem';
+import { AreaDetailsModal } from '@/components/AreaDetailsModal';
 
 export default function DashboardScreen() {
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const [areas, setAreas] = useState<Area[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedArea, setSelectedArea] = useState<Area | null>(null);
   const router = useRouter();
   const theme = useTheme();
 
@@ -25,7 +28,6 @@ export default function DashboardScreen() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('AREAs:', JSON.stringify(data));
         setAreas(data);
       } else {
         throw new Error('Erreur lors de la récupération des AREAs');
@@ -42,26 +44,71 @@ export default function DashboardScreen() {
     fetchAreas();
   }, [fetchAreas]);
 
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchAreas();
     setRefreshing(false);
   }, [fetchAreas]);
 
-  const renderAreaItem = ({ item }: { item: Area }) => (
-    <AreaItem item={item} toggleAreaStatus={toggleAreaStatus} getIconName={getIconName} />
-  );
-
   const toggleAreaStatus = async (areaId: string) => {
-    // Implémentez ici la logique pour activer/désactiver une AREA
-    console.log('Toggling status for AREA:', areaId);
-    // Après avoir changé le statut, rechargez les AREAs
-    await fetchAreas();
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch(`${API_URL}/areas/${areaId}/toggle`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        await fetchAreas();
+      } else if (response.status === 401) {
+        throw new Error('Unauthorized: Invalid token');
+      } else if (response.status === 404) {
+        throw new Error('AREA not found');
+      } else {
+        throw new Error('Failed to toggle AREA status');
+      }
+    } catch (error) {
+      console.error('Error toggling AREA status:', error);
+      Alert.alert('Error', error.message || 'Failed to toggle AREA status');
+    }
+  };
+
+  const deleteArea = async (areaId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch(`${API_URL}/areas/${areaId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        await fetchAreas();
+      } else if (response.status === 401) {
+        throw new Error('Unauthorized: Invalid token');
+      } else if (response.status === 404) {
+        throw new Error('AREA not found');
+      } else {
+        throw new Error('Failed to delete AREA');
+      }
+    } catch (error) {
+      console.error('Error deleting AREA:', error);
+      Alert.alert('Error', error.message || 'Failed to delete AREA');
+    }
   };
 
   const getIconName = (type: string): string => {
-    // Ajoutez ici plus de correspondances entre les types et les icônes
     switch (type.toLowerCase()) {
       case 'email':
         return 'email';
@@ -73,6 +120,22 @@ export default function DashboardScreen() {
         return 'puzzle';
     }
   };
+
+  const openModal = (area: Area) => {
+    setSelectedArea(area);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedArea(null);
+  };
+
+  const renderAreaItem = ({ item }: { item: Area }) => (
+    <TouchableOpacity onPress={() => openModal(item)}>
+      <AreaItem item={item} toggleAreaStatus={toggleAreaStatus} getIconName={getIconName} />
+    </TouchableOpacity>
+  );
 
   if (loading) {
     return (
@@ -102,6 +165,13 @@ export default function DashboardScreen() {
             <Paragraph style={styles.emptyText}>Aucune AREA trouvée. Créez-en une nouvelle !</Paragraph>
           </View>
         }
+      />
+      <AreaDetailsModal 
+        visible={modalVisible} 
+        hideModal={closeModal} 
+        area={selectedArea} 
+        toggleAreaStatus={toggleAreaStatus}
+        deleteArea={deleteArea}
       />
     </View>
   );
