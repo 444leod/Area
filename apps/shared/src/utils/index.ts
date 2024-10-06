@@ -1,3 +1,3 @@
 export * from './RabbitMQService'
 export * from './MongoDBService'
-export * from './getYoutubeUserChannelId'
+export * from './youtube-requests'
