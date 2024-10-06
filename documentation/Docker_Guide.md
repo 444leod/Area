@@ -1,6 +1,6 @@
 # Area
 
-![alt text](image.png)
+![alt text](ai_whale.png)
 
 ## Building images 🐋
 
@@ -23,7 +23,7 @@ docker run --env-file apps/frontend/.env frontend
 ### Queue
 ```sh
 docker build -t queue apps/queue
-docker run --env-file apps/queue/.env queue
+docker run -d -p 5672:5672 -p 15672:15672  --env-file apps/queue/.env queue
 ```
 See [the queue README page.](apps/queue/README.md)
 
