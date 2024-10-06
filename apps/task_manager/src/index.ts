@@ -6,6 +6,7 @@ dotenv.config();
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
+let isRunning = true;
 async function main() {
     await rabbitMQ.connect();
     await mongoDB.connect();
@@ -25,7 +26,7 @@ async function main() {
             return await mongoDB.executeWithSession(async () => {
                 return await mongoDB
                     .db()
-                    ?.collection('users')
+                    .collection('users')
                     .aggregate([
                         { $unwind: '$area' },
                         {
@@ -48,18 +49,38 @@ async function main() {
                 const areaPacket: AreaPacket = {
                     user_id: obj._id,
                     area: obj.area,
+                    data: {
+                        title: 'string',
+                        body: 'string',
+                    },
                 };
                 return areaPacket;
             });
-        setInterval(async () => {
+
+        const interval = setInterval(async () => {
             if (await queueIsEmpty()) {
                 groupAreaSend(await getFilteredRes());
             }
         }, 1000); // 1 sec between checks
+
+        process.on('SIGINT', async () => {
+            clearInterval(interval);
+            isRunning = false;
+        });
+
+        process.on('SIGTERM', async () => {
+            clearInterval(interval);
+            isRunning = false;
+        });
+
+        while (isRunning) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
     } catch (err) {
         console.error(err);
     } finally {
         await mongoDB.close();
+        await rabbitMQ.close();
     }
 }
 

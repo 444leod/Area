@@ -18,19 +18,15 @@
     "libs:build": "tsc -b apps/shared",
     "libs:clean": "npm run lib:clean --workspaces --if-present",
     "libs:lint": "npm run lib:lint --workspaces --if-present",
-
     "api:build": "npm run build -w @area/api",
     "api:start": "npm run start -w @area/api",
     "api:dev": "npm run start:dev -w @area/api",
     "api:format": "npm run format -w @area/api",
-
     "front:build": "npm run build -w @area/frontend",
     "front:start": "node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",
     "front:format": "npm run format -w @area/frontend",
-
     "task-manager:start": "npm run start -w @area/manager",
-
     "worker:start": "npm run start -w @area/worker",
     "worker:example_worker": "npm run example_worker -w @area/worker"
   },

@@ -35,6 +35,15 @@ export class RabbitMQService {
     this.connected = true;
   }
 
+  async close(): Promise<void> {
+    if (this.channel) {
+      await this.channel.close();
+    }
+    if (this.connection) {
+      await this.connection.close();
+    }
+  }
+
   async sendAreaToQueue(area: AreaPacket): Promise<void> {
     if (!this.channel) {
       await this.connect();
