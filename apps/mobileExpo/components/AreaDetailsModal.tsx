@@ -18,7 +18,6 @@ export const AreaDetailsModal: React.FC<AreaDetailsModalProps> = ({
   visible, 
   hideModal, 
   area, 
-  toggleAreaStatus, 
   deleteArea 
 }) => {
   const theme = useTheme();
@@ -69,16 +68,6 @@ export const AreaDetailsModal: React.FC<AreaDetailsModalProps> = ({
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <Text style={styles.title}>Area Details</Text>
-              <View style={styles.statusContainer}>
-                <Switch
-                  value={area.active}
-                  onValueChange={() => toggleAreaStatus(area._id)}
-                  color={theme.colors.primary}
-                />
-                <Text style={[styles.statusText, { color: area.active ? theme.colors.success : theme.colors.error }]}>
-                  {area.active ? 'Active' : 'Inactive'}
-                </Text>
-              </View>
             </View>
 
             {renderInformationSection('Action', area.action.informations, 'lightning-bolt')}
