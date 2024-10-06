@@ -21,18 +21,21 @@
     ],
     "area": [
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
-            "type": "EXAMPLE_ACTION",
-            "exampleField": "exampleValue"
+            "type": "EACH_X_SECONDS",
+            "seconds": 15
           },
           "history": {
-            "type": "EXAMPLE_ACTION",
-            "exampleHistory": ["exampleHistory"]
+            "type": "EACH_X_SECONDS",
+            "lastExecutionTimestamp": "null"
           },
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -41,7 +44,9 @@
         "active": true
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -53,6 +58,7 @@
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -61,7 +67,9 @@
         "active": true
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -73,6 +81,7 @@
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -81,7 +90,9 @@
         "active": false
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -93,6 +104,7 @@
           "isWebhook": true
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -124,7 +136,9 @@
     ],
     "area": [
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -136,6 +150,7 @@
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -144,7 +159,9 @@
         "active": true
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -156,6 +173,7 @@
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -164,7 +182,9 @@
         "active": true
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -176,6 +196,7 @@
           "isWebhook": false
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"
@@ -184,7 +205,9 @@
         "active": false
       },
       {
+        "_id": "ObjectId()",
         "action": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_ACTION",
             "exampleField": "exampleValue"
@@ -196,6 +219,7 @@
           "isWebhook": true
         },
         "reaction": {
+          "_id": "ObjectId()",
           "informations": {
             "type": "EXAMPLE_REACTION",
             "exampleField": "exampleValue"

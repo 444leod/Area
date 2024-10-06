@@ -1,4 +1,4 @@
-import { ReactionFunction } from './reactionFunction';
+import { ReactionFunction } from './reaction-function';
 import { handleExampleReaction } from './example/example';
 
 type ReactionMap = {
