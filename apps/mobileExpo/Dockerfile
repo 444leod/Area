@@ -1,26 +1,23 @@
-# Use Alpine Linux with Node.js
-FROM node:18-alpine
-
-# Install necessary packages for building
-RUN apk add --no-cache git python3 make g++ bash
+# Use an official Node runtime as the base image
+FROM node:lts
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install Expo CLI and EAS CLI globally
-RUN npm install -g expo-cli eas-cli
-
-# Copy package.json and package-lock.json (if available)
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install project dependencies
+# Install app dependencies
 RUN npm install
 
-# Copy project files into the docker image
+# Install Expo CLI globally
+RUN npm install -g expo-cli
+
+# Install EAS CLI globally
+RUN npm install -g eas-cli
+
+# Copy the rest of the application code
 COPY . .
 
-# Set environment variable for non-interactive build
-ENV CI=1
-
-# Build the Expo project locally
-CMD eas build -p android --profile production --local --non-interactive --output=/app/build/app-release.apk
+# Build the Android app using EAS
+CMD ["eas", "build", "--platform", "android", "--non-interactive"]
