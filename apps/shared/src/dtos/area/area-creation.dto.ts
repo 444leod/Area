@@ -6,6 +6,7 @@ import {
   ExampleActionInfos,
 } from "../actions";
 import {
+  BaseReactionInfos,
   ExampleReactionInfos,
   ReactionInfos,
   ReactionTypes,
@@ -35,7 +36,7 @@ export class AreaCreationDto {
   @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => BaseActionInfos, {
+  @Type(() => BaseReactionInfos, {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
