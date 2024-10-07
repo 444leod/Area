@@ -60,6 +60,7 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
+    console?.log('API_URL' + API_URL)
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
@@ -72,6 +73,7 @@ export default function LoginScreen() {
         }),
       });
       const data = await response.json();
+      console.log('data' + JSON.data)
       if (response.ok) {
         await AsyncStorage.setItem("userToken", data.token);
         router.push('/(auth)/');

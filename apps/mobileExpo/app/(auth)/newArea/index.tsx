@@ -42,6 +42,27 @@ const NewAreaScreen = () => {
       icon: '📧',
       triggers: [],
       actions: ['SEND_EMAIL']
+    },
+    {
+      id: 3,
+      name: 'Timer App',
+      icon: '⏲️',
+      triggers: ['EACH_X_SECONDS'],
+      actions: []
+    },
+    {
+      id: 4,
+      name: 'YouTube App',
+      icon: '▶️',
+      triggers: ['ON_YOUTUBE_VIDEO_POSTED'],
+      actions: []
+    },
+    {
+      id: 5,
+      name: 'Google Tasks',
+      icon: '✅',
+      triggers: [],
+      actions: ['CREATE_GOOGLE_TASK']
     }
   ];
 
@@ -65,10 +86,22 @@ const NewAreaScreen = () => {
   const selectTriggerOrAction = (item, type) => {
     if (type === 'trigger') {
       setSelectedTrigger(item);
-      setActionDetails({ type: item, exampleField: '' });
+      if (item === 'EACH_X_SECONDS') {
+        setActionDetails({ type: item, seconds: 60 });
+      } else if (item === 'ON_YOUTUBE_VIDEO_POSTED') {
+        setActionDetails({ type: item, user_id: '' });
+      } else {
+        setActionDetails({ type: item, exampleField: '' });
+      }
     } else {
       setSelectedAction(item);
-      setReactionDetails({ type: item, to: '', subject: '' });
+      if (item === 'SEND_EMAIL') {
+        setReactionDetails({ type: item, to: '', subject: '', body: '' });
+      } else if (item === 'CREATE_GOOGLE_TASK') {
+        setReactionDetails({ type: item, content: { title: '', body: '' } });
+      } else {
+        setReactionDetails({ type: item });
+      }
     }
     nextStep();
   };
@@ -145,6 +178,25 @@ const NewAreaScreen = () => {
                 mode="outlined"
               />
             )}
+            {selectedTrigger === 'EACH_X_SECONDS' && (
+              <TextInput
+                label="Interval (seconds)"
+                value={actionDetails.seconds.toString()}
+                onChangeText={(text) => setActionDetails({...actionDetails, seconds: parseInt(text) || 60})}
+                style={styles.input}
+                mode="outlined"
+                keyboardType="numeric"
+              />
+            )}
+            {selectedTrigger === 'ON_YOUTUBE_VIDEO_POSTED' && (
+              <TextInput
+                label="YouTube User ID"
+                value={actionDetails.user_id}
+                onChangeText={(text) => setActionDetails({...actionDetails, user_id: text})}
+                style={styles.input}
+                mode="outlined"
+              />
+            )}
             {selectedAction === 'SEND_EMAIL' && (
               <>
                 <TextInput
@@ -161,6 +213,35 @@ const NewAreaScreen = () => {
                   onChangeText={(text) => setReactionDetails({...reactionDetails, subject: text})}
                   style={styles.input}
                   mode="outlined"
+                />
+                <TextInput
+                  label="Body"
+                  value={reactionDetails.body}
+                  onChangeText={(text) => setReactionDetails({...reactionDetails, body: text})}
+                  style={styles.input}
+                  mode="outlined"
+                  multiline
+                  numberOfLines={4}
+                />
+              </>
+            )}
+            {selectedAction === 'CREATE_GOOGLE_TASK' && (
+              <>
+                <TextInput
+                  label="Task Title"
+                  value={reactionDetails.content.title}
+                  onChangeText={(text) => setReactionDetails({...reactionDetails, content: {...reactionDetails.content, title: text}})}
+                  style={styles.input}
+                  mode="outlined"
+                />
+                <TextInput
+                  label="Task Description"
+                  value={reactionDetails.content.body}
+                  onChangeText={(text) => setReactionDetails({...reactionDetails, content: {...reactionDetails.content, body: text}})}
+                  style={styles.input}
+                  mode="outlined"
+                  multiline
+                  numberOfLines={4}
                 />
               </>
             )}
