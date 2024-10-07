@@ -1,19 +1,28 @@
 import { ReactionFunction } from '../reaction-function';
 import { AreaPacket, CreateGoogleTaskInfos } from '@shared/src';
+import { MongoDBService } from '@area/shared';
 import { google } from 'googleapis';
+import { ObjectId } from 'mongodb';
 
-export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket) => {
-    const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
-    let title: string;
-    let body: string;
+export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket, database: MongoDBService) => {
+    const user = await database
+        .db()
+        .collection('users')
+        .findOne({ _id: new ObjectId(packet.user_id) });
 
-    if (!reaction.content) {
-        title = packet.data?.title || 'title';
-        body = packet.data?.body || 'body';
-    } else {
-        title = reaction.content?.title || 'title';
-        body = reaction.content?.body || 'body';
+    const tokens = user?.user_authorization;
+    if (!tokens || tokens.length === 0) {
+        return;
     }
+
+    const google_token = tokens.find((token: any) => token.type === 'GOOGLE')?.token;
+    if (!google_token) {
+        return;
+    }
+    const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
+
+    const title = reaction.content?.title || 'title';
+    const body = reaction.content?.body || 'body';
 
     const tasks = google.tasks('v1');
 
@@ -23,9 +32,8 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: A
         process.env.GOOGLE_REDIRECT_URL,
     );
 
-    //TODO: retrieve token from database
     oauth2Client.setCredentials({
-        access_token: process.env.MY_GOOGLE_TOKEN,
+        access_token: google_token,
     });
 
     await tasks.tasks.insert({
