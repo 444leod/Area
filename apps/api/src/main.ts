@@ -1,9 +1,13 @@
 import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 import { NestFactory } from "@nestjs/core";
-import passport from 'passport';
-import session from 'express-session';
-import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from "@nestjs/swagger";
+import passport from "passport";
+import session from "express-session";
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +18,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       cookie: { secure: false },
-    }),
+    })
   );
 
   app.use(passport.initialize());
@@ -23,12 +27,11 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle("AREA API")
     .setDescription(
-      "The AREA API allows the creation of actions-reactions on multiple services; as well as account manager (login, registration)."
+      "The AREA API allows the creation of actions-reactions on multiple services."
     )
     .setVersion("0.0")
-    .addTag('auth')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
   const options: SwaggerCustomOptions = {
     swaggerOptions: {

@@ -1,6 +1,7 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 import { Area } from "../area";
 import { ObjectId } from "mongodb";
+import { AuthorizationDto } from "./authorization.dto"
 
 @Schema({versionKey: false})
 export class User {
@@ -17,6 +18,9 @@ export class User {
 
   @Prop()
   password: string;
+
+  @Prop()
+  user_authorization: AuthorizationDto[];
 
   @Prop()
   areas: Area[];
