@@ -26,7 +26,7 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const loginResponse = await this.authService.googleLogin(req);
   
-    if (loginResponse === 'No user from google') {
+    if (loginResponse === 'No user from Google') {
       throw new BadRequestException();
     }
   

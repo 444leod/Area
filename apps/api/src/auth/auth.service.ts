@@ -3,6 +3,7 @@ import * as bcrypt from "bcryptjs";
 import { UsersService } from "../users/users.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
+import { ObjectId } from "mongodb";
 
 @Injectable()
 export class AuthService {
@@ -28,16 +29,19 @@ export class AuthService {
 
   async googleLogin(req) {
     if (!req.user) {
-      return 'No user from google';
+      return 'No user from Google';
     }
-
+    const googleServiceId = new ObjectId('64ff2e8e2a6e4b3f78abcd12');
+  
     const user = await this.usersService.findOrCreateUser({
       email: req.user.email,
       first_name: req.user.firstName,
       last_name: req.user.lastName,
+      token: req.user.accessToken,
+      service_Id: googleServiceId
     });
-
     const payload = { sub: user._id.toHexString(), email: user.email };
+  
     return {
       token: await this.jwtService.signAsync(payload),
     };
