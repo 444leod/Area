@@ -19,14 +19,41 @@ export class UsersService {
     email: string;
     first_name: string;
     last_name: string;
+    token: string;
+    service_Id: ObjectId;
   }): Promise<User> {
-    let user = await this.findByEmail(userData.email);
-    if (!user) {
-      const newUser = new this.userModel(userData);
-      return await newUser.save();
+    let user = await this.userModel.findOne({ email: userData.email });
+    if (user) {
+      const authIndex = user.user_authorization.findIndex(auth => 
+        auth.service_Id.equals(userData.service_Id) && auth.type === 'GOOGLE'
+      );
+      if (authIndex !== -1) {
+        user.user_authorization[authIndex].data = userData.token;
+      } else {
+        user.user_authorization.push({
+          service_Id: userData.service_Id,
+          type: 'GOOGLE',
+          data: userData.token
+        });
+      }
+      return await user.save();
     }
-    return user;
+  
+    const newUser = new this.userModel({
+      first_name: userData.first_name,
+      last_name: userData.last_name,
+      email: userData.email,
+      user_authorization: [{
+        service_Id: userData.service_Id,
+        type: 'GOOGLE',
+        data: userData.token
+      }]
+    });
+    return await newUser.save();
   }
+  
+
+  
 
   async findById(id: string | ObjectId): Promise<User | undefined> {
     return await this.userModel.findById(id).exec();
