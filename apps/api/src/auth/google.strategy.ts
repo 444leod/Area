@@ -14,7 +14,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 'email',
                 'profile',
                 'https://www.googleapis.com/auth/youtube',
-                // 'https://www.googleapis.com/auth/youtube.force-ssl',
+                'https://www.googleapis.com/auth/youtube.force-ssl',
                 // 'https://www.googleapis.com/auth/calendar',
                 'https://www.googleapis.com/auth/tasks',
             ],
@@ -31,5 +31,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             accessToken,
         };
         done(null, user);
+        console.log(accessToken);
     }
 }

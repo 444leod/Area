@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ActionBuilder } from './builders/actions/action.builder';
 import { ExampleActionBuilder } from './builders/actions/example.builder';
 import { EachXSecondsActionBuilder } from './builders/actions/each-x-sec.builder';
+import { OnYoutubeVideoPostedBuilder } from './builders/actions/on-youtube-video-posted';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class AreasHelper {
     private _actions_builders: Record<ActionTypes, ActionBuilder> = {
         EXAMPLE_ACTION: new ExampleActionBuilder(),
         EACH_X_SECONDS: new EachXSecondsActionBuilder(),
+        ON_YOUTUBE_VIDEO_POSTED: new OnYoutubeVideoPostedBuilder(),
     };
 
     // TODO : replace with DB services
