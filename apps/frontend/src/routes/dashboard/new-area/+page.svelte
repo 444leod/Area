@@ -28,6 +28,27 @@
 			icon: '📧',
 			triggers: [],
 			actions: ['SEND_EMAIL']
+		},
+		{
+			id: 3,
+			name: 'Timer App',
+			icon: '⏲️',
+			triggers: ['EACH_X_SECONDS'],
+			actions: []
+		},
+		{
+			id: 4,
+			name: 'YouTube App',
+			icon: '▶️',
+			triggers: ['ON_YOUTUBE_VIDEO_POSTED'],
+			actions: []
+		},
+		{
+			id: 5,
+			name: 'Google Tasks',
+			icon: '✅',
+			triggers: [],
+			actions: ['CREATE_GOOGLE_TASK']
 		}
 	];
 
@@ -73,10 +94,22 @@
 	function selectTriggerOrAction(item, type) {
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
-			actionDetails.set({ type: item, exampleField: '' });
+			if (item === 'EACH_X_SECONDS') {
+				actionDetails.set({ type: item, seconds: 60 });
+			} else if (item === 'ON_YOUTUBE_VIDEO_POSTED') {
+				actionDetails.set({ type: item, user_id: '' });
+			} else {
+				actionDetails.set({ type: item, exampleField: '' });
+			}
 		} else {
 			selectedAction.set(item);
-			reactionDetails.set({ type: item, to: '', subject: '' });
+			if (item === 'SEND_EMAIL') {
+				reactionDetails.set({ type: item, to: '', subject: '', body: '' });
+			} else if (item === 'CREATE_GOOGLE_TASK') {
+				reactionDetails.set({ type: item, content: { title: '', body: '' } });
+			} else {
+				reactionDetails.set({ type: item });
+			}
 		}
 		nextStep();
 	}
@@ -162,6 +195,29 @@
 						placeholder="Enter example field value"
 					/>
 				</div>
+			{:else if $selectedTrigger === 'EACH_X_SECONDS'}
+				<div class="mb-4">
+					<label for="seconds" class="label">Interval (seconds)</label>
+					<input
+						id="seconds"
+						type="number"
+						class="input w-full"
+						bind:value={$actionDetails.seconds}
+						placeholder="Enter interval in seconds"
+						min="1"
+					/>
+				</div>
+			{:else if $selectedTrigger === 'ON_YOUTUBE_VIDEO_POSTED'}
+				<div class="mb-4">
+					<label for="user-id" class="label">YouTube User ID</label>
+					<input
+						id="user-id"
+						type="text"
+						class="input w-full"
+						bind:value={$actionDetails.user_id}
+						placeholder="Enter YouTube User ID"
+					/>
+				</div>
 			{/if}
 			{#if $selectedAction === 'SEND_EMAIL'}
 				<div class="mb-4">
@@ -183,6 +239,37 @@
 						bind:value={$reactionDetails.subject}
 						placeholder="Enter email subject"
 					/>
+				</div>
+				<div class="mb-4">
+					<label for="email-body" class="label">Body</label>
+					<textarea
+						id="email-body"
+						class="textarea w-full"
+						bind:value={$reactionDetails.body}
+						placeholder="Enter email body"
+						rows="4"
+					></textarea>
+				</div>
+			{:else if $selectedAction === 'CREATE_GOOGLE_TASK'}
+				<div class="mb-4">
+					<label for="task-title" class="label">Task Title</label>
+					<input
+						id="task-title"
+						type="text"
+						class="input w-full"
+						bind:value={$reactionDetails.content.title}
+						placeholder="Enter task title"
+					/>
+				</div>
+				<div class="mb-4">
+					<label for="task-body" class="label">Task Description</label>
+					<textarea
+						id="task-body"
+						class="textarea w-full"
+						bind:value={$reactionDetails.content.body}
+						placeholder="Enter task description"
+						rows="4"
+					></textarea>
 				</div>
 			{/if}
 			<button class="btn variant-filled-primary w-full" on:click={nextStep}>Continue</button>

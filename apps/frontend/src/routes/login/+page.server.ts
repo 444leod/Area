@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 const API_URL = import.meta.env.VITE_API_URL;
+console.log(API_URL)
 
 export const actions: Actions = {
 	default: async ({ request, fetch, cookies }) => {
