@@ -4,6 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
+    "types": ["node", "jest"],
   },
 
   "include": [

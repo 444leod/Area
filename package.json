@@ -21,6 +21,7 @@
     "api:build": "npm run build -w @area/api",
     "api:start": "npm run start -w @area/api",
     "api:dev": "npm run start:dev -w @area/api",
+    "api:test": "npm run test -w @area/api",
     "api:format": "npm run format -w @area/api",
     "front:build": "npm run build -w @area/frontend",
     "front:start": "node apps/frontend/build",
