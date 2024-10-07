@@ -23,7 +23,7 @@
     "api:dev": "npm run start:dev -w @area/api",
     "api:format": "npm run format -w @area/api",
     "front:build": "npm run build -w @area/frontend",
-    "front:start": "node apps/frontend/build",
+    "front:start": "PORT=8081 node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",
     "front:format": "npm run format -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",

@@ -30,6 +30,7 @@ services:
     depends_on:
       queue:
         condition: service_healthy
+    restart: always
     network_mode: "host"      
 
   worker:
@@ -91,6 +92,8 @@ services:
     volumes:
       - apk-volume:/shared 
     network_mode: "bridge"
+    expose:
+      - 8081
     ports:
       - "8081:8081"
 
