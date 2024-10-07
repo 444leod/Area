@@ -60,10 +60,8 @@
 	}
 
 	function selectTriggerOrAction(item, type) {
-		console.log("je passe : ", type, item);
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
-			console.log("je passe : ", item.ActionType);
 			actionDetails.set({ type: item.ActionType, params: {} });
 			// Initialiser les paramètres
 			item.params.forEach(param => {
@@ -74,7 +72,6 @@
 			});
 		} else {
 			selectedAction.set(item);
-			console.log("je passe : ", item.ActionType);
 			reactionDetails.set({ type: item.ActionType, params: {} });
 			// Initialiser les paramètres
 			item.params.forEach(param => {
