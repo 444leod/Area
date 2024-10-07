@@ -4,6 +4,7 @@ import { WebhooksModule } from "./webhooks/webhooks.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConfigModule } from "@nestjs/config";
 import { UsersModule } from "./users/users.module";
+import { AdminModule } from "./admin/admin.module";
 import { MongooseModule } from "@nestjs/mongoose";
 
 @Module({
@@ -30,6 +31,7 @@ import { MongooseModule } from "@nestjs/mongoose";
     AreasModule,
     WebhooksModule,
     UsersModule,
+    AdminModule
   ],
   controllers: [],
   providers: [],
