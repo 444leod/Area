@@ -39,7 +39,19 @@ export class MongoDBService {
             tlsAllowInvalidCertificates: true
         });
 
-        await this._client.connect();
+        try {
+            await this._client.connect();
+        } catch (error: any) {
+            switch (error?.code) {
+                case 'ECONNREFUSED':
+                    throw new Error(`Connection refused to MongoDB: ${error}`);
+                case 'ECONNRESET':
+                    throw new Error(`Connection reset to MongoDB: ${error}`);
+                default:
+                    break;
+            }
+            throw new Error(`Error in connecting to MongoDB: ${error}`);
+        }
         this._db = this._client.db(env.MONGODB_DB_NAME as string);
         this._connected = true;
     }
@@ -102,9 +114,20 @@ export class MongoDBService {
     async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
         await this.executeWithSession(async () => {
             await this._db.collection('users').updateOne(
-                { _id: new ObjectId(userId), 'area._id': new ObjectId(area._id) },
-                { $set: { 'area.$.action.history': area.action.history } }
+                { _id: new ObjectId(userId), 'areas._id': new ObjectId(area._id) },
+                { $set: { 'areas.$.action.history': area.action.history } }
             );
+        });
+    }
+
+    async getAuthorizationData(userId: ObjectId, type: string): Promise<any> {
+        return this.executeWithSession(async () => {
+            const user = await this._db.collection('users').findOne({ _id: new ObjectId(userId) });
+            const tokens = user?.authorizations;
+            if (!tokens || tokens.length === 0) {
+                return;
+            }
+            return tokens.find((token: any) => token.type === type)?.data;
         });
     }
 }

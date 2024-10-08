@@ -16,6 +16,7 @@
   "scripts": {
     "install": "npm run libs:build",
     "libs:build": "tsc -b apps/shared",
+    "libs:watch": "tsc -b apps/shared --watch",
     "libs:clean": "npm run lib:clean --workspaces --if-present",
     "libs:lint": "npm run lib:lint --workspaces --if-present",
     "api:build": "npm run build -w @area/api",
@@ -29,6 +30,7 @@
     "front:format": "npm run format -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",
     "task-manager:start": "npm run start -w @area/manager",
+    "task-manager:dev": "npm run dev -w @area/manager",
     "worker:start": "npm run start -w @area/worker",
     "worker:example_worker": "npm run example_worker -w @area/worker"
   },

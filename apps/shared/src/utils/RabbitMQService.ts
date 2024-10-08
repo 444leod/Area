@@ -23,9 +23,21 @@ export class RabbitMQService {
 
     this.rmqQueue = process.env.RMQ_QUEUE;
 
-    this.connection = await client.connect(
-      `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`
-    );
+    try {
+      this.connection = await client.connect(
+        `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`
+      );
+    } catch (error: any) {
+      switch (error?.code) {
+        case 'ECONNREFUSED':
+          throw new Error(`Connection refused to RabbitMQ: ${error}`);
+        case 'ECONNRESET':
+          throw new Error(`Connection reset to RabbitMQ: ${error}`);
+        default:
+          break;
+      }
+      throw new Error(`Error in connecting to RabbitMQ: ${error}`);
+    }
 
 
     this.channel = await this.connection.createChannel();
