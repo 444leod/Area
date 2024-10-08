@@ -17,6 +17,7 @@
     "@expo/vector-icons": "^14.0.4",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.0.2",
+    "eas": "^0.1.0",
     "eslint": "^9.11.1",
     "expo": "~51.0.28",
     "expo-application": "~5.9.1",

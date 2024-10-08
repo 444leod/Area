@@ -63,19 +63,16 @@ services:
     ports:
       - "8080:8080"
 
-  # Need a app/script to build the .apk file.
-  # With the associated Dockerfile, the file should be put into the (shared) volume.
-  # This file in the shared volume is used by the client_web service to serve the .apk file. (http://localhost:8081/client.apk)
-  # client_mobile:
-  #   build:
-  #     dockerfile: ./apps/frontend/Dockerfile
-  #   image: frontend
-  #   container_name: frontend
-  #   env_file:
-  #     - ./apps/frontend/.env
-  #   volumes:
-  #     - apk-volume:/shared
-  #   network_mode: "host"
+  client_mobile:
+    build:
+      dockerfile: ./apps/mobileExpo/Dockerfile
+    image: mobile-expo
+    container_name: mobile-expo
+    env_file:
+      - ./apps/mobileExpo/.env
+    volumes:
+      - apk-volume:/shared
+    network_mode: "host"
 
   client_web:
     build:
@@ -85,8 +82,8 @@ services:
     env_file:
       - ./apps/frontend/.env
     depends_on:
-      # client_mobile:
-      #   condition: service_started
+      client_mobile:
+        condition: service_completed_successfully
       server:
         condition: service_started
     volumes:
