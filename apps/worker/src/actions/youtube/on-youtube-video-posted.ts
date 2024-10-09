@@ -8,7 +8,7 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
         .collection('users')
         .findOne({ _id: new ObjectId(packet.user_id) });
 
-    const tokens = user?.user_authorization;
+    const tokens = user?.authorization;
     if (!tokens || tokens.length === 0) {
         return null;
     }

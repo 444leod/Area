@@ -20,7 +20,7 @@ export class User {
   password: string;
 
   @Prop()
-  user_authorization: AuthorizationDto[];
+  authorization: AuthorizationDto[];
 
   @Prop()
   areas: Area[];
