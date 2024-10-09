@@ -18,7 +18,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       cookie: { secure: false },
-    })
+    }),
   );
 
   app.use(passport.initialize());
@@ -27,7 +27,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle("AREA API")
     .setDescription(
-      "The AREA API allows the creation of actions-reactions on multiple services."
+      "The AREA API allows the creation of actions-reactions on multiple services.",
     )
     .setVersion("0.0")
     .build();
