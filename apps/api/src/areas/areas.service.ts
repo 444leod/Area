@@ -3,7 +3,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
 import { ObjectId } from "mongodb";
-import { AreasHelper } from "./areas.helper";
 
 @Injectable()
 export class AreasService {

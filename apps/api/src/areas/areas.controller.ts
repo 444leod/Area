@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiCreatedResponse,
   ApiHeader,
   ApiNoContentResponse,
@@ -42,19 +43,15 @@ export class AreasController {
     private readonly areasService: AreasService,
   ) {}
 
-  @Post()
+  @Get("/:id")
   @UseGuards(AuthGuard)
   @ApiBearerAuth("token")
-  @ApiCreatedResponse(CreateAreaOkOptions)
+  @ApiOkResponse(GetAreasOkOptions)
   @ApiUnauthorizedResponse(AreasUnauthorizedOptions)
+  @ApiNotFoundResponse(AreasNotFoundOptions)
   @ApiNotFoundResponse(AreasUserNotFoundOptions)
-  async createArea(
-    @Request() req,
-    @Body() dto: AreaCreationDto,
-  ): Promise<AreaDto> {
-    const area = this.areasHelper.build(dto);
-    this.areasService.addAreaToUser(req.user, area);
-    return this.areasHelper.toDto(area);
+  async getAreaById(@Request() req, @Param("id") id: string): Promise<Area> {
+    return await this.areasService.getUserArea(req.user, new ObjectId(id));
   }
 
   @Get()
@@ -68,15 +65,19 @@ export class AreasController {
     return areas.map((area, _) => this.areasHelper.toDto(area));
   }
 
-  @Get("/:id")
+  @Post()
   @UseGuards(AuthGuard)
   @ApiBearerAuth("token")
-  @ApiOkResponse(GetAreasOkOptions)
+  @ApiCreatedResponse(CreateAreaOkOptions)
   @ApiUnauthorizedResponse(AreasUnauthorizedOptions)
-  @ApiNotFoundResponse(AreasNotFoundOptions)
   @ApiNotFoundResponse(AreasUserNotFoundOptions)
-  async getAreaById(@Request() req, @Param("id") id: string): Promise<Area> {
-    return await this.areasService.getUserArea(req.user, new ObjectId(id));
+  async createArea(
+    @Request() req,
+    @Body() dto: AreaCreationDto,
+  ): Promise<AreaDto> {
+    const area = this.areasHelper.build(dto);
+    this.areasService.addAreaToUser(req.user, area);
+    return this.areasHelper.toDto(area);
   }
 
   @Delete("/:id")
