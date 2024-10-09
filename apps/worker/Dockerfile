@@ -3,8 +3,10 @@ WORKDIR /app
 
 COPY apps/shared apps/shared
 COPY apps/worker apps/worker
+COPY mongodb-ca.pem apps/worker
 COPY package.json .
 COPY tsconfig*.json .
+
 
 RUN npm i
 RUN npm install -g typescript

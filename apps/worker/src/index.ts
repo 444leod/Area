@@ -49,16 +49,19 @@ async function handleArea(areaPacket: AreaPacket) {
     const reactionType = areaPacket?.area.reaction?.informations?.type;
 
     if (!actionType || !reactionType) {
-        throw new Error('Badly formed area.');
+        console.error('Action or reaction type not found.');
+        return;
     }
 
     const actionFunction = actionsMap[actionType];
     if (!actionFunction) {
-        throw new Error(`Action ${actionType} not supported.`);
+        console.error(`Action ${actionType} not supported.`);
+        return;
     }
     const reactionFunction = reactionsMap[reactionType];
     if (!reactionFunction) {
-        throw new Error(`Reaction ${reactionType} not supported.`);
+        console.error(`Reaction ${reactionType} not supported.`);
+        return;
     }
 
     const res = await actionFunction(areaPacket, mongoDB);

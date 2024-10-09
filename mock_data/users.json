@@ -19,7 +19,7 @@
         "data": {}
       }
     ],
-    "area": [
+    "areas": [
       {
         "_id": "ObjectId()",
         "action": {
@@ -134,7 +134,7 @@
         "data": {}
       }
     ],
-    "area": [
+    "areas": [
       {
         "_id": "ObjectId()",
         "action": {

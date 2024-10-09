@@ -16,6 +16,7 @@
   "scripts": {
     "install": "npm run libs:build",
     "libs:build": "tsc -b apps/shared",
+    "libs:watch": "tsc -b apps/shared --watch",
     "libs:clean": "npm run lib:clean --workspaces --if-present",
     "libs:lint": "npm run lib:lint --workspaces --if-present",
     "api:build": "npm run build -w @area/api",
@@ -24,7 +25,7 @@
     "api:test": "npm run test -w @area/api",
     "api:format": "npm run format -w @area/api",
     "front:build": "npm run build -w @area/frontend",
-    "front:start": "node apps/frontend/build",
+    "front:start": "PORT=8081 node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",
     "front:format": "npm run format -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",
