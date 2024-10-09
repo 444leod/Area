@@ -35,7 +35,7 @@ spec:
             - name: MONGODB_DB_NAME
               value: "area"
           ports:
-            - containerPort: 3001
+            - containerPort: 8080
           imagePullPolicy: Always
           volumeMounts:
             - name: mongodb-ca
