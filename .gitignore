@@ -77,3 +77,4 @@ package-lock.json
 dist/
 *.pem
 /apps/queue/run.sh
+openapi.json

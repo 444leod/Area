@@ -28,16 +28,17 @@ async function main() {
                     .db()
                     .collection('users')
                     .aggregate([
-                        { $unwind: '$area' },
+                        { $unwind: '$areas' },
                         {
                             $match: {
-                                'area.active': true,
-                                'area.action.isWebhook': false,
+                                'areas.active': true,
+                                'areas.action.isWebhook': false,
                             },
                         },
                         {
                             $project: {
-                                area: 1,
+                                areas: 1,
+                                authorizations: 1,
                             },
                         },
                     ])
@@ -48,11 +49,9 @@ async function main() {
             (await myQuery()).map((obj: any) => {
                 const areaPacket: AreaPacket = {
                     user_id: obj._id,
-                    area: obj.area,
-                    data: {
-                        title: 'string',
-                        body: 'string',
-                    },
+                    area: obj.areas,
+                    data: null,
+                    authorizations: obj.authorizations,
                 };
                 return areaPacket;
             });
