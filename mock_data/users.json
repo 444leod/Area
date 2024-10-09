@@ -5,18 +5,12 @@
     "icon": "deadbeef",
     "email_adress": "jonh.doe@gmail.com",
     "password": "password",
-    "authentification": [
+    "authorizations": [
       {
-        "type": "typeAuth0",
-        "data": {}
-      },
-      {
-        "type": "typeAuth1",
-        "data": {}
-      },
-      {
-        "type": "typeAuth2",
-        "data": {}
+        "_id": "ObjectId()",
+        "service_Id": "ObjectId()",
+        "type": "GOOGLE",
+        "data": "FALSEDATA"
       }
     ],
     "areas": [
@@ -120,20 +114,6 @@
     "icon": "deadbeef",
     "email_adress": "jonh.doe@gmail.com",
     "password": "password",
-    "authentification": [
-      {
-        "type": "typeAuth0",
-        "data": {}
-      },
-      {
-        "type": "typeAuth1",
-        "data": {}
-      },
-      {
-        "type": "typeAuth2",
-        "data": {}
-      }
-    ],
     "areas": [
       {
         "_id": "ObjectId()",
