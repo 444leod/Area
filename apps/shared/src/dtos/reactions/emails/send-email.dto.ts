@@ -6,14 +6,17 @@ import { BaseReactionInfos } from "../reaction-infos.class";
 export class SendEmailReactionInfos extends BaseReactionInfos {
   type: ReactionTypes.SEND_EMAIL;
 
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   to: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   subject: string;
 
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   body: string;
