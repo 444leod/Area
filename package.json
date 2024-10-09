@@ -16,6 +16,7 @@
   "scripts": {
     "install": "npm run libs:build",
     "libs:build": "tsc -b apps/shared",
+    "libs:watch": "tsc -b apps/shared --watch",
     "libs:clean": "npm run lib:clean --workspaces --if-present",
     "libs:lint": "npm run lib:lint --workspaces --if-present",
     "api:build": "npm run build -w @area/api",

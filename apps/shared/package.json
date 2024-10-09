@@ -10,6 +10,7 @@
   "license": "MIT",
   "scripts": {
     "lib:build": "tsc --build",
+    "lib:watch": "tsc --build --watch",
     "lib:clean": "rimraf ./dist",
     "lib:lint": "eslint \"src/**/*.ts\" --fix"
   },
