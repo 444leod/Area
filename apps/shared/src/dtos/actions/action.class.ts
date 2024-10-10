@@ -6,7 +6,7 @@ export class Action {
     service_id: ObjectId;
     informations: ActionInfos;
     history: AnyHistoryDTO;
-    isWebhook: boolean;
+    is_webhook: boolean;
 }
 
 export class ActionDto {

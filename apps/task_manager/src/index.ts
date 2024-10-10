@@ -32,7 +32,7 @@ async function main() {
                         {
                             $match: {
                                 'areas.active': true,
-                                'areas.action.isWebhook': false,
+                                'areas.action.is_webhook': false,
                             },
                         },
                         {

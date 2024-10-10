@@ -4,7 +4,7 @@ import { ActionBuilder } from './action.builder';
 export class OnYoutubeVideoPostedBuilder implements ActionBuilder {
     build(dto: OnYoutubeVideoPostedClass): Action {
         return {
-            isWebhook: false,
+            is_webhook: false,
             service_id: undefined,
             informations: dto,
             history: {
