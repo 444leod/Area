@@ -14,6 +14,7 @@
     "apps/worker"
   ],
   "scripts": {
+    "format": "npx prettier . --write",
     "install": "npm run libs:build",
     "libs:build": "tsc -b apps/shared",
     "libs:watch": "tsc -b apps/shared --watch",
