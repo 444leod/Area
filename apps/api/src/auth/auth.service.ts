@@ -38,7 +38,7 @@ export class AuthService {
       first_name: req.user.firstName,
       last_name: req.user.lastName,
       token: req.user.accessToken,
-      service_Id: googleServiceId
+      service_id: googleServiceId
     });
     const payload = { sub: user._id.toHexString(), email: user.email };
   
