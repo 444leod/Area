@@ -6,7 +6,7 @@ export class AuthorizationDto {
 
     @ApiProperty()
     @IsEmail()
-    service_Id: ObjectId
+    service_id: ObjectId
 
     @IsNotEmpty()
     @ApiProperty()
