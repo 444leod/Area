@@ -2,7 +2,7 @@ import { ApiProperty, } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { ActionTypes } from "../actions";
 
-export class CreateActionDto {
+export class ActionCreationDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
@@ -15,7 +15,7 @@ export class CreateActionDto {
     @IsNotEmpty()
     @ApiProperty()
     ActionType: string
-  
+
     @ApiProperty({ type: [Object], default: [] })
     params: { name: string; type: 'string' | 'number';}[];
 }

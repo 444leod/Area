@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AdminController } from './admin.controller';
-import { AdminService } from './admin.service';
+import { ServicesController } from './services.controller';
+import { AdminService } from './services.service';
 import { Service } from '@area/shared';
 import { ServiceSchema } from './service.schema';
 
@@ -9,7 +9,7 @@ import { ServiceSchema } from './service.schema';
   imports: [
     MongooseModule.forFeature([{ name: Service.name, schema: ServiceSchema   }]),
   ],
-  controllers: [AdminController],
+  controllers: [ServicesController],
   providers: [AdminService],
 })
 export class AdminModule {}

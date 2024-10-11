@@ -1,4 +1,4 @@
-export * from './actionInfo.dto'
-export * from './createService.dto'
-export * from './reactionInfo.dto '
+export * from './action-info.dto'
+export * from './service-creation.dto'
+export * from './reaction-info.dto '
 export * from './service.schema'
