@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download Svelte Prettier Plugin
+        run: npm i --save-dev prettier-plugin-svelte
+
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
