@@ -2,11 +2,17 @@ import { ActionFunction } from '../action-function';
 import { MongoDBService, AreaPacket, OnYoutubeVideoPostedClass, OnYoutubeVideoPostedHistoryDTO, getChannelVideos } from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
+    const google_token = await database.getAuthorizationData(packet.user_id, 'GOOGLE');
+    if (!google_token) {
+        console.error('Google token not found.');
+        return null;
+    }
+
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;
     const history = area.action.history as OnYoutubeVideoPostedHistoryDTO;
 
-    const videos = await getChannelVideos(action.user_id, process.env.MY_GOOGLE_TOKEN || '');
+    const videos = await getChannelVideos(action.user_id, google_token);
 
     if (videos === null) {
         return null;

@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 WORKDIR /app
 
-EXPOSE 3000
+EXPOSE 8081
 
 COPY apps/shared apps/shared
 COPY apps/frontend apps/frontend
@@ -13,4 +13,4 @@ RUN npm install -g typescript
 RUN tsc -b apps/shared
 RUN npm run front:build
 
-CMD npm run front:start
+CMD mv /shared/client.apk /app/apps/frontend/static; npm run front:start

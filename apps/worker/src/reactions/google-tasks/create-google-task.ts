@@ -1,19 +1,18 @@
 import { ReactionFunction } from '../reaction-function';
 import { AreaPacket, CreateGoogleTaskInfos } from '@shared/src';
+import { MongoDBService } from '@area/shared';
 import { google } from 'googleapis';
 
-export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket) => {
-    const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
-    let title: string;
-    let body: string;
-
-    if (!reaction.content) {
-        title = packet.data?.title || 'title';
-        body = packet.data?.body || 'body';
-    } else {
-        title = reaction.content?.title || 'title';
-        body = reaction.content?.body || 'body';
+export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket, database: MongoDBService) => {
+    const google_token = await database.getAuthorizationData(packet.user_id, 'GOOGLE');
+    if (!google_token) {
+        console.error('Google token not found.');
+        return;
     }
+    const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
+
+    const title = reaction.content?.title || 'title';
+    const body = reaction.content?.body || 'body';
 
     const tasks = google.tasks('v1');
 
@@ -23,17 +22,20 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: A
         process.env.GOOGLE_REDIRECT_URL,
     );
 
-    //TODO: retrieve token from database
     oauth2Client.setCredentials({
-        access_token: process.env.MY_GOOGLE_TOKEN,
+        access_token: google_token,
     });
 
-    await tasks.tasks.insert({
-        auth: oauth2Client,
-        tasklist: '@default',
-        requestBody: {
-            title: title,
-            notes: body,
-        },
-    });
+    try {
+        await tasks.tasks.insert({
+            auth: oauth2Client,
+            tasklist: '@default',
+            requestBody: {
+                title: title,
+                notes: body,
+            },
+        });
+    } catch (error: any) {
+        console.error('Error in creating google task: ', error);
+    }
 };
