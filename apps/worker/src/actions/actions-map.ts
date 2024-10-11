@@ -1,7 +1,7 @@
-import { ActionFunction } from "./action-function";
-import { handleExampleAction } from "./example/example";
-import { handleEachXSecondsAction } from "./timer/each-x-seconds-action";
-import { handleYoutubeVideoPostedAction } from "./youtube/on-youtube-video-posted";
+import { ActionFunction } from './action-function';
+import { handleExampleAction } from './example/example';
+import { handleEachXSecondsAction } from './timer/each-x-seconds-action';
+import { handleYoutubeVideoPostedAction } from './youtube/on-youtube-video-posted';
 
 type ActionMap = {
   [string: string]: ActionFunction;

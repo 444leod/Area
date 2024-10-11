@@ -1,5 +1,5 @@
-import { Area } from "./area";
-import { ObjectId } from "mongodb";
+import { Area } from './area';
+import { ObjectId } from 'mongodb';
 
 export interface AreaPacket {
   userId: ObjectId;

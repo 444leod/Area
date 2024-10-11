@@ -1,6 +1,6 @@
-import { ObjectId } from "mongodb";
-import { Action, ActionDto } from "../actions";
-import { Reaction } from "../reactions";
+import { ObjectId } from 'mongodb';
+import { Action, ActionDto } from '../actions';
+import { Reaction } from '../reactions';
 
 export class Area {
   _id: ObjectId;

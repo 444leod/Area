@@ -1,17 +1,11 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { AreasHelper } from "./areas.helper";
-import {
-  ActionTypes,
-  AreaCreationDto,
-  ReactionTypes,
-  Area,
-  AreaDto,
-} from "@area/shared";
-import { ObjectId } from "mongodb";
-import { ExampleActionBuilder } from "./builders/actions/example.builder";
-import { EachXSecondsActionBuilder } from "./builders/actions/each-x-sec.builder";
+import { Test, TestingModule } from '@nestjs/testing';
+import { AreasHelper } from './areas.helper';
+import { ActionTypes, AreaCreationDto, ReactionTypes, Area, AreaDto } from '@area/shared';
+import { ObjectId } from 'mongodb';
+import { ExampleActionBuilder } from './builders/actions/example.builder';
+import { EachXSecondsActionBuilder } from './builders/actions/each-x-sec.builder';
 
-describe("AreasHelper", () => {
+describe('AreasHelper', () => {
   let areasHelper: AreasHelper;
 
   beforeEach(async () => {
@@ -22,16 +16,16 @@ describe("AreasHelper", () => {
     areasHelper = module.get<AreasHelper>(AreasHelper);
   });
 
-  describe("build", () => {
-    it("should build an Area object from AreaCreationDto", () => {
+  describe('build', () => {
+    it('should build an Area object from AreaCreationDto', () => {
       const dto: AreaCreationDto = {
         action: {
           type: ActionTypes.EXAMPLE_ACTION,
-          exampleField: "exampleValue",
+          exampleField: 'exampleValue',
         },
         reaction: {
           type: ReactionTypes.EXAMPLE_REACTION,
-          exampleField: "exampleValue",
+          exampleField: 'exampleValue',
         },
       };
 
@@ -47,22 +41,22 @@ describe("AreasHelper", () => {
     });
   });
 
-  describe("toDto", () => {
-    it("should convert an Area object to AreaDto", () => {
+  describe('toDto', () => {
+    it('should convert an Area object to AreaDto', () => {
       const area: Area = {
         _id: new ObjectId(),
         action: {
           service_id: new ObjectId(),
           informations: {
             type: ActionTypes.EXAMPLE_ACTION,
-            exampleField: "exampleValue",
+            exampleField: 'exampleValue',
           },
         } as any,
         reaction: {
           service_id: new ObjectId(),
           informations: {
             type: ReactionTypes.EXAMPLE_REACTION,
-            exampleField: "exampleValue",
+            exampleField: 'exampleValue',
           },
         },
         active: true,

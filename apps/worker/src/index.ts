@@ -1,7 +1,7 @@
-import { AreaPacket, RabbitMQService, MongoDBService } from "@area/shared";
-import dotenv from "dotenv";
-import { actionsMap } from "./actions/actions-map";
-import { reactionsMap } from "./reactions/reactions-map";
+import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
+import dotenv from 'dotenv';
+import { actionsMap } from './actions/actions-map';
+import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
@@ -18,24 +18,24 @@ async function run() {
     const collections = await mongoDB.listCollections();
 
     if (collections.length === 0) {
-      await mongoDB.createCollection("users"); // Wait for collection creation
+      await mongoDB.createCollection('users'); // Wait for collection creation
     }
 
     rabbitMQ.consumeArea(handleArea).then(() => {});
 
-    process.on("SIGINT", async () => {
+    process.on('SIGINT', async () => {
       isRunning = false;
     });
 
-    process.on("SIGTERM", async () => {
+    process.on('SIGTERM', async () => {
       isRunning = false;
     });
 
     while (isRunning) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   } catch (error) {
-    console.error("Something went wrong: ", error);
+    console.error('Something went wrong: ', error);
   } finally {
     await rabbitMQ.close();
     await mongoDB.close();
@@ -49,7 +49,7 @@ async function handleArea(areaPacket: AreaPacket) {
   const reactionType = areaPacket?.area.reaction?.informations?.type;
 
   if (!actionType || !reactionType) {
-    console.error("Action or reaction type not found.");
+    console.error('Action or reaction type not found.');
     return;
   }
 

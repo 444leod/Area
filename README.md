@@ -116,8 +116,8 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-fetch("/auth/google", {
-  method: "GET",
+fetch('/auth/google', {
+  method: 'GET',
 })
   .then(function (res) {
     return res.json();
@@ -155,8 +155,8 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-fetch("/auth/google/callback", {
-  method: "GET",
+fetch('/auth/google/callback', {
+  method: 'GET',
 })
   .then(function (res) {
     return res.json();
@@ -283,8 +283,8 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-fetch("/users/profile", {
-  method: "GET",
+fetch('/users/profile', {
+  method: 'GET',
 })
   .then(function (res) {
     return res.json();
@@ -448,14 +448,14 @@ This operation does not require authentication
 
 ```javascript
 const headers = {
-  Accept: "application/json",
+  Accept: 'application/json',
   authorization: {
-    type: "string",
+    type: 'string',
   },
 };
 
-fetch("/areas", {
-  method: "GET",
+fetch('/areas', {
+  method: 'GET',
 
   headers: headers,
 })
@@ -544,14 +544,14 @@ This operation does not require authentication
 
 ```javascript
 const headers = {
-  Accept: "application/json",
+  Accept: 'application/json',
   authorization: {
-    type: "string",
+    type: 'string',
   },
 };
 
-fetch("/areas/{id}", {
-  method: "GET",
+fetch('/areas/{id}', {
+  method: 'GET',
 
   headers: headers,
 })
@@ -640,12 +640,12 @@ This operation does not require authentication
 ```javascript
 const headers = {
   authorization: {
-    type: "string",
+    type: 'string',
   },
 };
 
-fetch("/areas/{id}", {
-  method: "DELETE",
+fetch('/areas/{id}', {
+  method: 'DELETE',
 
   headers: headers,
 })
@@ -701,12 +701,12 @@ This operation does not require authentication
 ```javascript
 const headers = {
   authorization: {
-    type: "string",
+    type: 'string',
   },
 };
 
-fetch("/areas/{id}/toggle", {
-  method: "PATCH",
+fetch('/areas/{id}/toggle', {
+  method: 'PATCH',
 
   headers: headers,
 })

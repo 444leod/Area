@@ -10,12 +10,12 @@ services:
       - 5672
       - 15672
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - '5672:5672'
+      - '15672:15672'
     env_file:
       - ./apps/queue/.env
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
+      test: ['CMD', 'rabbitmqctl', 'status']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -31,7 +31,7 @@ services:
       queue:
         condition: service_healthy
     restart: always
-    network_mode: "host"
+    network_mode: 'host'
 
   worker:
     build:
@@ -43,7 +43,7 @@ services:
     depends_on:
       queue:
         condition: service_healthy
-    network_mode: "host"
+    network_mode: 'host'
 
   server:
     build:
@@ -59,9 +59,9 @@ services:
         condition: service_started
       worker:
         condition: service_started
-    network_mode: "host"
+    network_mode: 'host'
     ports:
-      - "8080:8080"
+      - '8080:8080'
 
   client_mobile:
     build:
@@ -72,7 +72,7 @@ services:
       - ./apps/mobileExpo/.env
     volumes:
       - apk-volume:/shared
-    network_mode: "host"
+    network_mode: 'host'
 
   client_web:
     build:
@@ -88,11 +88,11 @@ services:
         condition: service_started
     volumes:
       - apk-volume:/shared
-    network_mode: "bridge"
+    network_mode: 'bridge'
     expose:
       - 8081
     ports:
-      - "8081:8081"
+      - '8081:8081'
 
 volumes:
   apk-volume:

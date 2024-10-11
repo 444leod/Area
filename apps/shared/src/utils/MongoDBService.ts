@@ -1,7 +1,7 @@
-import { Db, MongoClient, ObjectId, ClientSession } from "mongodb";
-import { Area } from "../dtos";
-import fs from "fs";
-import dotenv from "dotenv";
+import { Db, MongoClient, ObjectId, ClientSession } from 'mongodb';
+import { Area } from '../dtos';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -27,9 +27,7 @@ export class MongoDBService {
       .filter(([_, value]) => !value)
       .map(([key]) => key);
     if (missingVariables.length > 0) {
-      throw new Error(
-        `${missingVariables.join(", ")} must be defined as environment variables`,
-      );
+      throw new Error(`${missingVariables.join(', ')} must be defined as environment variables`);
     }
 
     const uri: string = `mongodb://${env.MONGODB_USER}:${env.MONGODB_PASSWORD}@${env.MONGODB_HOST}:${env.MONGODB_PORT}/?authSource=${env.MONGODB_AUTH_SOURCE}&tls=true`;
@@ -45,9 +43,9 @@ export class MongoDBService {
       await this._client.connect();
     } catch (error: any) {
       switch (error?.code) {
-        case "ECONNREFUSED":
+        case 'ECONNREFUSED':
           throw new Error(`Connection refused to MongoDB: ${error}`);
-        case "ECONNRESET":
+        case 'ECONNRESET':
           throw new Error(`Connection reset to MongoDB: ${error}`);
         default:
           break;
@@ -66,21 +64,19 @@ export class MongoDBService {
 
   public client(): MongoClient {
     if (!this._connected) {
-      throw new Error("Not connected to MongoDB");
+      throw new Error('Not connected to MongoDB');
     }
     return this._client;
   }
 
   public db(): Db {
     if (!this._connected) {
-      throw new Error("Not connected to MongoDB");
+      throw new Error('Not connected to MongoDB');
     }
     return this._db;
   }
 
-  async executeWithSession<T>(
-    operation: (session: ClientSession) => Promise<T>,
-  ): Promise<T> {
+  async executeWithSession<T>(operation: (session: ClientSession) => Promise<T>): Promise<T> {
     if (!this._connected) {
       await this.connect();
     }
@@ -97,9 +93,7 @@ export class MongoDBService {
   async listCollections(): Promise<string[]> {
     return this.executeWithSession(async () => {
       const collections = await this._db.listCollections().toArray();
-      return collections
-        .map((collection) => collection.name)
-        .filter((collection) => !collection.startsWith("system."));
+      return collections.map(collection => collection.name).filter(collection => !collection.startsWith('system.'));
     });
   }
 
@@ -117,20 +111,13 @@ export class MongoDBService {
 
   async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
     await this.executeWithSession(async () => {
-      await this._db
-        .collection("users")
-        .updateOne(
-          { _id: new ObjectId(userId), "areas._id": new ObjectId(area._id) },
-          { $set: { "areas.$.action.history": area.action.history } },
-        );
+      await this._db.collection('users').updateOne({ _id: new ObjectId(userId), 'areas._id': new ObjectId(area._id) }, { $set: { 'areas.$.action.history': area.action.history } });
     });
   }
 
   async getAuthorizationData(userId: ObjectId, type: string): Promise<any> {
     return this.executeWithSession(async () => {
-      const user = await this._db
-        .collection("users")
-        .findOne({ _id: new ObjectId(userId) });
+      const user = await this._db.collection('users').findOne({ _id: new ObjectId(userId) });
       const tokens = user?.authorizations;
       if (!tokens || tokens.length === 0) {
         return;

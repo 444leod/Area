@@ -1,10 +1,8 @@
-import { ReactionFunction } from "../reaction-function";
-import { AreaPacket, SendEmailReactionInfos } from "@area/shared";
-import nodemailer from "nodemailer";
+import { ReactionFunction } from '../reaction-function';
+import { AreaPacket, SendEmailReactionInfos } from '@area/shared';
+import nodemailer from 'nodemailer';
 
-export const handleSendEmailReaction: ReactionFunction = async (
-  packet: AreaPacket,
-) => {
+export const handleSendEmailReaction: ReactionFunction = async (packet: AreaPacket) => {
   const reaction = packet.area.reaction.informations as SendEmailReactionInfos;
 
   const transporter = nodemailer.createTransport({

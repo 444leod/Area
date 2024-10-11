@@ -1,11 +1,6 @@
-import {
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-  IsOptional,
-} from "class-validator";
-import { BaseReactionInfos } from "../reaction-infos.class";
-import { ReactionTypes } from "../reaction-types.enum";
+import { IsNotEmpty, IsString, ValidateNested, IsOptional } from 'class-validator';
+import { BaseReactionInfos } from '../reaction-infos.class';
+import { ReactionTypes } from '../reaction-types.enum';
 
 class CreateGoogleTaskContent {
   @IsString()

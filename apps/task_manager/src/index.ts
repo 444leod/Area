@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { AreaPacket, RabbitMQService, MongoDBService } from "@area/shared";
+import dotenv from 'dotenv';
+import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ async function main() {
   await mongoDB.connect();
 
   const groupAreaSend = (areas: AreaPacket[]) => {
-    areas.forEach((area) => {
+    areas.forEach(area => {
       rabbitMQ.sendAreaToQueue(area);
     });
   };
@@ -26,13 +26,13 @@ async function main() {
       return await mongoDB.executeWithSession(async () => {
         return await mongoDB
           .db()
-          .collection("users")
+          .collection('users')
           .aggregate([
-            { $unwind: "$areas" },
+            { $unwind: '$areas' },
             {
               $match: {
-                "areas.active": true,
-                "areas.action.is_webhook": false,
+                'areas.active': true,
+                'areas.action.is_webhook': false,
               },
             },
             {
@@ -60,18 +60,18 @@ async function main() {
       }
     }, 1000); // 1 sec between checks
 
-    process.on("SIGINT", async () => {
+    process.on('SIGINT', async () => {
       clearInterval(interval);
       isRunning = false;
     });
 
-    process.on("SIGTERM", async () => {
+    process.on('SIGTERM', async () => {
       clearInterval(interval);
       isRunning = false;
     });
 
     while (isRunning) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   } catch (err) {
     console.error(err);
@@ -81,6 +81,6 @@ async function main() {
   }
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error(err);
 });

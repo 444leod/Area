@@ -1,5 +1,5 @@
-import { Area } from "./area.class";
-import { ObjectId } from "mongodb";
+import { Area } from './area.class';
+import { ObjectId } from 'mongodb';
 
 interface Data {
   title: string;

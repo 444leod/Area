@@ -1,18 +1,10 @@
-import {
-  ActionTypes,
-  Area,
-  AreaCreationDto,
-  ReactionTypes,
-  Reaction,
-  Action,
-  AreaDto,
-} from "@area/shared";
-import { Injectable } from "@nestjs/common";
-import { ActionBuilder } from "./builders/actions/action.builder";
-import { ExampleActionBuilder } from "./builders/actions/example.builder";
-import { EachXSecondsActionBuilder } from "./builders/actions/each-x-sec.builder";
-import { OnYoutubeVideoPostedBuilder } from "./builders/actions/on-youtube-video-posted";
-import { ObjectId } from "mongodb";
+import { ActionTypes, Area, AreaCreationDto, ReactionTypes, Reaction, Action, AreaDto } from '@area/shared';
+import { Injectable } from '@nestjs/common';
+import { ActionBuilder } from './builders/actions/action.builder';
+import { ExampleActionBuilder } from './builders/actions/example.builder';
+import { EachXSecondsActionBuilder } from './builders/actions/each-x-sec.builder';
+import { OnYoutubeVideoPostedBuilder } from './builders/actions/on-youtube-video-posted';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class AreasHelper {
@@ -30,9 +22,7 @@ export class AreasHelper {
   };
 
   build(dto: AreaCreationDto): Area {
-    const action: Action = this._actions_builders[dto.action.type]?.build(
-      dto.action,
-    );
+    const action: Action = this._actions_builders[dto.action.type]?.build(dto.action);
     const reaction: Reaction = {
       service_id: this._reactions_services[dto.reaction.type],
       informations: dto.reaction,

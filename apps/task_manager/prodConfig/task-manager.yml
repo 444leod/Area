@@ -29,13 +29,13 @@ spec:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_PASS
             - name: RMQ_HOST
-              value: "localhost"
+              value: 'localhost'
             - name: RMQ_QUEUE
-              value: "queue"
+              value: 'queue'
             - name: MONGODB_HOST
-              value: "138.68.183.159"
+              value: '138.68.183.159'
             - name: MONGODB_PORT
-              value: "27017"
+              value: '27017'
             - name: MONGODB_USER
               valueFrom:
                 secretKeyRef:
@@ -47,8 +47,8 @@ spec:
                   name: mongodb-secret
                   key: MONGODB_PASSWORD
             - name: MONGODB_AUTH_SOURCE
-              value: "admin"
+              value: 'admin'
             - name: MONGODB_DB_NAME
-              value: "admin"
+              value: 'admin'
             - name: MONGODB_TLS_CA_FILE
-              value: "./mongodb-ca.pem"
+              value: './mongodb-ca.pem'

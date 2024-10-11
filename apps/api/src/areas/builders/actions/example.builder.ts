@@ -1,6 +1,6 @@
-import { Action, ActionTypes, ExampleActionInfos } from "@area/shared";
-import { ObjectId } from "mongodb";
-import { ActionBuilder } from "./action.builder";
+import { Action, ActionTypes, ExampleActionInfos } from '@area/shared';
+import { ObjectId } from 'mongodb';
+import { ActionBuilder } from './action.builder';
 
 export class ExampleActionBuilder implements ActionBuilder {
   build(dto: ExampleActionInfos): Action {

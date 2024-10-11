@@ -1,15 +1,7 @@
-import { ActionFunction } from "../action-function";
-import {
-  EachXSecondsActionInfos,
-  EachXSecondsHistoryDTO,
-  MongoDBService,
-  AreaPacket,
-} from "@area/shared";
+import { ActionFunction } from '../action-function';
+import { EachXSecondsActionInfos, EachXSecondsHistoryDTO, MongoDBService, AreaPacket } from '@area/shared';
 
-export const handleEachXSecondsAction: ActionFunction = async (
-  packet: AreaPacket,
-  database: MongoDBService,
-) => {
+export const handleEachXSecondsAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
   const area = packet.area;
   const action = area.action.informations as EachXSecondsActionInfos;
   const history = area.action.history as EachXSecondsHistoryDTO;
@@ -18,10 +10,7 @@ export const handleEachXSecondsAction: ActionFunction = async (
 
   if (history.lastExecutionTimestamp === undefined) {
     execute = true;
-  } else if (
-    Date.now() - history.lastExecutionTimestamp >=
-    action.seconds * 1000
-  ) {
+  } else if (Date.now() - history.lastExecutionTimestamp >= action.seconds * 1000) {
     history.lastExecutionTimestamp = Date.now();
     execute = true;
   }

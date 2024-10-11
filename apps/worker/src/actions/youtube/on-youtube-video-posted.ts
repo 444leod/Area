@@ -1,22 +1,10 @@
-import { ActionFunction } from "../action-function";
-import {
-  MongoDBService,
-  AreaPacket,
-  OnYoutubeVideoPostedClass,
-  OnYoutubeVideoPostedHistoryDTO,
-  getChannelVideos,
-} from "@area/shared";
+import { ActionFunction } from '../action-function';
+import { MongoDBService, AreaPacket, OnYoutubeVideoPostedClass, OnYoutubeVideoPostedHistoryDTO, getChannelVideos } from '@area/shared';
 
-export const handleYoutubeVideoPostedAction: ActionFunction = async (
-  packet: AreaPacket,
-  database: MongoDBService,
-) => {
-  const google_token = await database.getAuthorizationData(
-    packet.user_id,
-    "GOOGLE",
-  );
+export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
+  const google_token = await database.getAuthorizationData(packet.user_id, 'GOOGLE');
   if (!google_token) {
-    console.error("Google token not found.");
+    console.error('Google token not found.');
     return null;
   }
 
@@ -30,7 +18,7 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (
     return null;
   }
 
-  let newVideos = videos.map((video) => {
+  let newVideos = videos.map(video => {
     return {
       id: video?.id?.videoId,
       title: video?.snippet?.title,
@@ -41,10 +29,7 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (
 
   let video;
 
-  if (
-    history.lastVideoTimestamp === undefined ||
-    history.lastVideoTimestamp === 0
-  ) {
+  if (history.lastVideoTimestamp === undefined || history.lastVideoTimestamp === 0) {
     history.lastVideoTimestamp = newVideos[0].date.getTime();
     video = undefined;
 
@@ -52,9 +37,7 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (
     // history.lastVideoTimestamp = newVideos[newVideos.length - 1].date.getTime();
     // video = newVideos[newVideos.length - 1];
   } else {
-    newVideos = newVideos.filter(
-      (video) => video.date.getTime() > history.lastVideoTimestamp,
-    );
+    newVideos = newVideos.filter(video => video.date.getTime() > history.lastVideoTimestamp);
     if (newVideos.length === 0) {
       return null;
     }
@@ -70,8 +53,8 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (
   }
 
   packet.data = {
-    title: video.title || "title",
-    body: video.description || "",
+    title: video.title || 'title',
+    body: video.description || '',
   };
 
   return packet;

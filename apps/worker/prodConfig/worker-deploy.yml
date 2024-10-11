@@ -64,6 +64,6 @@ spec:
                   name: rabbitmq-secret
                   key: RABBITMQ_DEFAULT_PASS
             - name: RMQ_HOST
-              value: "34.79.122.15"
+              value: '34.79.122.15'
             - name: RMQ_QUEUE
-              value: "queue"
+              value: 'queue'

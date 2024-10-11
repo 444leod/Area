@@ -3,7 +3,7 @@ name: Area
 on: [push, pull_request]
 
 env:
-  MIRROR_URL: "git@github.com:EpitechPromo2027/B-DEV-500-LIL-5-1-area-leo.dumont.git"
+  MIRROR_URL: 'git@github.com:EpitechPromo2027/B-DEV-500-LIL-5-1-area-leo.dumont.git'
 
 jobs:
   build:

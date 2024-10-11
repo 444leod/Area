@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty } from "class-validator";
-import { ObjectId } from "mongodb";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+import { ObjectId } from 'mongodb';
 
 export class AuthorizationDto {
   @ApiProperty()

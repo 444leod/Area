@@ -1,24 +1,20 @@
-import { google } from "googleapis";
+import { google } from 'googleapis';
 
 export async function getUserYoutubeChannelID(token: string) {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
+  const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_CALLBACK_URL);
 
   oauth2Client.setCredentials({
     access_token: token,
   });
 
   const youtube = google.youtube({
-    version: "v3",
+    version: 'v3',
     auth: oauth2Client,
   });
 
   // @ts-ignore
   const response = await youtube.channels.list({
-    part: ["id"],
+    part: ['id'],
     mine: true,
   });
 
@@ -26,29 +22,22 @@ export async function getUserYoutubeChannelID(token: string) {
   return response.data.items[0].id;
 }
 
-export async function getChannelIdByUsername(
-  username: string,
-  token: string,
-): Promise<string | null> {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
+export async function getChannelIdByUsername(username: string, token: string): Promise<string | null> {
+  const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_CALLBACK_URL);
 
   oauth2Client.setCredentials({
     access_token: token,
   });
 
   const youtube = google.youtube({
-    version: "v3",
+    version: 'v3',
     auth: oauth2Client,
   });
 
   try {
     // @ts-ignore
     const response = await youtube.channels.list({
-      part: ["id"],
+      part: ['id'],
       forUsername: username,
     });
 
@@ -61,33 +50,29 @@ export async function getChannelIdByUsername(
     // @ts-ignore
     return response.data.items[0].id;
   } catch (error) {
-    console.error("Error fetching channel ID:", error);
+    console.error('Error fetching channel ID:', error);
     return null;
   }
 }
 
 export async function getChannelVideos(channelId: string, token: string) {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
+  const oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_CALLBACK_URL);
 
   oauth2Client.setCredentials({
     access_token: token,
   });
 
   const youtube = google.youtube({
-    version: "v3",
+    version: 'v3',
     auth: oauth2Client,
   });
 
   // @ts-ignore
   const response = await youtube.search.list({
-    part: ["snippet"],
+    part: ['snippet'],
     channelId: channelId,
     maxResults: 5,
-    order: "date",
+    order: 'date',
   });
 
   return response.data.items;

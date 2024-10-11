@@ -1,15 +1,15 @@
-import { Module } from "@nestjs/common";
-import { AreasModule } from "./areas/areas.module";
-import { WebhooksModule } from "./webhooks/webhooks.module";
-import { AuthModule } from "./auth/auth.module";
-import { ConfigModule } from "@nestjs/config";
-import { UsersModule } from "./users/users.module";
-import { MongooseModule } from "@nestjs/mongoose";
+import { Module } from '@nestjs/common';
+import { AreasModule } from './areas/areas.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ".env",
+      envFilePath: '.env',
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({

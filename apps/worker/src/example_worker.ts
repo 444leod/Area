@@ -1,5 +1,5 @@
-import { AreaPacket, RabbitMQService } from "@area/shared";
-import dotenv from "dotenv";
+import { AreaPacket, RabbitMQService } from '@area/shared';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const connection = new RabbitMQService();

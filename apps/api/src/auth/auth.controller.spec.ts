@@ -1,11 +1,11 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { AuthController } from "./auth.controller";
-import { AuthService } from "./auth.service";
-import { BadRequestException, ValidationPipe } from "@nestjs/common";
-import { UserLoginDto, UserRegistrationDto } from "@area/shared";
-import { APP_PIPE } from "@nestjs/core";
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { UserLoginDto, UserRegistrationDto } from '@area/shared';
+import { APP_PIPE } from '@nestjs/core';
 
-describe("AuthController", () => {
+describe('AuthController', () => {
   let authController: AuthController;
   let authService: AuthService;
 
@@ -31,13 +31,13 @@ describe("AuthController", () => {
     authService = module.get<AuthService>(AuthService);
   });
 
-  it("should return a token on successful login", async () => {
+  it('should return a token on successful login', async () => {
     const loginDto: UserLoginDto = {
-      email: "test@example.com",
-      password: "password",
+      email: 'test@example.com',
+      password: 'password',
     };
-    const token = "testToken";
-    jest.spyOn(authService, "login").mockResolvedValue({ token });
+    const token = 'testToken';
+    jest.spyOn(authService, 'login').mockResolvedValue({ token });
 
     const result = await authController.login(loginDto);
 
@@ -45,15 +45,15 @@ describe("AuthController", () => {
     expect(result).toEqual({ token });
   });
 
-  it("should return a token on successful registration", async () => {
+  it('should return a token on successful registration', async () => {
     const registerDto: UserRegistrationDto = {
-      first_name: "Test",
-      last_name: "User",
-      email: "test@example.com",
-      password: "password",
+      first_name: 'Test',
+      last_name: 'User',
+      email: 'test@example.com',
+      password: 'password',
     };
-    const token = "testToken";
-    jest.spyOn(authService, "register").mockResolvedValue({ token });
+    const token = 'testToken';
+    jest.spyOn(authService, 'register').mockResolvedValue({ token });
 
     const result = await authController.register(registerDto);
 

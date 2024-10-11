@@ -17,9 +17,9 @@ spec:
           image: gcr.io/area-cluster/backend:${GITHUB_SHA}
           env:
             - name: MONGODB_HOST
-              value: "138.68.183.159"
+              value: '138.68.183.159'
             - name: MONGODB_PORT
-              value: "27017"
+              value: '27017'
             - name: MONGODB_USER
               valueFrom:
                 secretKeyRef:
@@ -31,9 +31,9 @@ spec:
                   name: mongodb-secret
                   key: MONGODB_PASSWORD
             - name: MONGODB_AUTH_SOURCE
-              value: "admin"
+              value: 'admin'
             - name: MONGODB_DB_NAME
-              value: "area"
+              value: 'area'
           ports:
             - containerPort: 8080
           imagePullPolicy: Always

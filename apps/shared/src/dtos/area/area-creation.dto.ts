@@ -1,22 +1,8 @@
-import { ApiProperty } from "@nestjs/swagger";
-import {
-  ActionInfos,
-  ActionTypes,
-  BaseActionInfos,
-  EachXSecondsActionInfos,
-  ExampleActionInfos,
-  OnYoutubeVideoPostedClass,
-} from "../actions";
-import {
-  BaseReactionInfos,
-  CreateGoogleTaskInfos,
-  ExampleReactionInfos,
-  ReactionInfos,
-  ReactionTypes,
-  SendEmailReactionInfos,
-} from "../reactions";
-import { IsNotEmptyObject, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { ActionInfos, ActionTypes, BaseActionInfos, EachXSecondsActionInfos, ExampleActionInfos, OnYoutubeVideoPostedClass } from '../actions';
+import { BaseReactionInfos, CreateGoogleTaskInfos, ExampleReactionInfos, ReactionInfos, ReactionTypes, SendEmailReactionInfos } from '../reactions';
+import { IsNotEmptyObject, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class AreaCreationDto {
   @ApiProperty()
@@ -28,7 +14,7 @@ export class AreaCreationDto {
   @Type(() => BaseActionInfos, {
     keepDiscriminatorProperty: true,
     discriminator: {
-      property: "type",
+      property: 'type',
       subTypes: [
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
@@ -47,7 +33,7 @@ export class AreaCreationDto {
   @Type(() => BaseReactionInfos, {
     keepDiscriminatorProperty: true,
     discriminator: {
-      property: "type",
+      property: 'type',
       subTypes: [
         { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },

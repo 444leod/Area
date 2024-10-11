@@ -1,5 +1,5 @@
-import client, { Channel, Connection } from "amqplib";
-import { AreaPacket } from "../dtos";
+import client, { Channel, Connection } from 'amqplib';
+import { AreaPacket } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
@@ -15,22 +15,18 @@ export class RabbitMQService {
     const rmqHost = process.env.RMQ_HOST;
 
     if (!rmqUser || !rmqPass || !rmqHost || !process.env.RMQ_QUEUE) {
-      throw new Error(
-        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables",
-      );
+      throw new Error('RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables');
     }
 
     this.rmqQueue = process.env.RMQ_QUEUE;
 
     try {
-      this.connection = await client.connect(
-        `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`,
-      );
+      this.connection = await client.connect(`amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`);
     } catch (error: any) {
       switch (error?.code) {
-        case "ECONNREFUSED":
+        case 'ECONNREFUSED':
           throw new Error(`Connection refused to RabbitMQ: ${error}`);
-        case "ECONNRESET":
+        case 'ECONNRESET':
           throw new Error(`Connection reset to RabbitMQ: ${error}`);
         default:
           break;
@@ -88,7 +84,7 @@ export class RabbitMQService {
       },
       {
         noAck: false,
-      },
+      }
     );
   }
 }

@@ -1,6 +1,6 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Provider as PaperProvider } from "react-native-paper";
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
   return (
