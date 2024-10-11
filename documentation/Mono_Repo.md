@@ -11,13 +11,13 @@ We fully take advantage of the mono repo structure by having a shared app that c
 .
 ├── .github
 ├── apps
-│   ├── api
-│   ├── frontend
-│   ├── mobileExpo
-│   ├── queue
-│   ├── shared
-│   ├── task_manager
-│   └── worker
+│ ├── api
+│ ├── frontend
+│ ├── mobileExpo
+│ ├── queue
+│ ├── shared
+│ ├── task_manager
+│ └── worker
 ├── devutils
 ├── documentation
 └── mock_data
@@ -25,10 +25,11 @@ We fully take advantage of the mono repo structure by having a shared app that c
 ### .github
 
 Contains the workflows (github actions) that are used to build and test the project.
+
 - `deploy_to_gke.yml` is the workflow that is used to deploy the project to the Google Kubernetes Engine (GKE) cluster. It builds the images, pushes them to the Google Container Registry (GCR) and deploys the services to the GKE cluster.
 - `push_to_mirror.yml` is the workflow that is used to push the project to the mirror repository. It pushes the project to the mirror repository when a push is made to the main repository.
 
-### apps 
+### apps
 
 This directory contains all the services of the project. Each service is in a separate directory and contains all the code for that service. Because all of the services are written with Typescript, the build and run system is similar for every service.
 We decided to simplify the commands by creating a `package.json` file at the root of the project that contains all the necessary scripts to build and run the services. The apps are ran by doing `npm run build:app <app_name>` and `npm run start:app <app_name>`. The `app_name` is the name of the directory of the service you want to run. For more information on the commands available, do `npm run`.
@@ -69,6 +70,7 @@ The worker service is responsible for processing the tasks from the queue. It li
 
 This directory contains all the development utilities that are used to help develop the project. It contains the scripts to build and run the services, the scripts to generate the documentation, the scripts to generate the mock data, etc.
 Currently there are two scripts in the folder:
+
 - `json-to-mongodb.js`, this scripts take a path to a json file and insert the date in the MongoDB database replacing the `_id` field by the actual ObjectId used by MongoDB.
 - `update-readme.js` is a script that updates the README.md file at the root of the project by taking the content of the OpenAPI documentation from the API service, transforming and inserting it in the README.md file.
 
@@ -87,4 +89,3 @@ This directory contains snippert of data that are used as a base to generate the
 - Use the `npm run` command to see all the available commands.
 - Take a look at the different `env.example` files in the services to see the environment variables that are used by the services.
 - `.env` files should be at the root of the service directory, they are used to set the environment variables of the services.
-

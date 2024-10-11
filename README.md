@@ -8,7 +8,6 @@ includes: []
 search: true
 highlight_theme: darkula
 headingLevel: 2
-
 ---
 
 <!-- Generator: Widdershins v4.0.1 -->
@@ -90,24 +89,21 @@ print(r.json())
       "type": "string"
     }
   },
-  "required": [
-    "email",
-    "password"
-  ]
+  "required": ["email", "password"]
 }
 ```
 
 <h3 id="authcontroller_login-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|[UserLoginDto](#schemauserlogindto)|true|none|
+| Name | In   | Type                                | Required | Description |
+| ---- | ---- | ----------------------------------- | -------- | ----------- |
+| body | body | [UserLoginDto](#schemauserlogindto) | true     | none        |
 
 <h3 id="authcontroller_login-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+| Status | Meaning                                                 | Description | Schema |
+| ------ | ------------------------------------------------------- | ----------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none        | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -120,18 +116,15 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
-fetch('/auth/google',
-{
-  method: 'GET'
-
+fetch("/auth/google", {
+  method: "GET",
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -147,9 +140,9 @@ print(r.json())
 
 <h3 id="authcontroller_googleauth-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+| Status | Meaning                                                 | Description | Schema |
+| ------ | ------------------------------------------------------- | ----------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none        | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -162,18 +155,15 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
-fetch('/auth/google/callback',
-{
-  method: 'GET'
-
+fetch("/auth/google/callback", {
+  method: "GET",
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -189,9 +179,9 @@ print(r.json())
 
 <h3 id="authcontroller_googleauthredirect-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+| Status | Meaning                                                 | Description | Schema |
+| ------ | ------------------------------------------------------- | ----------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none        | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -264,24 +254,21 @@ print(r.json())
       "type": "string"
     }
   },
-  "required": [
-    "email",
-    "password"
-  ]
+  "required": ["email", "password"]
 }
 ```
 
 <h3 id="authcontroller_register-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|[UserRegistrationDto](#schemauserregistrationdto)|true|none|
+| Name | In   | Type                                              | Required | Description |
+| ---- | ---- | ------------------------------------------------- | -------- | ----------- |
+| body | body | [UserRegistrationDto](#schemauserregistrationdto) | true     | none        |
 
 <h3 id="authcontroller_register-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|none|None|
+| Status | Meaning                                                      | Description | Schema |
+| ------ | ------------------------------------------------------------ | ----------- | ------ |
+| 201    | [Created](https://tools.ietf.org/html/rfc7231#section-6.3.2) | none        | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -296,18 +283,15 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
-fetch('/users/profile',
-{
-  method: 'GET'
-
+fetch("/users/profile", {
+  method: "GET",
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -323,9 +307,9 @@ print(r.json())
 
 <h3 id="userscontroller_getuserprofile-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+| Status | Meaning                                                 | Description | Schema |
+| ------ | ------------------------------------------------------- | ----------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none        | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -408,19 +392,16 @@ print(r.json())
       "type": "object"
     }
   },
-  "required": [
-    "action",
-    "reaction"
-  ]
+  "required": ["action", "reaction"]
 }
 ```
 
 <h3 id="areascontroller_createarea-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|authorization|header|string|true|User API token, given at user login. (Bearer token)|
-|body|body|[AreaCreationDto](#schemaareacreationdto)|true|none|
+| Name          | In     | Type                                      | Required | Description                                         |
+| ------------- | ------ | ----------------------------------------- | -------- | --------------------------------------------------- |
+| authorization | header | string                                    | true     | User API token, given at user login. (Bearer token) |
+| body          | body   | [AreaCreationDto](#schemaareacreationdto) | true     | none                                                |
 
 > Example responses
 
@@ -448,10 +429,10 @@ print(r.json())
 
 <h3 id="areascontroller_createarea-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|The AREA was successfully created.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|No token provided, or token isn't valid.|None|
+| Status | Meaning                                                         | Description                              | Schema |
+| ------ | --------------------------------------------------------------- | ---------------------------------------- | ------ |
+| 201    | [Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)    | The AREA was successfully created.       | None   |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) | No token provided, or token isn't valid. | None   |
 
 <h3 id="areascontroller_createarea-responseschema">Response Schema</h3>
 
@@ -466,26 +447,24 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
 const headers = {
-  'Accept':'application/json',
-  'authorization':{
-  "type": "string"
-}
+  Accept: "application/json",
+  authorization: {
+    type: "string",
+  },
 };
 
-fetch('/areas',
-{
-  method: 'GET',
+fetch("/areas", {
+  method: "GET",
 
-  headers: headers
+  headers: headers,
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -507,9 +486,9 @@ print(r.json())
 
 <h3 id="areascontroller_getuserareas-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|authorization|header|string|true|User API token, given at Log-In. (Bearer token)|
+| Name          | In     | Type   | Required | Description                                     |
+| ------------- | ------ | ------ | -------- | ----------------------------------------------- |
+| authorization | header | string | true     | User API token, given at Log-In. (Bearer token) |
 
 > Example responses
 
@@ -546,10 +525,10 @@ print(r.json())
 
 <h3 id="areascontroller_getuserareas-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The data was successfully fetched.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|No token provided, or token isn't valid.|None|
+| Status | Meaning                                                         | Description                              | Schema |
+| ------ | --------------------------------------------------------------- | ---------------------------------------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)         | The data was successfully fetched.       | None   |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) | No token provided, or token isn't valid. | None   |
 
 <h3 id="areascontroller_getuserareas-responseschema">Response Schema</h3>
 
@@ -564,26 +543,24 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
 const headers = {
-  'Accept':'application/json',
-  'authorization':{
-  "type": "string"
-}
+  Accept: "application/json",
+  authorization: {
+    type: "string",
+  },
 };
 
-fetch('/areas/{id}',
-{
-  method: 'GET',
+fetch("/areas/{id}", {
+  method: "GET",
 
-  headers: headers
+  headers: headers,
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -605,10 +582,10 @@ print(r.json())
 
 <h3 id="areascontroller_getareabyid-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|path|string|true|none|
-|authorization|header|string|true|User API token, given at user login. (Bearer token)|
+| Name          | In     | Type   | Required | Description                                         |
+| ------------- | ------ | ------ | -------- | --------------------------------------------------- |
+| id            | path   | string | true     | none                                                |
+| authorization | header | string | true     | User API token, given at user login. (Bearer token) |
 
 > Example responses
 
@@ -642,11 +619,11 @@ print(r.json())
 
 <h3 id="areascontroller_getareabyid-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|The data was successfully fetched.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|No token provided, or token isn't valid.|None|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|User's AREA Not found.|None|
+| Status | Meaning                                                         | Description                              | Schema |
+| ------ | --------------------------------------------------------------- | ---------------------------------------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)         | The data was successfully fetched.       | None   |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) | No token provided, or token isn't valid. | None   |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)  | User's AREA Not found.                   | None   |
 
 <h3 id="areascontroller_getareabyid-responseschema">Response Schema</h3>
 
@@ -661,25 +638,23 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
 const headers = {
-  'authorization':{
-  "type": "string"
-}
+  authorization: {
+    type: "string",
+  },
 };
 
-fetch('/areas/{id}',
-{
-  method: 'DELETE',
+fetch("/areas/{id}", {
+  method: "DELETE",
 
-  headers: headers
+  headers: headers,
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -700,18 +675,18 @@ print(r.json())
 
 <h3 id="areascontroller_deleteareabyid-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|path|string|true|none|
-|authorization|header|string|true|User API token, given at user login. (Bearer token)|
+| Name          | In     | Type   | Required | Description                                         |
+| ------------- | ------ | ------ | -------- | --------------------------------------------------- |
+| id            | path   | string | true     | none                                                |
+| authorization | header | string | true     | User API token, given at user login. (Bearer token) |
 
 <h3 id="areascontroller_deleteareabyid-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Content was successfully deleted.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|No token provided, or token isn't valid.|None|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|User's AREA Not found.|None|
+| Status | Meaning                                                         | Description                              | Schema |
+| ------ | --------------------------------------------------------------- | ---------------------------------------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)         | Content was successfully deleted.        | None   |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) | No token provided, or token isn't valid. | None   |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)  | User's AREA Not found.                   | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -724,25 +699,23 @@ This operation does not require authentication
 > Code samples
 
 ```javascript
-
 const headers = {
-  'authorization':{
-  "type": "string"
-}
+  authorization: {
+    type: "string",
+  },
 };
 
-fetch('/areas/{id}/toggle',
-{
-  method: 'PATCH',
+fetch("/areas/{id}/toggle", {
+  method: "PATCH",
 
-  headers: headers
+  headers: headers,
 })
-.then(function(res) {
+  .then(function (res) {
     return res.json();
-}).then(function(body) {
+  })
+  .then(function (body) {
     console.log(body);
-});
-
+  });
 ```
 
 ```python
@@ -763,18 +736,18 @@ print(r.json())
 
 <h3 id="areascontroller_togglearea-parameters">Parameters</h3>
 
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|id|path|string|true|none|
-|authorization|header|string|true|User API token, given at user login. (Bearer token)|
+| Name          | In     | Type   | Required | Description                                         |
+| ------------- | ------ | ------ | -------- | --------------------------------------------------- |
+| id            | path   | string | true     | none                                                |
+| authorization | header | string | true     | User API token, given at user login. (Bearer token) |
 
 <h3 id="areascontroller_togglearea-responses">Responses</h3>
 
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Content was successfully updated.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|No token provided, or token isn't valid.|None|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|User's AREA Not found.|None|
+| Status | Meaning                                                         | Description                              | Schema |
+| ------ | --------------------------------------------------------------- | ---------------------------------------- | ------ |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)         | Content was successfully updated.        | None   |
+| 401    | [Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) | No token provided, or token isn't valid. | None   |
+| 404    | [Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)  | User's AREA Not found.                   | None   |
 
 <aside class="success">
 This operation does not require authentication
@@ -800,20 +773,16 @@ This operation does not require authentication
       "type": "string"
     }
   },
-  "required": [
-    "email",
-    "password"
-  ]
+  "required": ["email", "password"]
 }
-
 ```
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|email|string|true|none|none|
-|password|string|true|none|none|
+| Name     | Type   | Required | Restrictions | Description |
+| -------- | ------ | -------- | ------------ | ----------- |
+| email    | string | true     | none         | none        |
+| password | string | true     | none         | none        |
 
 <h2 id="tocS_UserRegistrationDto">UserRegistrationDto</h2>
 <!-- backwards compatibility -->
@@ -833,20 +802,16 @@ This operation does not require authentication
       "type": "string"
     }
   },
-  "required": [
-    "email",
-    "password"
-  ]
+  "required": ["email", "password"]
 }
-
 ```
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|email|string|true|none|none|
-|password|string|true|none|none|
+| Name     | Type   | Required | Restrictions | Description |
+| -------- | ------ | -------- | ------------ | ----------- |
+| email    | string | true     | none         | none        |
+| password | string | true     | none         | none        |
 
 <h2 id="tocS_AreaCreationDto">AreaCreationDto</h2>
 <!-- backwards compatibility -->
@@ -866,18 +831,13 @@ This operation does not require authentication
       "type": "object"
     }
   },
-  "required": [
-    "action",
-    "reaction"
-  ]
+  "required": ["action", "reaction"]
 }
-
 ```
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|action|object|true|none|none|
-|reaction|object|true|none|none|
-
+| Name     | Type   | Required | Restrictions | Description |
+| -------- | ------ | -------- | ------------ | ----------- |
+| action   | object | true     | none         | none        |
+| reaction | object | true     | none         | none        |

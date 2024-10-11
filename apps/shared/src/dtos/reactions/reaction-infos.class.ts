@@ -5,8 +5,11 @@ import { CreateGoogleTaskInfos } from "./google-tasks/create-google-task.class";
 import { ReactionTypes } from "./reaction-types.enum";
 
 export class BaseReactionInfos {
-    @IsEnum(ReactionTypes)
-    type: ReactionTypes
+  @IsEnum(ReactionTypes)
+  type: ReactionTypes;
 }
 
-export type ReactionInfos = ExampleReactionInfos | SendEmailReactionInfos | CreateGoogleTaskInfos;
+export type ReactionInfos =
+  | ExampleReactionInfos
+  | SendEmailReactionInfos
+  | CreateGoogleTaskInfos;

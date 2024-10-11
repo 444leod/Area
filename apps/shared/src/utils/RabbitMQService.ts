@@ -1,12 +1,11 @@
-import client, { Channel, Connection } from 'amqplib';
-import { AreaPacket } from '../dtos';
+import client, { Channel, Connection } from "amqplib";
+import { AreaPacket } from "../dtos";
 
 export class RabbitMQService {
   connection!: Connection;
   channel!: Channel;
   private connected: Boolean = false;
   private rmqQueue!: string;
-
 
   async connect(): Promise<void> {
     if (this.connected && this.channel) return;
@@ -17,7 +16,7 @@ export class RabbitMQService {
 
     if (!rmqUser || !rmqPass || !rmqHost || !process.env.RMQ_QUEUE) {
       throw new Error(
-        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables"
+        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables",
       );
     }
 
@@ -25,20 +24,19 @@ export class RabbitMQService {
 
     try {
       this.connection = await client.connect(
-        `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`
+        `amqp://${rmqUser}:${rmqPass}@${rmqHost}:5672`,
       );
     } catch (error: any) {
       switch (error?.code) {
-        case 'ECONNREFUSED':
+        case "ECONNREFUSED":
           throw new Error(`Connection refused to RabbitMQ: ${error}`);
-        case 'ECONNRESET':
+        case "ECONNRESET":
           throw new Error(`Connection reset to RabbitMQ: ${error}`);
         default:
           break;
       }
       throw new Error(`Error in connecting to RabbitMQ: ${error}`);
     }
-
 
     this.channel = await this.connection.createChannel();
     await this.channel.assertQueue(this.rmqQueue, {
@@ -90,7 +88,7 @@ export class RabbitMQService {
       },
       {
         noAck: false,
-      }
+      },
     );
   }
 }

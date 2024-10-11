@@ -1,6 +1,6 @@
 <!--  En francais car le Notion est Down -->
-# La Résolution des Conflits
 
+# La Résolution des Conflits
 
 ## 1. Anticipation des Conflits
 
@@ -18,7 +18,6 @@ Nous devons exploiter les compétences individuelles de manière stratégique. S
 
 Nous devons définir ensemble les critères de qualité et les délais de livraison pour éviter les malentendus.
 
-
 ## 2. Communication Ouverte et Respectueuse
 
 La clé pour éviter les conflits est de maintenir une communication ouverte. Nous devons être à l’aise pour partager nos opinions, mais aussi pour écouter activement les autres.
@@ -30,7 +29,6 @@ Chaque jour, une réunion rapide de 10-15 minutes permettra à chacun d'exprimer
 ### b. Feedback constructif
 
 Nous devons apprendre à donner et recevoir du feedback de manière constructive, sans attaquer personnellement. Le feedback doit se concentrer sur les faits et les comportements observés, plutôt que sur des jugements.
-
 
 ## 3. Résolution des Conflits : Méthodes et Processus
 
@@ -52,16 +50,13 @@ Nous devons travailler ensemble pour trouver une solution qui satisfasse toutes 
 
 Si nous n’arrivons pas à un consensus après discussion, nous devrons prendre une décision en tant que groupe, en privilégiant toujours l’avancement du projet.
 
-
 ## 4. Escalation et Rôle du Facilitateur
 
 Si un conflit persiste malgré nos efforts pour le résoudre, nous pourrions désigner un facilitateur parmi nous pour prendre du recul et offrir un point de vue extérieur. Ce rôle peut être tournant, et le facilitateur aura pour mission d'aider à clarifier la situation et à recentrer le débat sur des objectifs communs.
 
-
 ## 5. Rétrospective sur les Conflits
 
 Après chaque conflit, il sera utile de faire un retour d’expérience pour comprendre ce qui l’a provoqué et comment nous l'avons résolu. Cela permet d’apprendre de nos erreurs et de mieux gérer les situations similaires à l’avenir.
-
 
 ## Conclusion
 

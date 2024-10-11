@@ -7,12 +7,11 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "lib:build": "tsc --build",
     "lib:watch": "tsc --build --watch",
-    "lib:clean": "rimraf ./dist",
-    "lib:lint": "eslint \"src/**/*.ts\" --fix"
+    "lib:clean": "rimraf ./dist"
   },
   "dependencies": {
     "@nestjs/mongoose": "^10.0.10",

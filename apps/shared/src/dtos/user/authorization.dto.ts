@@ -3,17 +3,15 @@ import { IsEmail, IsNotEmpty } from "class-validator";
 import { ObjectId } from "mongodb";
 
 export class AuthorizationDto {
+  @ApiProperty()
+  @IsEmail()
+  service_id: ObjectId;
 
-    @ApiProperty()
-    @IsEmail()
-    service_id: ObjectId
+  @IsNotEmpty()
+  @ApiProperty()
+  type: string;
 
-    @IsNotEmpty()
-    @ApiProperty()
-    type: string
-
-    @IsNotEmpty()
-    @ApiProperty()
-    data: string
-
+  @IsNotEmpty()
+  @ApiProperty()
+  data: string;
 }

@@ -32,7 +32,10 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
-        { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
+        {
+          value: OnYoutubeVideoPostedClass,
+          name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED,
+        },
       ],
     },
   })
@@ -48,7 +51,10 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
-        { value: CreateGoogleTaskInfos, name: ReactionTypes.CREATE_GOOGLE_TASK },
+        {
+          value: CreateGoogleTaskInfos,
+          name: ReactionTypes.CREATE_GOOGLE_TASK,
+        },
       ],
     },
   })

@@ -13,11 +13,11 @@ export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
 			maxAge: 60 * 60 * 24 * 7 // 1 semaine
 		});
 	}
- 
-  const token = cookies.get('token');
-  if (!token) {
-      throw error(401, 'Unauthorized');
-  }
+
+	const token = cookies.get('token');
+	if (!token) {
+		throw error(401, 'Unauthorized');
+	}
 	try {
 		const response = await fetch(`${API_URL}/areas`, {
 			headers: {
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
 		}
 
 		const services = await response.json();
-		return { 
+		return {
 			services,
 			token
 		};

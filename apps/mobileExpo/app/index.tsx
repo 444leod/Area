@@ -13,9 +13,9 @@ import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import { makeRedirectUri } from 'expo-auth-session';
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -30,10 +30,10 @@ export default function LoginScreen() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
     redirectUri: makeRedirectUri({
-      scheme: 'area',
-      path: 'flowName=GeneralOAuthFlow'
+      scheme: "area",
+      path: "flowName=GeneralOAuthFlow",
     }),
-    scopes: ['profile', 'email']
+    scopes: ["profile", "email"],
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function LoginScreen() {
   }, []);
 
   useEffect(() => {
-    if (response?.type === 'success') {
+    if (response?.type === "success") {
       const { authentication } = response;
       if (!authentication) return;
       exchangeGoogleTokenForJWT(authentication.accessToken);
@@ -74,7 +74,7 @@ export default function LoginScreen() {
       const data = await response.json();
       if (response.ok) {
         await AsyncStorage.setItem("userToken", data.token);
-        router.push('/(auth)/');
+        router.push("/(auth)/");
       } else {
         throw new Error("Erreur de connexion");
       }
@@ -93,11 +93,13 @@ export default function LoginScreen() {
 
   const exchangeGoogleTokenForJWT = async (googleToken: string) => {
     try {
-      const response = await fetch(`${API_URL}/auth/google/callback?token=${googleToken}`);
+      const response = await fetch(
+        `${API_URL}/auth/google/callback?token=${googleToken}`,
+      );
       const data = await response.json();
       if (response.ok) {
         await AsyncStorage.setItem("userToken", data.token);
-        router.push('/(auth)/');
+        router.push("/(auth)/");
       } else {
         throw new Error("Erreur lors de l'échange du token Google");
       }
@@ -111,7 +113,7 @@ export default function LoginScreen() {
   };
 
   const handleSignup = () => {
-    router.push('/Signup');
+    router.push("/Signup");
   };
 
   return (
@@ -150,7 +152,10 @@ export default function LoginScreen() {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Se connecter</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={handleGoogleLogin}
+        >
           <Text style={styles.buttonText}>Se connecter avec Google</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>

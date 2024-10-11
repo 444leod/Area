@@ -20,18 +20,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
         with:
-          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+          credentials_json: "${{ secrets.GKE_SA_KEY }}"
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
         with:
-          install_components: 'gke-gcloud-auth-plugin'
+          install_components: "gke-gcloud-auth-plugin"
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
 
       - name: Configure Docker
         run: gcloud --quiet auth configure-docker
@@ -76,7 +76,6 @@ jobs:
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/queue/prodConfig/rabbitmq-deploy.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/task_manager/prodConfig/task-manager.yml
           sed -i 's|\$GITHUB_SHA|'$GITHUB_SHA'|g' apps/worker/prodConfig/worker-deploy.yml
-
 
       - name: Apply Kubernetes configurations
         run: |

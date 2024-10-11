@@ -57,7 +57,7 @@
 <div class="container mx-auto px-4 py-8">
 	<div class="flex flex-row items-center justify-between">
 		<h1 class="h1 mb-8">Dashboard</h1>
-		<button class="btn variant-soft-secondary " on:click={handleLogout}>
+		<button class="btn variant-soft-secondary" on:click={handleLogout}>
 			<LogOut class="w-4 h-4 mr-2" />
 			Logout
 		</button>
@@ -131,7 +131,10 @@
 								>
 									{area.active ? 'Pause' : 'Activate'}
 								</button>
-								<button class="btn btn-sm variant-soft ml-2" on:click={() => showAreaDetails(area._id)}>
+								<button
+									class="btn btn-sm variant-soft ml-2"
+									on:click={() => showAreaDetails(area._id)}
+								>
 									<Info class="w-4 h-4" />
 								</button>
 							</td>
@@ -152,5 +155,5 @@
 </div>
 
 {#if showDetailsPopup && selectedAreaId}
-	<AreaDetailsPopup areaId={selectedAreaId} token={data.token}  on:close={closeDetailsPopup}/>
+	<AreaDetailsPopup areaId={selectedAreaId} token={data.token} on:close={closeDetailsPopup} />
 {/if}

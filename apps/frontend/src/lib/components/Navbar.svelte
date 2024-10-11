@@ -8,8 +8,6 @@
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
-
-
 </script>
 
 <nav class="p-4 bg-surface-100-800-token">
@@ -18,11 +16,19 @@
 
 		<!-- Desktop Menu -->
 		<div class="hidden md:flex items-center space-x-4" data-testid="desktop-menu">
-			<a href="/login" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-login-button">
+			<a
+				href="/login"
+				class="btn btn-sm btn-hover variant-filled-primary"
+				data-testid="desktop-login-button"
+			>
 				<LogIn class="mr-2" size={18} />
 				<span class="hidden sm:inline"> Login </span>
 			</a>
-			<a href="/signup" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-signup-button">
+			<a
+				href="/signup"
+				class="btn btn-sm btn-hover variant-filled-primary"
+				data-testid="desktop-signup-button"
+			>
 				<UserPlus class="mr-2" size={18} />
 				<span class="hidden sm:inline"> Sign Up </span>
 			</a>
@@ -30,7 +36,11 @@
 		</div>
 
 		<!-- Mobile Menu Button -->
-		<button class="md:hidden btn btn-sm variant-ghost-surface" on:click={toggleMenu} data-testid="mobile-menu-button">
+		<button
+			class="md:hidden btn btn-sm variant-ghost-surface"
+			on:click={toggleMenu}
+			data-testid="mobile-menu-button"
+		>
 			{#if isMenuOpen}
 				<X size={24} />
 			{:else}

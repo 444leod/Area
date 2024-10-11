@@ -1,3 +1,6 @@
-import { MongoDBService, AreaPacket } from '@area/shared';
+import { MongoDBService, AreaPacket } from "@area/shared";
 
-export type ActionFunction = (packet: AreaPacket, database: MongoDBService) => Promise<AreaPacket | null>;
+export type ActionFunction = (
+  packet: AreaPacket,
+  database: MongoDBService,
+) => Promise<AreaPacket | null>;
