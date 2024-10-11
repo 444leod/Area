@@ -25,7 +25,7 @@ export class UsersService {
     let user = await this.userModel.findOne({ email: userData.email });
     if (user) {
       const authIndex = user.authorizations.findIndex(auth =>
-        auth.service_id.equals(userData.service_id) && auth.type === 'GOOGLE'
+          auth.service_id && auth.service_id.equals(userData.service_id) && auth.type === 'GOOGLE'
       );
       if (authIndex !== -1) {
         user.authorizations[authIndex].data = userData.token;
@@ -38,7 +38,7 @@ export class UsersService {
       }
       return await user.save();
     }
-  
+
     const newUser = new this.userModel({
       first_name: userData.first_name,
       last_name: userData.last_name,
@@ -51,7 +51,6 @@ export class UsersService {
     });
     return await newUser.save();
   }
-  
 
   
 
