@@ -29,6 +29,11 @@ async function bootstrap() {
     .setDescription(
       "The AREA API allows the creation of actions-reactions on multiple services."
     )
+    .addBearerAuth({
+      type: "http",
+      description: "The Bearer token given to a User",
+      name: "Bearer",
+    })
     .setVersion("0.0")
     .build();
 

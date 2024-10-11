@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
 import {
   ActionInfos,
   ActionTypes,
@@ -18,12 +18,17 @@ import {
 import { IsNotEmptyObject, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
+@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
 export class AreaCreationDto {
-  @ApiProperty()
+  @ApiProperty({
+    oneOf: [
+      { $ref: getSchemaPath(ExampleActionInfos) },
+      { $ref: getSchemaPath(EachXSecondsActionInfos) },
+      { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
+    ],
+  })
   @IsNotEmptyObject()
-
-  /* This basically tells the Pipeline to validate sub-objects
-   ** with a specific type if a property meets a certain value */
   @ValidateNested()
   @Type(() => BaseActionInfos, {
     keepDiscriminatorProperty: true,
@@ -32,12 +37,22 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
-        { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
+        {
+          value: OnYoutubeVideoPostedClass,
+          name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED,
+        },
       ],
     },
   })
   action: ActionInfos;
 
+  @ApiProperty({
+    oneOf: [
+      { $ref: getSchemaPath(ExampleReactionInfos) },
+      { $ref: getSchemaPath(SendEmailReactionInfos) },
+      { $ref: getSchemaPath(CreateGoogleTaskInfos) },
+    ],
+  })
   @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
@@ -48,7 +63,10 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
-        { value: CreateGoogleTaskInfos, name: ReactionTypes.CREATE_GOOGLE_TASK },
+        {
+          value: CreateGoogleTaskInfos,
+          name: ReactionTypes.CREATE_GOOGLE_TASK,
+        },
       ],
     },
   })
