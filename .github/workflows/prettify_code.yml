@@ -18,7 +18,7 @@ jobs:
         run: npm config set package-lock false
 
       - name: Download Svelte Prettier Plugin
-        run: npm i --save-dev prettier-plugin-svelte
+        run: npm i prettier-plugin-svelte
 
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
