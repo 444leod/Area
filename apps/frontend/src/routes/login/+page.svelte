@@ -7,8 +7,14 @@
 	let email = '';
 	let password = '';
 
+	function initiateGoogleLogin() {
+		const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+		const redirectUri = encodeURIComponent(`${window.location.origin}/login/oauth`);
+		const scope = encodeURIComponent('email profile https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/tasks');
+		const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
+		window.location.href = googleAuthUrl;
+	}
 </script>
-
 <div class="flex items-center justify-center p-6">
 	<div class="card p-8 w-full max-w-md shadow-xl">
 		<h2 class="h2 mb-4 text-center">Welcome Back!</h2>
@@ -51,12 +57,10 @@
 			{/if}
 		</form>
 		<div class="divider my-4">OR</div>
-		<a href="{import.meta.env.VITE_API_URL}/auth/google">
-			<button class="btn variant-soft w-full">
-				<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
-				Continue with Google
-			</button>
-		</a>
+		<button on:click={initiateGoogleLogin} class="btn variant-soft w-full">
+			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
+			Continue with Google
+		</button>
 		<div class="mt-4 text-center">
 			<a href="/forgot-password" class="anchor">Forgot password?</a>
 		</div>
