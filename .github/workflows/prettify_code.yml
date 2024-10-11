@@ -14,11 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Disable lock creation
-        run: npm config set package-lock false
+      - name: Hide package.json
+        run: mv package.json package.json.bkp
 
       - name: Download Svelte Prettier Plugin
-        run: npm i --save-dev prettier-plugin-svelte
+        run: npm i --no-save prettier-plugin-svelte
+
+      - name: Un-hide package.json
+        run: mv package.json.bkp package.json
 
       - name: Prettify code
         uses: creyD/prettier_action@v4.3

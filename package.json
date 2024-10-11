@@ -34,7 +34,6 @@
     "worker:example_worker": "npm run example_worker -w @area/worker"
   },
   "devDependencies": {
-    "prettier-plugin-svelte": "^3.2.7",
     "rimraf": "3.0.2",
     "tslib": "^2.4.0",
     "typescript": "^4.9.5"
