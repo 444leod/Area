@@ -1,5 +1,5 @@
-import { Action, ActionTypes, OnYoutubeVideoPostedClass } from '@area/shared';
-import { ActionBuilder } from './action.builder';
+import { Action, ActionTypes, OnYoutubeVideoPostedClass } from "@area/shared";
+import { ActionBuilder } from "./action.builder";
 
 export class OnYoutubeVideoPostedBuilder implements ActionBuilder {
     build(dto: OnYoutubeVideoPostedClass): Action {

@@ -1,4 +1,10 @@
-import { Action, ActionTypes, EachXSecondsActionInfos, EachXSecondsHistoryDTO, ExampleActionInfos } from "@area/shared";
+import {
+  Action,
+  ActionTypes,
+  EachXSecondsActionInfos,
+  EachXSecondsHistoryDTO,
+  ExampleActionInfos,
+} from "@area/shared";
 import { ActionBuilder } from "./action.builder";
 
 export class EachXSecondsActionBuilder implements ActionBuilder {

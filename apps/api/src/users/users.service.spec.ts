@@ -70,7 +70,7 @@ describe("UsersService", () => {
 
     const result = await service.addAreaToUser(
       { sub: userId.toHexString() },
-      area
+      area,
     );
 
     expect(userModel.findById).toHaveBeenCalledWith(userId.toHexString());
@@ -92,7 +92,7 @@ describe("UsersService", () => {
 
     const result = await service.removeAreaFromUser(
       { sub: userId.toHexString() },
-      area._id
+      area._id,
     );
 
     expect(userModel.findById).toHaveBeenCalledWith(userId.toHexString());
