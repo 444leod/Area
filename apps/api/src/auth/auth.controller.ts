@@ -13,8 +13,7 @@ import {
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "@nestjs/passport";
-
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags("Auth")
 @Controller("/auth")
@@ -34,19 +33,16 @@ export class AuthController {
       throw new BadRequestException("Google authorization code is required");
     }
     return this.authService.handleGoogleCallback(code);
+  }
 
-  @Get("google")
+  @Get("/google")
   @UseGuards(AuthGuard("google"))
   async googleAuth(@Req() req) {}
 
-  @Get("google/callback")
+  @Get("/google/callback")
   @UseGuards(AuthGuard("google"))
   async googleAuthRedirect(@Req() req, @Res() res) {
-    const loginResponse = await this.authService.googleLogin(req);
-
-    if (loginResponse === "No user from Google") {
-      throw new BadRequestException();
-    }
+    const loginResponse = await this.authService.handleGoogleCallback(req);
 
     const token = loginResponse.token;
     return res.redirect(`${process.env.GOOGLE_REDIRECT_URL}?token=${token}`);
