@@ -16,7 +16,7 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post('google-callback')
+  @Post('/google')
   async googleCallback(@Body('code') code: string) {
     if (!code) {
       throw new BadRequestException('Google authorization code is required');
