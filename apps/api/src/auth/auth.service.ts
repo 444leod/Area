@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  HttpException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -48,7 +49,6 @@ export class AuthService {
 
     const oauth2 = google.oauth2({ version: "v2", auth: this.oauth2Client });
     const { data } = await oauth2.userinfo.get();
-
     const googleServiceId = new ObjectId("64ff2e8e2a6e4b3f78abcd12");
 
     const user = await this.usersService.findOrCreateUser({

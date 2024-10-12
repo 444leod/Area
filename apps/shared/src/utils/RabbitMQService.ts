@@ -5,8 +5,6 @@ export class RabbitMQService {
   connection!: Connection;
   channel!: Channel;
   private connected: Boolean = false;
-  private rmqQueue!: string;
-
 
   async connect(): Promise<void> {
     if (this.connected && this.channel) return;
@@ -15,13 +13,11 @@ export class RabbitMQService {
     const rmqPass = process.env.RMQ_PASS;
     const rmqHost = process.env.RMQ_HOST;
 
-    if (!rmqUser || !rmqPass || !rmqHost || !process.env.RMQ_QUEUE) {
+    if (!rmqUser || !rmqPass || !rmqHost) {
       throw new Error(
-        "RMQ_USER, RMQ_PASS, RMQ_HOST and RMQ_QUEUE must be defined as environment variables"
+        "RMQ_USER, RMQ_PASS, RMQ_HOST must be defined as environment variables"
       );
     }
-
-    this.rmqQueue = process.env.RMQ_QUEUE;
 
     try {
       this.connection = await client.connect(
@@ -41,9 +37,6 @@ export class RabbitMQService {
 
 
     this.channel = await this.connection.createChannel();
-    await this.channel.assertQueue(this.rmqQueue, {
-      durable: false,
-    });
     this.connected = true;
   }
 
@@ -56,24 +49,27 @@ export class RabbitMQService {
     }
   }
 
-  async sendAreaToQueue(area: AreaPacket): Promise<void> {
+  async sendAreaToQueue(queue: string, area: AreaPacket): Promise<void> {
     if (!this.channel) {
       await this.connect();
     }
-    this.channel.sendToQueue(this.rmqQueue, Buffer.from(JSON.stringify(area)));
+    await this.channel.assertQueue(queue, {
+      durable: false,
+    });
+    this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(area)));
   }
 
-  async queueStats(): Promise<client.Replies.AssertQueue> {
-    return await this.channel.checkQueue(this.rmqQueue);
+  async queueStats(queue: string): Promise<client.Replies.AssertQueue> {
+    return await this.channel.checkQueue(queue);
   }
 
-  async consumeArea(handleArea: (area: AreaPacket) => void): Promise<void> {
-    await this.channel.assertQueue(this.rmqQueue, {
+  async consumeArea(queue: string, handleArea: (area: AreaPacket) => void): Promise<void> {
+    await this.channel.assertQueue(queue, {
       durable: false,
     });
 
     await this.channel.consume(
-      this.rmqQueue,
+        queue,
       (msg: any) => {
         {
           if (!msg) {

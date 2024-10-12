@@ -21,12 +21,12 @@ export class AreasHelper {
     EACH_X_SECONDS: new EachXSecondsActionBuilder(),
     ON_YOUTUBE_VIDEO_POSTED: new OnYoutubeVideoPostedBuilder(),
   };
-
-  // TODO : replace with DB services
+    // TODO : replace with DB services
   private _reactions_services: Record<ReactionTypes, ObjectId | undefined> = {
-    EXAMPLE_REACTION: undefined,
-    SEND_EMAIL: undefined,
-    CREATE_GOOGLE_TASK: undefined,
+      EXAMPLE_REACTION: undefined,
+      SEND_EMAIL: undefined,
+      CREATE_GOOGLE_TASK: undefined,
+      SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
   };
 
   build(dto: AreaCreationDto): Area {

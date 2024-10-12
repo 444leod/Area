@@ -5,6 +5,10 @@ import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
+if (!process.env.RMQ_QUEUE) {
+    throw new Error('RMQ_QUEUE must be defined as environment variable');
+}
+
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
@@ -21,7 +25,7 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(handleArea).then(() => {});
+        rabbitMQ.consumeArea(process.env.RMQ_QUEUE || '', handleArea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -64,11 +68,15 @@ async function handleArea(areaPacket: AreaPacket) {
         return;
     }
 
+    console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
+
     const res = await actionFunction(areaPacket, mongoDB);
 
     if (!res) {
         return;
     }
+
+    console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
 
     await reactionFunction(res, mongoDB);
 }
