@@ -4,15 +4,18 @@ WORKDIR /app
 
 COPY apps/mobileExpo .
 
-RUN npm install -g expo-cli eas-cli
+ARG SKIP_MOBILE_COMPILATION=0
 
-RUN npm i
+RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ]; then \
+      npm install -g expo-cli eas-cli && \
+      npm i && \
+      apk add git jq && \
+      git init; \
+    else \
+      echo "Skipping installation and initialization steps"; \
+    fi
 
-RUN apk add git jq
-
-RUN git init
-
-RUN sh ./build.sh
+RUN sh ./build.sh $SKIP_MOBILE_COMPILATION
 
 RUN mkdir -p /shared
 

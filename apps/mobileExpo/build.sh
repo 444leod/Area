@@ -1,6 +1,15 @@
 #!/bin/bash
 
-# login to eas
+if [ "$1" == "1" ]; then
+    echo "Skipping compilation and creating mock apk..."
+    echo "This is a mock apk" >> client.apk
+    exit 0
+elif [ "$1" != "0" ]; then
+    printf "Invalid argument: $1\nUSAGE:\n\t$0 [0|1]"
+    exit 1
+fi
+
+echo "'$0 1' to skip compilation and create mock apk"
 echo "Logging in to EAS..."
 export $(grep -v '^#' .env | xargs -0)
 mail=$EXPO_USERNAME
