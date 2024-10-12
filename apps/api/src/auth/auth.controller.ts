@@ -15,17 +15,25 @@ import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
 
+
 @ApiTags("Auth")
 @Controller("/auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK) // instead of "successfully created"
+  @HttpCode(HttpStatus.OK)
   @Post("/login")
   async login(@Body() loginDto: UserLoginDto) {
     if (!loginDto) throw new BadRequestException();
     return this.authService.login(loginDto);
   }
+
+  @Post("/google")
+  async googleCallback(@Body("code") code: string) {
+    if (!code) {
+      throw new BadRequestException("Google authorization code is required");
+    }
+    return this.authService.handleGoogleCallback(code);
 
   @Get("google")
   @UseGuards(AuthGuard("google"))

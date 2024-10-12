@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Mail, Lock, User, UserPlus } from 'lucide-svelte';
 	import type { ActionData } from './$types';
+	import { oauthGoogle } from "$lib/modules/oauthGoogle";
 
 	export let form: ActionData;
 
@@ -92,12 +93,10 @@
 
 		<div class="divider my-4">OR</div>
 
-		<a href="{import.meta.env.VITE_API_URL}/auth/google">
-			<button class="btn variant-soft w-full">
-				<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
-				Continue with Google
-			</button>
-		</a>
+		<button on:click={oauthGoogle} class="btn variant-soft w-full">
+			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
+			Continue with Google
+		</button>
 
 		<div class="mt-4 text-center">
 			Already have an account? <a href="/login" class="anchor">Log in</a>

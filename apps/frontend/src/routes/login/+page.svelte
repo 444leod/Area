@@ -3,12 +3,11 @@
 	import { Mail, Lock, LogIn } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import {oauthGoogle} from "$lib/modules/oauthGoogle";
 
 	let email = '';
 	let password = '';
-
 </script>
-
 <div class="flex items-center justify-center p-6">
 	<div class="card p-8 w-full max-w-md shadow-xl">
 		<h2 class="h2 mb-4 text-center">Welcome Back!</h2>
@@ -51,12 +50,10 @@
 			{/if}
 		</form>
 		<div class="divider my-4">OR</div>
-		<a href="{import.meta.env.VITE_API_URL}/auth/google">
-			<button class="btn variant-soft w-full">
-				<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
-				Continue with Google
-			</button>
-		</a>
+		<button on:click={oauthGoogle} class="btn variant-soft w-full">
+			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
+			Continue with Google
+		</button>
 		<div class="mt-4 text-center">
 			<a href="/forgot-password" class="anchor">Forgot password?</a>
 		</div>

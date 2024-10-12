@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
 import { ObjectId } from "mongodb";
 
+
 @Injectable()
 export class AreasService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
