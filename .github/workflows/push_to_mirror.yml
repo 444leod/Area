@@ -1,5 +1,4 @@
 name: Area
-
 on: [push, pull_request]
 
 env:
@@ -89,9 +88,6 @@ jobs:
           echo "RMQ_PASS=${RMQ_PASS}" >> ./apps/worker/.env
           echo "RMQ_HOST=${RMQ_HOST}" >> ./apps/worker/.env
           echo "RMQ_QUEUE=${RMQ_QUEUE}" >> ./apps/worker/.env
-
-
-
 
       - name: setup Docker
         uses: docker/setup-buildx-action@v2
