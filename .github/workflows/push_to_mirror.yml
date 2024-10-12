@@ -74,7 +74,6 @@ jobs:
           echo "RMQ_HOST=${RMQ_HOST}" >> ./apps/task_manager/.env
           echo "RMQ_QUEUE=${RMQ_QUEUE}" >> ./apps/task_manager/.env
 
-
       - name: generate worker .env
         run: |
           echo "MONGODB_HOST=${MONGODB_HOST}" >> ./apps/worker/.env
@@ -94,16 +93,16 @@ jobs:
 
       - name: build and start Docker Compose without client_mobile
         run: |
-            docker compose up --build queue manager worker server client_web -d
+          docker compose up --build queue manager worker server client_web -d
           
-            services=(queue manager worker server client_web)
-            for service in "${services[@]}"; do
-              until [ "$(docker inspect -f {{.State.Health.Status}} $(docker-compose ps -q $service))" == "healthy" ]; do
-                echo "Waiting for $service service to be healthy..."
-                sleep 5
-              done
+          services=(queue manager worker server client_web)
+          for service in "${services[@]}"; do
+            until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker-compose ps -q $service))" == "healthy" ]; do
+              echo "Waiting for $service service to be healthy..."
+              sleep 5
             done
-
+          done
+          
           # Check if all services are running
           docker-compose ps
 
