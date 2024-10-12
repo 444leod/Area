@@ -6,10 +6,11 @@ import { JwtService } from "@nestjs/jwt";
 import { ObjectId } from "mongodb";
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
-  private oauth2Client: any;
+  private oauth2Client: OAuth2Client;
 
   constructor(
       private usersService: UsersService,
