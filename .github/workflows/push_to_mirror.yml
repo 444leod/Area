@@ -7,36 +7,132 @@ env:
 
 jobs:
   build:
-    name: Test compilations
+    name: Testing apps building
     runs-on: self-hosted
-    container: epitechcontent/epitest-docker:latest
+
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      SECRET_SESSION: ${{ secrets.SECRET_SESSION }}
+      MONGODB_HOST: ${{ secrets.MONGODB_HOST }}
+      MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
+      MONGODB_USER: ${{ secrets.MONGODB_USER }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_AUTH_SOURCE: ${{ secrets.MONGODB_AUTH_SOURCE }}
+      MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+      MONGODB_TLS_CA_FILE: ${{ secrets.MONGODB_TLS_CA_FILE }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
+      GOOGLE_REDIRECT_URL: ${{ secrets.GOOGLE_REDIRECT_URL }}
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      RABBITMQ_DEFAULT_USER: ${{ secrets.RABBITMQ_DEFAULT_USER }}
+      RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
+      RMQ_USER: ${{ secrets.RMQ_USER }}
+      RMQ_PASS: ${{ secrets.RMQ_PASS }}
+      RMQ_HOST: ${{ secrets.RMQ_HOST }}
+      RMQ_QUEUE: ${{ secrets.RMQ_QUEUE }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compilation
-        timeout-minutes: 2
+      - name: generate api .env
         run: |
-          echo "Compilation"
+          echo "JWT_SECRET=${JWT_SECRET}" >> ./apps/api/.env
+          echo "SECRET_SESSION=${SECRET_SESSION}" >> ./apps/api/.env
+          echo "MONGODB_HOST=${MONGODB_HOST}" >> ./apps/api/.env
+          echo "MONGODB_PORT=${MONGODB_PORT}" >> ./apps/api/.env
+          echo "MONGODB_USER=${MONGODB_USER}" >> ./apps/api/.env
+          echo "MONGODB_PASSWORD=${MONGODB_PASSWORD}" >> ./apps/api/.env
+          echo "MONGODB_AUTH_SOURCE=${MONGODB_AUTH_SOURCE}" >> ./apps/api/.env
+          echo "MONGODB_DB_NAME=${MONGODB_DB_NAME}" >> ./apps/api/.env
+          echo "MONGODB_TLS_CA_FILE=${MONGODB_TLS_CA_FILE}" >> ./apps/api/.env
+          echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> ./apps/api/.env
+          echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> ./apps/api/.env
+          echo "GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}" >> ./apps/api/.env
+          echo "GOOGLE_REDIRECT_URL=${GOOGLE_REDIRECT_URL}" >> ./apps/api/.env
 
-  test:
-    name: Run tests
-    runs-on: self-hosted
-    container: epitechcontent/epitest-docker:latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run tests
-        timeout-minutes: 2
+      - name: generate frontend .env
         run: |
-          # make tests_run
+          echo "VITE_API_URL=${VITE_API_URL}" >> ./apps/frontend/.env
+
+      - name: generate queue .env
+        run: |
+          echo "RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}" >> ./apps/queue/.env
+          echo "RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}" >> ./apps/queue/.env
+
+      - name: generate task_manager .env
+        run: |
+          echo "MONGODB_HOST=${MONGODB_HOST}" >> ./apps/task_manager/.env
+          echo "MONGODB_PORT=${MONGODB_PORT}" >> ./apps/task_manager/.env
+          echo "MONGODB_USER=${MONGODB_USER}" >> ./apps/task_manager/.env
+          echo "MONGODB_PASSWORD=${MONGODB_PASSWORD}" >> ./apps/task_manager/.env
+          echo "MONGODB_AUTH_SOURCE=${MONGODB_AUTH_SOURCE}" >> ./apps/task_manager/.env
+          echo "MONGODB_DB_NAME=${MONGODB_DB_NAME}" >> ./apps/task_manager/.env
+          echo "MONGODB_TLS_CA_FILE=${MONGODB_TLS_CA_FILE}" >> ./apps/task_manager/.env
+          echo "RMQ_USER=${RMQ_USER}" >> ./apps/task_manager/.env
+          echo "RMQ_PASS=${RMQ_PASS}" >> ./apps/task_manager/.env
+          echo "RMQ_HOST=${RMQ_HOST}" >> ./apps/task_manager/.env
+          echo "RMQ_QUEUE=${RMQ_QUEUE}" >> ./apps/task_manager/.env
+
+
+      - name: generate worker .env
+        run: |
+          echo "MONGODB_HOST=${MONGODB_HOST}" >> ./apps/worker/.env
+          echo "MONGODB_PORT=${MONGODB_PORT}" >> ./apps/worker/.env
+          echo "MONGODB_USER=${MONGODB_USER}" >> ./apps/worker/.env
+          echo "MONGODB_PASSWORD=${MONGODB_PASSWORD}" >> ./apps/worker/.env
+          echo "MONGODB_AUTH_SOURCE=${MONGODB_AUTH_SOURCE}" >> ./apps/worker/.env
+          echo "MONGODB_DB_NAME=${MONGODB_DB_NAME}" >> ./apps/worker/.env
+          echo "MONGODB_TLS_CA_FILE=${MONGODB_TLS_CA_FILE}" >> ./apps/worker/.env
+          echo "RMQ_USER=${RMQ_USER}" >> ./apps/worker/.env
+          echo "RMQ_PASS=${RMQ_PASS}" >> ./apps/worker/.env
+          echo "RMQ_HOST=${RMQ_HOST}" >> ./apps/worker/.env
+          echo "RMQ_QUEUE=${RMQ_QUEUE}" >> ./apps/worker/.env
+
+
+
+
+      - name: setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: build and start Docker Compose without client_mobile
+        run: |
+            docker compose up --build queue manager worker server client_web -d
+          
+            services=(queue manager worker server client_web)
+            for service in "${services[@]}"; do
+              until [ "$(docker inspect -f {{.State.Health.Status}} $(docker-compose ps -q $service))" == "healthy" ]; do
+                echo "Waiting for $service service to be healthy..."
+                sleep 5
+              done
+            done
+
+          # Check if all services are running
+          docker-compose ps
+
+      - name: Stop and remove containers
+        run: |
+          docker compose down
+
+
+#  test:
+#    name: Run tests
+#    runs-on: self-hosted
+#    container: epitechcontent/epitest-docker:latest
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Run tests
+#        timeout-minutes: 2
+#        run: |
+#          # make tests_run
 
   push_to_mirror:
     name: Push to mirror
-    needs: [build, test]
+    needs: [build]
     if: ${{ github.ref_name == 'main' && github.event_name == 'push' }}
     runs-on: self-hosted
 
