@@ -42,6 +42,7 @@ async function main() {
                         {
                             $project: {
                                 areas: 1,
+                                authorizations: 1,
                             },
                         },
                     ])
@@ -54,6 +55,7 @@ async function main() {
                     user_id: obj._id,
                     area: obj.areas,
                     data: null,
+                    authorizations: obj.authorizations,
                 };
                 return areaPacket;
             });
