@@ -56,14 +56,14 @@ describe("AreasHelper", () => {
           informations: {
             type: ActionTypes.EXAMPLE_ACTION,
             exampleField: "exampleValue",
-          }
+          },
         } as any,
         reaction: {
           service_id: new ObjectId(),
           informations: {
             type: ReactionTypes.EXAMPLE_REACTION,
             exampleField: "exampleValue",
-          }
+          },
         },
         active: true,
       };

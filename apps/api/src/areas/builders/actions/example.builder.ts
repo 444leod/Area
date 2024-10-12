@@ -5,7 +5,7 @@ import { ActionBuilder } from "./action.builder";
 export class ExampleActionBuilder implements ActionBuilder {
     build(dto: ExampleActionInfos) : Action {
         return {
-            isWebhook: false,
+            is_webhook: false,
             service_id: undefined,
             informations: dto,
             history: {

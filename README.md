@@ -619,7 +619,7 @@ print(r.json())
   "_id": "deadbeefdeadbeefdeadbeef",
   "active": true,
   "action": {
-    "isWebhook": false,
+    "is_webhook": false,
     "service_id": "deadbeefdeadbeefdeadbeef",
     "informations": {
       "type": "EXAMPLE_TYPE",

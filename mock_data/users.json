@@ -26,7 +26,7 @@
             "type": "EACH_X_SECONDS",
             "lastExecutionTimestamp": "null"
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -49,7 +49,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -72,7 +72,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -95,7 +95,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": true
+          "is_webhook": true
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -127,7 +127,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -150,7 +150,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -173,7 +173,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": false
+          "is_webhook": false
         },
         "reaction": {
           "_id": "ObjectId()",
@@ -196,7 +196,7 @@
             "type": "EXAMPLE_ACTION",
             "exampleHistory": ["exampleHistory"]
           },
-          "isWebhook": true
+          "is_webhook": true
         },
         "reaction": {
           "_id": "ObjectId()",

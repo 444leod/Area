@@ -55,7 +55,7 @@ describe("AuthGuard", () => {
     } as ExecutionContext;
 
     await expect(authGuard.canActivate(mockExecutionContext)).rejects.toThrow(
-      UnauthorizedException
+      UnauthorizedException,
     );
   });
 
@@ -70,10 +70,12 @@ describe("AuthGuard", () => {
       }),
     } as ExecutionContext;
 
-    jest.spyOn(jwtService, "verifyAsync").mockRejectedValue(new Error("Invalid token"));
+    jest
+      .spyOn(jwtService, "verifyAsync")
+      .mockRejectedValue(new Error("Invalid token"));
 
     await expect(authGuard.canActivate(mockExecutionContext)).rejects.toThrow(
-      UnauthorizedException
+      UnauthorizedException,
     );
   });
 

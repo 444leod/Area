@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export class AuthorizationDto {
-    service_Id: ObjectId;
+    service_id: ObjectId;
     type: string;
     data: string;
 }
