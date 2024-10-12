@@ -3,6 +3,10 @@ import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 
 dotenv.config();
 
+if (!process.env.RMQ_QUEUE) {
+    throw new Error('RMQ_QUEUE must be defined as environment variable');
+}
+
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
@@ -13,12 +17,12 @@ async function main() {
 
     const groupAreaSend = (areas: AreaPacket[]) => {
         areas.forEach((area) => {
-            rabbitMQ.sendAreaToQueue(area);
+            rabbitMQ.sendAreaToQueue(process.env.RMQ_QUEUE || '', area);
         });
     };
 
     const queueIsEmpty = async () => {
-        return (await rabbitMQ.queueStats()).messageCount == 0;
+        return (await rabbitMQ.queueStats(process.env.RMQ_QUEUE || '')).messageCount == 0;
     };
 
     try {
