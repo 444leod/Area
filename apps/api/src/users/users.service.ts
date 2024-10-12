@@ -24,16 +24,19 @@ export class UsersService {
   }): Promise<User> {
     let user = await this.userModel.findOne({ email: userData.email });
     if (user) {
-      const authIndex = user.authorizations.findIndex(auth =>
-          auth.service_id && auth.service_id.equals(userData.service_id) && auth.type === 'GOOGLE'
+      const authIndex = user.authorizations.findIndex(
+        (auth) =>
+          auth.service_id &&
+          auth.service_id.equals(userData.service_id) &&
+          auth.type === "GOOGLE",
       );
       if (authIndex !== -1) {
         user.authorizations[authIndex].data = userData.token;
       } else {
         user.authorizations.push({
           service_id: userData.service_id,
-          type: 'GOOGLE',
-          data: userData.token
+          type: "GOOGLE",
+          data: userData.token,
         });
       }
       return await user.save();
@@ -43,16 +46,16 @@ export class UsersService {
       first_name: userData.first_name,
       last_name: userData.last_name,
       email: userData.email,
-      authorizations: [{
-        service_id: userData.service_id,
-        type: 'GOOGLE',
-        data: userData.token
-      }]
+      authorizations: [
+        {
+          service_id: userData.service_id,
+          type: "GOOGLE",
+          data: userData.token,
+        },
+      ],
     });
     return await newUser.save();
   }
-
-  
 
   async findById(id: string | ObjectId): Promise<User | undefined> {
     return await this.userModel.findById(id).exec();
@@ -64,9 +67,9 @@ export class UsersService {
 
   /** AREA RELATER */
 
-  async getUserArea(user: { sub: string }, id: ObjectId) : Promise<Area> {
+  async getUserArea(user: { sub: string }, id: ObjectId): Promise<Area> {
     const u = await this.userModel.findById(user.sub);
-    const area = u.areas.find(a => a._id.equals(id));
+    const area = u.areas.find((a) => a._id.equals(id));
     if (!area) throw new NotFoundException("Area Not Found.");
     return area;
   }
@@ -87,9 +90,8 @@ export class UsersService {
 
   async updateUserArea(user: { sub: string }, area: Area): Promise<Area> {
     const u = await this.userModel.findById(user.sub);
-    const index = u.areas.findIndex(a => a._id.equals(area._id));
-    if (index < 0)
-      throw new NotFoundException("AREA not found");
+    const index = u.areas.findIndex((a) => a._id.equals(area._id));
+    if (index < 0) throw new NotFoundException("AREA not found");
     u.areas[index] = area;
     u.save();
     return u.areas[index];

@@ -1,4 +1,14 @@
-import { BadRequestException, Body, Controller, HttpCode, Res, HttpStatus, Post, Get, Req } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Res,
+  HttpStatus,
+  Post,
+  Get,
+  Req,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
@@ -11,23 +21,21 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post("/login")
   async login(@Body() loginDto: UserLoginDto) {
-    if (!loginDto)
-      throw new BadRequestException();
+    if (!loginDto) throw new BadRequestException();
     return this.authService.login(loginDto);
   }
 
-  @Post('/google')
-  async googleCallback(@Body('code') code: string) {
+  @Post("/google")
+  async googleCallback(@Body("code") code: string) {
     if (!code) {
-      throw new BadRequestException('Google authorization code is required');
+      throw new BadRequestException("Google authorization code is required");
     }
     return this.authService.handleGoogleCallback(code);
   }
 
   @Post("/register")
   async register(@Body() registerDto: UserRegistrationDto) {
-    if (!registerDto)
-      throw new BadRequestException();
+    if (!registerDto) throw new BadRequestException();
     return this.authService.register(registerDto);
   }
 }
