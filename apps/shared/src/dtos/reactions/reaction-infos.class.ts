@@ -3,11 +3,17 @@ import { ExampleReactionInfos } from "./example-reaction.class";
 import { SendEmailReactionInfos } from "./emails/send-email.dto";
 import { CreateGoogleTaskInfos } from "./google-tasks/create-google-task.class";
 import { ReactionTypes } from "./reaction-types.enum";
+import { ApiProperty } from "@nestjs/swagger";
 import { SendMessageToDiscordWebhookInfos } from "./discord/send-message-to-discord-webhook.class";
 
 export class BaseReactionInfos {
-    @IsEnum(ReactionTypes)
-    type: ReactionTypes
+  @ApiProperty()
+  @IsEnum(ReactionTypes)
+  type: ReactionTypes;
 }
 
-export type ReactionInfos = ExampleReactionInfos | SendEmailReactionInfos | CreateGoogleTaskInfos | SendMessageToDiscordWebhookInfos;
+export type ReactionInfos =
+  | ExampleReactionInfos
+  | SendEmailReactionInfos
+  | CreateGoogleTaskInfos
+  | SendMessageToDiscordWebhookInfos;
