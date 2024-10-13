@@ -47,7 +47,13 @@ export class AuthController {
     const token = loginResponse.token;
     return res.redirect(`${process.env.GOOGLE_REDIRECT_URL}?token=${token}`);
   }
-
+  @Post("/google/mobile")
+  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean) {
+    if (!token) {
+      throw new BadRequestException("Google token is required");
+    }
+    return this.authService.handleGoogleMobileAuth(token, isMobile);
+  }
   @Post("/register")
   async register(@Body() registerDto: UserRegistrationDto) {
     if (!registerDto) throw new BadRequestException();
