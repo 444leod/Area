@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { authStore } from '$lib/store/authStore';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -30,6 +31,7 @@ export const actions: Actions = {
 				secure: process.env.NODE_ENV === 'production',
 				maxAge: 60 * 60 * 24 * 7 // 1 semaine
 			});
+			authStore.set(true);
 		} catch (error) {
 			console.error('Unexpected error during login:', error);
 			return fail(500, { email, error: 'An unexpected error occurred' });

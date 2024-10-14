@@ -3,10 +3,9 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { authStore } from '$lib/store/authStore';
 
 	let isMenuOpen = false;
-	let isAuthenticated = false;
-	let token: string | null = null;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -16,17 +15,15 @@
 	async function logout() {
 		try {
 			const response = await fetch('/api/logout', {
-				method: 'POST', // Envoie une requête POST à la route API
-				headers: {
-					'Content-Type': 'application/json'
-				}
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' }
 			});
 
 			if (response.ok) {
 				const result = await response.json();
 				if (result.success) {
 					console.log('Déconnexion réussie');
-					isAuthenticated = false;  // Mettre à jour l'état d'authentification côté client
+					authStore.logout(); // Met à jour le store
 				} else {
 					console.log('Erreur lors de la déconnexion');
 				}
@@ -38,35 +35,9 @@
 		}
 	}
 
-	// Appel à une API pour obtenir le token côté serveur
-	async function fetchToken() {
-		try {
-			const response = await fetch('/api/get-token');
-			if (response.ok) {
-				const data = await response.json();
-				token = data.token;
+	// Vérification de l'authentification lors du montage du composant
 
-				if (token) {
-					isAuthenticated = true;
-					console.log('Token récupéré :', token);
-				} else {
-					console.log("Utilisateur non authentifié");
-				}
-			} else {
-				console.log("Erreur lors de la récupération du token");
-			}
-		} catch (error) {
-			console.error('Erreur lors de la requête :', error);
-		}
-	}
-
-	// Initialisation lors du montage du composant
-	onMount(() => {
-		fetchToken(); // Récupérer le token à la montée du composant
-	});
 </script>
-
-
 
 <nav class="p-4 bg-surface-100-800-token">
 	<div class="container mx-auto flex justify-between items-center">
@@ -74,7 +45,7 @@
 
 		<!-- Desktop Menu -->
 		<div class="hidden md:flex items-center space-x-4" data-testid="desktop-menu">
-			{#if isAuthenticated}
+			{#if $authStore}
 				<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">
 					<User class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Profile </span>
@@ -105,44 +76,26 @@
 			{/if}
 		</button>
 	</div>
+
 	<!-- Mobile Menu -->
 	{#if isMenuOpen}
 		<div class="md:hidden mt-4" transition:slide={{ duration: 300 }} data-testid="mobile-menu">
 			<div class="flex flex-col space-y-2">
-				{#if isAuthenticated}
-					<a
-							href="/profile"
-							class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
-							on:click={toggleMenu}
-							data-testid="mobile-profile-button"
-					>
+				{#if $authStore}
+					<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-profile-button">
 						<User class="mr-2" size={18} />
 						Profile
 					</a>
-					<button
-							on:click={() => { logout(); toggleMenu(); }}
-							class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
-							data-testid="mobile-logout-button"
-					>
+					<button on:click={() => { logout(); toggleMenu(); }} class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" data-testid="mobile-logout-button">
 						<LogOut class="mr-2" size={18} />
 						Logout
 					</button>
 				{:else}
-					<a
-							href="/login"
-							class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
-							on:click={toggleMenu}
-							data-testid="mobile-login-button"
-					>
+					<a href="/login" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-login-button">
 						<LogIn class="mr-2" size={18} />
 						Login
 					</a>
-					<a
-							href="/signup"
-							class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
-							on:click={toggleMenu}
-							data-testid="mobile-signup-button"
-					>
+					<a href="/signup" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-signup-button">
 						<UserPlus class="mr-2" size={18} />
 						Sign Up
 					</a>
