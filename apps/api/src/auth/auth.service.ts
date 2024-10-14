@@ -56,12 +56,12 @@ export class AuthService {
       const oauth2 = google.oauth2({ version: "v2", auth: this.webOAuth2Client });
       const { data } = await oauth2.userinfo.get();
       const googleServiceId = new ObjectId("64ff2e8e2a6e4b3f78abcd12");
-
       const user = await this.usersService.findOrCreateUser({
         email: data.email,
         first_name: data.given_name,
         last_name: data.family_name,
         token: tokens.access_token,
+        refreshToken: tokens.refresh_token,
         service_id: googleServiceId,
       });
 
