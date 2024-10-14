@@ -35,18 +35,6 @@ export class AuthController {
     return this.authService.handleGoogleCallback(code);
   }
 
-  @Get("/google")
-  @UseGuards(AuthGuard("google"))
-  async googleAuth(@Req() req) {}
-
-  @Get("/google/callback")
-  @UseGuards(AuthGuard("google"))
-  async googleAuthRedirect(@Req() req, @Res() res) {
-    const loginResponse = await this.authService.handleGoogleCallback(req);
-
-    const token = loginResponse.token;
-    return res.redirect(`${process.env.GOOGLE_REDIRECT_URL}?token=${token}`);
-  }
   @Post("/google/mobile")
   async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean) {
     if (!token) {
@@ -54,6 +42,7 @@ export class AuthController {
     }
     return this.authService.handleGoogleMobileAuth(token, isMobile);
   }
+
   @Post("/register")
   async register(@Body() registerDto: UserRegistrationDto) {
     if (!registerDto) throw new BadRequestException();

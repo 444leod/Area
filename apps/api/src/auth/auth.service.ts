@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  InternalServerErrorException,
 } from "@nestjs/common";
 import * as bcrypt from "bcryptjs";
 import { UsersService } from "../users/users.service";
@@ -34,7 +35,6 @@ export class AuthService {
     );
   }
 
-
   async login(dto: UserLoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user) throw new NotFoundException("User not found");
@@ -49,30 +49,33 @@ export class AuthService {
   }
 
   async handleGoogleCallback(code: string) {
-    const { tokens } = await this.webOAuth2Client.getToken(code);
-    this.webOAuth2Client.setCredentials(tokens);
+    try {
+      const { tokens } = await this.webOAuth2Client.getToken(code);
+      this.webOAuth2Client.setCredentials(tokens);
 
-    const oauth2 = google.oauth2({ version: "v2", auth: this.webOAuth2Client });
-    const { data } = await oauth2.userinfo.get();
-    const googleServiceId = new ObjectId("64ff2e8e2a6e4b3f78abcd12");
+      const oauth2 = google.oauth2({ version: "v2", auth: this.webOAuth2Client });
+      const { data } = await oauth2.userinfo.get();
+      const googleServiceId = new ObjectId("64ff2e8e2a6e4b3f78abcd12");
 
-    const user = await this.usersService.findOrCreateUser({
-      email: data.email,
-      first_name: data.given_name,
-      last_name: data.family_name,
-      token: tokens.access_token,
-      service_id: googleServiceId,
-    });
+      const user = await this.usersService.findOrCreateUser({
+        email: data.email,
+        first_name: data.given_name,
+        last_name: data.family_name,
+        token: tokens.access_token,
+        service_id: googleServiceId,
+      });
 
-    const payload = { sub: user._id.toHexString(), email: user.email };
-    return {
-      token: await this.jwtService.signAsync(payload),
-    };
+      const payload = { sub: user._id.toHexString(), email: user.email };
+      return {
+        token: await this.jwtService.signAsync(payload),
+      };
+    } catch (error) {
+      throw new InternalServerErrorException("Error processing Google callback");
+    }
   }
 
   async handleGoogleMobileAuth(token: string, isMobile: boolean) {
     try {
-
       let ticket;
       if (isMobile) {
         ticket = await this.mobileOAuth2Client.verifyIdToken({
@@ -100,18 +103,13 @@ export class AuthService {
         token: await this.jwtService.signAsync(jwtPayload),
       };
     } catch (error) {
-      console.error('Error verifying Google token:', error);
-      if (error instanceof Error) {
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
-      }
       throw new UnauthorizedException("Invalid Google token");
     }
   }
 
   async register(dto: UserRegistrationDto) {
     const user = await this.usersService.findByEmail(dto.email);
-    if (user != undefined) throw new ConflictException();
+    if (user != undefined) throw new ConflictException("User already exists");
     const newUser = await this.usersService.createUser(dto);
     const payload = { sub: newUser._id.toHexString(), email: newUser.email };
     return {
