@@ -94,6 +94,7 @@ export class AuthService {
         email: payload.email,
         first_name: payload.given_name,
         last_name: payload.family_name,
+        refreshToken: payload.refresh_token,
         token: token,
         service_id: googleServiceId,
       });
