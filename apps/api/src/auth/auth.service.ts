@@ -56,6 +56,7 @@ export class AuthService {
       first_name: data.given_name,
       last_name: data.family_name,
       token: tokens.access_token,
+      refreshToken: tokens.refresh_token,
       service_id: googleServiceId,
     });
 
