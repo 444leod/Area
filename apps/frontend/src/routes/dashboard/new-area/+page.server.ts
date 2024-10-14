@@ -11,8 +11,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	  }
   
 	  const services = await response.json();
-
-	  console.log(services)
 	  return { services };
 	} catch (err) {
 	  console.error(err);
@@ -33,18 +31,9 @@ export const actions: Actions = {
 		const reactionDetails = JSON.parse(formData.get('reactionDetails') as string);
 
 		const { type, params } = actionDetails;
-
-		// On crée un nouvel objet d'action qui fusionne le type et les paramètres
 		const newAction = { type, ...params };
-
-		// On récupère les détails de la réaction et les paramètres
 		const { type: reactionType, params: reactionParams } = reactionDetails;
-
-		// On crée un nouvel objet de réaction qui fusionne le type et les paramètres
 		const newReaction = { type: reactionType, ...reactionParams };
-
-		console.log("new action : ", newAction)
-
 		const newArea = {
 			action: newAction,
 			reaction: newReaction

@@ -10,7 +10,9 @@
 	import AppCard from '$lib/components/new-area/AppCard.svelte';
 	import AutomationSummary from '$lib/components/new-area/AutomationSummary.svelte';
 	import TriggerBtn from '$lib/components/new-area/TriggerBtn.svelte';
-
+	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
+	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
+	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
 	export let data: PageData;
 
 	let apps = writable([]);
@@ -167,30 +169,22 @@
 					<div class="mb-4">
 						<label for={param.name} class="label">{param.name}</label>
 						{#if param.type === 'string'}
-							<input
-								id={param.name}
-								type="text"
-								class="input w-full"
-								bind:value={$actionDetails.params[param.name]}
-								on:input={(e) => updateParamValue(actionDetails, param.name, e.target.value)}
-								placeholder={`Enter ${param.name}`}
+							<StringInput
+									param={param}
+									value={$actionDetails.params[param.name]}
+									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
-							<input
-								id={param.name}
-								type="number"
-								class="input w-full"
-								bind:value={$actionDetails.params[param.name]}
-								on:input={(e) => updateParamValue(actionDetails, param.name, parseFloat(e.target.value))}
-								placeholder={`Enter ${param.name}`}
+							<NumberInput
+									param={param}
+									value={$actionDetails.params[param.name]}
+									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{:else if param.type === 'boolean'}
-							<input
-								id={param.name}
-								type="checkbox"
-								class="checkbox"
-								bind:checked={$actionDetails.params[param.name]}
-								on:change={(e) => updateParamValue(actionDetails, param.name, e.target.checked)}
+							<BooleanInput
+									param={param}
+									value={$actionDetails.params[param.name]}
+									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{/if}
 					</div>
@@ -202,30 +196,22 @@
 					<div class="mb-4">
 						<label for={param.name} class="label">{param.name}</label>
 						{#if param.type === 'string'}
-							<input
-								id={param.name}
-								type="text"
-								class="input w-full"
-								bind:value={$reactionDetails.params[param.name]}
-								on:input={(e) => updateParamValue(reactionDetails, param.name, e.target.value)}
-								placeholder={`Enter ${param.name}`}
+							<StringInput
+								param={param}
+								value={$reactionDetails.params[param.name]}
+								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
-							<input
-								id={param.name}
-								type="number"
-								class="input w-full"
-								bind:value={$reactionDetails.params[param.name]}
-								on:input={(e) => updateParamValue(reactionDetails, param.name, parseFloat(e.target.value))}
-								placeholder={`Enter ${param.name}`}
+							<NumberInput
+								param={param}
+								value={$reactionDetails.params[param.name]}
+								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{:else if param.type === 'boolean'}
-							<input
-								id={param.name}
-								type="checkbox"
-								class="checkbox"
-								bind:checked={$reactionDetails.params[param.name]}
-								on:change={(e) => updateParamValue(reactionDetails, param.name, e.target.checked)}
+							<BooleanInput
+								param={param}
+								value={$reactionDetails.params[param.name]}
+								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{/if}
 					</div>
