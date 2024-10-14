@@ -20,6 +20,7 @@ export class UsersService {
     first_name: string;
     last_name: string;
     token: string;
+    refreshToken: string;
     service_id: ObjectId;
   }): Promise<User> {
     let user = await this.userModel.findOne({ email: userData.email });
@@ -31,12 +32,18 @@ export class UsersService {
           auth.type === "GOOGLE",
       );
       if (authIndex !== -1) {
-        user.authorizations[authIndex].data = userData.token;
+        user.authorizations[authIndex].data = {
+          token: userData.token,
+          refresh_token: userData.refreshToken,
+        };
       } else {
         user.authorizations.push({
           service_id: userData.service_id,
           type: "GOOGLE",
-          data: userData.token,
+          data: {
+            token: userData.token,
+            refresh_token: userData.refreshToken,
+          },
         });
       }
       return await user.save();
@@ -50,7 +57,10 @@ export class UsersService {
         {
           service_id: userData.service_id,
           type: "GOOGLE",
-          data: userData.token,
+          data: {
+            token: userData.token,
+            refresh_token: userData.refreshToken,
+          },
         },
       ],
     });
