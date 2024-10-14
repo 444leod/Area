@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { LogIn, UserPlus, Menu, X, User, LogOut } from 'lucide-svelte';
+	import { LogIn, UserPlus, Menu, X, User, LogOut, LayoutDashboard } from 'lucide-svelte';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	import { authStore } from '$lib/store/authStore';
+	import { goto } from '$app/navigation';
 
 	let isMenuOpen = false;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
-
-	// Fonction pour gérer la déconnexion
 	async function logout() {
 		try {
 			const response = await fetch('/api/logout', {
@@ -22,8 +20,8 @@
 			if (response.ok) {
 				const result = await response.json();
 				if (result.success) {
-					console.log('Déconnexion réussie');
-					authStore.logout(); // Met à jour le store
+					authStore.set(false);
+					goto('/login');
 				} else {
 					console.log('Erreur lors de la déconnexion');
 				}
@@ -34,9 +32,6 @@
 			console.error('Erreur lors de la déconnexion :', error);
 		}
 	}
-
-	// Vérification de l'authentification lors du montage du composant
-
 </script>
 
 <nav class="p-4 bg-surface-100-800-token">
@@ -49,6 +44,10 @@
 				<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">
 					<User class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Profile </span>
+				</a>
+				<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">
+					<LayoutDashboard class="mr-2" size={18} />
+					<span class="hidden sm:inline"> Dashboard </span>
 				</a>
 				<button on:click={logout} class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-logout-button">
 					<LogOut class="mr-2" size={18} />
@@ -66,8 +65,6 @@
 			{/if}
 			<LightSwitch data-testid="desktop-light-switch" />
 		</div>
-
-		<!-- Mobile Menu Button -->
 		<button class="md:hidden btn btn-sm variant-ghost-surface" on:click={toggleMenu} data-testid="mobile-menu-button">
 			{#if isMenuOpen}
 				<X size={24} />
