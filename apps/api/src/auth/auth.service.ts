@@ -144,7 +144,7 @@ export class AuthService {
       });
 
       if (!response.ok) {
-        console.error('Erreur on Altissian Request:', response.statusText);
+        console.error('Error on Altissian Request:', response.statusText);
         return 0;
       }
 

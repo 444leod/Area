@@ -15,11 +15,11 @@
                     return null
                 }
             } else {
-                console.log("Error during token recuperation");
+                console.log("Error during token retrieving");
                 return null
             }
         } catch (error) {
-            console.error('Erreur during the request :', error);
+            console.error('Error during the request :', error);
             return null
         }
     }
@@ -43,7 +43,6 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Success auth', data);
                     goto('/profile/authorization?success=1&service=jira');
                 } else {
                     throw new Error(`Error during Auth`);
