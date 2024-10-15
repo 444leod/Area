@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: cleanup old checkout
-        run: chmod +w -R ${GITHUB_WORKSPACE}; rm -rf ${GITHUB_WORKSPACE}/*;
+        run: sudo chmod +w -R ${GITHUB_WORKSPACE}; sudo rm -rf ${GITHUB_WORKSPACE}/*;
 
       - name: Checkout repository
         uses: actions/checkout@v4
