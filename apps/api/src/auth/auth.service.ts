@@ -117,15 +117,15 @@ export class AuthService {
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      console.debug("erreur token");
-      return 0;  // Unauthorized
+      console.error("erreur token");
+      throw new UnauthorizedException("Token invalide");
     }
 
     if (!clientId || !clientSecret || !code) {
-      console.error("Client ID, Client Secret ou Code manquant:", {
+      console.error("Client ID, Client Secret ou Code undefined:", {
         clientId, clientSecret, code
       });
-      return 0;  // Bad Request
+      throw new UnauthorizedException("clientId or clientSecret invalide");
     }
 
     try {
@@ -144,7 +144,7 @@ export class AuthService {
       });
 
       if (!response.ok) {
-        console.error('Erreur lors de la requête vers Atlassian:', response.statusText);
+        console.error('Erreur on Altissian Request:', response.statusText);
         return 0;
       }
 

@@ -15,11 +15,11 @@
                     return null
                 }
             } else {
-                console.log("Erreur lors de la récupération du token");
+                console.log("Error during token recuperation");
                 return null
             }
         } catch (error) {
-            console.error('Erreur lors de la requête :', error);
+            console.error('Erreur during the request :', error);
             return null
         }
     }
@@ -43,17 +43,17 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Authentification Jira réussie', data);
+                    console.log('Success auth', data);
                     goto('/profile/authorization?success=1&service=jira');
                 } else {
-                    throw new Error(`Erreur lors de l'authentification`);
+                    throw new Error(`Error during Auth`);
                 }
             } catch (error) {
                 console.error('Erreur:', error);
                 goto('/profile/authorization?success=0&service=jira');
             }
         } else {
-            console.error('Aucun code ou token reçu');
+            console.error('No token received');
             goto('/profile/authorization?success=0&service=jira');
         }
     });

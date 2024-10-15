@@ -25,7 +25,7 @@
 		{ name: 'Zapier', logo: '⚡' },
 		{ name: 'Discord', logo: '💬' },
 		{ name: 'Notion', logo: '📝' },
-		{ name: 'jira', logo: '🔧' },
+		{ name: 'Jira', logo: '🔧' },
 		{ name: 'Salesforce', logo: '☁️' }
 	];
 
