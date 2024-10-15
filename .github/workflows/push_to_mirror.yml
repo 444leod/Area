@@ -94,7 +94,7 @@ jobs:
 
       - name: build and start Docker Compose without client_mobile
         run: |
-          docker compose up --build
+          SKIP_MOBILE_COMPILATION=1 docker compose up --build
           
           services=(queue manager worker server client_web)
           for service in "${services[@]}"; do
