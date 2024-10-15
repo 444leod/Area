@@ -33,8 +33,6 @@ export class AuthController {
       throw new BadRequestException("Google authorization code is required");
     }
 
-    console.log(code);
-
     return this.authService.connectJira(code, req);
   }
 
