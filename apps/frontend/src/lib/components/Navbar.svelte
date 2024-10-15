@@ -3,6 +3,7 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
 	import { authStore } from '$lib/store/authStore';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
 	let isMenuOpen = false;
@@ -10,28 +11,46 @@
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
 	}
+
 	async function logout() {
 		try {
 			const response = await fetch('/api/logout', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' }
 			});
-
 			if (response.ok) {
 				const result = await response.json();
 				if (result.success) {
 					authStore.set(false);
 					goto('/login');
 				} else {
-					console.log('Erreur lors de la déconnexion');
+					console.log('Error during logout');
 				}
 			} else {
-				console.error('Erreur lors de la requête de déconnexion');
+				console.error('Error during logout request');
 			}
 		} catch (error) {
-			console.error('Erreur lors de la déconnexion :', error);
+			console.error('Error during logout:', error);
 		}
 	}
+
+	async function checkAuthStatus() {
+		try {
+			const response = await fetch('/api/auth');
+			if (response.ok) {
+				const { isAuthenticated } = await response.json();
+				authStore.set(isAuthenticated);
+			} else {
+				console.error('Error fetching auth status');
+			}
+		} catch (error) {
+			console.error('Error checking auth status:', error);
+		}
+	}
+
+	onMount(() => {
+		checkAuthStatus();
+	});
 </script>
 
 <nav class="p-4 bg-surface-100-800-token">
@@ -45,7 +64,7 @@
 					<User class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Profile </span>
 				</a>
-				<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">
+				<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-dashboard-button">
 					<LayoutDashboard class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Dashboard </span>
 				</a>
@@ -82,6 +101,10 @@
 					<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-profile-button">
 						<User class="mr-2" size={18} />
 						Profile
+					</a>
+					<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-dashboard-button">
+						<LayoutDashboard class="mr-2" size={18} />
+						Dashboard
 					</a>
 					<button on:click={() => { logout(); toggleMenu(); }} class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" data-testid="mobile-logout-button">
 						<LogOut class="mr-2" size={18} />
