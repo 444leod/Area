@@ -23,8 +23,6 @@
 				if (result.success) {
 					authStore.set(false);
 					goto('/login');
-				} else {
-					console.log('Error during logout');
 				}
 			} else {
 				console.error('Error during logout request');
