@@ -30,7 +30,7 @@
 				setError(error.message);
 			}
 		} catch (error) {
-			console.error('Error logging out:', error);
+			setError(error?.message);
 		}
 	}
 
