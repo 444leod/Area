@@ -74,7 +74,7 @@ export class AuthService {
     }
   }
 
-  async handleGoogleMobileAuth(token: string, isMobile: boolean) {
+  async handleGoogleMobileAuth(token: string, refreshToken:string, isMobile: boolean) {
     try {
       let ticket;
       if (isMobile) {
@@ -89,12 +89,13 @@ export class AuthService {
         });
       }
       const payload = ticket.getPayload();
+      console.log(JSON.stringify(payload));
       const googleServiceId = new ObjectId("64ff2e8e2a6e4b3f78abcd12");
       const user = await this.usersService.findOrCreateUser({
         email: payload.email,
         first_name: payload.given_name,
         last_name: payload.family_name,
-        refreshToken: payload.refresh_token,
+        refreshToken: refreshToken,
         token: token,
         service_id: googleServiceId,
       });

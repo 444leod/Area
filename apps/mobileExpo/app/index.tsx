@@ -30,10 +30,11 @@ export default function LoginScreen() {
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: "825177499555-dhg7f5e5lfcmj8jk006npd2aupm99jre.apps.googleusercontent.com",
-    redirectUri: "com.jbazan.mobileexpo:/oauth2redirect"
+    redirectUri: "com.jbazan.mobileexpo:/oauth2redirect",
+
   });
 
-  const handleGoogleAuth = async (idToken: string) => {
+  const handleGoogleAuth = async (idToken: string, refreshToken: string) => {
     try {
       const response = await fetch(`${API_URL}/auth/google/mobile`, {
         method: 'POST',
@@ -41,7 +42,7 @@ export default function LoginScreen() {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ token: idToken, isMobile: true })
+        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true })
       });
       if (!response.ok) {
         const errorBody = await response.text();
@@ -71,7 +72,8 @@ export default function LoginScreen() {
     if (response?.type === "success") {
       setLoading(true);
       const { id_token } = response.params;
-      handleGoogleAuth(id_token);
+      const refresh_token = response.authentication?.refreshToken;
+      handleGoogleAuth(id_token, refresh_token);
     } else if (response?.type === "error") {
       console.error("Google Sign-In error:", response.error);
       Alert.alert(

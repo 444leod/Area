@@ -36,11 +36,11 @@ export class AuthController {
   }
 
   @Post("/google/mobile")
-  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean) {
+  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean, @Body("refreshToken") refreshToken: string) {
     if (!token) {
       throw new BadRequestException("Google token is required");
     }
-    return this.authService.handleGoogleMobileAuth(token, isMobile);
+    return this.authService.handleGoogleMobileAuth(token, refreshToken, isMobile);
   }
 
   @Post("/register")
