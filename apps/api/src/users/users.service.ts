@@ -118,19 +118,19 @@ export class UsersService {
     try {
       decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
-      console.error('Erreur lors du décodage du token:', error);
-      throw new Error('Token invalide');
+      console.error('Error while decoding the token:', error);
+      throw new Error('invalid token');
     }
 
     const userId = decodedToken.sub;
     if (!userId) {
-      throw new Error('ID utilisateur manquant dans le token');
+      throw new Error('Missing user ID in token');
     }
 
     const user = await this.userModel.findById(userId);
 
     if (!user) {
-      throw new Error("Utilisateur non trouvé");
+      throw new NotFoundException("User not found");
     }
 
     const authIndex = user.authorizations.findIndex(
