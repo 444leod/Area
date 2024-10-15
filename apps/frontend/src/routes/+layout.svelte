@@ -1,6 +1,8 @@
 <script lang="ts">
-	import Navbar from '$lib/components/Navbar.svelte';
-	import '../app.postcss';
+    import { onMount } from 'svelte';
+    import Navbar from '$lib/components/Navbar.svelte';
+    import '../app.postcss';
+
 </script>
 
 <Navbar />
