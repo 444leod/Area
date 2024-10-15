@@ -11,7 +11,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
 
-
         if (code) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/google`, {
