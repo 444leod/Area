@@ -109,22 +109,34 @@ jobs:
 
       - name: build and start Docker Compose without client_mobile
         run: |
-          docker compose up --build --abort-on-container-exit
-          
-          services=(queue manager worker server client_web)
-          for service in "${services[@]}"; do
-            until [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker-compose ps -q $service))" == "healthy" ]; do
-              echo "Waiting for $service service to be healthy..."
-              sleep 5
-            done
-          done
-          
-          # Check if all services are running
-          docker-compose ps
+          docker-compose up --build -d
 
-      - name: Stop and remove containers
+      - name: Wait for containers to finish and check for errors
         run: |
-          docker compose down
+          # Wait for logs to ensure all services are up
+          docker-compose logs
+
+          # Check exit codes of specific containers
+          SERVICES=("client_mobile" "client_web" "server" "worker" "manager" "queue")  # Replace with your actual service names
+          ERROR=0
+
+          for SERVICE in "${SERVICES[@]}"; do
+            EXIT_CODE=$(docker inspect --format='{{.State.ExitCode}}' $(docker-compose ps -q "$SERVICE") || echo "1")
+            if [ "$EXIT_CODE" -ne 0 ]; then
+              echo "$SERVICE exited with code $EXIT_CODE. Exiting..."
+              ERROR=1
+            fi
+          done
+
+          # Exit if any service failed
+          if [ "$ERROR" -ne 0 ]; then
+            docker-compose down
+            exit 1
+          fi
+
+      - name: Tear down Docker
+        if: always()
+        run: docker-compose down
 
 
 #  test:
