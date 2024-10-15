@@ -30,6 +30,7 @@ jobs:
       RMQ_PASS: ${{ secrets.RMQ_PASS }}
       RMQ_HOST: ${{ secrets.RMQ_HOST }}
       RMQ_QUEUE: ${{ secrets.RMQ_QUEUE }}
+      SKIP_MOBILE_COMPILATION: 1
 
     steps:
       - name: Checkout repository
@@ -93,7 +94,7 @@ jobs:
 
       - name: build and start Docker Compose without client_mobile
         run: |
-          docker compose up --build queue manager worker server client_web -d
+          docker compose up --build
           
           services=(queue manager worker server client_web)
           for service in "${services[@]}"; do
