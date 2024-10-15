@@ -92,12 +92,19 @@ jobs:
           echo "RMQ_HOST=${RMQ_HOST}" >> ./apps/worker/.env
           echo "RMQ_QUEUE=${RMQ_QUEUE}" >> ./apps/worker/.env
 
+      - name: generate mobileExpo .env
+        run: |
+            echo "EXPO_USERNAME=" >> ./apps/mobileExpo/.env
+            echo "EXPO_PASSWORD=" >> ./apps/mobileExpo/.env
+            echo "EXPO_PUBLIC_API_URL=" >> ./apps/mobileExpo/.env
+            echo "EXPO_PUBLIC_GOOGLE_CLIENT_ID=" >> ./apps/mobileExpo/.env
+
       - name: setup Docker
         uses: docker/setup-buildx-action@v2
 
       - name: build and start Docker Compose without client_mobile
         run: |
-          SKIP_MOBILE_COMPILATION=1 docker compose up --build
+          docker compose up --build
           
           services=(queue manager worker server client_web)
           for service in "${services[@]}"; do
