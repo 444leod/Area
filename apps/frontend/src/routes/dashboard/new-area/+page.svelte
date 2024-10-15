@@ -102,7 +102,7 @@
 			formMessage = 'Automation created successfully!';
 			setTimeout(() => {
 				goto('/dashboard');
-			}, 2000); // Redirect after 2 seconds
+			}, 2000);
 		} else {
 			formMessage = `Failed to create automation: ${result.data?.message || 'Unknown error'}`;
 		}
