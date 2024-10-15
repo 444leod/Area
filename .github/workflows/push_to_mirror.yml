@@ -33,6 +33,9 @@ jobs:
       SKIP_MOBILE_COMPILATION: 1
 
     steps:
+      - name: cleanup old checkout
+        run: chmod +w -R ${GITHUB_WORKSPACE}; rm -rf ${GITHUB_WORKSPACE}/*;
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
