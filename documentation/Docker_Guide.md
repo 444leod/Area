@@ -14,10 +14,16 @@ docker build -t api -f apps/api/Dockerfile .
 docker run --env-file apps/api/.env --network=${port} api
 ```
 
-### Front-end
+### Front-end (Web)
 ```sh
 docker build -t frontend -f apps/frontend/Dockerfile .
 docker run --env-file apps/frontend/.env frontend
+```
+
+### Front-end (Mobile)
+```sh
+docker build -t mobile-expo -f apps/mobileExpo/Dockerfile .
+docker run --env-file apps/mobileExpo/.env mobile-expo
 ```
 
 ### Queue
@@ -92,3 +98,46 @@ List of services:
 - client_web depends on both client_mobile and server.
 
 This structure ensures that services are only started once their dependencies are healthy and running, creating a reliable workflow.
+
+### Running the compose file:
+
+The commands are launched from the root of the project.
+
+To start all services, run the following command:
+```sh
+docker compose up --build
+```
+
+To start a specific service, run the following command:
+```sh
+docker compose up [<service-name>..] --build
+```
+
+To stop all services, run the following command:
+```sh
+docker compose down
+```
+
+To stop a specific service, run the following command:
+```sh
+docker compose down [<service-name>..]
+```
+
+To skip the mobile build and create a mock client.apk instead, run the following command:
+```sh
+SKIP_MOBILE_COMPILATION=1 docker compose build client_mobile
+```
+
+`SKIP_MOBILE_COMPILATION=1` for skipping/mocking the mobile build, `SKIP_MOBILE_COMPILATION=0` to get the real build.
+
+Additional tips:
+
+Run the following command to force a rebuild of all services:
+```sh
+docker compose up --build --force-recreate
+```
+
+Also works with specific services:
+```sh
+docker compose up [<service-name>..] --build --force-recreate
+```

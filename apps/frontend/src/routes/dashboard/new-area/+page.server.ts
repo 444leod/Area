@@ -3,6 +3,22 @@ import type { Actions, PageServerLoad } from './$types';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+export const load: PageServerLoad = async ({ fetch }) => {
+	try {
+	  const response = await fetch(`${API_URL}/services`);
+	  if (!response.ok) {
+		throw new Error('Failed to fetch services');
+	  }
+  
+	  const services = await response.json();
+	  return { services };
+	} catch (err) {
+	  console.error(err);
+	  return { services: [] };
+	}
+  };
+  
+
 export const actions: Actions = {
 	createArea: async ({ request, fetch, cookies }) => {
 		const token = cookies.get('token');
@@ -14,9 +30,13 @@ export const actions: Actions = {
 		const actionDetails = JSON.parse(formData.get('actionDetails') as string);
 		const reactionDetails = JSON.parse(formData.get('reactionDetails') as string);
 
+		const { type, params } = actionDetails;
+		const newAction = { type, ...params };
+		const { type: reactionType, params: reactionParams } = reactionDetails;
+		const newReaction = { type: reactionType, ...reactionParams };
 		const newArea = {
-			action: actionDetails,
-			reaction: reactionDetails
+			action: newAction,
+			reaction: newReaction
 		};
 		try {
 			const response = await fetch(`${API_URL}/areas`, {

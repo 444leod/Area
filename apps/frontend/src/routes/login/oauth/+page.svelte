@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
     import { fade } from 'svelte/transition';
+    import {authStore} from "$lib/store/authStore";
 
     let loading = true;
     let error = false;
@@ -25,6 +26,7 @@
                 const data = await response.json();
                 document.cookie = `token=${data.token}; path=/; secure; samesite=strict`;
                 loading = false;
+                authStore.set(true);
                 setTimeout(() => goto('/dashboard'), 1000);
             } catch (error) {
                 console.error('Error during Google authentication:', error);
