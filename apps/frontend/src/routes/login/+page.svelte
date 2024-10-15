@@ -2,44 +2,22 @@
 	import { page } from '$app/stores';
 	import { authStore } from '$lib/store/authStore';
 	import { enhance } from '$app/forms';
-	import { Mail, Lock, LogIn, AlertCircle } from 'lucide-svelte';
+	import { Mail, Lock, LogIn } from 'lucide-svelte';
 	import { oauthGoogle } from "$lib/modules/oauthGoogle";
 	import { goto } from '$app/navigation';
-	import { fade } from 'svelte/transition';
+	import { setError } from "$lib/store/errorMessage";
 
 	let email = '';
 	let password = '';
-	let alertVisible = false;
-	let alertMessage = '';
-	let alertType: 'success' | 'error' = 'error';
-
 	$: if ($page.form?.success) {
 		authStore.set(true);
 		setTimeout(() => goto('/dashboard'), 500);
 	} else if ($page.form?.incorrect || $page.form?.error) {
-		showAlert($page.form.error || 'Email or password is incorrect', 'error');
-	}
-
-	function showAlert(message: string, type: 'success' | 'error') {
-		alertMessage = message;
-		alertType = type;
-		alertVisible = true;
-		setTimeout(() => alertVisible = false, 5000);
+		setError($page.form.error || 'Incorrect email or password');
 	}
 </script>
 
 <div class="flex flex-col gap-10 items-center justify-center p-6">
-	{#if alertVisible}
-		<div class="" transition:fade={{ duration: 200 }}>
-			<aside class="alert {alertType === 'error' ? 'variant-filled-error' : 'variant-filled-success'}">
-				<AlertCircle />
-				<div class="alert-message">
-					<p>{alertMessage}</p>
-				</div>
-			</aside>
-		</div>
-	{/if}
-
 	<div class="card p-8 w-full max-w-md shadow-xl">
 		<h2 class="h2 mb-4 text-center">Welcome Back!</h2>
 		<form method="POST" use:enhance class="space-y-4">

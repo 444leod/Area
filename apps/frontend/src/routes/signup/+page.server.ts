@@ -41,8 +41,7 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (error) {
-			console.error('Unexpected error during registration:', error);
-			return fail(500, { error: 'An unexpected error occurred' });
+			return fail(500, { error: 'An unexpected error occurred' + error });
 		}
 	}
 };

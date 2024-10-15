@@ -32,8 +32,7 @@ export const actions: Actions = {
 			});
 			return { success: true };
 		} catch (error) {
-			console.error('Unexpected error during login:', error);
-			return fail(500, { email, error: 'An unexpected error occurred' });
+			return fail(500, { email, error: 'An unexpected error occurred' + error });
 		}
 	}
 };

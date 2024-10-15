@@ -5,6 +5,7 @@
 	import { authStore } from '$lib/store/authStore';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { setError } from "$lib/store/errorMessage";
 
 	let isMenuOpen = false;
 
@@ -25,10 +26,11 @@
 					goto('/login');
 				}
 			} else {
-				console.error('Error during logout request');
+				const error = await response.json();
+				setError(error.message);
 			}
 		} catch (error) {
-			console.error('Error during logout:', error);
+			console.error('Error logging out:', error);
 		}
 	}
 
