@@ -10,6 +10,7 @@ jobs:
     runs-on: self-hosted
 
     env:
+      MONGODB_CA_PEM: ${{ secrets.MONGODB_CA_PEM }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       SECRET_SESSION: ${{ secrets.SECRET_SESSION }}
       MONGODB_HOST: ${{ secrets.MONGODB_HOST }}
@@ -38,6 +39,10 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: generate .pem file
+        run: |
+          echo "${MONGODB_CA_PEM}" > ./mongodb-ca.pem
 
       - name: generate api .env
         run: |
