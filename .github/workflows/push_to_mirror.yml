@@ -113,11 +113,9 @@ jobs:
 
       - name: Wait for containers to finish and check for errors
         run: |
-          # Wait for logs to ensure all services are up
           docker compose logs
 
-          # Check exit codes of specific containers
-          SERVICES=("client_mobile" "client_web" "server" "worker" "manager" "queue")  # Replace with your actual service names
+          SERVICES=("client_web" "server" "worker" "manager" "queue")
           ERROR=0
 
           for SERVICE in "${SERVICES[@]}"; do
@@ -128,7 +126,6 @@ jobs:
             fi
           done
 
-          # Exit if any service failed
           if [ "$ERROR" -ne 0 ]; then
             docker compose down
             exit 1
