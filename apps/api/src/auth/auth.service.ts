@@ -122,7 +122,7 @@ export class AuthService {
     }
 
     if (!clientId || !clientSecret || !code) {
-      console.error("Client ID, Client Secret ou Code undefined:", {
+      console.error("Client ID, Client Secret or Code undefined:", {
         clientId, clientSecret, code
       });
       throw new UnauthorizedException("clientId or clientSecret invalide");
