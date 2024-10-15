@@ -9,6 +9,7 @@ import * as bcrypt from "bcryptjs";
 import { UsersService } from "../users/users.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
+import { AdminService } from "../services/services.service";
 import { ObjectId } from "mongodb";
 import { google } from "googleapis";
 import { ConfigService } from "@nestjs/config";
@@ -23,6 +24,7 @@ export class AuthService {
       private usersService: UsersService,
       private jwtService: JwtService,
       private configService: ConfigService,
+      private adminService: AdminService,
   ) {
     this.webOAuth2Client = new google.auth.OAuth2(
         this.configService.get("GOOGLE_CLIENT_ID"),
@@ -153,9 +155,11 @@ export class AuthService {
       const accessToken = data.access_token;
       const refreshToken = data.refresh_token;
 
+      const JiraService = await this.adminService.getServiceByName("Jira");
+
       try {
         const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-          service_id: new ObjectId("64ff2e8e2a6e2c9d78abcd12"),
+          service_id: JiraService._id,
           type: 'JIRA',
           accessToken: accessToken,
           refreshToken: refreshToken
