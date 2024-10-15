@@ -109,7 +109,7 @@ export class AuthService {
     }
   }
 
-  async connectJira(code: string, req: any) {
+  async connectJira(code: string, req: Request) {
     const clientId = this.configService.get("JIRA_CLIENT_ID");
     const clientSecret = this.configService.get("JIRA_CLIENT_SECRET");
     const redirectUri = 'http://localhost:8081/login/oauth/jira';
@@ -117,8 +117,8 @@ export class AuthService {
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-      console.error("erreur token");
-      throw new UnauthorizedException("Token invalide");
+      console.error("error token");
+      throw new UnauthorizedException("invalid Token");
     }
 
     if (!clientId || !clientSecret || !code) {
@@ -163,11 +163,11 @@ export class AuthService {
 
         return 1;
       } catch (error) {
-        console.error('Erreur lors de la mise à jour de l\'autorisation:', error);
+        console.error('Error updating permission:', error);
         return 0;
       }
     } catch (error) {
-      console.error('Erreur lors de la connexion à Jira:', error);
+      console.error('Error connecting to Jira:', error);
       return 0;
     }
   }
