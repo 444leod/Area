@@ -13,7 +13,6 @@
     let deleteLoading = false;
     let toggleLoading = false;
 
-    console.log("token", token);
     const dispatch = createEventDispatcher();
   
     onMount(async () => {

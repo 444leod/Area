@@ -66,6 +66,8 @@ services:
   client_mobile:
     build:
       dockerfile: ./apps/mobileExpo/Dockerfile
+      args:
+        SKIP_MOBILE_COMPILATION: ${SKIP_MOBILE_COMPILATION:-0}
     image: mobile-expo
     container_name: mobile-expo
     env_file:

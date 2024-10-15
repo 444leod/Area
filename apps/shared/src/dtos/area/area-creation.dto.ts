@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
 import {
   ActionInfos,
   ActionTypes,
@@ -13,17 +13,22 @@ import {
   ExampleReactionInfos,
   ReactionInfos,
   ReactionTypes,
-  SendEmailReactionInfos,
+  SendEmailReactionInfos, SendMessageToDiscordWebhookInfos,
 } from "../reactions";
 import { IsNotEmptyObject, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
+@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
 export class AreaCreationDto {
-  @ApiProperty()
+  @ApiProperty({
+    oneOf: [
+      { $ref: getSchemaPath(ExampleActionInfos) },
+      { $ref: getSchemaPath(EachXSecondsActionInfos) },
+      { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
+    ],
+  })
   @IsNotEmptyObject()
-
-  /* This basically tells the Pipeline to validate sub-objects
-   ** with a specific type if a property meets a certain value */
   @ValidateNested()
   @Type(() => BaseActionInfos, {
     keepDiscriminatorProperty: true,
@@ -38,6 +43,14 @@ export class AreaCreationDto {
   })
   action: ActionInfos;
 
+  @ApiProperty({
+    oneOf: [
+      { $ref: getSchemaPath(ExampleReactionInfos) },
+      { $ref: getSchemaPath(SendEmailReactionInfos) },
+      { $ref: getSchemaPath(CreateGoogleTaskInfos) },
+      { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) }
+    ],
+  })
   @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
@@ -49,6 +62,7 @@ export class AreaCreationDto {
         { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
         { value: CreateGoogleTaskInfos, name: ReactionTypes.CREATE_GOOGLE_TASK },
+        { value: SendMessageToDiscordWebhookInfos, name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK },
       ],
     },
   })
