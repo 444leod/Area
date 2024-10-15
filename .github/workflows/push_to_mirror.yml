@@ -109,7 +109,7 @@ jobs:
 
       - name: build and start Docker Compose without client_mobile
         run: |
-          docker compose up --build
+          docker compose up --build --abort-on-container-exit
           
           services=(queue manager worker server client_web)
           for service in "${services[@]}"; do
