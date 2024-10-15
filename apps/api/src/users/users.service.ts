@@ -110,32 +110,29 @@ export class UsersService {
 
   async addOrUpdateAuthorizationWithToken(token: string, authData: {
     service_id: ObjectId;
-    type: string;  // Par exemple, "GOOGLE", "JIRA", etc.
+    type: string;
     accessToken: string;
     refreshToken: string;
   }): Promise<User> {
-    // Décoder le token JWT pour obtenir l'ID utilisateur
     let decodedToken;
     try {
-      decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Assurez-vous d'avoir le bon secret
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
       console.error('Erreur lors du décodage du token:', error);
       throw new Error('Token invalide');
     }
 
-    const userId = decodedToken.sub; // Assurez-vous que le payload contient bien _id
+    const userId = decodedToken.sub;
     if (!userId) {
       throw new Error('ID utilisateur manquant dans le token');
     }
 
-    // Rechercher l'utilisateur en fonction de l'ID
     const user = await this.userModel.findById(userId);
 
     if (!user) {
       throw new Error("Utilisateur non trouvé");
     }
 
-    // Rechercher une autorisation existante pour ce service et ce type
     const authIndex = user.authorizations.findIndex(
         (auth) =>
             auth.service_id &&
@@ -144,13 +141,11 @@ export class UsersService {
     );
 
     if (authIndex !== -1) {
-      // Si l'autorisation existe, mettre à jour les tokens
       user.authorizations[authIndex].data = {
         token: authData.accessToken,
         refresh_token: authData.refreshToken,
       };
     } else {
-      // Sinon, ajouter une nouvelle autorisation
       user.authorizations.push({
         service_id: authData.service_id,
         type: authData.type,
@@ -161,7 +156,6 @@ export class UsersService {
       });
     }
 
-    // Sauvegarder et retourner l'utilisateur mis à jour
     return await user.save();
   }
 
