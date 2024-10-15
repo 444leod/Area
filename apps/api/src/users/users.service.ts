@@ -124,7 +124,7 @@ export class UsersService {
 
     const userId = decodedToken.sub;
     if (!userId) {
-      throw new Error('ID utilisateur manquant dans le token');
+      throw new Error('Missing user ID in token');
     }
 
     const user = await this.userModel.findById(userId);
