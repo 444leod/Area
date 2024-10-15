@@ -28,12 +28,14 @@ export const actions: Actions = {
 				httpOnly: true,
 				sameSite: 'strict',
 				secure: process.env.NODE_ENV === 'production',
-				maxAge: 60 * 60 * 24 * 7 // 1 semaine
+				maxAge: 60 * 60 * 24 * 7 // 1 week
 			});
+
+			// Return a code that the client can check
+			return { success: true };
 		} catch (error) {
 			console.error('Unexpected error during login:', error);
 			return fail(500, { email, error: 'An unexpected error occurred' });
 		}
-		throw redirect(303, '/dashboard');
 	}
 };

@@ -46,17 +46,12 @@ export class AuthController {
     return this.authService.handleGoogleCallback(code);
   }
 
-  @Get("/google")
-  @UseGuards(AuthGuard("google"))
-  async googleAuth(@Req() req) {}
-
-  @Get("/google/callback")
-  @UseGuards(AuthGuard("google"))
-  async googleAuthRedirect(@Req() req, @Res() res) {
-    const loginResponse = await this.authService.handleGoogleCallback(req);
-
-    const token = loginResponse.token;
-    return res.redirect(`${process.env.GOOGLE_REDIRECT_URL}?token=${token}`);
+  @Post("/google/mobile")
+  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean, @Body("refreshToken") refreshToken: string) {
+    if (!token) {
+      throw new BadRequestException("Google token is required");
+    }
+    return this.authService.handleGoogleMobileAuth(token, refreshToken, isMobile);
   }
 
   @Post("/register")

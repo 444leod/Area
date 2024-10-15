@@ -3,3 +3,4 @@ export * from "./actions";
 export * from "./history";
 export * from "./user";
 export * from "./area";
+export * from "./service";
