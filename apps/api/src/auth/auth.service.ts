@@ -66,6 +66,71 @@ export class AuthService {
     };
   }
 
+  async connectJira(code: string, req: any) {
+    const clientId = this.configService.get("JIRA_CLIENT_ID");
+    const clientSecret = this.configService.get("JIRA_CLIENT_SECRET");
+    const redirectUri = 'http://localhost:8081/login/oauth/jira';
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      console.debug("erreur token");
+      return 0;  // Unauthorized
+    }
+
+    if (!clientId || !clientSecret || !code) {
+      console.error("Client ID, Client Secret ou Code manquant:", {
+        clientId, clientSecret, code
+      });
+      return 0;  // Bad Request
+    }
+
+    try {
+      const response = await fetch('https://auth.atlassian.com/oauth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          grant_type: 'authorization_code',
+          client_id: clientId,
+          client_secret: clientSecret,
+          code: code,
+          redirect_uri: redirectUri
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Erreur lors de la requête vers Atlassian:', response.statusText);
+        return 0;
+      }
+
+      const data = await response.json();
+
+      const accessToken = data.access_token;
+      const refreshToken = data.refresh_token;
+
+      try {
+        const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
+          service_id: new ObjectId("64ff2e8e2a6e2c9d78abcd12"),
+          type: 'JIRA',
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        });
+
+        return 1;
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de l\'autorisation:', error);
+        return 0;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la connexion à Jira:', error);
+      return 0;
+    }
+  }
+
+
+
   async register(dto: UserRegistrationDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (user != undefined) throw new ConflictException();

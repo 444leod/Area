@@ -54,6 +54,7 @@
 			<img src="/google-logo.png" alt="Google" class="w-5 h-5 mr-2" />
 			Continue with Google
 		</button>
+
 		<div class="mt-4 text-center">
 			<a href="/forgot-password" class="anchor">Forgot password?</a>
 		</div>

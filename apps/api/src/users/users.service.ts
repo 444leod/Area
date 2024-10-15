@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ObjectId } from "mongodb";
 import * as bcrypt from "bcryptjs";
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UsersService {
@@ -105,6 +106,63 @@ export class UsersService {
     u.areas[index] = area;
     u.save();
     return u.areas[index];
+  }
+
+  async addOrUpdateAuthorizationWithToken(token: string, authData: {
+    service_id: ObjectId;
+    type: string;  // Par exemple, "GOOGLE", "JIRA", etc.
+    accessToken: string;
+    refreshToken: string;
+  }): Promise<User> {
+    // Décoder le token JWT pour obtenir l'ID utilisateur
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Assurez-vous d'avoir le bon secret
+    } catch (error) {
+      console.error('Erreur lors du décodage du token:', error);
+      throw new Error('Token invalide');
+    }
+
+    const userId = decodedToken.sub; // Assurez-vous que le payload contient bien _id
+    if (!userId) {
+      throw new Error('ID utilisateur manquant dans le token');
+    }
+
+    // Rechercher l'utilisateur en fonction de l'ID
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new Error("Utilisateur non trouvé");
+    }
+
+    // Rechercher une autorisation existante pour ce service et ce type
+    const authIndex = user.authorizations.findIndex(
+        (auth) =>
+            auth.service_id &&
+            auth.service_id.equals(authData.service_id) &&
+            auth.type === authData.type
+    );
+
+    if (authIndex !== -1) {
+      // Si l'autorisation existe, mettre à jour les tokens
+      user.authorizations[authIndex].data = {
+        token: authData.accessToken,
+        refresh_token: authData.refreshToken,
+      };
+    } else {
+      // Sinon, ajouter une nouvelle autorisation
+      user.authorizations.push({
+        service_id: authData.service_id,
+        type: authData.type,
+        data: {
+          token: authData.accessToken,
+          refresh_token: authData.refreshToken,
+        },
+      });
+    }
+
+    // Sauvegarder et retourner l'utilisateur mis à jour
+    return await user.save();
   }
 
   async toggleUserArea(user: { sub: string }, id: ObjectId): Promise<Area> {
