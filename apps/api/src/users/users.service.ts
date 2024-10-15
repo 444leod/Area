@@ -4,6 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ObjectId } from "mongodb";
 import * as bcrypt from "bcryptjs";
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UsersService {
@@ -105,6 +106,57 @@ export class UsersService {
     u.areas[index] = area;
     u.save();
     return u.areas[index];
+  }
+
+  async addOrUpdateAuthorizationWithToken(token: string, authData: {
+    service_id: ObjectId;
+    type: string;
+    accessToken: string;
+    refreshToken: string;
+  }): Promise<User> {
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error('Error while decoding the token:', error);
+      throw new Error('invalid token');
+    }
+
+    const userId = decodedToken.sub;
+    if (!userId) {
+      throw new Error('Missing user ID in token');
+    }
+
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const authIndex = user.authorizations.findIndex(
+        (auth) =>
+            auth.service_id &&
+            auth.service_id.equals(authData.service_id) &&
+            auth.type === authData.type
+    );
+
+    if (authIndex !== -1) {
+      user.authorizations[authIndex].data = {
+        token: authData.accessToken,
+        refresh_token: authData.refreshToken,
+      };
+    } else {
+      user.authorizations.push({
+        service_id: authData.service_id,
+        type: authData.type,
+        data: {
+          token: authData.accessToken,
+          refresh_token: authData.refreshToken,
+        },
+      });
+    }
+
+    return await user.save();
   }
 
   async toggleUserArea(user: { sub: string }, id: ObjectId): Promise<Area> {

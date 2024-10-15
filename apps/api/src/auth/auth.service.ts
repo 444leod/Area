@@ -9,6 +9,7 @@ import * as bcrypt from "bcryptjs";
 import { UsersService } from "../users/users.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
+import { AdminService } from "../services/services.service";
 import { ObjectId } from "mongodb";
 import { google } from "googleapis";
 import { ConfigService } from "@nestjs/config";
@@ -23,6 +24,7 @@ export class AuthService {
       private usersService: UsersService,
       private jwtService: JwtService,
       private configService: ConfigService,
+      private adminService: AdminService,
   ) {
     this.webOAuth2Client = new google.auth.OAuth2(
         this.configService.get("GOOGLE_CLIENT_ID"),
@@ -108,6 +110,73 @@ export class AuthService {
       throw new UnauthorizedException("Invalid Google token");
     }
   }
+
+  async connectJira(code: string, req: Request) {
+    const clientId = this.configService.get("JIRA_CLIENT_ID");
+    const clientSecret = this.configService.get("JIRA_CLIENT_SECRET");
+    const redirectUri = 'http://localhost:8081/login/oauth/jira';
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      console.error("error token");
+      throw new UnauthorizedException("invalid Token");
+    }
+
+    if (!clientId || !clientSecret || !code) {
+      console.error("Client ID, Client Secret or Code undefined:", {
+        clientId, clientSecret, code
+      });
+      throw new UnauthorizedException("clientId or clientSecret invalide");
+    }
+
+    try {
+      const response = await fetch('https://auth.atlassian.com/oauth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          grant_type: 'authorization_code',
+          client_id: clientId,
+          client_secret: clientSecret,
+          code: code,
+          redirect_uri: redirectUri
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Error on Altissian Request:', response.statusText);
+        return 0;
+      }
+
+      const data = await response.json();
+
+      const accessToken = data.access_token;
+      const refreshToken = data.refresh_token;
+
+      const JiraService = await this.adminService.getServiceByName("Jira");
+
+      try {
+        const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
+          service_id: JiraService._id,
+          type: 'JIRA',
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        });
+
+        return 1;
+      } catch (error) {
+        console.error('Error updating permission:', error);
+        return 0;
+      }
+    } catch (error) {
+      console.error('Error connecting to Jira:', error);
+      return 0;
+    }
+  }
+
+
 
   async register(dto: UserRegistrationDto) {
     const user = await this.usersService.findByEmail(dto.email);
