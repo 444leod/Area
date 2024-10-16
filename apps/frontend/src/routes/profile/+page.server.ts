@@ -19,6 +19,5 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
         throw error(response.status, 'Failed to fetch user profile');
     }
     const profile = await response.json();
-    console.log(profile);
     return { profile };
 };
