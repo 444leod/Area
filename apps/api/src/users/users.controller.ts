@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards } from "@nestjs/common";
+import {Body, Controller, Get, Req, Request, UseGuards} from "@nestjs/common";
 import { AuthGuard } from "../auth/auth.guard";
 import { UsersService } from "./users.service";
 import { ApiTags } from "@nestjs/swagger";
@@ -12,5 +12,10 @@ export class UsersController {
   @Get("profile")
   async getUserProfile(@Request() req) {
     return await this.usersService.findByEmail(req.user.email);
+  }
+
+  @Get('authorization')
+  async getUserAuthorization(@Req() req: Request) {
+    return this.usersService.getUserAuthorization(req);
   }
 }
