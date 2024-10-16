@@ -12,6 +12,6 @@ export class QueueService {
     }
 
     send(packet: AreaPacket | WebhookreaPacket) {
-        this.rabbit_service.sendAreaToQueue(process.env.RMQ_WHREA_QUEUE, packet);
+        this.rabbit_service.sendPacketToQueue(process.env.RMQ_WHREA_QUEUE, packet);
     }
 }

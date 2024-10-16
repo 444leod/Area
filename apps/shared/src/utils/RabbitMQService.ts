@@ -49,7 +49,7 @@ export class RabbitMQService {
     }
   }
 
-  async sendAreaToQueue(queue: string, area: AreaPacket | WebhookreaPacket): Promise<void> {
+  async sendPacketToQueue(queue: string, area: AreaPacket | WebhookreaPacket): Promise<void> {
     if (!this.channel) {
       await this.connect();
     }
@@ -63,7 +63,7 @@ export class RabbitMQService {
     return await this.channel.checkQueue(queue);
   }
 
-  async consumeArea(queue: string, handleArea: (area: AreaPacket) => void): Promise<void> {
+  async consumeMessage(queue: string, handlePacket: (packet: AreaPacket | WebhookreaPacket) => void): Promise<void> {
     await this.channel.assertQueue(queue, {
       durable: false,
     });
@@ -76,10 +76,10 @@ export class RabbitMQService {
             return console.error(`Invalid incoming message`);
           }
           try {
-            const area: AreaPacket = JSON.parse(msg.content.toString());
-            handleArea(area);
+            const packet = JSON.parse(msg.content.toString());
+            handlePacket(packet);
           } catch (error) {
-            console.error(`Error in handling area: ${error}`);
+            console.error(`Error in handling packet: ${error}`);
           }
           this.channel.ack(msg);
         }

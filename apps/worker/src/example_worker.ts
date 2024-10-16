@@ -12,5 +12,5 @@ async function handleArea(area: AreaPacket) {
 }
 
 connection.connect().then(() => {
-    connection.consumeArea(handleArea).then(() => {});
+    connection.consumeMessage(handleArea).then(() => {});
 });
