@@ -36,10 +36,8 @@
 				trigger: 'logos:jira',
 				action: 'logos:jira'
 			},
-			// Add more apps as needed
 		};
 
-		// Default icons if app-specific ones are not found
 		const defaultIcons = {
 			trigger: 'mdi:bell-outline',
 			action: 'mdi:play-circle-outline'
