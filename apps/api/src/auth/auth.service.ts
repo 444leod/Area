@@ -237,9 +237,6 @@ export class AuthService {
         console.error('Error updating permission:', error);
         return 0;
       }
-      console.log('Access Token:', accessToken);
-
-      return accessToken;
     } catch (error) {
       console.error('Error connecting to GitHub:', error);
       return null;
