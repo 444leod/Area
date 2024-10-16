@@ -32,7 +32,7 @@
             oauthFunction: oauthJira
         },
         {
-            name: "Githu",
+            name: "Github",
             description: "Connect to use Github in your automations",
             icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 1-1.005-1.005zM12.577 0H5.234a5.218 5.218 0 0 0-5.234 5.215v6.299h11.578a1.005 1.005 0 0 1 1.005-1.005V0zM24 8.035v10.495a5.417 5.417 0 0 1-5.428 5.428h-4.844v-6.851l.021-.02a2.992 2.992 0 0 0 .88-2.113V0h3.943A5.417 5.417 0 0 1 24 5.429v2.606z" fill="#2684FF"/>
