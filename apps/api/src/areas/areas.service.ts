@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
 import { ObjectId } from "mongodb";
+import { AuthorizationDto } from "@area/shared/dist/dtos/user/authorization.dto";
 
 
 @Injectable()
@@ -17,12 +18,15 @@ export class AreasService {
     return u;
   }
 
-  async getAreaById(id: ObjectId): Promise<Area> {
+  async getWebhookReaById(id: ObjectId): Promise<{uid: ObjectId, auths: AuthorizationDto[], area: Area}> {
     // This will match the user with the correct area id
     // Only 1 area will be present inside the returned document (Projection)
-    const user = await this.userModel.findOne({ "areas._id": id }, { "areas.$": 1 }).exec();
-    if (!user || user.areas.length == 0) throw new NotFoundException("Area not found");
-    return user.areas[0];
+    const user = await this.userModel
+      .findOne({ "areas._id": id }, { "_id": 1, "authorizations": 1, "areas.$": 1 })
+      .exec();
+    if (!user || user.areas.length == 0)
+      throw new NotFoundException("Area not found");
+    return {uid: user._id, auths: user.authorizations, area: user.areas[0]};
   }
 
   async getUserArea(token: { sub: string }, id: ObjectId): Promise<Area> {
