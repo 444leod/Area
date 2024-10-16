@@ -13,31 +13,11 @@
 	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
 	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
 	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
+	import type { App } from '$lib/types/App';
+	import type { Action } from '$lib/types/Action';
+	import type { ActionDetails } from '$lib/types/ActionDetails';
 
 	export let data: PageData;
-
-	interface App {
-		_id: string;
-		name: string;
-		actions: Action[];
-		reactions: Action[];
-	}
-
-	interface Action {
-		name: string;
-		ActionType: string;
-		params: Param[];
-	}
-
-	interface Param {
-		name: string;
-		type: 'string' | 'number' | 'boolean';
-	}
-
-	interface ActionDetails {
-		type: string;
-		params: Record<string, string | number | boolean>;
-	}
 
 	let apps: Writable<App[]> = writable([]);
 	$: {
