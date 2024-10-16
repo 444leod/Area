@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { oauthGoogle } from "$lib/modules/oauthGoogle";
     import { oauthJira } from "$lib/modules/oauthJira";
+    import {authorizationGoogle} from "$lib/modules/authorizationGoogle";
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
 
     let gsap;
@@ -41,7 +42,7 @@
     }
 
     function handleGoogleAuth() {
-        oauthGoogle();
+        authorizationGoogle();
         // In a real scenario, you'd want to wait for the OAuth process to complete
         // before setting this to true. This is just for demonstration.
         googleConnected = true;

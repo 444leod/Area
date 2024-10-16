@@ -30,10 +30,19 @@ export class AuthController {
   @Post("/jira")
   async jiraconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
-      throw new BadRequestException("Google authorization code is required");
+      throw new BadRequestException("Jira authorization code is required");
     }
 
     return this.authService.connectJira(code, req);
+  }
+
+  @Post("/SimpleAuthGoogle")
+  async googleconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Google authorization code is required");
+    }
+
+    return this.authService.connectGoogle(code, req);
   }
 
   @Post("/google")
