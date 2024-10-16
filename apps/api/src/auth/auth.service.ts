@@ -176,6 +176,77 @@ export class AuthService {
     }
   }
 
+  async connectGithub(code: string, req:Request) {
+    const clientId = process.env.GITHUB_CLIENT_ID;
+    const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+    const redirectUri = 'http://localhost:3000/login/oauth/github';
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      console.error("error token");
+      throw new UnauthorizedException("invalid Token");
+    }
+
+    if (!clientId || !clientSecret || !code) {
+      console.error("Client ID, Client Secret or Code missing");
+      throw new Error("Invalid clientId, clientSecret, or code");
+    }
+
+    try {
+      const response = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          client_id: clientId,
+          client_secret: clientSecret,
+          code: code,
+          redirect_uri: redirectUri
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Error on GitHub request:', response.statusText);
+        return null;
+      }
+
+      const data = await response.json();
+
+      const accessToken = data.access_token;
+
+      if (!accessToken) {
+        console.error('No access token received');
+        return null;
+      }
+
+      const GithubService = await this.adminService.getServiceByName("Github");
+
+      try {
+        const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
+          service_id: GithubService._id,
+          type: 'GITHUB',
+          accessToken: accessToken,
+          refreshToken: null
+        });
+
+        return 1;
+      } catch (error) {
+        console.error('Error updating permission:', error);
+        return 0;
+      }
+      console.log('Access Token:', accessToken);
+
+      return accessToken;
+    } catch (error) {
+      console.error('Error connecting to GitHub:', error);
+      return null;
+    }
+  }
+
+
   async connectGoogle(code: string, req: Request) {
     const clientId = this.configService.get("GOOGLE_CLIENT_ID");
     const clientSecret = this.configService.get("GOOGLE_CLIENT_SECRET");

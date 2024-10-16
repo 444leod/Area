@@ -36,6 +36,15 @@ export class AuthController {
     return this.authService.connectJira(code, req);
   }
 
+  @Post("/github")
+  async githubconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("GitHub authorization code is required");
+    }
+
+    return this.authService.connectGithub(code, req);
+  }
+
   @Post("/SimpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {

@@ -1,13 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { oauthGoogle } from "$lib/modules/oauthGoogle";
     import { oauthJira } from "$lib/modules/oauthJira";
     import {authorizationGoogle} from "$lib/modules/authorizationGoogle";
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
+    import { oauthGithub } from "$lib/modules/oauthGithub";
 
     let gsap;
     let googleConnected = false;
     let jiraConnected = false;
+    let githubConnected = false;
 
     const googleIcon = `
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -53,6 +54,12 @@
         // Same note as above
         jiraConnected = true;
     }
+
+    function handleGithubAuth() {
+        oauthGithub();
+        // Same note as above
+        githubConnected = true;
+    }
 </script>
 
 <div class="container mx-auto px-4 py-16">
@@ -76,5 +83,16 @@
                 onConnect={handleJiraAuth}
                 buttonColor="variant-filled-tertiary"
         />
+
+        <!-- TODO CHANGE ICON FOR GITHUB ICON-->
+        <ServiceCard
+                name="GitHub"
+                description="Connect to use GitHub in your automations"
+                icon={jiraIcon}
+                connected={githubConnected}
+                onConnect={handleGithubAuth}
+                buttonColor="variant-filled-tertiary"
+        />
+
     </div>
 </div>
