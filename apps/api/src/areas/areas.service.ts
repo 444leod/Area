@@ -17,6 +17,14 @@ export class AreasService {
     return u;
   }
 
+  async getAreaById(id: ObjectId): Promise<Area> {
+    // This will match the user with the correct area id
+    // Only 1 area will be present inside the returned document (Projection)
+    const user = await this.userModel.findOne({ "areas._id": id }, { "areas.$": 1 }).exec();
+    if (!user || user.areas.length == 0) throw new NotFoundException("Area not found");
+    return user.areas[0];
+  }
+
   async getUserArea(token: { sub: string }, id: ObjectId): Promise<Area> {
     const user = await this.findCurrentUser(token);
     const area = user.areas.find((a) => a._id.equals(id));
