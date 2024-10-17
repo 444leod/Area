@@ -9,7 +9,7 @@ import * as bcrypt from "bcryptjs";
 import { UsersService } from "../users/users.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
-import { AdminService } from "../services/services.service";
+import { ServicesService } from "../services/services.service";
 import { ObjectId } from "mongodb";
 import { google } from "googleapis";
 import { ConfigService } from "@nestjs/config";
@@ -24,7 +24,7 @@ export class AuthService {
       private usersService: UsersService,
       private jwtService: JwtService,
       private configService: ConfigService,
-      private adminService: AdminService,
+      private adminService: ServicesService,
   ) {
     this.webOAuth2Client = new google.auth.OAuth2(
         this.configService.get("GOOGLE_CLIENT_ID"),

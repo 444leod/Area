@@ -1,22 +1,20 @@
 import { Controller, Get, Ip } from "@nestjs/common";
+import { ServicesService } from "./services/services.service";
 
 @Controller()
 export class AppController {
+
+  constructor(private readonly servicesService: ServicesService) {}
+
   @Get("/about.json")
-  getAboutJson(@Ip() ip): object {
+  async getAboutJson(@Ip() ip): Promise<object> {
     return {
       client: {
         ip: ip,
       },
       server: {
         current_time: new Date().getTime(),
-        services: [
-          {
-            name: "internal",
-            actions: [],
-            reactions: [],
-          },
-        ],
+        services: await this.servicesService.getAllServicesShort()
       },
     };
   }
