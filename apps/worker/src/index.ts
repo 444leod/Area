@@ -1,4 +1,4 @@
-import { AreaPacket, RabbitMQService, MongoDBService, WebhookreaPacket } from '@area/shared';
+import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actions-map';
 import { reactionsMap } from './reactions/reactions-map';
@@ -27,11 +27,11 @@ async function run() {
 
         const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
         const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WEBH_QUEUE || '')).messageCount;
+        const selectedQueue = areaQueueStress >= webhQueueStress
+            ? process.env.RMQ_AREA_QUEUE
+            : process.env.RMQ_WEBH_QUEUE;
 
-        if (areaQueueStress >= webhQueueStress)
-            rabbitMQ.consumeMessage(process.env.RMQ_AREA_QUEUE || '', handleArea).then(() => {});
-        else
-            rabbitMQ.consumeMessage(process.env.RMQ_WEBH_QUEUE || '', handleWebhookrea).then(() => {});
+        rabbitMQ.consumeMessage(selectedQueue || '', handleArea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -57,6 +57,7 @@ run().catch(console.dir);
 async function handleArea(areaPacket: AreaPacket) {
     const actionType = areaPacket?.area.action?.informations?.type;
     const reactionType = areaPacket?.area.reaction?.informations?.type;
+    const is_webhook = areaPacket?.area.action.is_webhook || false;
 
     if (!actionType || !reactionType) {
         console.error('Action or reaction type not found.');
@@ -68,40 +69,20 @@ async function handleArea(areaPacket: AreaPacket) {
         console.error(`Action ${actionType} not supported.`);
         return;
     }
+
     const reactionFunction = reactionsMap[reactionType];
     if (!reactionFunction) {
         console.error(`Reaction ${reactionType} not supported.`);
         return;
     }
 
+    if (!is_webhook) {
+        const res = await actionFunction(areaPacket, mongoDB);
+        if (!res)
+            return;
+        console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
+    }
+
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-
-    const res = await actionFunction(areaPacket, mongoDB);
-
-    if (!res) {
-        return;
-    }
-
-    console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-
-    await reactionFunction(res, mongoDB);
-}
-
-async function handleWebhookrea(packet: WebhookreaPacket)
-{
-    const reactionType = packet?.area?.reaction?.informations?.type;
-
-    if (!reactionType) {
-        console.error('Reaction type not found.');
-        return;
-    }
-
-    const reactionFunction = reactionsMap[reactionType];
-    if (!reactionFunction) {
-        console.error(`Reaction ${reactionType} not supported`);
-        return;
-    }
-
-    //const res = await reactionFunction(packet, mongoDB);
-    console.log(packet)
+    await reactionFunction(areaPacket, mongoDB);
 }

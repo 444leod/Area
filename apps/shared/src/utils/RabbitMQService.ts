@@ -1,5 +1,5 @@
 import client, { Channel, Connection } from 'amqplib';
-import { AreaPacket, WebhookreaPacket } from '../dtos';
+import { AreaPacket } from '../dtos';
 
 export class RabbitMQService {
   connection!: Connection;
@@ -49,7 +49,7 @@ export class RabbitMQService {
     }
   }
 
-  async sendPacketToQueue(queue: string, area: AreaPacket | WebhookreaPacket): Promise<void> {
+  async sendPacketToQueue(queue: string, area: AreaPacket): Promise<void> {
     if (!this.channel) {
       await this.connect();
     }
@@ -63,7 +63,7 @@ export class RabbitMQService {
     return await this.channel.checkQueue(queue);
   }
 
-  async consumeMessage(queue: string, handlePacket: (packet: AreaPacket | WebhookreaPacket) => void): Promise<void> {
+  async consumeMessage(queue: string, handlePacket: (packet: AreaPacket) => void): Promise<void> {
     await this.channel.assertQueue(queue, {
       durable: false,
     });

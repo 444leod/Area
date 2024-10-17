@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Area, AreaPacket, RabbitMQService, WebhookreaPacket } from '@area/shared'
+import { Area, AreaPacket, RabbitMQService } from '@area/shared'
 import { ObjectId } from "mongodb";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class QueueService {
         this.rabbit_service.connect();
     }
 
-    send(packet: AreaPacket | WebhookreaPacket) {
+    send(packet: AreaPacket) {
         this.rabbit_service.sendPacketToQueue(process.env.RMQ_WHREA_QUEUE, packet);
     }
 }

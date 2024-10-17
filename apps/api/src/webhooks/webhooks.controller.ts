@@ -3,7 +3,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { QueueService } from "src/queue/queue.service";
 import { AreasService } from "src/areas/areas.service";
 import { ObjectId } from "mongodb";
-import { Area, AreaPacket, WebhookreaPacket } from "@area/shared";
+import { Area, AreaPacket } from "@area/shared";
 
 @ApiTags("Other")
 @Controller("webhooks")
@@ -20,12 +20,12 @@ export class WebhookController {
     if (!user.area.action.is_webhook)
       throw new BadRequestException("Requested action is not a Webhook.");
 
-    const packet: WebhookreaPacket = {
+    const packet: AreaPacket = {
       user_id: user.uid,
       area: user.area,
       data: {
-        headers: request.headers,
-        body: request.body
+        ...request.headers,
+        ...request.body
       },
       authorizations: user.auths
     }
