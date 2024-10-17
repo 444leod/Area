@@ -12,7 +12,7 @@ export const AuthorizationOkOptions: ApiResponseOptions = {
     type: 'array',
     items: {
       type: 'string',
-      example: 'JIRA',  // Exemple de type d'autorisation
+      example: 'Atlassian',  // Exemple de type d'autorisation
     },
   },
 };

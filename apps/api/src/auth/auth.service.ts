@@ -111,10 +111,10 @@ export class AuthService {
     }
   }
 
-  async connectJira(code: string, req: Request) {
-    const clientId = this.configService.get("JIRA_CLIENT_ID");
-    const clientSecret = this.configService.get("JIRA_CLIENT_SECRET");
-    const redirectUri = 'http://localhost:8081/login/oauth/jira';
+  async connectAtlassian(code: string, req: Request) {
+    const clientId = this.configService.get("ATLASSIAN_CLIENT_ID");
+    const clientSecret = this.configService.get("ATLASSIAN_CLIENT_SECRET");
+    const redirectUri = 'http://localhost:8081/login/oauth/atlassian';
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -155,12 +155,12 @@ export class AuthService {
       const accessToken = data.access_token;
       const refreshToken = data.refresh_token;
 
-      const JiraService = await this.adminService.getServiceByName("Jira");
+      const AtlassianService = await this.adminService.getServiceByName("Atlassian");
 
       try {
         const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-          service_id: JiraService._id,
-          type: 'JIRA',
+          service_id: AtlassianService._id,
+          type: 'Atlassian',
           accessToken: accessToken,
           refreshToken: refreshToken
         });
@@ -171,7 +171,7 @@ export class AuthService {
         return 0;
       }
     } catch (error) {
-      console.error('Error connecting to Jira:', error);
+      console.error('Error connecting to Atlassian:', error);
       return 0;
     }
   }

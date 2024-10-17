@@ -27,13 +27,13 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post("/jira")
-  async jiraconnection(@Body("code") code: string, @Req() req: Request) {
+  @Post("/atlassian")
+  async atlassianconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
-      throw new BadRequestException("Jira authorization code is required");
+      throw new BadRequestException("Atlassian authorization code is required");
     }
 
-    return this.authService.connectJira(code, req);
+    return this.authService.connectAtlassian(code, req);
   }
 
   @Post("/github")

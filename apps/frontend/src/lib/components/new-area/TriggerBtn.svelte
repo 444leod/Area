@@ -32,7 +32,7 @@
 				trigger: 'logos:github-icon',
 				action: 'logos:github-icon'
 			},
-			'Jira': {
+			'Atlassian': {
 				trigger: 'logos:jira',
 				action: 'logos:jira'
 			},

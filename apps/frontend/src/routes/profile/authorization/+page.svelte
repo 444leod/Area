@@ -2,7 +2,7 @@
     import { fade, fly } from 'svelte/transition';
     import { quintOut } from 'svelte/easing';
     import { oauthGoogle } from "$lib/modules/oauthGoogle";
-    import { oauthJira } from "$lib/modules/oauthJira";
+    import {oauthAtlassian} from "$lib/modules/oauthAtlassian";
     import { oauthGithub } from "$lib/modules/oauthGithub";
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings } from '@skeletonlabs/skeleton';
@@ -23,7 +23,7 @@
             name: "Jira",
             description: "Connect to use Jira in your automations",
             icon: "logos:jira",
-            oauthFunction: oauthJira
+            oauthFunction: oauthAtlassian
         },
         {
             name: "Github",
