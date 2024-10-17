@@ -16,7 +16,6 @@
                     return null
                 }
             } else {
-                console.log("Error during token retrieving");
                 return null
             }
         } catch (error) {
@@ -48,11 +47,10 @@
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
-                console.error('Erreur:', error);
+                setError(error);
                 goto('/profile/authorization?success=0&service=jira');
             }
         } else {
-            console.error('No token received');
             goto('/profile/authorization?success=0&service=jira');
         }
     });

@@ -27,7 +27,6 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
             authorizations
         };
     } catch (err) {
-        console.error('Error fetching authorizations:', err);
         throw error(500, 'Internal server error');
     }
 };

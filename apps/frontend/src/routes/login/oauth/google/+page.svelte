@@ -16,7 +16,6 @@
                     return null
                 }
             } else {
-                console.log("Error during token retrieving");
                 return null
             }
         } catch (error) {
@@ -42,17 +41,15 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
+                    await response.json();
                     goto('/profile/authorization?success=1&service=google');
                 } else {
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
-                console.error('Erreur:', error);
                 goto('/profile/authorization?success=0&service=google');
             }
         } else {
-            console.error('No token received');
             goto('/profile/authorization?success=0&service=google');
         }
     });

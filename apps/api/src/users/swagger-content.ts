@@ -7,17 +7,17 @@ export const UserUnauthorizedOptions: ApiResponseOptions = {
 
 export const AuthorizationOkOptions: ApiResponseOptions = {
   description: "List of authorization types for the authenticated user.",
-  status: 200,  // Success
+  status: 200,
   schema: {
     type: 'array',
     items: {
       type: 'string',
-      example: 'Atlassian',  // Exemple de type d'autorisation
+      example: 'Atlassian',
     },
   },
 };
 
 export const UserNotFoundOptions: ApiResponseOptions = {
   description: "User not found.",
-  status: 404,  // Not Found
+  status: 404,
 };
