@@ -76,7 +76,6 @@
 
 <div class="container mx-auto px-4 py-16" in:fade="{{ duration: 300, easing: quintOut }}">
     <h1 class="h1 mb-8 text-center">Manage Your Service Connections</h1>
-
     <div class="flex flex-col md:flex-row justify-between items-center mb-8">
         <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] w-full md:w-1/2 mb-4 md:mb-0">
             <div class="input-group-shim"><Search size={20} /></div>

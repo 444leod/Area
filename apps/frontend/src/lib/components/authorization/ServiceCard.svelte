@@ -1,7 +1,4 @@
-<!-- ServiceCard.svelte -->
 <script lang="ts">
-    import { fade, scale } from 'svelte/transition';
-    import { quintOut } from 'svelte/easing';
     import { ReceiptText, LogIn, LogOut } from 'lucide-svelte';
     import Icon from '@iconify/svelte';
 
@@ -15,8 +12,7 @@
 </script>
 
 <div
-        class="card variant-soft-surface card-hover p-6 flex flex-col items-center justify-between"
-        in:scale="{{ duration: 300, delay: 150, easing: quintOut }}"
+        class="card variant-ghost-secondary card-hover p-6 flex flex-col items-center justify-between h-80"
 >
     <div class="w-16 h-16 mb-4">
         <Icon icon={icon} width="64" height="64" />
