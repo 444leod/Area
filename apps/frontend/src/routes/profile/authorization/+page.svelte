@@ -52,8 +52,7 @@
     }
 
     function disconnectService(service) {
-        console.log(`Disconnecting ${service.name}`);
-        // Implement actual disconnect logic here
+        //TODO: Implement disconnect service
     }
 
     function openServiceModal(service) {
