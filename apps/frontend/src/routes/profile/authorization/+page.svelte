@@ -7,7 +7,7 @@
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings } from '@skeletonlabs/skeleton';
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
-    import { Search, Filter } from 'lucide-svelte';
+    import { Search } from 'lucide-svelte';
 
     export let data;
 
@@ -20,7 +20,7 @@
             oauthFunction: oauthGoogle
         },
         {
-            name: "Jira",
+            name: "Atlassian",
             description: "Connect to use Jira in your automations",
             icon: "logos:jira",
             oauthFunction: oauthAtlassian
