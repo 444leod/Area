@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { goto } from "$app/navigation";
+    import {setError} from "$lib/store/errorMessage.js";
 
     async function fetchToken() {
         try {
@@ -15,11 +16,11 @@
                     return null
                 }
             } else {
-                console.log("Error during token retrieving");
+                setError("Error during token retrieving");
                 return null
             }
         } catch (error) {
-            console.error('Error during the request :', error);
+            setError(error);
             return null
         }
     }
@@ -41,13 +42,13 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
+                    await response.json();
                     goto('/profile/authorization?success=1&service=github');
                 } else {
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
-                console.error('Erreur:', error);
+                setError(error);
                 goto('/profile/authorization?success=0&service=github');
             }
         } else {

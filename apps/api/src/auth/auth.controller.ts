@@ -45,7 +45,7 @@ export class AuthController {
     return this.authService.connectGithub(code, req);
   }
 
-  @Post("/SimpleAuthGoogle")
+  @Post("/simpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
       throw new BadRequestException("Google authorization code is required");

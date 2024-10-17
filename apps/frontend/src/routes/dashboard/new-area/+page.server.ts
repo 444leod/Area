@@ -1,5 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import {setError} from "../../../lib/store/errorMessage";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	  const services = await response.json();
 	  return { services };
 	} catch (err) {
-	  console.error(err);
+	  setError(err);
 	  return { services: [] };
 	}
   };
@@ -50,14 +51,14 @@ export const actions: Actions = {
 
 			if (!response.ok) {
 				const errorData = await response.text();
-				console.error('Error response:', errorData);
+				setError('Error response:' + errorData);
 				return fail(response.status, { message: `Failed to create new area: ${errorData}` });
 			}
 
 			const createdArea = await response.json();
 			return { success: true, area: createdArea };
 		} catch (err) {
-			console.error('Error creating new area:', err);
+            setError('Error creating new area:' + err)
 			return fail(500, { message: 'Failed to create automation' });
 		}
 	}

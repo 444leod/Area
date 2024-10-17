@@ -179,7 +179,7 @@ export class AuthService {
   async connectGithub(code: string, req:Request) {
     const clientId = process.env.GITHUB_CLIENT_ID;
     const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-    const redirectUri = 'http://localhost:3000/login/oauth/github';
+    const redirectUri = `${process.env.FRONTEND_URL}/login/oauth/github`;
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
