@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LogIn, UserPlus, Menu, X, User, LogOut, LayoutDashboard } from 'lucide-svelte';
+	import { LogIn, UserPlus, Menu, X, User, LogOut, LayoutDashboard, KeyRound } from 'lucide-svelte';
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
 	import { authStore } from '$lib/store/authStore';
@@ -67,6 +67,10 @@
 				<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-dashboard-button">
 					<LayoutDashboard class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Dashboard </span>
+				</a>
+				<a href="/profile/authorization" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-dashboard-button">
+					<KeyRound class="mr-2" size={18} />
+					<span class="hidden sm:inline"> Authorizations </span>
 				</a>
 				<button on:click={logout} class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-logout-button">
 					<LogOut class="mr-2" size={18} />

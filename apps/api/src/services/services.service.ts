@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ReactionInfo, Service } from '@area/shared';
+import {ReactionInfo, Service} from '@area/shared';
 import { ActionCreationDto, ServiceCreationDto, ReactionCreationDto, ActionInfo } from '@area/shared';
 import { ObjectId } from 'mongodb';
 
@@ -12,6 +12,10 @@ export class AdminService {
 
   async getAllServices(): Promise<Service[]> {
     return this.serviceModel.find().exec();
+  }
+
+  async getServiceByName(name: string): Promise<Service | undefined> {
+    return await this.serviceModel.findOne({ name: name }).exec();
   }
 
   async getServiceById(id: ObjectId): Promise<Service> {
