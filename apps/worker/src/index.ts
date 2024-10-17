@@ -1,11 +1,11 @@
-import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
+import { AreaPacket, RabbitMQService, MongoDBService, WebhookreaPacket } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actions-map';
 import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
-if (!process.env.RMQ_QUEUE) {
+if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WEBH_QUEUE) {
     throw new Error('RMQ_QUEUE must be defined as environment variable');
 }
 
@@ -25,8 +25,13 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeMessage(process.env.RMQ_QUEUE || '', handleArea).then(() => {});
+        const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
+        const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WEBH_QUEUE || '')).messageCount;
 
+        if (areaQueueStress >= webhQueueStress)
+            rabbitMQ.consumeMessage(process.env.RMQ_AREA_QUEUE || '', handleArea).then(() => {});
+        else
+            rabbitMQ.consumeMessage(process.env.RMQ_WEBH_QUEUE || '', handleWebhookrea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -80,4 +85,23 @@ async function handleArea(areaPacket: AreaPacket) {
     console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
 
     await reactionFunction(res, mongoDB);
+}
+
+async function handleWebhookrea(packet: WebhookreaPacket)
+{
+    const reactionType = packet?.area?.reaction?.informations?.type;
+
+    if (!reactionType) {
+        console.error('Reaction type not found.');
+        return;
+    }
+
+    const reactionFunction = reactionsMap[reactionType];
+    if (!reactionFunction) {
+        console.error(`Reaction ${reactionType} not supported`);
+        return;
+    }
+
+    //const res = await reactionFunction(packet, mongoDB);
+    console.log(packet)
 }
