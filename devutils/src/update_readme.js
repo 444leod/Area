@@ -2,7 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 import widdershins from 'widdershins';
 
-const openApiUrl = 'http://127.0.0.1:3000/swagger-json';
+const openApiUrl = 'http://127.0.0.1:8080/swagger-json';
 
 const widdershinsOptions = {
     codeSamples: true,

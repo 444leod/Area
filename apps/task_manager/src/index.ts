@@ -3,6 +3,10 @@ import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
 
 dotenv.config();
 
+if (!process.env.RMQ_QUEUE) {
+    throw new Error('RMQ_QUEUE must be defined as environment variable');
+}
+
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
@@ -13,12 +17,12 @@ async function main() {
 
     const groupAreaSend = (areas: AreaPacket[]) => {
         areas.forEach((area) => {
-            rabbitMQ.sendAreaToQueue(area);
+            rabbitMQ.sendAreaToQueue(process.env.RMQ_QUEUE || '', area);
         });
     };
 
     const queueIsEmpty = async () => {
-        return (await rabbitMQ.queueStats()).messageCount == 0;
+        return (await rabbitMQ.queueStats(process.env.RMQ_QUEUE || '')).messageCount == 0;
     };
 
     try {
@@ -28,16 +32,17 @@ async function main() {
                     .db()
                     .collection('users')
                     .aggregate([
-                        { $unwind: '$area' },
+                        { $unwind: '$areas' },
                         {
                             $match: {
-                                'area.active': true,
-                                'area.action.isWebhook': false,
+                                'areas.active': true,
+                                'areas.action.is_webhook': false,
                             },
                         },
                         {
                             $project: {
-                                area: 1,
+                                areas: 1,
+                                authorizations: 1,
                             },
                         },
                     ])
@@ -48,11 +53,9 @@ async function main() {
             (await myQuery()).map((obj: any) => {
                 const areaPacket: AreaPacket = {
                     user_id: obj._id,
-                    area: obj.area,
-                    data: {
-                        title: 'string',
-                        body: 'string',
-                    },
+                    area: obj.areas,
+                    data: null,
+                    authorizations: obj.authorizations,
                 };
                 return areaPacket;
             });

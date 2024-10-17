@@ -3,6 +3,7 @@ WORKDIR /app
 
 COPY apps/shared apps/shared
 COPY apps/task_manager apps/task_manager
+COPY mongodb-ca.pem apps/task_manager
 COPY package.json .
 COPY tsconfig*.json .
 

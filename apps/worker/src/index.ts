@@ -5,6 +5,10 @@ import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
+if (!process.env.RMQ_QUEUE) {
+    throw new Error('RMQ_QUEUE must be defined as environment variable');
+}
+
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
@@ -21,7 +25,7 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(handleArea).then(() => {});
+        rabbitMQ.consumeArea(process.env.RMQ_QUEUE || '', handleArea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -49,23 +53,30 @@ async function handleArea(areaPacket: AreaPacket) {
     const reactionType = areaPacket?.area.reaction?.informations?.type;
 
     if (!actionType || !reactionType) {
-        throw new Error('Badly formed area.');
+        console.error('Action or reaction type not found.');
+        return;
     }
 
     const actionFunction = actionsMap[actionType];
     if (!actionFunction) {
-        throw new Error(`Action ${actionType} not supported.`);
+        console.error(`Action ${actionType} not supported.`);
+        return;
     }
     const reactionFunction = reactionsMap[reactionType];
     if (!reactionFunction) {
-        throw new Error(`Reaction ${reactionType} not supported.`);
+        console.error(`Reaction ${reactionType} not supported.`);
+        return;
     }
+
+    console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
 
     const res = await actionFunction(areaPacket, mongoDB);
 
     if (!res) {
         return;
     }
+
+    console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
 
     await reactionFunction(res, mongoDB);
 }
