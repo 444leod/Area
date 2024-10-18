@@ -171,12 +171,14 @@
 						{#if param.type === 'string'}
 							<StringInput
 									param={param}
+									details={param.details}
 									value={$actionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
 							<NumberInput
 									param={param}
+									details={param.details}
 									value={$actionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
@@ -198,12 +200,14 @@
 						{#if param.type === 'string'}
 							<StringInput
 								param={param}
+								details={param.details}
 								value={$reactionDetails.params[param.name]}
 								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
 							<NumberInput
 								param={param}
+								details={param.details}
 								value={$reactionDetails.params[param.name]}
 								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
