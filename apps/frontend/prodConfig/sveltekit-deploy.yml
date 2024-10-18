@@ -1,19 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sveltekit-deployment
+  name: frontend
+  namespace: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sveltekit
+      app: frontend
   template:
     metadata:
       labels:
-        app: sveltekit
+        app: frontend
     spec:
       containers:
-        - name: sveltekit-container
+        - name: frontend
           image: gcr.io/area-cluster/frontend:latest
+          envFrom:
+            - secretRef:
+                name: frontend-env
           ports:
-            - containerPort: 8081
+            - containerPort: 3000

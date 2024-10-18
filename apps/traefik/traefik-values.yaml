@@ -1,0 +1,28 @@
+additionalArguments:
+  - "--log.level=INFO"
+  - "--providers.kubernetesingress.allowexternalnameservices=true"
+
+ingressClass:
+  enabled: false  # We're not creating a new IngressClass
+
+ports:
+  web:
+    port: 8000
+    exposedPort: 80
+    expose:
+      enabled: true
+    protocol: TCP
+  websecure:
+    port: 8443
+    exposedPort: 443
+    expose:
+      enabled: true
+    protocol: TCP
+
+ingressRoute:
+  dashboard:
+    enabled: true
+
+# Use the existing IngressClass
+kubernetes:
+  ingressClass: traefik
