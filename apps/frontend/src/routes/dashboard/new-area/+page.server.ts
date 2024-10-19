@@ -1,6 +1,6 @@
-import { error, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { setError } from "../../../lib/store/errorMessage";
+import { setError} from "$lib/store/errorMessage";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,7 +10,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		if (!response.ok) {
 			throw new Error('Failed to fetch services');
 		}
-
 		const services = await response.json();
 		return { services };
 	} catch (err) {
