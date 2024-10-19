@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
     import { fade } from 'svelte/transition';
-    import {authStore} from "$lib/store/authStore";
+    import { authStore } from "$lib/store/authStore";
 
     let loading = true;
     let error = false;

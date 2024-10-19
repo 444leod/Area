@@ -31,7 +31,7 @@
 
         if (code && token) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/jira`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/atlassian`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -39,23 +39,22 @@
                     },
                     body: JSON.stringify({ code }),
                 });
-
+                const data = await response.json();
                 if (response.ok) {
-                    const data = await response.json();
-                    goto('/profile/authorization?success=1&service=jira');
+                    goto('/profile/authorization?success=1&service=atlassian');
                 } else {
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
                 setError(error);
-                goto('/profile/authorization?success=0&service=jira');
+                goto('/profile/authorization?success=0&service=atlassian');
             }
         } else {
-            goto('/profile/authorization?success=0&service=jira');
+            goto('/profile/authorization?success=0&service=atlassian');
         }
     });
 </script>
 
 <div>
-    Traitement de l'authentification Jira...
+    Traitement de l'authentification Atlassian...
 </div>
