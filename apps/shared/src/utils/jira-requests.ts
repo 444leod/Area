@@ -11,6 +11,17 @@ function buildJiraUrl(domainId: string, route: string): string {
     return `https://api.atlassian.com/ex/jira/${domainId}/rest/api/${route}`;
 }
 
+export async function getDomainsProjects(domains: JiraSite[], auth: { token: string, refresh_token: string }): Promise<any[]> {
+    let projects = [];
+    for (const domain of domains) {
+        const domainProjects = await getJiraDomainProjects(domain.id, auth);
+        if (domainProjects) {
+            projects = projects.concat(domainProjects);
+        }
+    }
+    return projects;
+}
+
 export async function getJiraDomainProjects(domainId: string, auth: { token: string, refresh_token: string}): Promise<any> {
     try {
         const response = await axios.get(buildJiraUrl(domainId, '3/project/search'), {
@@ -18,7 +29,8 @@ export async function getJiraDomainProjects(domainId: string, auth: { token: str
                 Authorization: `Bearer ${auth.token}`
             },
             params: {
-                status: ['live']
+                status: ['live'],
+                expand: 'description,lead'
             }
         });
 
