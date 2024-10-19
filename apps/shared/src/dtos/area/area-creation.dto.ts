@@ -15,12 +15,18 @@ import {
   ReactionTypes,
   SendEmailReactionInfos, SendMessageToDiscordWebhookInfos,
 } from "../reactions";
-import { IsNotEmptyObject, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 @ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
 @ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
 export class AreaCreationDto {
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
   @ApiProperty({
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
@@ -51,7 +57,6 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) }
     ],
   })
-  @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => BaseReactionInfos, {

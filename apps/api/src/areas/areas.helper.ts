@@ -37,17 +37,20 @@ export class AreasHelper {
       service_id: this._reactions_services[dto.reaction.type],
       informations: dto.reaction,
     };
-    return {
+    const area: Area = {
       _id: new ObjectId(),
+      name: dto.name,
       action: action,
       reaction: reaction,
       active: true,
-    } as Area;
+    };
+    return area;
   }
 
   toDto(area: Area): AreaDto {
     return {
       _id: area._id,
+      name: area.name,
       active: area.active,
       action: {
         service_id: area.action.service_id,

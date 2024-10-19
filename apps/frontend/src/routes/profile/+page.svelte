@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import { User, Mail, Box, LogOut, Zap } from 'lucide-svelte';
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
