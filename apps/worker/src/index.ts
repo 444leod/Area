@@ -6,7 +6,7 @@ import { reactionsMap } from './reactions/reactions-map';
 dotenv.config();
 
 if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
-    throw new Error('RMQ_QUEUE must be defined as environment variable');
+    throw new Error('RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable');
 }
 
 const rabbitMQ = new RabbitMQService();
