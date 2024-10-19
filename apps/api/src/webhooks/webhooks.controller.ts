@@ -24,8 +24,8 @@ export class WebhookController {
       user_id: user.uid,
       area: user.area,
       data: {
-        ...request.headers,
-        ...request.body
+        headers: request.headers,
+        request: request.body
       },
       authorizations: user.auths
     }
