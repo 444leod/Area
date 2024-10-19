@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import { User, Mail, Box, LogOut, Zap } from 'lucide-svelte';
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
@@ -66,7 +65,7 @@
                     </div>
                     <div class="profile-info flex items-center bg-surface-100-800-token rounded-lg p-4">
                         <Box class="w-8 h-8 text-primary-500 mr-4" aria-hidden="true" />
-                        <span>{profile.areas.length} Areas</span>
+                        <span>{profile.areas.length > 1 ? `${profile.areas.length} Areas` : `${profile.areas.length} Area`}</span>
                     </div>
                 </div>
             </div>

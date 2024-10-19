@@ -1,14 +1,16 @@
 <script lang="ts">
-    export let param;
-    export let value;
-    export let updateParamValue;
+    export let param: { name: string, details: string };
+    export let value: string;
+    export let updateParamValue: (name: string, value: string) => void;
+    export let required: boolean;
 </script>
 
 <input
         id={param.name}
         type="text"
-        class="input w-full"
-        bind:value={value}
-        on:input={(e) => updateParamValue(param.name, e.target.value)}
-        placeholder={`Enter ${param.name}`}
+        class="input"
+        {required}
+        bind:value
+        on:input={(e) => updateParamValue(param.name, e.currentTarget.value)}
+        placeholder={param.details}
 />

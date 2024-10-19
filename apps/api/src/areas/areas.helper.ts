@@ -1,11 +1,11 @@
-import { ActionTypes, Area, AreaCreationDto, ReactionTypes, Reaction, Action, AreaDto } from '@area/shared';
-import { Injectable } from '@nestjs/common';
-import { ActionBuilder } from './builders/actions/action.builder';
-import { ExampleActionBuilder } from './builders/actions/example.builder';
-import { EachXSecondsActionBuilder } from './builders/actions/each-x-sec.builder';
-import { OnYoutubeVideoPostedBuilder } from './builders/actions/on-youtube-video-posted';
-import { ObjectId } from 'mongodb';
-import { OnNewJiraTicketBuilder } from './builders/actions/on-new-jira-ticket';
+import {Action, ActionTypes, Area, AreaCreationDto, AreaDto, Reaction, ReactionTypes} from '@area/shared';
+import {Injectable} from '@nestjs/common';
+import {ActionBuilder} from './builders/actions/action.builder';
+import {ExampleActionBuilder} from './builders/actions/example.builder';
+import {EachXSecondsActionBuilder} from './builders/actions/each-x-sec.builder';
+import {OnYoutubeVideoPostedBuilder} from './builders/actions/on-youtube-video-posted';
+import {ObjectId} from 'mongodb';
+import {OnNewJiraTicketBuilder} from './builders/actions/on-new-jira-ticket';
 
 @Injectable()
 export class AreasHelper {
@@ -31,6 +31,7 @@ export class AreasHelper {
         };
         return {
             _id: new ObjectId(),
+            name: dto.name,
             action: action,
             reaction: reaction,
             active: true,
@@ -40,6 +41,7 @@ export class AreasHelper {
     toDto(area: Area): AreaDto {
         return {
             _id: area._id,
+            name: area.name,
             active: area.active,
             action: {
                 service_id: area.action.service_id,
