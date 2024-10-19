@@ -26,7 +26,7 @@ export class RabbitMQService {
     } catch (error: any) {
       switch (error?.code) {
         case 'ECONNREFUSED':
-          throw new Error(`Connection refused to RabbitMQ: ${error}`);
+          throw new Error(`Connection refused to RabbitMQ, please verify that it's running either on your machine or distant: ${error}`);
         case 'ECONNRESET':
           throw new Error(`Connection reset to RabbitMQ: ${error}`);
         default:
@@ -34,7 +34,6 @@ export class RabbitMQService {
       }
       throw new Error(`Error in connecting to RabbitMQ: ${error}`);
     }
-
 
     this.channel = await this.connection.createChannel();
     this.connected = true;

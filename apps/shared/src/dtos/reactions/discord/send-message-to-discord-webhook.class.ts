@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, IsDateString, IsOptional} from "class-validator";
+import {IsNotEmpty, IsString} from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
 import { ReactionTypes } from "../reaction-types.enum";
 
@@ -9,15 +9,15 @@ export class SendMessageToDiscordWebhookInfos extends BaseReactionInfos {
     @IsNotEmpty()
     webhook_url: string;
 
-    @IsString()
-    @IsNotEmpty()
-    title: string;
-
-    @IsString()
-    @IsOptional()
-    body?: string;
-
-    @IsDateString()
-    @IsOptional()
-    date?: string;
+    // @IsString()
+    // @IsNotEmpty()
+    // title: string;
+    //
+    // @IsString()
+    // @IsOptional()
+    // body?: string;
+    //
+    // @IsDateString()
+    // @IsOptional()
+    // date?: string;
 }

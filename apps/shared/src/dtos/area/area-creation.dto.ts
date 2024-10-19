@@ -4,7 +4,7 @@ import {
   ActionTypes,
   BaseActionInfos,
   EachXSecondsActionInfos,
-  ExampleActionInfos,
+  ExampleActionInfos, OnNewJiraTicketClass,
   OnYoutubeVideoPostedClass,
 } from "../actions";
 import {
@@ -18,8 +18,8 @@ import {
 import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
-@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass)
+@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos)
 export class AreaCreationDto {
 
   @ApiProperty()
@@ -32,6 +32,7 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(ExampleActionInfos) },
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
       { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
+      { $ref: getSchemaPath(OnNewJiraTicketClass) },
     ],
   })
   @IsNotEmptyObject()
@@ -44,6 +45,7 @@ export class AreaCreationDto {
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
         { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
+        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
       ],
     },
   })
