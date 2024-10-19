@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "types": ["node", "jest"],
+    "resolveJsonModule": true,
   },
 
   "include": [

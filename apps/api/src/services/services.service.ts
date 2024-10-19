@@ -4,11 +4,24 @@ import { Model } from 'mongoose';
 import {ReactionInfo, Service} from '@area/shared';
 import { ActionCreationDto, ServiceCreationDto, ReactionCreationDto, ActionInfo } from '@area/shared';
 import { ObjectId } from 'mongodb';
+import * as SERVICES from '../../services.json'
 
 @Injectable()
 export class AdminService {
-  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {}
+  async updateServicesFromJson() : Promise<void> {
+    console.log("Updating services...");
+    const json_services: Service[] = SERVICES['default'];
+    json_services.forEach(async (service) => {
+      // Transform basic json object to cool ObjectId
+      service._id = new ObjectId((service._id as any).$oid as string)
+      await this.serviceModel.findByIdAndUpdate(service._id, service);
+    });
+    console.log("Services updated!");
+  }
 
+  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
+    this.updateServicesFromJson();
+  }
 
   async getAllServices(): Promise<Service[]> {
     return this.serviceModel.find().exec();
