@@ -21,7 +21,7 @@
         },
         {
             name: "Atlassian",
-            description: "Connect to use Jira in your automations",
+            description: "Connect to use Atlassian in your automations",
             icon: "logos:atlassian",
             oauthFunction: oauthAtlassian
         },

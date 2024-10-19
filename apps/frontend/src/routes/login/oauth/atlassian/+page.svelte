@@ -56,5 +56,5 @@
 </script>
 
 <div>
-    Traitement de l'authentification Jira...
+    Traitement de l'authentification Atlassian...
 </div>
