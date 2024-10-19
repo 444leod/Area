@@ -38,7 +38,7 @@
 	}
 
 	function getAreaName(area) {
-		return `${area.action.informations.type} to ${area.reaction.informations.type}`;
+		return area.name || 'Unnamed Automation';
 	}
 
 	function showAreaDetails(areaId: string) {
@@ -116,7 +116,7 @@
 				<tbody>
 					{#each areas as area}
 						<tr>
-							<td>{getAreaName(area)}</td>
+							<td class="font-bold">{getAreaName(area)}</td>
 							<td>
 								<span
 									class="badge {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"

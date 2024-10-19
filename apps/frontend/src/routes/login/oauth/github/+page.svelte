@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { goto } from "$app/navigation";
-    import {setError} from "$lib/store/errorMessage.js";
+    import {setError} from "$lib/store/errorMessage";
 
     async function fetchToken() {
         try {

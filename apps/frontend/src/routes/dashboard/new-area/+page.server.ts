@@ -40,7 +40,6 @@ export const actions: Actions = {
 			action: newAction,
 			reaction: newReaction
 		};
-
 		try {
 			const response = await fetch(`${API_URL}/areas`, {
 				method: 'POST',
