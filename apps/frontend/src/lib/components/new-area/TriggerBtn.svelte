@@ -33,8 +33,8 @@
 				action: 'logos:github-icon'
 			},
 			'Atlassian': {
-				trigger: 'logos:jira',
-				action: 'logos:jira'
+				trigger: 'logos:atlassian',
+				action: 'logos:atlassian'
 			},
 		};
 

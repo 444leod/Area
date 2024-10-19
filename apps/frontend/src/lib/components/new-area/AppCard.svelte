@@ -13,7 +13,7 @@
 			'google calendar': 'logos:google-calendar',
 			'google task': 'gg:google-tasks',
 			'github': 'logos:github-icon',
-			'jira': 'logos:jira',
+			'jira': 'logos:atlassian',
 			'trello': 'logos:trello',
 			'slack': 'logos:slack-icon',
 			'discord': 'logos:discord-icon',
