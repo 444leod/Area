@@ -1,7 +1,8 @@
-<script lang="ts">
+<script>
     export let param;
     export let value;
     export let updateParamValue;
+    export let details;
 </script>
 
 <input
@@ -10,5 +11,5 @@
         class="input w-full"
         bind:value={value}
         on:input={(e) => updateParamValue(param.name, parseFloat(e.target.value))}
-        placeholder={`Enter ${param.name}`}
+        placeholder={`Enter ${param.details}`}
 />
