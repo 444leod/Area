@@ -231,9 +231,9 @@
 					method="POST"
 					action="?/createArea"
 					use:enhance={() => {
-				return async ({ result }) => {
-					handleCreateAreaResult(result);
-				};
+					return async ({ result }) => {
+						handleCreateAreaResult(result);
+					};
 				}}
 			>
 				<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
