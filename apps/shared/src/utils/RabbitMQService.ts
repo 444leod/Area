@@ -63,7 +63,7 @@ export class RabbitMQService {
     return await this.channel.checkQueue(queue);
   }
 
-  async consumeMessage(queue: string, handlePacket: (packet: AreaPacket) => void): Promise<void> {
+  async consumePacket(queue: string, handlePacket: (packet: AreaPacket) => void): Promise<void> {
     await this.channel.assertQueue(queue, {
       durable: false,
     });

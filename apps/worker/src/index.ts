@@ -31,7 +31,7 @@ async function run() {
             ? process.env.RMQ_AREA_QUEUE
             : process.env.RMQ_WEBH_QUEUE;
 
-        rabbitMQ.consumeMessage(selectedQueue || '', handleArea).then(() => {});
+        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
