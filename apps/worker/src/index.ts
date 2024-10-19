@@ -31,7 +31,7 @@ async function run() {
             ? process.env.RMQ_AREA_QUEUE
             : process.env.RMQ_WREA_QUEUE;
 
-        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => {});
+        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => { });
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -57,7 +57,6 @@ run().catch(console.dir);
 async function handleArea(areaPacket: AreaPacket) {
     const actionType = areaPacket?.area.action?.informations?.type;
     const reactionType = areaPacket?.area.reaction?.informations?.type;
-    const is_webhook = areaPacket?.area.action.is_webhook || false;
 
     if (!actionType || !reactionType) {
         console.error('Action or reaction type not found.');
@@ -76,13 +75,10 @@ async function handleArea(areaPacket: AreaPacket) {
         return;
     }
 
-    if (!is_webhook) {
-        const res = await actionFunction(areaPacket, mongoDB);
-        if (!res)
-            return;
-        console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-    }
-
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-    await reactionFunction(areaPacket, mongoDB);
+    const res = await actionFunction(areaPacket, mongoDB);
+    if (!res)
+        return;
+    console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
+    await reactionFunction(res, mongoDB);
 }
