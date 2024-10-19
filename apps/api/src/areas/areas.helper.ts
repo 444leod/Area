@@ -33,6 +33,7 @@ export class AreasHelper {
         };
         return {
             _id: new ObjectId(),
+            name: dto.name,
             action: action,
             reaction: reaction,
             active: true,
@@ -42,6 +43,7 @@ export class AreasHelper {
     toDto(area: Area): AreaDto {
         return {
             _id: area._id,
+            name: area.name,
             active: area.active,
             action: {
                 service_id: area.action.service_id,

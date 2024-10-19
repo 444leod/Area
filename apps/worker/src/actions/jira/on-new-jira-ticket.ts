@@ -46,10 +46,14 @@ export const handleNewJiraTicketAction: ActionFunction = async (packet: AreaPack
     const date = history.lastCreationTimestamp ? new Date(history.lastCreationTimestamp) : new Date(0);
     const tickets = await getDomainsTicketsAfterDate(domains, atlassian_token, date);
 
-    if (history.lastCreationTimestamp === null || tickets === null || tickets.length === 0) {
+    if (history.lastCreationTimestamp === null) {
         history.lastCreationTimestamp = new Date().getTime();
         area.action.history = history;
         await database.updateAreaHistory(packet.user_id, area);
+        return null;
+    }
+
+    if (tickets === null || tickets.length === 0) {
         return null;
     }
 
@@ -69,7 +73,7 @@ export const handleNewJiraTicketAction: ActionFunction = async (packet: AreaPack
     const fields = getTicketFields(ticket);
 
     packet.data = {
-        title: `The ticket ${ticket.key} "${ticket.fields.summary || 'missing summary'}" has been created.`,
+        title: `The ticket ${ticket.key} "${ticket.fields.summary || 'missing summary'}" has been created on jira.`,
         body: fields.length > 0 ? fields.join('\n') : 'No informations',
         username: ticket.fields.assignee?.displayName || undefined,
         picture: ticket.fields.assignee?.avatarUrls['48x48'] || undefined,
