@@ -150,7 +150,6 @@ export class AuthService {
             const refreshToken = data.refresh_token;
 
             const AtlassianService = await this.adminService.getServiceByName('Atlassian');
-
             try {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: AtlassianService._id,
