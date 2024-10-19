@@ -1,4 +1,3 @@
-// src/lib/stores/errorStore.ts
 import { writable } from 'svelte/store';
 
 export const errorMessage = writable<string | null>(null);

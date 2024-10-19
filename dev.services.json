@@ -1,0 +1,148 @@
+[{
+  "_id": {
+    "$oid": "6703d148ddf654a6d482dafb"
+  },
+  "name": "YouTube",
+  "description": "Service for YouTube actions",
+  "actions": [
+    {
+      "name": "videoPosted",
+      "description": "When video was posted",
+      "ActionType": "ON_YOUTUBE_VIDEO_POSTED",
+      "params": [
+        {
+          "name": "user_id",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6703d313722dee796788baa3"
+  },
+  "name": "Timer",
+  "description": "Service for Timer actions",
+  "actions": [
+    {
+      "name": "each X second",
+      "description": "make the reaction every X second",
+      "ActionType": "EACH_X_SECONDS",
+      "params": [
+        {
+          "name": "seconds",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6703f2e0bc8055c868eaf474"
+  },
+  "name": "Mail",
+  "description": "Service for Email actions",
+  "actions": [],
+  "reactions": [
+    {
+      "name": "sendemail",
+      "description": "send an email",
+      "ActionType": "SEND_EMAIL",
+      "params": [
+        {
+          "name": "to",
+          "type": "string"
+        },
+        {
+          "name": "subject",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6703f3dabc8055c868eaf47e"
+  },
+  "name": "Google task",
+  "description": "Service for Google task actions",
+  "actions": [],
+  "reactions": [
+    {
+      "name": "Create new task",
+      "description": "for create new task",
+      "ActionType": "CREATE_GOOGLE_TASK",
+      "params": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "670e71ff92b0948adfdca0b3"
+  },
+  "name": "Jira",
+  "description": "for all jira action",
+  "actions": [
+    {
+      "name": "new issue",
+      "description": "when new issue created",
+      "ActionType": "ON_NEW_JIRA_TICKET",
+      "params": []
+    },
+    {
+      "name": "new project",
+      "description": "when new project created",
+      "ActionType": "ON_NEW_JIRA_PROJECT",
+      "params": []
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "670f8cbd7920482a14597bc7"
+  },
+  "name": "Github",
+  "description": "for all Github action",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "670f8cbd7920482a14597111"
+  },
+  "name": "Discord",
+  "description": "Discord interactions",
+  "actions": [],
+  "reactions": [
+    {
+      "name": "send message",
+      "description": "send message to discord",
+      "ActionType": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
+      "params": [
+        {
+          "name": "webhook_url",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}]
