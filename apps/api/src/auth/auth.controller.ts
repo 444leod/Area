@@ -27,6 +27,33 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Post("/atlassian")
+  async atlassianconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Atlassian authorization code is required");
+    }
+
+    return this.authService.connectAtlassian(code, req);
+  }
+
+  @Post("/github")
+  async githubconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("GitHub authorization code is required");
+    }
+
+    return this.authService.connectGithub(code, req);
+  }
+
+  @Post("/simpleAuthGoogle")
+  async googleconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Google authorization code is required");
+    }
+
+    return this.authService.connectGoogle(code, req);
+  }
+
   @Post("/google")
   async googleCallback(@Body("code") code: string) {
     if (!code) {
