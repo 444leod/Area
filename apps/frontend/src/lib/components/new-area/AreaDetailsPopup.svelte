@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte';
-    import { X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus } from 'lucide-svelte';
+    import {X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus, ArrowDown} from 'lucide-svelte';
     import { getAreaById } from '$lib/modules/getAreaById';
     import { deleteAreaById } from '$lib/modules/deleteAreaById';
     import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
@@ -69,7 +69,7 @@
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-surface-50-900-token p-6 rounded-lg w-[90%] md:max-w-4xl md:w-full max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-primary-500">AREA Details</h2>
+            <h2 class="text-2xl font-bold text-primary-500">AREA Workflow </h2>
             <button on:click={close} class="text-surface-600 hover:text-surface-900">
                 <X size={24} />
             </button>
@@ -85,8 +85,8 @@
             <div class="space-y-6 text-surface-700-200-token">
                 <div class="flex justify-between items-center">
                     <div>
+                        <h3 class="h3 font-bold mt-1">{area.name}</h3>
                         <span class="text-sm font-semibold text-surface-700-200-token">ID: {area._id}</span>
-                        <h3 class="text-xl font-bold mt-1">Area Workflow</h3>
                     </div>
                     <div class="flex items-center space-x-2">
                         <button 
@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <ArrowRight class="w-6 h-6 text-primary-500" />
+                        <ArrowDown class="w-6 h-6 text-primary-500" />
                     </div>
 
                     <div class="card variant-soft p-4">

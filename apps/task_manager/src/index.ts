@@ -64,7 +64,7 @@ async function main() {
             if (await queueIsEmpty()) {
                 groupAreaSend(await getFilteredRes());
             }
-        }, 1000); // 1 sec between checks
+        }, 10000); // 1 sec between checks
 
         process.on('SIGINT', async () => {
             clearInterval(interval);

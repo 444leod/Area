@@ -5,6 +5,8 @@ import {
   BaseActionInfos,
   EachXSecondsActionInfos,
   ExampleActionInfos,
+  OnNewJiraTicketClass,
+  OnNewJiraProjectClass,
   OnYoutubeVideoPostedClass,
 } from "../actions";
 import {
@@ -15,17 +17,25 @@ import {
   ReactionTypes,
   SendEmailReactionInfos, SendMessageToDiscordWebhookInfos,
 } from "../reactions";
-import { IsNotEmptyObject, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
-@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass)
+@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos)
 export class AreaCreationDto {
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
   @ApiProperty({
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
       { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
+      { $ref: getSchemaPath(OnNewJiraTicketClass) },
+      { $ref: getSchemaPath(OnNewJiraTicketClass) },
     ],
   })
   @IsNotEmptyObject()
@@ -38,6 +48,8 @@ export class AreaCreationDto {
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
         { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
+        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
+        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
       ],
     },
   })
@@ -51,7 +63,6 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) }
     ],
   })
-  @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => BaseReactionInfos, {
