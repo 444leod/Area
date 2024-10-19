@@ -18,9 +18,8 @@ export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
 		if (!response.ok) {
 			throw error(response.status, 'Failed to fetch services');
 		}
-
 		const services = await response.json();
-		return { 
+		return {
 			services,
 			token
 		};
