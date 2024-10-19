@@ -15,7 +15,7 @@ import {
   ReactionTypes,
   SendEmailReactionInfos, SendMessageToDiscordWebhookInfos,
 } from "../reactions";
-import { IsNotEmptyObject, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 @ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
@@ -23,6 +23,8 @@ import { Type } from "class-transformer";
 export class AreaCreationDto {
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   name: string
 
   @ApiProperty({
