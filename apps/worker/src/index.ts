@@ -5,7 +5,7 @@ import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
-if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WEBH_QUEUE) {
+if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
     throw new Error('RMQ_QUEUE must be defined as environment variable');
 }
 
@@ -26,10 +26,10 @@ async function run() {
         }
 
         const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
-        const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WEBH_QUEUE || '')).messageCount;
+        const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WREA_QUEUE || '')).messageCount;
         const selectedQueue = areaQueueStress >= webhQueueStress
             ? process.env.RMQ_AREA_QUEUE
-            : process.env.RMQ_WEBH_QUEUE;
+            : process.env.RMQ_WREA_QUEUE;
 
         rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => {});
 
