@@ -16,6 +16,7 @@
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
+	import Success from "$lib/components/new-area/Success.svelte";
 
 	export let data: PageData;
 
@@ -119,11 +120,7 @@
 
 	<div class="card variant-soft p-4 md:p-6">
 		{#if showSuccessAnimation}
-			<div class="flex flex-col items-center justify-center h-64" in:fly={{ y: 50, duration: 500 }}>
-				<Icon icon="mdi:check-circle" class="w-24 h-24 text-success mb-4" />
-				<h2 class="h2 text-center text-success">Automation Created Successfully!</h2>
-				<p class="mt-2">Redirecting to Dashboard...</p>
-			</div>
+			<Success/>
 		{:else if $currentStep === 0 || $currentStep === 2}
 			<h2 class="h2 mb-4 text-center" in:fade>
 				Choose {$currentStep === 0 ? 'a Trigger' : 'an Action'} App
@@ -234,13 +231,14 @@
 					method="POST"
 					action="?/createArea"
 					use:enhance={() => {
-					return async ({ result }) => {
-						handleCreateAreaResult(result);
-					};
+				return async ({ result }) => {
+					handleCreateAreaResult(result);
+				};
 				}}
 			>
 				<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
 				<input type="hidden" name="reactionDetails" value={JSON.stringify($reactionDetails)} />
+				<input type="hidden" name="areaName" value={$automationName} />
 				<button type="submit" class="btn variant-filled-primary w-full">
 					<Icon icon="mdi:flash" class="w-4 h-4 mr-2" />
 					Activate Automation
