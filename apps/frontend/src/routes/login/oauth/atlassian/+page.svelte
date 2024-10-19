@@ -40,7 +40,6 @@
                     body: JSON.stringify({ code }),
                 });
                 const data = await response.json();
-                console.log("/////" + data);
                 if (response.ok) {
                     goto('/profile/authorization?success=1&service=atlassian');
                 } else {
