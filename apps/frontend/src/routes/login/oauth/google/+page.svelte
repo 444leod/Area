@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { goto } from "$app/navigation";
-    import { setError } from "$lib/store/errorMessage";
+    import {setError} from "$lib/store/errorMessage.js";
 
     async function fetchToken() {
         try {
@@ -31,7 +31,7 @@
 
         if (code && token) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/jira`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/SimpleAuthGoogle`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -41,21 +41,20 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    goto('/profile/authorization?success=1&service=jira');
+                    await response.json();
+                    goto('/profile/authorization?success=1&service=google');
                 } else {
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
-                setError(error);
-                goto('/profile/authorization?success=0&service=jira');
+                goto('/profile/authorization?success=0&service=google');
             }
         } else {
-            goto('/profile/authorization?success=0&service=jira');
+            goto('/profile/authorization?success=0&service=google');
         }
     });
 </script>
 
 <div>
-    Traitement de l'authentification Jira...
+    Traitement de l'authentification google...
 </div>
