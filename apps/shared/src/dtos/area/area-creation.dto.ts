@@ -21,6 +21,10 @@ import { Type } from "class-transformer";
 @ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass)
 @ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos)
 export class AreaCreationDto {
+
+  @ApiProperty()
+  name: string
+
   @ApiProperty({
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
@@ -51,7 +55,6 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) }
     ],
   })
-  @ApiProperty()
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => BaseReactionInfos, {
