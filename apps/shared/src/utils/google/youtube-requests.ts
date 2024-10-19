@@ -64,7 +64,7 @@ export async function getChannelIdByUsername(username: string, token: string): P
 }
 
 
-export async function getChannelVideos(channelId: string, token: string) {
+export async function getChannelVideos(channelId: string, token: string): Promise<any[]> {
     const oauth2Client = new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,
         process.env.GOOGLE_CLIENT_SECRET,
@@ -81,12 +81,17 @@ export async function getChannelVideos(channelId: string, token: string) {
     });
 
     // @ts-ignore
-    const response = await youtube.search.list({
-        part: ['snippet'],
-        channelId: channelId,
-        maxResults: 5,
-        order: 'date',
-    });
+    try {
+        const response = await youtube.search.list({
+            part: ['snippet'],
+            channelId: channelId,
+            maxResults: 5,
+            order: 'date',
+        });
 
-    return response.data.items;
+        return response.data.items;
+    } catch (error) {
+        console.error('Error fetching channel videos:', error);
+        return [];
+    }
 }
