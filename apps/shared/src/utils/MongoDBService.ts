@@ -130,4 +130,13 @@ export class MongoDBService {
             return tokens.find((token: any) => token.type === type)?.data;
         });
     }
+
+    async updateAuthorizationData(userId: ObjectId, type: string, data: { token: string, refresh_token: string }): Promise<void> {
+        await this.executeWithSession(async () => {
+            await this._db.collection('users').updateOne(
+                { _id: new ObjectId(userId), 'authorizations.type': type },
+                { $set: { 'authorizations.$.data': data } }
+            );
+        });
+    }
 }

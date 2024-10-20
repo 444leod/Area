@@ -25,6 +25,7 @@ describe("AreasHelper", () => {
   describe("build", () => {
     it("should build an Area object from AreaCreationDto", () => {
       const dto: AreaCreationDto = {
+        name: "example",
         action: {
           type: ActionTypes.EXAMPLE_ACTION,
           exampleField: "exampleValue",

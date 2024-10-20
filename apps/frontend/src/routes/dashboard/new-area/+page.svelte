@@ -16,6 +16,9 @@
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
+	import Success from "$lib/components/new-area/Success.svelte";
+	import { setError } from "$lib/store/errorMessage";
+
 
 	export let data: PageData;
 
@@ -44,8 +47,52 @@
 	let actionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 	let reactionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 
+	function validateStep(): boolean {
+		let errors: string[] = [];
+
+		switch ($currentStep) {
+			case 0:
+				if (!$triggerApp) errors.push("Please select a trigger app");
+				break;
+			case 1:
+				if (!$selectedTrigger) errors.push("Please select a trigger");
+				break;
+			case 2:
+				if (!$actionApp) errors.push("Please select an action app");
+				break;
+			case 3:
+				if (!$selectedAction) errors.push("Please select an action");
+				break;
+			case 4:
+				if (!$automationName) errors.push("Automation name is required");
+				if ($selectedTrigger) {
+					$selectedTrigger.params.forEach(param => {
+						if (param.required && !$actionDetails.params[param.name]) {
+							errors.push(`Trigger parameter "${param.name}" is required`);
+						}
+					});
+				}
+				if ($selectedAction) {
+					$selectedAction.params.forEach(param => {
+						if (param.required && !$reactionDetails.params[param.name]) {
+							errors.push(`Action parameter "${param.name}" is required`);
+						}
+					});
+				}
+				break;
+		}
+
+		if (errors.length > 0) {
+			setError(errors.join('\n'));
+			return false;
+		}
+		return true;
+	}
+
 	function nextStep(): void {
-		currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
+		if (validateStep()) {
+			currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
+		}
 	}
 
 	function prevStep(): void {
@@ -91,18 +138,22 @@
 		});
 	}
 
-	let formMessage = '';
 	let showSuccessAnimation = false;
+
+	function handleSubmit(event: Event) {
+		if (!validateStep()) {
+			event.preventDefault();
+		}
+	}
 
 	function handleCreateAreaResult(result: { type: string; data?: { message: string } }): void {
 		if (result.type === 'success') {
 			showSuccessAnimation = true;
-			formMessage = 'Automation created successfully!';
 			setTimeout(() => {
 				goto('/dashboard');
 			}, 2000);
 		} else {
-			formMessage = `Failed to create automation: ${result.data?.message || 'Unknown error'}`;
+			setError(`Failed to create automation: ${result.data?.message || 'Unknown error'}`);
 		}
 	}
 </script>
@@ -119,11 +170,7 @@
 
 	<div class="card variant-soft p-4 md:p-6">
 		{#if showSuccessAnimation}
-			<div class="flex flex-col items-center justify-center h-64" in:fly={{ y: 50, duration: 500 }}>
-				<Icon icon="mdi:check-circle" class="w-24 h-24 text-success mb-4" />
-				<h2 class="h2 text-center text-success">Automation Created Successfully!</h2>
-				<p class="mt-2">Redirecting to Dashboard...</p>
-			</div>
+			<Success/>
 		{:else if $currentStep === 0 || $currentStep === 2}
 			<h2 class="h2 mb-4 text-center" in:fade>
 				Choose {$currentStep === 0 ? 'a Trigger' : 'an Action'} App
@@ -153,7 +200,7 @@
 		{:else if $currentStep === 4}
 			<h2 class="h2 mb-4 text-center">Set up Details</h2>
 			<div class="mb-4">
-				<label for="automation-name" class="label">Automation Name</label>
+				<label for="automation-name" class="label">Automation Name *</label>
 				<input
 						id="automation-name"
 						type="text"
@@ -166,26 +213,29 @@
 				<h3 class="h3 mb-2">Trigger Details</h3>
 				{#each $selectedTrigger.params as param}
 					<div class="mb-4">
-						<label for={param.name} class="label">{param.name}</label>
+						<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
 						{#if param.type === 'string'}
 							<StringInput
-									param={param}
+									{param}
 									details={param.details}
+									required={param.required}
 									value={$actionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
 							<NumberInput
-									param={param}
+									{param}
 									details={param.details}
+									required={param.required}
 									value={$actionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 							/>
 						{:else if param.type === 'boolean'}
 							<BooleanInput
-									param={param}
+									{param}
 									value={$actionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+									required={param.required}
 							/>
 						{/if}
 					</div>
@@ -195,24 +245,27 @@
 				<h3 class="h3 mb-2">Action Details</h3>
 				{#each $selectedAction.params as param}
 					<div class="mb-4">
-						<label for={param.name} class="label">{param.name}</label>
+						<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
 						{#if param.type === 'string'}
 							<StringInput
-								param={param}
-								details={param.details}
-								value={$reactionDetails.params[param.name]}
-								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+									{param}
+									details={param.details}
+									required={param.required}
+									value={$reactionDetails.params[param.name]}
+									updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{:else if param.type === 'number'}
 							<NumberInput
-								param={param}
-								details={param.details}
-								value={$reactionDetails.params[param.name]}
-								updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+									{param}
+									details={param.details}
+									required={param.required}
+									value={$reactionDetails.params[param.name]}
+									updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
 						{:else if param.type === 'boolean'}
 							<BooleanInput
-									param={param}
+									{param}
+									required={param.required}
 									value={$reactionDetails.params[param.name]}
 									updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 							/>
@@ -234,23 +287,20 @@
 					method="POST"
 					action="?/createArea"
 					use:enhance={() => {
-					return async ({ result }) => {
-						handleCreateAreaResult(result);
-					};
-				}}
+                    return async ({ result }) => {
+                        handleCreateAreaResult(result);
+                    };
+                }}
+					on:submit={handleSubmit}
 			>
 				<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
 				<input type="hidden" name="reactionDetails" value={JSON.stringify($reactionDetails)} />
+				<input type="hidden" name="areaName" value={$automationName} />
 				<button type="submit" class="btn variant-filled-primary w-full">
 					<Icon icon="mdi:flash" class="w-4 h-4 mr-2" />
 					Activate Automation
 				</button>
 			</form>
-			{#if formMessage}
-				<p class="mt-4 text-center" class:text-error={formMessage.includes('Failed')}>
-					{formMessage}
-				</p>
-			{/if}
 		{/if}
 	</div>
 
