@@ -18,7 +18,6 @@
 	import type { ActionDetails } from '$lib/types/ActionDetails';
 	import Success from "$lib/components/new-area/Success.svelte";
 	import { setError } from "$lib/store/errorMessage";
-	import {ArrowBigDown} from "lucide-svelte";
 	import AvailableVariable from "$lib/components/new-area/AvailableVariable.svelte";
 
 	export let data: PageData;
