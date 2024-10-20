@@ -5,6 +5,7 @@ import { handleYoutubeVideoPostedAction } from './youtube/on-youtube-video-poste
 import { handleNewJiraTicketAction } from './jira/on-new-jira-ticket';
 import { handleNewJiraProjectAction } from './jira/on-new-jira-project';
 import { handleNewGithubRepositoryAction } from './github/on-new-github-repository';
+import { handleOnPullRequestStateAction } from './github/on-pull-request-state';
 
 type ActionMap = {
     [string: string]: ActionFunction;
@@ -17,4 +18,5 @@ export const actionsMap: ActionMap = {
     ON_NEW_JIRA_TICKET: handleNewJiraTicketAction,
     ON_NEW_JIRA_PROJECT: handleNewJiraProjectAction,
     ON_NEW_GITHUB_REPOSITORY: handleNewGithubRepositoryAction,
+    ON_PULL_REQUEST_STATE: handleOnPullRequestStateAction,
 };
