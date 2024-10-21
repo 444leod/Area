@@ -55,6 +55,9 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
     packet.data = {
         title: video.title || 'title',
         body: video.description || '',
+        date: video.date,
+        username: undefined,
+        picture: undefined,
     };
 
     return packet;
