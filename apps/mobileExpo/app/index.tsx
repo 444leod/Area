@@ -76,7 +76,6 @@ export default function LoginScreen() {
       const refresh_token = response.authentication?.refreshToken;
 
       const expiresIn  = response.authentication?.expiresIn;
-      console.log(expiresIn);
         handleGoogleAuth(id_token, refresh_token, expiresIn);
     } else if (response?.type === "error") {
       console.error("Google Sign-In error:", response.error);
