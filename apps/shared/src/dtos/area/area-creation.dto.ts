@@ -6,6 +6,7 @@ import {
   EachXSecondsActionInfos,
   ExampleActionInfos,
   OnNewJiraTicketClass,
+  OnNewJiraProjectClass,
   OnYoutubeVideoPostedClass, OnNewGithubRepositoryClass,
 } from "../actions";
 import {
@@ -19,7 +20,7 @@ import {
 import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass, OnNewGithubRepositoryClass)
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass, OnNewJiraProjectClass, OnNewGithubRepositoryClass)
 @ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos)
 export class AreaCreationDto {
 
@@ -34,7 +35,7 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
       { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
       { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
+      { $ref: getSchemaPath(OnNewJiraProjectClass) },
       { $ref: getSchemaPath(OnNewGithubRepositoryClass) },
     ],
   })
@@ -49,7 +50,7 @@ export class AreaCreationDto {
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
         { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
         { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
-        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
+        { value: OnNewJiraProjectClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
         { value: OnNewGithubRepositoryClass, name: ActionTypes.ON_NEW_GITHUB_REPOSITORY },
       ],
     },
