@@ -16,12 +16,13 @@ import {
   ReactionInfos,
   ReactionTypes,
   SendEmailReactionInfos, SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
 } from "../reactions";
 import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 @ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass)
-@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos)
+@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos, SendScrobbleReportByEmailInfos)
 export class AreaCreationDto {
 
   @ApiProperty()
@@ -60,7 +61,8 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(ExampleReactionInfos) },
       { $ref: getSchemaPath(SendEmailReactionInfos) },
       { $ref: getSchemaPath(CreateGoogleTaskInfos) },
-      { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) }
+      { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) },
+      { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -74,6 +76,7 @@ export class AreaCreationDto {
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
         { value: CreateGoogleTaskInfos, name: ReactionTypes.CREATE_GOOGLE_TASK },
         { value: SendMessageToDiscordWebhookInfos, name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK },
+        { value: SendScrobbleReportByEmailInfos, name: ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL },
       ],
     },
   })

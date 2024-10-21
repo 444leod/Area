@@ -23,6 +23,7 @@
     "dotenv": "^16.4.5",
     "mongodb": "^6.9.0",
     "mongoose": "^8.7.0",
+    "axios": "^1.7.7",
     "googleapis": "^144.0.0"
   },
   "devDependencies": {
