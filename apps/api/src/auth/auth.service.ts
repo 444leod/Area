@@ -83,7 +83,6 @@ export class AuthService {
                 });
             }
             const payload = ticket.getPayload();
-            console.log(JSON.stringify(payload));
             const googleServiceId = new ObjectId('64ff2e8e2a6e4b3f78abcd12');
             const user = await this.usersService.findOrCreateUser({
                 email: payload.email,
