@@ -14,10 +14,10 @@ export class ReactionCreationDto {
 
     @IsNotEmpty()
     @ApiProperty()
-    reactionType: string
+    reaction_type: string
 
     @ApiProperty({ type: [Object], default: [] })
-    params: { name: string; type: 'string' | 'number'; reactionType: ReactionTypes }[];
+    params: { name: string; type: 'string' | 'number'; reaction_type: ReactionTypes }[];
 }
 
 export class ReactionInfo {
@@ -31,8 +31,8 @@ export class ReactionInfo {
 
     @IsNotEmpty()
     @ApiProperty()
-    reactionType: string
+    reaction_type: string
 
     @ApiProperty({ type: [Object] })
-    params: { name: string; type: 'string' | 'number'; reactionType: ReactionTypes }[];
+    params: { name: string; type: 'string' | 'number'; reaction_type: ReactionTypes }[];
 }

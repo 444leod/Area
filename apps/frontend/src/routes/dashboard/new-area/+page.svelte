@@ -111,7 +111,7 @@
 	function selectTriggerOrAction(item: Action, type: 'trigger' | 'action'): void {
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
-			actionDetails.set({ type: item.actionType, params: {} });
+			actionDetails.set({ type: item.action_type, params: {} });
 			item.params.forEach(param => {
 				actionDetails.update(details => {
 					details.params[param.name] = '';
@@ -120,7 +120,7 @@
 			});
 		} else {
 			selectedAction.set(item);
-			reactionDetails.set({ type: item.actionType, params: {} });
+			reactionDetails.set({ type: item.action_type, params: {} });
 			item.params.forEach(param => {
 				reactionDetails.update(details => {
 					details.params[param.name] = '';

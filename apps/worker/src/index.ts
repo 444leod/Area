@@ -49,22 +49,22 @@ async function run() {
 run().catch(console.dir);
 
 async function handleArea(areaPacket: AreaPacket) {
-    const actionType = areaPacket?.area.action?.informations?.type;
-    const reactionType = areaPacket?.area.reaction?.informations?.type;
+    const action_type = areaPacket?.area.action?.informations?.type;
+    const reaction_type = areaPacket?.area.reaction?.informations?.type;
 
-    if (!actionType || !reactionType) {
+    if (!action_type || !reaction_type) {
         console.error('Action or reaction type not found.');
         return;
     }
 
-    const actionFunction = actionsMap[actionType];
+    const actionFunction = actionsMap[action_type];
     if (!actionFunction) {
-        console.error(`Action ${actionType} not supported.`);
+        console.error(`Action ${action_type} not supported.`);
         return;
     }
-    const reactionFunction = reactionsMap[reactionType];
+    const reactionFunction = reactionsMap[reaction_type];
     if (!reactionFunction) {
-        console.error(`Reaction ${reactionType} not supported.`);
+        console.error(`Reaction ${reaction_type} not supported.`);
         return;
     }
 

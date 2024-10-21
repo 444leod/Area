@@ -13,7 +13,7 @@ export class ActionCreationDto {
 
     @IsNotEmpty()
     @ApiProperty()
-    actionType: string
+    action_type: string
 
     @ApiProperty({ type: [Object], default: [] })
     params: { name: string; type: 'string' | 'number';}[];
@@ -31,7 +31,7 @@ export class ActionInfo {
 
     @IsNotEmpty()
     @ApiProperty()
-    actionType: string
+    action_type: string
 
     @ApiProperty({ type: [Object] })
     params: { name: string; type: 'string' | 'number';}[];
