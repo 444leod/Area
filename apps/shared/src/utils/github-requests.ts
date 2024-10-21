@@ -62,3 +62,18 @@ export async function getSortedUserRepositoriesSince(
         return null;
     }
 }
+
+export async function createPullRequestComment(token: string, owner: string, repository: string, pullRequestNumber: number, body: string): Promise<void> {
+    try {
+        await axios.post(`https://api.github.com/repos/${owner}/${repository}/issues/${pullRequestNumber}/comments`,
+            { body },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+    } catch (error) {
+        console.error(error);
+    }
+}
