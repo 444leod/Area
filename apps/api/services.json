@@ -1,8 +1,6 @@
 [
   {
-    "_id": {
-      "$oid": "6703d148ddf654a6d482dafb"
-    },
+    "_id": "6703d148ddf654a6d482dafb",
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [
@@ -23,9 +21,7 @@
     "reactions": []
   },
   {
-    "_id": {
-      "$oid": "6703d313722dee796788baa3"
-    },
+    "_id": "6703d313722dee796788baa3",
     "name": "Timer",
     "description": "Service for Timer actions",
     "actions": [
@@ -46,9 +42,7 @@
     "reactions": []
   },
   {
-    "_id": {
-      "$oid": "6703f2e0bc8055c868eaf474"
-    },
+    "_id": "6703f2e0bc8055c868eaf474",
     "name": "Mail",
     "description": "Service for Email actions",
     "actions": [],
@@ -81,9 +75,7 @@
     ]
   },
   {
-    "_id": {
-      "$oid": "6703f3dabc8055c868eaf47e"
-    },
+    "_id": "6703f3dabc8055c868eaf47e",
     "name": "Google task",
     "description": "Service for Google task actions",
     "actions": [],
@@ -110,9 +102,7 @@
     ]
   },
   {
-    "_id": {
-      "$oid": "670e71ff92b0948adfdca0b3"
-    },
+    "_id": "670e71ff92b0948adfdca0b3",
     "name": "Jira",
     "description": "for all jira action",
     "actions": [
@@ -132,18 +122,14 @@
     "reactions": []
   },
   {
-    "_id": {
-      "$oid": "670f8cbd7920482a14597bc7"
-    },
+    "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
     "actions": [],
     "reactions": []
   },
   {
-    "_id": {
-      "$oid": "670f8cbd7920482a14597111"
-    },
+    "_id": "670f8cbd7920482a14597111",
     "name": "Discord",
     "description": "Discord interactions",
     "actions": [],

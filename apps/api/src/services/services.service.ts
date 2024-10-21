@@ -5,16 +5,24 @@ import {ReactionInfo, Service} from '@area/shared';
 import { ActionCreationDto, ServiceCreationDto, ReactionCreationDto, ActionInfo } from '@area/shared';
 import { ObjectId } from 'mongodb';
 import * as SERVICES from '../../services.json'
+import * as fs from 'fs';
 
 @Injectable()
 export class AdminService {
   async updateServicesFromJson() : Promise<void> {
+
+    // Delete all services from DB
+    await this.serviceModel.deleteMany({});
+
+    // Put services in DB from JSON
     const json_services: Service[] = SERVICES['default'];
     json_services.forEach(async (service) => {
-      // Transform basic json object to cool ObjectId
-      service._id = new ObjectId((service._id as any).$oid as string)
-      await this.serviceModel.findByIdAndUpdate(service._id, service);
+      service._id = service._id != undefined ? new ObjectId(service._id) : new ObjectId();
+      await this.serviceModel.create(service);
     });
+
+    // Update JSON with potential new IDs
+    fs.writeFile('services.json', JSON.stringify(json_services, null, 2), () => {});
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
