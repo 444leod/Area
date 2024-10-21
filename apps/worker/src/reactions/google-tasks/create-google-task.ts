@@ -1,14 +1,22 @@
 import { ReactionFunction } from '../reaction-function';
 import { AreaPacket, CreateGoogleTaskInfos } from '@shared/src';
-import { MongoDBService } from '@area/shared';
+import { MongoDBService, getNewGoogleTokens } from '@area/shared';
 import { google } from 'googleapis';
 
 export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const google_token = await database.getAuthorizationData(packet.user_id, 'GOOGLE');
-    if (!google_token) {
+    let { token, refresh_token } = (await database.getAuthorizationData(packet.user_id, 'GOOGLE')) as {
+        token: string;
+        refresh_token: string;
+    };
+    if (!token) {
         console.error('Google token not found.');
         return;
     }
+
+    ({ token, refresh_token } = await getNewGoogleTokens({ token, refresh_token }));
+
+    await database.updateAuthorizationData(packet.user_id, 'GOOGLE', { token, refresh_token });
+
     const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
 
     const title = reaction.content?.title || 'title';
@@ -23,7 +31,7 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: A
     );
 
     oauth2Client.setCredentials({
-        access_token: google_token,
+        access_token: token,
     });
 
     try {
