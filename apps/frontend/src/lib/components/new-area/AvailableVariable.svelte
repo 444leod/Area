@@ -38,7 +38,7 @@
         </button>
 
         <div class="mt-4 lg:block flex-grow overflow-y-auto" class:hidden={!isOpen} transition:slide|local>
-            <p class="mb-4 text-sm">You can use these variables in your action:</p>
+            <p class="mb-4 text-sm">You can use these variables in your reaction:</p>
             <ul class="space-y-2">
                 {#each $dynamicVariables as variable}
                     <li class="border border-surface-300-600-token rounded-lg overflow-hidden">
