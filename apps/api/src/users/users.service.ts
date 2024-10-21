@@ -137,12 +137,7 @@ export class UsersService {
     return u.areas[index];
   }
 
-  async addOrUpdateAuthorizationWithToken(token: string, authData: {
-    service_id: ObjectId;
-    type: string;
-    accessToken: string;
-    refreshToken: string;
-  }): Promise<User> {
+  async addOrUpdateAuthorizationWithToken(token: string, authData:AuthorizationDto): Promise<User> {
     let decodedToken;
     try {
       decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -171,16 +166,16 @@ export class UsersService {
 
     if (authIndex !== -1) {
       user.authorizations[authIndex].data = {
-        token: authData.accessToken,
-        refresh_token: authData.refreshToken,
+        token: authData.data.token,
+        refresh_token: authData.data.refresh_token,
       };
     } else {
       user.authorizations.push({
         service_id: authData.service_id,
         type: authData.type,
         data: {
-          token: authData.accessToken,
-          refresh_token: authData.refreshToken,
+          token: authData.data.token,
+          refresh_token: authData.data.refresh_token,
         },
       });
     }

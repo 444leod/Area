@@ -154,8 +154,10 @@ export class AuthService {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: AtlassianService._id,
                     type: AuthorizationsTypes.ATLASSIAN,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
+                    data: {
+                        token: accessToken,
+                        refresh_token: refreshToken,
+                    },
                 });
 
                 return 1;
@@ -221,8 +223,10 @@ export class AuthService {
                 const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: GithubService._id,
                     type: AuthorizationsTypes.GITHUB,
-                    accessToken: accessToken,
-                    refreshToken: null,
+                    data: {
+                        token: accessToken,
+                        refresh_token: null,
+                    },
                 });
 
                 return 1;
@@ -288,8 +292,10 @@ export class AuthService {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: GoogleService._id,
                     type: AuthorizationsTypes.GOOGLE,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
+                    data: {
+                        token: accessToken,
+                        refresh_token: refreshToken,
+                    },
                 });
 
                 return 1;
