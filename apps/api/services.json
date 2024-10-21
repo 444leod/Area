@@ -7,7 +7,7 @@
       {
         "name": "videoPosted",
         "description": "When video was posted",
-        "ActionType": "ON_YOUTUBE_VIDEO_POSTED",
+        "actionType": "ON_YOUTUBE_VIDEO_POSTED",
         "params": [
           {
             "name": "user_id",
@@ -28,7 +28,7 @@
       {
         "name": "each X second",
         "description": "make the reaction every X second",
-        "ActionType": "EACH_X_SECONDS",
+        "actionType": "EACH_X_SECONDS",
         "params": [
           {
             "name": "seconds",
@@ -50,7 +50,7 @@
       {
         "name": "sendemail",
         "description": "send an email",
-        "ActionType": "SEND_EMAIL",
+        "reactionType": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
@@ -83,7 +83,7 @@
       {
         "name": "Create new task",
         "description": "for create new task",
-        "ActionType": "CREATE_GOOGLE_TASK",
+        "reactionType": "CREATE_GOOGLE_TASK",
         "params": [
           {
             "name": "title",
@@ -109,13 +109,13 @@
       {
         "name": "new issue",
         "description": "when new issue created",
-        "ActionType": "ON_NEW_JIRA_TICKET",
+        "actionType": "ON_NEW_JIRA_TICKET",
         "params": []
       },
       {
         "name": "new project",
         "description": "when new project created",
-        "ActionType": "ON_NEW_JIRA_PROJECT",
+        "actionType": "ON_NEW_JIRA_PROJECT",
         "params": []
       }
     ],
@@ -137,7 +137,7 @@
       {
         "name": "send message",
         "description": "send message to discord",
-        "ActionType": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
+        "reactionType": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
         "params": [
           {
             "name": "webhook_url",

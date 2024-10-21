@@ -58,7 +58,7 @@ export class AdminService {
     const action: ActionInfo = {
       name: actionCreationDto.name,
       description: actionCreationDto.description,
-      ActionType: actionCreationDto.ActionType,
+      actionType: actionCreationDto.actionType,
       params: actionCreationDto.params,
     };
 
@@ -75,7 +75,7 @@ export class AdminService {
     const reaction: ReactionInfo = {
       name: reactionCreationDto.name,
       description: reactionCreationDto.description,
-      ActionType: reactionCreationDto.ActionType,
+      reactionType: reactionCreationDto.reactionType,
       params: reactionCreationDto.params,
     };
 
