@@ -20,4 +20,9 @@ export class SendScrobbleReportByEmailInfos extends BaseReactionInfos {
   @IsString()
   @IsNotEmpty()
   body: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 }
