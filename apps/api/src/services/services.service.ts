@@ -9,14 +9,12 @@ import * as SERVICES from '../../services.json'
 @Injectable()
 export class AdminService {
   async updateServicesFromJson() : Promise<void> {
-    console.log("Updating services...");
     const json_services: Service[] = SERVICES['default'];
     json_services.forEach(async (service) => {
       // Transform basic json object to cool ObjectId
       service._id = new ObjectId((service._id as any).$oid as string)
       await this.serviceModel.findByIdAndUpdate(service._id, service);
     });
-    console.log("Services updated!");
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
