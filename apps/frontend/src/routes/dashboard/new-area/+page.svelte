@@ -28,7 +28,6 @@
 			apps.set(data.services);
 		}
 	}
-	console.log(JSON.stringify(data.services))
 	const steps = [
 		'Choose Trigger App',
 		'Select Trigger',
