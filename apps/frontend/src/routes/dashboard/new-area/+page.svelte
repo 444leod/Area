@@ -13,6 +13,7 @@
 	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
 	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
 	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
+	import Select from "$lib/components/new-area/Inputs/Select.svelte";
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
@@ -27,6 +28,7 @@
 			apps.set(data.services);
 		}
 	}
+	console.log(JSON.stringify(data.services))
 	const steps = [
 		'Choose Trigger App',
 		'Select Trigger',
@@ -239,6 +241,13 @@
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 												required={param.required}
 										/>
+									{:else if param.type === 'enum'}
+										<Select
+												options={param.items}
+												value={$actionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
+												required={param.required}
+										/>
 									{/if}
 								</div>
 							{/each}
@@ -268,6 +277,13 @@
 												required={param.required}
 												value={$reactionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+										/>
+									{:else if param.type === 'enum'}
+										<Select
+												options={param.items}
+												value={$reactionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
+												required={param.required}
 										/>
 									{/if}
 								</div>
