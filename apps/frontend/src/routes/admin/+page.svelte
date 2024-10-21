@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { fade, fly } from 'svelte/transition';
     import { Chart, registerables } from 'chart.js';
-    import { AppBar, AppShell, TabGroup, Tab } from '@skeletonlabs/skeleton';
+    import { AppBar, AppShell } from '@skeletonlabs/skeleton';
     import Icon from '@iconify/svelte';
 
     Chart.register(...registerables);
@@ -116,94 +116,86 @@
     }
 </script>
 
-<AppShell>
-    <svelte:fragment slot="header">
-        <AppBar>
-            <svelte:fragment slot="lead">
-                <strong class="h3 uppercase">Welcome Admin user</strong>
-            </svelte:fragment>
-        </AppBar>
-    </svelte:fragment>
 
-    <main class="container mx-auto p-4 space-y-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" in:fade={{duration: 300}}>
-            <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 0}}>
-                <Icon icon="mdi:account-group" width="48" height="48" class="mr-4" />
-                <div>
-                    <h3 class="h3">Total Users</h3>
-                    <p class="text-3xl font-bold">{Math.round(userCount)}</p>
-                </div>
-            </div>
-            <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 100}}>
-                <Icon icon="mdi:robot" width="48" height="48" class="mr-4" />
-                <div>
-                    <h3 class="h3">Total Automations</h3>
-                    <p class="text-3xl font-bold">{Math.round(automationCount)}</p>
-                </div>
-            </div>
-            <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 200}}>
-                <Icon icon="mdi:robot-excited" width="48" height="48" class="mr-4" />
-                <div>
-                    <h3 class="h3">Active Automations</h3>
-                    <p class="text-3xl font-bold">{Math.round(activeAutomationCount)}</p>
-                </div>
+<main class="container mx-auto p-4 space-y-8">
+    <strong class="h3 uppercase py-10 text-center">Welcome Admin user</strong>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" in:fade={{duration: 300}}>
+        <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 0}}>
+            <Icon icon="mdi:account-group" width="48" height="48" class="mr-4" />
+            <div>
+                <h3 class="h3">Total Users</h3>
+                <p class="text-3xl font-bold">{Math.round(userCount)}</p>
             </div>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" in:fade={{duration: 300, delay: 300}}>
-            <div class="card p-4 variant-soft lg:h-[30rem]">
-                <h3 class="h3 mb-4 text-center">User Growth</h3>
-                <canvas id="userGrowthChart"></canvas>
-            </div>
-            <div class="card p-4 variant-soft lg:h-[30rem] relative">
-                <h3 class="h3 mb-4 text-center">Automations by Service</h3>
-                <canvas class="lg:absolute left-0 right-0 mx-auto w-full" id="automationsByServiceChart"></canvas>
+        <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 100}}>
+            <Icon icon="mdi:robot" width="48" height="48" class="mr-4" />
+            <div>
+                <h3 class="h3">Total Automations</h3>
+                <p class="text-3xl font-bold">{Math.round(automationCount)}</p>
             </div>
         </div>
+        <div class="card p-4 variant-soft flex items-center" in:fly={{y: 50, duration: 300, delay: 200}}>
+            <Icon icon="mdi:robot-excited" width="48" height="48" class="mr-4" />
+            <div>
+                <h3 class="h3">Active Automations</h3>
+                <p class="text-3xl font-bold">{Math.round(activeAutomationCount)}</p>
+            </div>
+        </div>
+    </div>
 
-        <div class="card p-4 variant-soft" in:fade={{duration: 300, delay: 600}}>
-            <h3 class="h3 mb-4">Recent Automations</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" in:fade={{duration: 300, delay: 300}}>
+        <div class="card p-4 variant-soft lg:h-[30rem]">
+            <h3 class="h3 mb-4 text-center">User Growth</h3>
+            <canvas id="userGrowthChart"></canvas>
+        </div>
+        <div class="card p-4 variant-soft lg:h-[30rem] relative">
+            <h3 class="h3 mb-4 text-center">Automations by Service</h3>
+            <canvas class="lg:absolute left-0 right-0 mx-auto w-full" id="automationsByServiceChart"></canvas>
+        </div>
+    </div>
 
-            <!-- Mobile view -->
-            <div class="md:hidden space-y-4">
-                {#each mockData.recentAutomations as automation}
-                    <div class="card p-4 variant-ghost">
-                        <h4 class="font-bold">{automation.name}</h4>
-                        <div class="flex justify-between items-center mt-2">
-                    <span class="badge {automation.status === 'active' ? 'variant-filled-success' : 'variant-filled-error'}">
-                        {automation.status}
-                    </span>
-                            <span class="text-sm">{automation.createdAt}</span>
-                        </div>
+    <div class="card p-4 variant-soft" in:fade={{duration: 300, delay: 600}}>
+        <h3 class="h3 mb-4">Recent Automations</h3>
+
+        <!-- Mobile view -->
+        <div class="md:hidden space-y-4">
+            {#each mockData.recentAutomations as automation}
+                <div class="card p-4 variant-ghost">
+                    <h4 class="font-bold">{automation.name}</h4>
+                    <div class="flex justify-between items-center mt-2">
+                <span class="badge {automation.status === 'active' ? 'variant-filled-success' : 'variant-filled-error'}">
+                    {automation.status}
+                </span>
+                        <span class="text-sm">{automation.createdAt}</span>
                     </div>
-                {/each}
-            </div>
-
-            <!-- Desktop view -->
-            <div class="hidden md:block">
-                <table class="table table-compact w-full">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Created At</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {#each mockData.recentAutomations as automation}
-                        <tr>
-                            <td>{automation.name}</td>
-                            <td>
-                            <span class="badge {automation.status === 'active' ? 'variant-filled-success' : 'variant-filled-error'}">
-                                {automation.status}
-                            </span>
-                            </td>
-                            <td>{automation.createdAt}</td>
-                        </tr>
-                    {/each}
-                    </tbody>
-                </table>
-            </div>
+                </div>
+            {/each}
         </div>
-    </main>
-</AppShell>
+
+        <!-- Desktop view -->
+        <div class="hidden md:block">
+            <table class="table table-compact w-full">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#each mockData.recentAutomations as automation}
+                    <tr>
+                        <td>{automation.name}</td>
+                        <td>
+                        <span class="badge {automation.status === 'active' ? 'variant-filled-success' : 'variant-filled-error'}">
+                            {automation.status}
+                        </span>
+                        </td>
+                        <td>{automation.createdAt}</td>
+                    </tr>
+                {/each}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
