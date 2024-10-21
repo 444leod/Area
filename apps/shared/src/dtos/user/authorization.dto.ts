@@ -6,6 +6,8 @@ export class AuthorizationDto {
     data: {
         token: string;
         refresh_token: string;
+        expirationDate: Date,
+        createdAt: Date,
         [key: string]: any;
     };
 }

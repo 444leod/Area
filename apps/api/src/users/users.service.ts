@@ -24,6 +24,7 @@ export class UsersService {
     token: string;
     refreshToken: string;
     service_id: ObjectId;
+    expirationDate: Date,
   }): Promise<User> {
     let user = await this.userModel.findOne({ email: userData.email });
     if (user) {
@@ -37,6 +38,8 @@ export class UsersService {
         user.authorizations[authIndex].data = {
           token: userData.token,
           refresh_token: userData.refreshToken,
+          expirationDate: userData.expirationDate,
+          createdAt: new Date(),
         };
       } else {
         user.authorizations.push({
@@ -45,6 +48,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expirationDate: userData.expirationDate,
+            createdAt: new Date(),
           },
         });
       }
@@ -62,6 +67,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expirationDate: userData.expirationDate,
+            createdAt: new Date(),
           },
         },
       ],
@@ -168,6 +175,8 @@ export class UsersService {
       user.authorizations[authIndex].data = {
         token: authData.data.token,
         refresh_token: authData.data.refresh_token,
+        expirationDate: authData.data.expirationDate,
+        createdAt: authData.data.createdAt,
       };
     } else {
       user.authorizations.push({
@@ -176,6 +185,8 @@ export class UsersService {
         data: {
           token: authData.data.token,
           refresh_token: authData.data.refresh_token,
+          expirationDate: authData.data.expirationDate,
+          createdAt: authData.data.createdAt,
         },
       });
     }

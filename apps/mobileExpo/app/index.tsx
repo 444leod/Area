@@ -34,15 +34,16 @@ export default function LoginScreen() {
 
   });
 
-  const handleGoogleAuth = async (idToken: string, refreshToken: string) => {
+  const handleGoogleAuth = async (idToken: string, refreshToken: string, expireIn:string) => {
     try {
+      const expirationDate = new Date(Date.now() + parseInt(expireIn) * 1000).toISOString();
       const response = await fetch(`${API_URL}/auth/google/mobile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true })
+        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true, expiredAt: expirationDate })
       });
       if (!response.ok) {
         const errorBody = await response.text();
@@ -73,7 +74,10 @@ export default function LoginScreen() {
       setLoading(true);
       const { id_token } = response.params;
       const refresh_token = response.authentication?.refreshToken;
-      handleGoogleAuth(id_token, refresh_token);
+
+      const expiresIn  = response.authentication?.expiresIn;
+      console.log(expiresIn);
+        handleGoogleAuth(id_token, refresh_token, expiresIn);
     } else if (response?.type === "error") {
       console.error("Google Sign-In error:", response.error);
       Alert.alert(
@@ -100,6 +104,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     setLoading(true);
+    console.log("API URL", API_URL)
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
@@ -119,7 +124,7 @@ export default function LoginScreen() {
         throw new Error("Login error");
       }
     } catch (error) {
-      console.error("Error during login:", error.message());
+      console.error("Error during login:", error);
       Alert.alert(
           "Error",
           "Unable to login. Please check your credentials.",
