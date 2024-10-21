@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte';
-    import {X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus, ArrowDown} from 'lucide-svelte';
+    import { X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus, ArrowDown, Copy, Check } from 'lucide-svelte';
     import { getAreaById } from '$lib/modules/getAreaById';
     import { deleteAreaById } from '$lib/modules/deleteAreaById';
     import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
@@ -14,7 +14,7 @@
     let toggleLoading = false;
 
     const dispatch = createEventDispatcher();
-  
+
     onMount(async () => {
         try {
             area = await getAreaById(areaId, token);
@@ -24,7 +24,7 @@
             loading = false;
         }
     });
-  
+
     function close() {
         dispatch('close');
     }
@@ -33,7 +33,7 @@
         if (!confirm('Are you sure you want to delete this area?')) {
             return;
         }
-        
+
         deleteLoading = true;
         try {
             await deleteAreaById(areaId, token);
@@ -64,6 +64,21 @@
     function formatKey(key: string): string {
         return key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
+
+    function truncateText(text: string, maxLength: number = 20): string {
+        return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+    }
+
+    async function copyToClipboard(text: string, event: MouseEvent) {
+        await navigator.clipboard.writeText(text);
+        const button = event.currentTarget as HTMLButtonElement;
+        button.classList.add('text-success-500');
+        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        setTimeout(() => {
+            button.classList.remove('text-success-500');
+            button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+        }, 2000);
+    }
 </script>
 
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -74,7 +89,7 @@
                 <X size={24} />
             </button>
         </div>
-      
+
         {#if loading}
             <div class="flex justify-center items-center h-64">
                 <div class="loader"></div>
@@ -89,10 +104,10 @@
                         <span class="text-sm font-semibold text-surface-700-200-token">ID: {area._id}</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button 
-                            on:click={toggleAreaButton}
-                            class="btn {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
-                            disabled={toggleLoading}
+                        <button
+                                on:click={toggleAreaButton}
+                                class="btn {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
+                                disabled={toggleLoading}
                         >
                             {#if toggleLoading}
                                 <div class="loader-sm mr-2"></div>
@@ -114,8 +129,18 @@
                         </h3>
                         <div class="grid grid-cols-2 gap-4">
                             {#each Object.entries(area.action.informations) as [key, value]}
-                                <div>
-                                    <strong>{formatKey(key)}:</strong> {value}
+                                <div class="flex items-center space-x-2">
+                                    <strong>{formatKey(key)}:</strong>
+                                    <span class="truncate">{truncateText(value)}</span>
+                                    {#if value.length > 50}
+                                        <button
+                                                on:click={(e) => copyToClipboard(value, e)}
+                                                class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
+                                                title="Copy full text"
+                                        >
+                                            <Copy class="w-4 h-4" />
+                                        </button>
+                                    {/if}
                                 </div>
                             {/each}
                         </div>
@@ -132,8 +157,16 @@
                         </h3>
                         <div class="grid grid-cols-2 gap-4">
                             {#each Object.entries(area.reaction.informations) as [key, value]}
-                                <div>
-                                    <strong>{formatKey(key)}:</strong> {value}
+                                <div class="flex items-center space-x-2">
+                                    <strong>{formatKey(key)}:</strong>
+                                    <span class="truncate">{truncateText(value)}</span>
+                                    <button
+                                            on:click={(e) => copyToClipboard(value, e)}
+                                            class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
+                                            title="Copy full text"
+                                    >
+                                        <Copy class="w-4 h-4" />
+                                    </button>
                                 </div>
                             {/each}
                         </div>
@@ -145,17 +178,26 @@
                         <h3 class="text-lg font-semibold mb-3">Action History</h3>
                         <ul class="list-disc pl-5">
                             {#each area.action.history.exampleHistory as historyItem}
-                                <li>{JSON.stringify(historyItem)}</li>
+                                <li class="flex items-center space-x-2">
+                                    <span class="truncate">{truncateText(JSON.stringify(historyItem))}</span>
+                                    <button
+                                            on:click={(e) => copyToClipboard(JSON.stringify(historyItem), e)}
+                                            class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
+                                            title="Copy full history item"
+                                    >
+                                        <Copy class="w-4 h-4" />
+                                    </button>
+                                </li>
                             {/each}
                         </ul>
                     </div>
                 {/if}
 
                 <div class="flex justify-end mt-6">
-                    <button 
-                        on:click={deleteArea} 
-                        class="btn variant-filled-error"
-                        disabled={deleteLoading}
+                    <button
+                            on:click={deleteArea}
+                            class="btn variant-filled-error"
+                            disabled={deleteLoading}
                     >
                         {#if deleteLoading}
                             <div class="loader-sm mr-2"></div>
