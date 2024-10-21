@@ -6,8 +6,9 @@ import {
   EachXSecondsActionInfos,
   ExampleActionInfos,
   OnNewJiraTicketClass,
-  OnNewJiraProjectClass,
-  OnYoutubeVideoPostedClass, OnNewGithubRepositoryClass,
+  OnYoutubeVideoPostedClass,
+  OnNewGithubRepositoryClass,
+  OnPullRequestStateClass
 } from "../actions";
 import {
   BaseReactionInfos,
@@ -20,7 +21,7 @@ import {
 import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass, OnNewJiraProjectClass, OnNewGithubRepositoryClass)
+@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass, OnNewGithubRepositoryClass, OnPullRequestStateClass)
 @ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos)
 export class AreaCreationDto {
 
@@ -35,8 +36,9 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
       { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
       { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewJiraProjectClass) },
+      { $ref: getSchemaPath(OnNewJiraTicketClass) },
       { $ref: getSchemaPath(OnNewGithubRepositoryClass) },
+      { $ref: getSchemaPath(OnPullRequestStateClass) },
     ],
   })
   @IsNotEmptyObject()
@@ -50,8 +52,9 @@ export class AreaCreationDto {
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
         { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
         { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
-        { value: OnNewJiraProjectClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
+        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
         { value: OnNewGithubRepositoryClass, name: ActionTypes.ON_NEW_GITHUB_REPOSITORY },
+        { value: OnPullRequestStateClass, name: ActionTypes.ON_PULL_REQUEST_STATE },
       ],
     },
   })
