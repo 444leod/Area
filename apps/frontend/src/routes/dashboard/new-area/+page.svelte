@@ -208,7 +208,7 @@
 						<h2 class="h2 mb-4 text-center">Set up Details</h2>
 						<div class="mb-4">
 							<label for="automation-name" class="label">Automation Name *</label>
-							<div class="rounded-lg variant-ghost-primary p-4">
+							<div class="rounded-lg p-4">
 								<input
 										id="automation-name"
 										type="text"
@@ -222,13 +222,15 @@
 							<h3 class="h3 mb-2">Trigger Details</h3>
 							{#each $selectedTrigger.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
 												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
@@ -236,13 +238,17 @@
 												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
 												{param}
+												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
-												required={param.required}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'enum'}
 										<Select
@@ -250,6 +256,8 @@
 												value={$actionDetails.params[param.name]}
 												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
 												required={param.required}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'date'}
 										<DateInput
@@ -263,9 +271,10 @@
 										<TextInput
 												{param}
 												required={param.required}
-												value={$reactionDetails.params[param.name]}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												isAction={true}
 										/>
 									{/if}
 								</div>
@@ -275,34 +284,42 @@
 							<h3 class="h3 mb-2">Action Details</h3>
 							{#each $selectedAction.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
 												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
 												{param}
 												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
 												{param}
 												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'enum'}
 										<Select
 												options={param.items}
-												value={$reactionDetails.params[param.name]}
-												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
+												value={$actionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
 												required={param.required}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'date'}
 										<DateInput
@@ -316,9 +333,10 @@
 										<TextInput
 												{param}
 												required={param.required}
-												value={$reactionDetails.params[param.name]}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												isAction={false}
 										/>
 									{/if}
 								</div>

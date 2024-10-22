@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, ValidateNested, IsOptional} from "class-validator";
+import {IsNotEmpty, IsString, ValidateNested, IsOptional, IsDate} from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
 import { ReactionTypes } from "../reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
@@ -12,9 +12,9 @@ class CreateGoogleTaskContent {
     @IsNotEmpty()
     body: string;
 
-    // @IsDate()
-    // @IsNotEmpty()
-    // date: Date;
+    @IsString()
+    @IsNotEmpty()
+    date: string;
 }
 
 export class CreateGoogleTaskInfos extends BaseReactionInfos {
