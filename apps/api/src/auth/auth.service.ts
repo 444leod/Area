@@ -50,6 +50,15 @@ export class AuthService {
             const oauth2 = google.oauth2({ version: 'v2', auth: this.webOAuth2Client });
             const { data } = await oauth2.userinfo.get();
             const googleServiceId = new ObjectId('64ff2e8e2a6e4b3f78abcd12');
+
+            const expiresIn = tokens.expiry_date ? (tokens.expiry_date - Date.now()) / 1000 : null;
+
+            let expirationDate = null;
+            if (expiresIn) {
+                expirationDate = new Date();
+                expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
+            }
+
             const user = await this.usersService.findOrCreateUser({
                 email: data.email,
                 first_name: data.given_name,
@@ -57,6 +66,7 @@ export class AuthService {
                 token: tokens.access_token,
                 refreshToken: tokens.refresh_token,
                 service_id: googleServiceId,
+                expiration_date: expirationDate,
             });
 
             const payload = { sub: user._id.toHexString(), email: user.email };
@@ -68,7 +78,7 @@ export class AuthService {
         }
     }
 
-    async handleGoogleMobileAuth(token: string, refreshToken: string, isMobile: boolean) {
+    async handleGoogleMobileAuth(token: string, refreshToken: string, isMobile: boolean, expired_at: Date) {
         try {
             let ticket;
             if (isMobile) {
@@ -91,6 +101,7 @@ export class AuthService {
                 refreshToken: refreshToken,
                 token: token,
                 service_id: googleServiceId,
+                expiration_date: expired_at,
             });
 
             const jwtPayload = { sub: user._id.toHexString(), email: user.email };
@@ -147,6 +158,12 @@ export class AuthService {
 
             const accessToken = data.access_token;
             const refreshToken = data.refresh_token;
+            const expiresIn = data.expires_in;
+
+            const expirationDate = new Date();
+            expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
+
+            const createdAt = new Date();
 
             const AtlassianService = await this.adminService.getServiceByName('Atlassian');
             try {
@@ -156,6 +173,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
+                        expiration_date: expirationDate,
+                        created_at: createdAt,
                     },
                 });
 
@@ -218,6 +237,8 @@ export class AuthService {
 
             const GithubService = await this.adminService.getServiceByName('Github');
 
+            const createdAt = new Date();
+
             try {
                 const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: GithubService._id,
@@ -225,6 +246,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: null,
+                        created_at: createdAt,
+                        expiration_date: null,
                     },
                 });
 
@@ -284,8 +307,14 @@ export class AuthService {
 
             const accessToken = data.access_token;
             const refreshToken = data.refresh_token;
+            const expiresIn = data.expires_in;
+
+            const expirationDate = new Date();
+            expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
 
             const GoogleService = await this.adminService.getServiceByName('Google task');
+
+            const createdAt = new Date();
 
             try {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
@@ -294,6 +323,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
+                        created_at: createdAt,
+                        expiration_date: expirationDate,
                     },
                 });
 
