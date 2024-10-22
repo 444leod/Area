@@ -7,13 +7,87 @@
       {
         "name": "videoPosted",
         "description": "When video was posted",
-        "action_type": "ON_YOUTUBE_VIDEO_POSTED",
+        "ActionType": "ON_YOUTUBE_VIDEO_POSTED",
         "params": [
           {
             "name": "user_id",
             "details": "user id of the user",
             "type": "string",
             "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "video_id",
+            "description": "id of the video",
+            "type": "string",
+            "template": "123456"
+          },
+          {
+            "name": "author",
+            "description": "author of the video",
+            "type": "string",
+            "template": "John Doe"
+          },
+          {
+            "name": "author_picture_url",
+            "description": "picture of the author",
+            "type": "string",
+            "template": "https://yt3.googleusercontent.com/5Kngq4vxIAdfM-ekLYIq9RHWSs3KdJhx1w3WjVaOcwVnFfnkTd04rIxeYyTc28K8KicI8J-kU_U=s160-c-k-c0x00ffffff-no-rj"
+          },
+          {
+            "name": "title",
+            "description": "title of the video",
+            "type": "string",
+            "template": "My video"
+          },
+          {
+            "name": "description",
+            "description": "description of the video",
+            "type": "string",
+            "template": "My video description"
+          },
+          {
+            "name": "published_at",
+            "description": "date of the video",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "published_time",
+            "description": "time of the video",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "published_date",
+            "description": "date of the video",
+            "type": "string",
+            "template": "22/10/2024"
           }
         ]
       }
@@ -28,13 +102,45 @@
       {
         "name": "each X second",
         "description": "make the reaction every X second",
-        "action_type": "EACH_X_SECONDS",
+        "ActionType": "EACH_X_SECONDS",
         "params": [
           {
             "name": "seconds",
             "details": "number of seconds to wait for each trigger",
             "type": "number",
             "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "seconds",
+            "description": "number of seconds to wait for each trigger",
+            "type": "number",
+            "template": "3"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
           }
         ]
       }
@@ -50,7 +156,7 @@
       {
         "name": "sendemail",
         "description": "send an email",
-        "reaction_type": "SEND_EMAIL",
+        "ActionType": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
@@ -67,7 +173,7 @@
           {
             "name": "body",
             "details": "body of the email",
-            "type": "string",
+            "type": "text",
             "required": true
           }
         ]
@@ -83,7 +189,7 @@
       {
         "name": "Create new task",
         "description": "for create new task",
-        "reaction_type": "CREATE_GOOGLE_TASK",
+        "ActionType": "CREATE_GOOGLE_TASK",
         "params": [
           {
             "name": "title",
@@ -94,8 +200,14 @@
           {
             "name": "body",
             "details": "body of the task",
-            "type": "string",
+            "type": "text",
             "required": true
+          },
+          {
+            "name": "date",
+            "details": "date of the task",
+            "type": "date",
+            "required": "true"
           }
         ]
       }
@@ -103,19 +215,141 @@
   },
   {
     "_id": "670e71ff92b0948adfdca0b3",
-    "name": "Jira",
-    "description": "for all jira action",
+    "name": "Atlassian",
+    "description": "for all Atlassian action",
     "actions": [
       {
         "name": "new issue",
         "description": "when new issue created",
-        "action_type": "ON_NEW_JIRA_TICKET",
-        "params": []
+        "ActionType": "ON_NEW_JIRA_TICKET",
+        "params": [],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "ticket_title",
+            "description": "title of the ticket",
+            "type": "string",
+            "template": "My ticket"
+          },
+          {
+            "name": "ticket_key",
+            "description": "key of the ticket",
+            "type": "string",
+            "template": "AREA-123"
+          },
+          {
+            "name": "assignee",
+            "description": "assignee of the ticket",
+            "type": "string",
+            "template": "John Doe"
+          },
+          {
+            "name": "assignee_picture_url",
+            "description": "picture of the author",
+            "type": "string",
+            "template": ""
+          },
+          {
+            "name": "reporter",
+            "description": "reporter of the ticket",
+            "type": "string",
+            "template": "John Doe"
+          },
+          {
+            "name": "reporter_picture_url",
+            "description": "picture of the reporter",
+            "type": "string",
+            "template": ""
+          },
+          {
+            "name": "created_at",
+            "description": "date of the ticket",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "created_time",
+            "description": "time of the ticket",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "created_date",
+            "description": "date of the ticket",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "project_name",
+            "description": "name of the project",
+            "type": "string",
+            "template": "My project"
+          },
+          {
+            "name": "project_key",
+            "description": "key of the project",
+            "type": "string",
+            "template": "AREA"
+          },
+          {
+            "name": "project_picture_url",
+            "description": "picture of the project",
+            "type": "string",
+            "template": ""
+          },
+          {
+            "name": "ticket_type",
+            "description": "type of the ticket",
+            "type": "string",
+            "template": "Task"
+          },
+          {
+            "name": "ticket_priority",
+            "description": "priority of the ticket",
+            "type": "string",
+            "template": "High"
+          },
+          {
+            "name": "ticket_status",
+            "description": "status of the ticket",
+            "type": "string",
+            "template": "Open"
+          },
+          {
+            "name": "ticket_labels",
+            "description": "labels of the ticket",
+            "type": "string",
+            "template": "label1, label2"
+          }
+        ]
       },
       {
         "name": "new project",
         "description": "when new project created",
-        "action_type": "ON_NEW_JIRA_PROJECT",
+        "ActionType": "ON_NEW_JIRA_PROJECT",
         "params": []
       }
     ],
@@ -125,7 +359,44 @@
     "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
-    "actions": [],
+    "actions": [
+      {
+        "name": "new repository",
+        "description": "when new repository created",
+        "ActionType": "ON_NEW_GITHUB_REPOSITORY",
+        "params": []
+      },
+      {
+        "name": "a pull request state has changed to the one selected",
+        "description": "when pull request state changed",
+        "ActionType": "ON_PULL_REQUEST_STATE",
+        "params": [
+          {
+            "name": "state",
+            "details": "state of the pull request",
+            "type": "enum",
+            "items": [
+              "open",
+              "closed",
+              "merged"
+            ],
+            "required": true
+          },
+          {
+            "name": "owner",
+            "details": "owner of the repository",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "repository",
+            "details": "repository name",
+            "type": "string",
+            "required": true
+          }
+        ]
+      }
+    ],
     "reactions": []
   },
   {
@@ -137,12 +408,144 @@
       {
         "name": "send message",
         "description": "send message to discord",
-        "reaction_type": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
+        "ActionType": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
         "params": [
           {
             "name": "webhook_url",
             "details": "webhook url of the discord",
             "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "title of the message",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "details": "body of the message",
+            "type": "text",
+            "required": false
+          },
+          {
+            "name": "username",
+            "details": "username of the message",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "avatar_url",
+            "details": "avatar url of the message",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "6717b7eb384bc2bb5e86b654",
+    "name": "Spotify",
+    "description": "Service for Spotify actions",
+    "actions": [],
+    "reactions": []
+  },
+  {
+    "_id": "6703f2e0bc8055c868eabeef",
+    "name": "LastFM",
+    "description": "Service for LastFM actions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "Last Week Scobble Report",
+        "description": "Send scobble report by email",
+        "ActionType": "SEND_SCROBBLE_REPORT_BY_MAIL",
+        "params": [
+          {
+            "name": "to",
+            "details": "email adress of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LastFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_tracks",
+            "details": "Number of tracks to be reported",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Last Week Albums Report",
+        "description": "Send albums report by email",
+        "ActionType": "SEND_ALBUMS_REPORT_BY_MAIL",
+        "params": [
+          {
+            "name": "to",
+            "details": "email adress of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LastFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_albums",
+            "details": "Number of albums to be reported",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Last Week Artists Report",
+        "description": "Send artists report by email",
+        "ActionType": "SEND_ARTISTS_REPORT_BY_MAIL",
+        "params": [
+          {
+            "name": "to",
+            "details": "email adress of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LastFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_artists",
+            "details": "Number of artists to be reported",
+            "type": "number",
             "required": true
           }
         ]
