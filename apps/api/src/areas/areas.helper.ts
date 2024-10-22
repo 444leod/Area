@@ -7,6 +7,8 @@ import { OnYoutubeVideoPostedBuilder } from './builders/actions/on-youtube-video
 import { ObjectId } from 'mongodb';
 import { OnNewJiraTicketBuilder } from './builders/actions/on-new-jira-ticket';
 import { OnNewJiraProjectBuilder } from './builders/actions/on-new-jira-project';
+import { OnNewGithubRepositoryBuilder } from './builders/actions/on-new-github-repository';
+import { OnPullRequestStateBuilder } from './builders/actions/on-pull-request-state';
 
 @Injectable()
 export class AreasHelper {
@@ -16,6 +18,8 @@ export class AreasHelper {
         ON_YOUTUBE_VIDEO_POSTED: new OnYoutubeVideoPostedBuilder(),
         ON_NEW_JIRA_TICKET: new OnNewJiraTicketBuilder(),
         ON_NEW_JIRA_PROJECT: new OnNewJiraProjectBuilder(),
+        ON_NEW_GITHUB_REPOSITORY: new OnNewGithubRepositoryBuilder(),
+        ON_PULL_REQUEST_STATE: new OnPullRequestStateBuilder(),
     };
     // TODO : replace with DB services
     private _reactions_services: Record<ReactionTypes, ObjectId | undefined> = {
