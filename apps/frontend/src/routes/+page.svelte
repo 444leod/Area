@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { allServices } from "$lib/modules/allServices";
 	import { Rocket, Zap, Puzzle } from 'lucide-svelte';
 	import Icon from '@iconify/svelte';
 
@@ -10,17 +9,70 @@
 		visible = true;
 	});
 
-	// For testing purposes, we'll set visible to true if we're in a test environment
 	if (import.meta.env.MODE === 'test') {
 		visible = true;
 	}
 
-	function handleConnect(service) {
-		service.oauthFunction();
-	}
+	const services = [
+		{
+			name: 'Google',
+			icon: 'logos:google',
+			description: 'Access Google services'
+		},
+		{
+			name: 'Google Tasks',
+			icon: 'gg:google-tasks',
+			description: 'Manage your tasks'
+		},
+		{
+			name: 'YouTube',
+			icon: 'logos:youtube-icon',
+			description: 'Video platform integration'
+		},
+		{
+			name: 'Spotify',
+			icon: 'logos:spotify-icon',
+			description: 'Music streaming service'
+		},
+		{
+			name: 'Timer',
+			icon: 'mdi:timer-outline',
+			description: 'Schedule your automations'
+		},
+		{
+			name: 'Email',
+			icon: 'logos:google-gmail',
+			description: 'Send and receive emails'
+		},
+		{
+			name: 'GitHub',
+			icon: 'logos:github-icon',
+			description: 'Version control integration'
+		},
+		{
+			name: 'Atlassian',
+			icon: 'logos:atlassian',
+			description: 'Project management tools'
+		},
+		{
+			name: 'Jira',
+			icon: 'logos:jira',
+			description: 'Issue tracking'
+		},
+		{
+			name: 'Discord',
+			icon: 'logos:discord-icon',
+			description: 'Chat and community'
+		},
+		{
+			name: 'Last.fm',
+			icon: 'simple-icons:lastdotfm',
+			description: 'Music tracking'
+		}
+	];
 
-	// Duplicate the services array to create a seamless loop
-	const marqueeServices = [...allServices, ...allServices];
+	// Double the array for seamless infinite scroll
+	const marqueeServices = [...services, ...services];
 </script>
 
 <div class="container mx-auto px-4 py-12" data-testid="main-container">
@@ -67,7 +119,7 @@
 			<div class="marquee-container overflow-hidden mb-16">
 				<div class="marquee flex">
 					{#each marqueeServices as service, i (i)}
-						<div class="flex-shrink-0 w-32 h-32 mx-4 flex flex-col items-center justify-center">
+						<div class="flex-shrink-0 w-32 h-32 mx-4 flex flex-col items-center justify-center hover:scale-110 transition-transform duration-200">
 							<Icon icon={service.icon} width="48" height="48" class="mb-2" />
 							<div class="text-center text-sm font-semibold">{service.name}</div>
 						</div>
@@ -83,7 +135,7 @@
 		mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 	}
 	.marquee {
-		animation: scroll 40s linear infinite;
+		animation: scroll 20s linear infinite;
 	}
 	@keyframes scroll {
 		0% {
@@ -92,5 +144,10 @@
 		100% {
 			transform: translateX(-50%);
 		}
+	}
+
+	/* Add hover pause effect */
+	.marquee-container:hover .marquee {
+		animation-play-state: paused;
 	}
 </style>
