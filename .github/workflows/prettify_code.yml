@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
 
       - name: Hide package.json
         run: mv package.json package.json.bkp
@@ -30,5 +29,5 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write .
-          same_commit: true
           prettier_plugins: prettier-plugin-svelte
+          github_token: ${{ secrets.GIT_PERSONNAL_TOKEN }}
