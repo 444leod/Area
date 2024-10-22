@@ -39,7 +39,7 @@ export class UsersService {
           token: userData.token,
           refresh_token: userData.refreshToken,
           expiration_date: userData.expiration_date,
-          createdAt: new Date(),
+          created_at: new Date(),
         };
       } else {
         user.authorizations.push({
@@ -49,7 +49,7 @@ export class UsersService {
             token: userData.token,
             refresh_token: userData.refreshToken,
             expiration_date: userData.expiration_date,
-            createdAt: new Date(),
+            created_at: new Date(),
           },
         });
       }
