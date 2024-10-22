@@ -3,7 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { UserLoginDto, UserRegistrationDto, AuthorizationsTypes } from '@area/shared';
 import { JwtService } from '@nestjs/jwt';
-import { AdminService } from '../services/services.service';
+import { ServicesService } from '../services/services.service';
 import { ObjectId } from 'mongodb';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
@@ -15,10 +15,10 @@ export class AuthService {
     private mobileOAuth2Client: OAuth2Client;
 
     constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService,
-        private configService: ConfigService,
-        private adminService: AdminService,
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService,
+        private readonly configService: ConfigService,
+        private readonly servicesService: ServicesService,
     ) {
         this.webOAuth2Client = new google.auth.OAuth2(
             this.configService.get('GOOGLE_CLIENT_ID'),
@@ -165,7 +165,7 @@ export class AuthService {
 
             const createdAt = new Date();
 
-            const AtlassianService = await this.adminService.getServiceByName('Atlassian');
+            const AtlassianService = await this.servicesService.getServiceByName('Atlassian');
             try {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: AtlassianService._id,
@@ -235,7 +235,7 @@ export class AuthService {
                 return null;
             }
 
-            const GithubService = await this.adminService.getServiceByName('Github');
+            const GithubService = await this.servicesService.getServiceByName('Github');
 
             const createdAt = new Date();
 
@@ -312,7 +312,7 @@ export class AuthService {
             const expirationDate = new Date();
             expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
 
-            const GoogleService = await this.adminService.getServiceByName('Google task');
+            const GoogleService = await this.servicesService.getServiceByName('Google task');
 
             const createdAt = new Date();
 
