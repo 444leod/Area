@@ -131,16 +131,16 @@
                             {#each Object.entries(area.action.informations) as [key, value]}
                                 <div class="flex items-center space-x-2">
                                     <strong>{formatKey(key)}:</strong>
-                                    <span class="truncate">{truncateText(value)}</span>
-                                    {#if value.length > 50}
-                                        <button
-                                                on:click={(e) => copyToClipboard(value, e)}
-                                                class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
-                                                title="Copy full text"
-                                        >
-                                            <Copy class="w-4 h-4" />
-                                        </button>
-                                    {/if}
+                                    <span class="truncate">
+                                        {key.toLowerCase() === 'type' ? value : truncateText(value)}
+                                    </span>
+                                    <button
+                                            on:click={(e) => copyToClipboard(value, e)}
+                                            class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
+                                            title="Copy full text"
+                                    >
+                                        <Copy class="w-4 h-4" />
+                                    </button>
                                 </div>
                             {/each}
                         </div>
@@ -159,7 +159,9 @@
                             {#each Object.entries(area.reaction.informations) as [key, value]}
                                 <div class="flex items-center space-x-2">
                                     <strong>{formatKey(key)}:</strong>
-                                    <span class="truncate">{truncateText(value)}</span>
+                                    <span class="truncate">
+                                        {key.toLowerCase() === 'type' ? value : truncateText(value)}
+                                    </span>
                                     <button
                                             on:click={(e) => copyToClipboard(value, e)}
                                             class="text-primary-500 hover:text-primary-700 transition-colors duration-200"
