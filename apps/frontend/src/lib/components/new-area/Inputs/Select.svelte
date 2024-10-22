@@ -13,14 +13,16 @@
     }
 </script>
 
-<select
-        class="select"
-        {required}
-        bind:value
-        on:change={handleChange}
->
-    <option value="" disabled selected>Select an option</option>
-    {#each options as option}
-        <option value={option}>{option}</option>
-    {/each}
-</select>
+<div class="rounded-lg variant-ghost-primary p-4">
+    <select
+            class="select"
+            {required}
+            bind:value
+            on:change={handleChange}
+    >
+        <option value="" disabled selected>Select an option</option>
+        {#each options as option}
+            <option value={option}>{option}</option>
+        {/each}
+    </select>
+</div>

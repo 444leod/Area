@@ -5,7 +5,7 @@
     export let required: boolean;
 </script>
 
-<label class="flex items-center space-x-2">
+<label class="flex rounded-lg variant-ghost-secondary p-4 items-center space-x-2">
     <input
             id={param.name}
             type="checkbox"

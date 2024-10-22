@@ -5,12 +5,14 @@
     export let required: boolean;
 </script>
 
-<input
-        id={param.name}
-        type="text"
-        class="input"
-        {required}
-        bind:value
-        on:input={(e) => updateParamValue(param.name, e.currentTarget.value)}
-        placeholder={param.details}
-/>
+<div class="rounded-lg variant-ghost-primary p-4">
+    <input
+            id={param.name}
+            type="text"
+            class="input"
+            {required}
+            bind:value
+            on:input={(e) => updateParamValue(param.name, e.currentTarget.value)}
+            placeholder={param.details}
+    />
+</div>

@@ -13,7 +13,9 @@
 	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
 	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
 	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
+	import DateInput from "$lib/components/new-area/Inputs/DateInput.svelte";
 	import Select from "$lib/components/new-area/Inputs/Select.svelte";
+	import TextInput from "$lib/components/new-area/Inputs/TextInput.svelte";
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
@@ -206,13 +208,15 @@
 						<h2 class="h2 mb-4 text-center">Set up Details</h2>
 						<div class="mb-4">
 							<label for="automation-name" class="label">Automation Name *</label>
-							<input
-									id="automation-name"
-									type="text"
-									class="input w-full"
-									bind:value={$automationName}
-									placeholder="Enter a name for your automation"
-							/>
+							<div class="rounded-lg variant-ghost-primary p-4">
+								<input
+										id="automation-name"
+										type="text"
+										class="input w-full"
+										bind:value={$automationName}
+										placeholder="Enter a name for your automation"
+								/>
+							</div>
 						</div>
 						{#if $selectedTrigger}
 							<h3 class="h3 mb-2">Trigger Details</h3>
@@ -246,6 +250,22 @@
 												value={$actionDetails.params[param.name]}
 												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
 												required={param.required}
+										/>
+									{:else if param.type === 'date'}
+										<DateInput
+												{param}
+												required={param.required}
+												value={$actionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+										/>
+									{:else if param.type === 'text'}
+										<TextInput
+												{param}
+												required={param.required}
+												value={$reactionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 										/>
 									{/if}
 								</div>
@@ -283,6 +303,22 @@
 												value={$reactionDetails.params[param.name]}
 												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
 												required={param.required}
+										/>
+									{:else if param.type === 'date'}
+										<DateInput
+												{param}
+												required={param.required}
+												value={$reactionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+										/>
+									{:else if param.type === 'text'}
+										<TextInput
+												{param}
+												required={param.required}
+												value={$reactionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 										/>
 									{/if}
 								</div>
