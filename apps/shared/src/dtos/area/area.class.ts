@@ -4,6 +4,7 @@ import { Reaction } from '../reactions';
 
 export class Area {
     _id: ObjectId;
+    name: string;
     active: boolean;
     action: Action;
     reaction: Reaction;
@@ -11,6 +12,7 @@ export class Area {
 
 export class AreaDto {
     _id: ObjectId;
+    name: string;
     active: boolean;
     action: ActionDto;
     reaction: Reaction;

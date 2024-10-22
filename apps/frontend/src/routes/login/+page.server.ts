@@ -30,12 +30,9 @@ export const actions: Actions = {
 				secure: process.env.NODE_ENV === 'production',
 				maxAge: 60 * 60 * 24 * 7 // 1 week
 			});
-
-			// Return a code that the client can check
 			return { success: true };
 		} catch (error) {
-			console.error('Unexpected error during login:', error);
-			return fail(500, { email, error: 'An unexpected error occurred' });
+			return fail(500, { email, error: 'An unexpected error occurred' + error });
 		}
 	}
 };

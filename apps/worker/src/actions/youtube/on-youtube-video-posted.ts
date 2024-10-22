@@ -1,20 +1,34 @@
 import { ActionFunction } from '../action-function';
-import { MongoDBService, AreaPacket, OnYoutubeVideoPostedClass, OnYoutubeVideoPostedHistoryDTO, getChannelVideos } from '@area/shared';
+import {
+    MongoDBService,
+    AreaPacket,
+    OnYoutubeVideoPostedClass,
+    OnYoutubeVideoPostedHistoryDTO,
+    getChannelVideos,
+    getNewGoogleTokens,
+} from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const google_token = await database.getAuthorizationData(packet.user_id, 'GOOGLE');
-    if (!google_token) {
+    let { token, refresh_token } = (await database.getAuthorizationData(packet.user_id, 'GOOGLE')) as {
+        token: string;
+        refresh_token: string;
+    };
+    if (!token) {
         console.error('Google token not found.');
         return null;
     }
+
+    ({ token, refresh_token } = await getNewGoogleTokens({ token, refresh_token }));
+
+    await database.updateAuthorizationData(packet.user_id, 'GOOGLE', { token, refresh_token });
 
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;
     const history = area.action.history as OnYoutubeVideoPostedHistoryDTO;
 
-    const videos = await getChannelVideos(action.user_id, google_token);
+    const videos = await getChannelVideos(action.user_id, token);
 
-    if (videos === null) {
+    if (videos === null || videos.length === 0) {
         return null;
     }
 
@@ -55,6 +69,9 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
     packet.data = {
         title: video.title || 'title',
         body: video.description || '',
+        date: video.date,
+        username: undefined,
+        picture: undefined,
     };
 
     return packet;

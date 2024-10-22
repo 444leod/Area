@@ -1,10 +1,11 @@
 import { Area, User, UserRegistrationDto } from "@area/shared";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {Injectable, NotFoundException, UnauthorizedException} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ObjectId } from "mongodb";
 import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
+import {AuthorizationDto} from "@area/shared/dist/dtos/user/authorization.dto";
 
 @Injectable()
 export class UsersService {
@@ -23,6 +24,7 @@ export class UsersService {
     token: string;
     refreshToken: string;
     service_id: ObjectId;
+    expiration_date: Date,
   }): Promise<User> {
     let user = await this.userModel.findOne({ email: userData.email });
     if (user) {
@@ -36,6 +38,8 @@ export class UsersService {
         user.authorizations[authIndex].data = {
           token: userData.token,
           refresh_token: userData.refreshToken,
+          expiration_date: userData.expiration_date,
+          created_at: new Date(),
         };
       } else {
         user.authorizations.push({
@@ -44,6 +48,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expiration_date: userData.expiration_date,
+            created_at: new Date(),
           },
         });
       }
@@ -61,6 +67,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expiration_date: userData.expiration_date,
+            created_at: new Date(),
           },
         },
       ],
@@ -70,6 +78,34 @@ export class UsersService {
 
   async findById(id: string | ObjectId): Promise<User | undefined> {
     return await this.userModel.findById(id).exec();
+  }
+
+  async getUserAuthorization(req: Request): Promise<string[]> {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      console.error("Token missing or invalid");
+      throw new UnauthorizedException("Invalid token");
+    }
+
+    let tokenPayload: any;
+    try {
+      tokenPayload = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error('Error while verifying the token:', error);
+      throw new UnauthorizedException("Invalid token");
+    }
+
+    const id = tokenPayload.sub;
+    const user: User | null = await this.userModel.findById(id);
+
+    if (!user) {
+      console.error("User not found");
+      throw new UnauthorizedException("Invalid user");
+    }
+
+    return user.authorizations.map(auth => auth.type);
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
@@ -108,12 +144,7 @@ export class UsersService {
     return u.areas[index];
   }
 
-  async addOrUpdateAuthorizationWithToken(token: string, authData: {
-    service_id: ObjectId;
-    type: string;
-    accessToken: string;
-    refreshToken: string;
-  }): Promise<User> {
+  async addOrUpdateAuthorizationWithToken(token: string, authData:AuthorizationDto): Promise<User> {
     let decodedToken;
     try {
       decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -142,16 +173,20 @@ export class UsersService {
 
     if (authIndex !== -1) {
       user.authorizations[authIndex].data = {
-        token: authData.accessToken,
-        refresh_token: authData.refreshToken,
+        token: authData.data.token,
+        refresh_token: authData.data.refresh_token,
+        expiration_date: authData.data.expiration_date,
+        created_at: authData.data.created_at,
       };
     } else {
       user.authorizations.push({
         service_id: authData.service_id,
         type: authData.type,
         data: {
-          token: authData.accessToken,
-          refresh_token: authData.refreshToken,
+          token: authData.data.token,
+          refresh_token: authData.data.refresh_token,
+          expiration_date: authData.data.expiration_date,
+          created_at: authData.data.created_at,
         },
       });
     }

@@ -18,6 +18,13 @@ export const handleEachXSecondsAction: ActionFunction = async (packet: AreaPacke
     if (!execute) return null;
 
     packet.area.action.history = history;
+    packet.data = {
+        title: `Area ${packet.area._id} has been triggered.`,
+        body: `${action.seconds} seconds have passed.`,
+        date: new Date(),
+        username: undefined,
+        picture: undefined,
+    };
 
     await database.updateAreaHistory(packet.user_id, area);
 
