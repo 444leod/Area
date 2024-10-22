@@ -9,8 +9,8 @@ import * as fs from 'fs';
 
 @Injectable()
 export class ServicesService {
-  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {}
 
+  async updateServicesFromJson() : Promise<void> {
     // Delete all services from DB
     await this.serviceModel.deleteMany({});
 
