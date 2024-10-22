@@ -11,7 +11,6 @@ import {
 export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
-	console.log("Handling SendScrobbleReportByMailReaction");
   const reaction = packet.area.reaction.informations as SendScrobbleReportByEmailInfos;
   const data: GetWeeklyScobblesResponse | null = await getWeeklyScobbles(
     reaction.username,
