@@ -56,5 +56,5 @@
 </script>
 
 <div>
-    Traitement de l'authentification google...
+    Traitement de l'authentification spotify...
 </div>
