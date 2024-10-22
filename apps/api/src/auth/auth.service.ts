@@ -262,6 +262,83 @@ export class AuthService {
         }
     }
 
+    async connectSpotify(code: string, req: Request) {
+        const clientId = process.env.SPOTIFY_CLIENT_ID;
+        const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+        const redirectUri = `${process.env.FRONTEND_URL}/login/oauth/spotify`;
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (!token) {
+            console.error('error token');
+            throw new UnauthorizedException('invalid Token');
+        }
+
+        if (!clientId || !clientSecret || !code) {
+            console.error('Client ID, Client Secret or Code missing');
+            throw new Error('Invalid clientId, clientSecret, or code');
+        }
+
+        try {
+            const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+            const response = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${basicAuth}`
+                },
+                body: new URLSearchParams({
+                    grant_type: 'authorization_code',
+                    code: code,
+                    redirect_uri: redirectUri
+                })
+            });
+
+            if (!response.ok) {
+                console.error('Error on Spotify request:', response.statusText);
+                return null;
+            }
+
+            const data = await response.json();
+
+            const accessToken = data.access_token;
+            const refreshToken = data.refresh_token;
+            const expiresIn = data.expires_in;
+
+            if (!accessToken) {
+                console.error('No access token received');
+                return null;
+            }
+
+            const SpotifyService = await this.adminService.getServiceByName('Spotify');
+
+            const createdAt = new Date();
+            const expirationDate = new Date(createdAt.getTime() + expiresIn * 1000);
+
+            try {
+                const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
+                    service_id: SpotifyService._id,
+                    type: AuthorizationsTypes.SPOTIFY,
+                    data: {
+                        token: accessToken,
+                        refresh_token: refreshToken,
+                        created_at: createdAt,
+                        expiration_date: expirationDate,
+                    }
+                });
+
+                return 1;
+            } catch (error) {
+                console.error('Error updating permission:', error);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error connecting to Spotify:', error);
+            return null;
+        }
+    }
+
     async connectGoogle(code: string, req: Request) {
         const clientId = this.configService.get('GOOGLE_CLIENT_ID');
         const clientSecret = this.configService.get('GOOGLE_CLIENT_SECRET');
