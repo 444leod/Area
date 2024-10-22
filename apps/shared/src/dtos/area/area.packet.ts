@@ -2,7 +2,7 @@ import { Area } from "./area.class";
 import { ObjectId } from "mongodb";
 import { AuthorizationDto } from "../user/authorization.dto";
 
-type Data = {[key: string]: string}
+type Data = {[key: string]: any}
 
 export interface AreaPacket {
     user_id: ObjectId;
