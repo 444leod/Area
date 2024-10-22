@@ -5,8 +5,8 @@ import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
-if (!process.env.RMQ_QUEUE) {
-    throw new Error('RMQ_QUEUE must be defined as environment variable');
+if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
+    throw new Error('RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable');
 }
 
 const rabbitMQ = new RabbitMQService();
@@ -25,7 +25,13 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(process.env.RMQ_QUEUE || '', handleArea).then(() => {});
+        const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
+        const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WREA_QUEUE || '')).messageCount;
+        const selectedQueue = areaQueueStress >= webhQueueStress
+            ? process.env.RMQ_AREA_QUEUE
+            : process.env.RMQ_WREA_QUEUE;
+
+        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => { });
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -49,34 +55,29 @@ async function run() {
 run().catch(console.dir);
 
 async function handleArea(areaPacket: AreaPacket) {
-    const action_type = areaPacket?.area.action?.informations?.type;
-    const reaction_type = areaPacket?.area.reaction?.informations?.type;
+    const actionType = areaPacket?.area.action?.informations?.type;
+    const reactionType = areaPacket?.area.reaction?.informations?.type;
 
-    if (!action_type || !reaction_type) {
+    if (!actionType || !reactionType) {
         console.error('Action or reaction type not found.');
         return;
     }
 
-    const actionFunction = actionsMap[action_type];
+    const actionFunction = actionsMap[actionType];
     if (!actionFunction) {
-        console.error(`Action ${action_type} not supported.`);
+        console.error(`Action ${actionType} not supported.`);
         return;
     }
-    const reactionFunction = reactionsMap[reaction_type];
+    const reactionFunction = reactionsMap[reactionType];
     if (!reactionFunction) {
-        console.error(`Reaction ${reaction_type} not supported.`);
+        console.error(`Reaction ${reactionType} not supported.`);
         return;
     }
 
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-
     const res = await actionFunction(areaPacket, mongoDB);
-
-    if (!res) {
+    if (!res)
         return;
-    }
-
     console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-
     await reactionFunction(res, mongoDB);
 }

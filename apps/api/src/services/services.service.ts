@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {ReactionInfo, Service} from '@area/shared';
+import {ReactionInfo, Service, ShortService} from '@area/shared';
 import { ActionCreationDto, ServiceCreationDto, ReactionCreationDto, ActionInfo } from '@area/shared';
 import { ObjectId } from 'mongodb';
 import * as SERVICES from '../../services.json'
 import * as fs from 'fs';
 
 @Injectable()
-export class AdminService {
-  async updateServicesFromJson() : Promise<void> {
+export class ServicesService {
+  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {}
 
     // Delete all services from DB
     await this.serviceModel.deleteMany({});
@@ -31,6 +31,18 @@ export class AdminService {
 
   async getAllServices(): Promise<Service[]> {
     return this.serviceModel.find().exec();
+  }
+
+  async getAllServicesShort(): Promise<ShortService[]> {
+    const services: Service[] = await this.serviceModel.find().exec();
+    return services.map((value, _) => {
+      const short: ShortService = {
+        name: value.name,
+        actions: value.actions.map((a, _) => {return {name: a.name, description: a.description}}),
+        reactions: value.reactions.map((r, _) => {return {name: r.name, description: r.description}}),
+      }
+      return short;
+    });
   }
 
   async getServiceByName(name: string): Promise<Service | undefined> {
