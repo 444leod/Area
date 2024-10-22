@@ -103,7 +103,6 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     setLoading(true);
-    console.log("API URL", API_URL)
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
