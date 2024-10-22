@@ -8,7 +8,6 @@ import { ObjectId } from 'mongodb';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
-import * as jwt from "jsonwebtoken";
 
 @Injectable()
 export class AuthService {
@@ -255,8 +254,6 @@ export class AuthService {
         const redirectUri = 'http://localhost:8081/login/oauth/google';
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-
-
 
         if (!token) {
             console.error('error token');

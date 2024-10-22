@@ -151,7 +151,6 @@ export class UsersService {
       throw new Error('invalid token');
     }
 
-
     const userId = decodedToken.sub;
     if (!userId) {
       throw new Error('Missing user ID in token');

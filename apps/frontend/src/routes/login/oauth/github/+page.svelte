@@ -30,8 +30,6 @@
         const code = urlParams.get('code');
         const token = await fetchToken()
 
-        console.log("token : ", token, " code : ", code);
-
         if (code && token) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/github`, {

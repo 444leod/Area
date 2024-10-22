@@ -99,7 +99,6 @@
         } catch (error) {
             throw new Error(`Error during disconnection`);
         }
-        //TODO: Implement disconnect service
     }
 
     function openServiceModal(service) {
