@@ -5,6 +5,9 @@ import { AuthorizationDto } from "../user/authorization.dto";
 interface Data {
     title: string;
     body: string;
+    username: string | undefined;
+    picture: string | undefined;
+    date: Date | undefined;
 }
 
 export interface AreaPacket {

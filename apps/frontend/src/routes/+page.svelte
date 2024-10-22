@@ -2,35 +2,77 @@
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { Rocket, Zap, Puzzle } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 
 	let visible = false;
 	onMount(() => {
 		visible = true;
 	});
 
-	// For testing purposes, we'll set visible to true if we're in a test environment
 	if (import.meta.env.MODE === 'test') {
 		visible = true;
 	}
 
-	// Integration marquee data
-	const integrations = [
-		{ name: 'Slack', logo: '🟣' },
-		{ name: 'Gmail', logo: '📧' },
-		{ name: 'Trello', logo: '🔷' },
-		{ name: 'GitHub', logo: '🐱' },
-		{ name: 'Dropbox', logo: '📦' },
-		{ name: 'Twitter', logo: '🐦' },
-		{ name: 'Spotify', logo: '🎵' },
-		{ name: 'Zapier', logo: '⚡' },
-		{ name: 'Discord', logo: '💬' },
-		{ name: 'Notion', logo: '📝' },
-		{ name: 'Jira', logo: '🔧' },
-		{ name: 'Salesforce', logo: '☁️' }
+	const services = [
+		{
+			name: 'Google',
+			icon: 'logos:google',
+			description: 'Access Google services'
+		},
+		{
+			name: 'Google Tasks',
+			icon: 'gg:google-tasks',
+			description: 'Manage your tasks'
+		},
+		{
+			name: 'YouTube',
+			icon: 'logos:youtube-icon',
+			description: 'Video platform integration'
+		},
+		{
+			name: 'Spotify',
+			icon: 'logos:spotify-icon',
+			description: 'Music streaming service'
+		},
+		{
+			name: 'Timer',
+			icon: 'mdi:timer-outline',
+			description: 'Schedule your automations'
+		},
+		{
+			name: 'Email',
+			icon: 'logos:google-gmail',
+			description: 'Send and receive emails'
+		},
+		{
+			name: 'GitHub',
+			icon: 'logos:github-icon',
+			description: 'Version control integration'
+		},
+		{
+			name: 'Atlassian',
+			icon: 'logos:atlassian',
+			description: 'Project management tools'
+		},
+		{
+			name: 'Jira',
+			icon: 'logos:jira',
+			description: 'Issue tracking'
+		},
+		{
+			name: 'Discord',
+			icon: 'logos:discord-icon',
+			description: 'Chat and community'
+		},
+		{
+			name: 'Last.fm',
+			icon: 'simple-icons:lastdotfm',
+			description: 'Music tracking'
+		}
 	];
 
-	// Duplicate the integrations to create a seamless loop
-	const marqueeItems = [...integrations, ...integrations];
+	// Double the array for seamless infinite scroll
+	const marqueeServices = [...services, ...services];
 </script>
 
 <div class="container mx-auto px-4 py-12" data-testid="main-container">
@@ -42,12 +84,12 @@
 			Automate your workflow. Connect your apps. Boost your productivity.
 		</p>
 		<div class="flex justify-center space-x-4 mb-12">
-			<button in:fly={{ x: -50, duration: 1000, delay: 1000 }} class="btn variant-filled-primary"
-				>Get Started</button
-			>
-			<button in:fly={{ x: 50, duration: 1000, delay: 1000 }} class="btn variant-soft-secondary"
-				>Learn More</button
-			>
+			<a href="/dashboard" in:fly={{ x: -50, duration: 1000, delay: 1000 }} class="btn variant-filled-primary">
+				Get Started
+			</a>
+			<a href="/login" in:fly={{ x: 50, duration: 1000, delay: 1000 }} class="btn variant-soft-secondary">
+				Login
+			</a>
 		</div>
 		<div class="grid md:grid-cols-3 gap-8 mt-12">
 			<div in:fade={{ duration: 1000, delay: 1500 }} class="card p-4 variant-soft">
@@ -73,13 +115,13 @@
 			</div>
 		</div>
 		<div in:fade={{ duration: 1000, delay: 2100 }} class="mt-16">
-			<h2 class="h2 text-center mb-8">Integrate with Your Favorite Tools</h2>
-			<div class="marquee-container overflow-hidden">
+			<h2 class="h2 text-center mb-8">Our Integrations</h2>
+			<div class="marquee-container overflow-hidden mb-16">
 				<div class="marquee flex">
-					{#each marqueeItems as integration, i (i)}
-						<div class="flex-shrink-0 w-24 h-24 mx-4 flex flex-col items-center justify-center">
-							<div class="text-4xl mb-2">{integration.logo}</div>
-							<div class="text-center text-sm">{integration.name}</div>
+					{#each marqueeServices as service, i (i)}
+						<div class="flex-shrink-0 w-32 h-32 mx-4 flex flex-col items-center justify-center hover:scale-110 transition-transform duration-200">
+							<Icon icon={service.icon} width="48" height="48" class="mb-2" />
+							<div class="text-center text-sm font-semibold">{service.name}</div>
 						</div>
 					{/each}
 				</div>
@@ -93,7 +135,7 @@
 		mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 	}
 	.marquee {
-		animation: scroll 40s linear infinite;
+		animation: scroll 20s linear infinite;
 	}
 	@keyframes scroll {
 		0% {
@@ -102,5 +144,10 @@
 		100% {
 			transform: translateX(-50%);
 		}
+	}
+
+	/* Add hover pause effect */
+	.marquee-container:hover .marquee {
+		animation-play-state: paused;
 	}
 </style>
