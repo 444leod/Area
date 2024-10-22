@@ -207,7 +207,7 @@
 					{:else if $currentStep === 4}
 						<h2 class="h2 mb-4 text-center">Set up Details</h2>
 						<div class="mb-4">
-							<label for="automation-name" class="label">Automation Name *</label>
+							<label for="automation-name" class="label h3">Automation Name *</label>
 							<div class="rounded-lg p-4 variant-ghost">
 								<input
 										id="automation-name"
