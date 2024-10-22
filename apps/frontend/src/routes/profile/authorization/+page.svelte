@@ -141,7 +141,6 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {#each filteredServices as service (service.name)}
             <div in:fly="{{ y: 50, duration: 300, delay: 150, easing: quintOut }}">
-                {console.log(service)}
                 <ServiceCard
                         name={service.name}
                         description={service.description}
