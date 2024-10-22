@@ -66,7 +66,7 @@ export class AuthService {
                 token: tokens.access_token,
                 refreshToken: tokens.refresh_token,
                 service_id: googleServiceId,
-                expirationDate: expirationDate,
+                expiration_date: expirationDate,
             });
 
             const payload = { sub: user._id.toHexString(), email: user.email };
@@ -78,7 +78,7 @@ export class AuthService {
         }
     }
 
-    async handleGoogleMobileAuth(token: string, refreshToken: string, isMobile: boolean, expiredIn: Date) {
+    async handleGoogleMobileAuth(token: string, refreshToken: string, isMobile: boolean, expired_at: Date) {
         try {
             let ticket;
             if (isMobile) {
@@ -101,7 +101,7 @@ export class AuthService {
                 refreshToken: refreshToken,
                 token: token,
                 service_id: googleServiceId,
-                expirationDate: expiredIn,
+                expiration_date: expired_at,
             });
 
             const jwtPayload = { sub: user._id.toHexString(), email: user.email };
@@ -173,8 +173,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
-                        expirationDate: expirationDate,
-                        createdAt: createdAt,
+                        expiration_date: expirationDate,
+                        created_at: createdAt,
                     },
                 });
 
@@ -246,8 +246,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: null,
-                        createdAt: createdAt,
-                        expirationDate: null,
+                        created_at: createdAt,
+                        expiration_date: null,
                     },
                 });
 
@@ -323,8 +323,8 @@ export class AuthService {
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
-                        createdAt: createdAt,
-                        expirationDate: expirationDate,
+                        created_at: createdAt,
+                        expiration_date: expirationDate,
                     },
                 });
 

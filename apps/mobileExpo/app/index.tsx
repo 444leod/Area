@@ -43,7 +43,7 @@ export default function LoginScreen() {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true, expiredAt: expirationDate })
+        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true, expired_at: expirationDate })
       });
       if (!response.ok) {
         const errorBody = await response.text();
