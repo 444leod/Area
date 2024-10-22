@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
+import * as jwt from "jsonwebtoken";
 
 @Injectable()
 export class AuthService {
@@ -236,12 +237,26 @@ export class AuthService {
         }
     }
 
+    async disconnectservice(service: string, req: Request) {
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (!token) {
+            console.error('error token');
+            throw new UnauthorizedException('invalid Token');
+        }
+
+        return this.usersService.deleteAuhtorization(service, token);
+    }
+
     async connectGoogle(code: string, req: Request) {
         const clientId = this.configService.get('GOOGLE_CLIENT_ID');
         const clientSecret = this.configService.get('GOOGLE_CLIENT_SECRET');
         const redirectUri = 'http://localhost:8081/login/oauth/google';
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
+
+
 
         if (!token) {
             console.error('error token');

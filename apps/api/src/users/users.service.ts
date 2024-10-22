@@ -151,6 +151,7 @@ export class UsersService {
       throw new Error('invalid token');
     }
 
+
     const userId = decodedToken.sub;
     if (!userId) {
       throw new Error('Missing user ID in token');
@@ -184,6 +185,24 @@ export class UsersService {
         },
       });
     }
+
+    return await user.save();
+  }
+
+  async deleteAuhtorization(service:string, token:string) {
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error('Error while decoding the token:', error);
+      throw new Error('invalid token');
+    }
+
+    const userId = decodedToken.sub;
+
+    const user = await this.userModel.findById(userId);
+
+    user.authorizations = user.authorizations.filter(auth => auth.type !== service);
 
     return await user.save();
   }

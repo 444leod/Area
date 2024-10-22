@@ -8,7 +8,7 @@ import {
   Post,
   Get,
   Req,
-  UseGuards,
+  UseGuards, Delete,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
@@ -45,12 +45,19 @@ export class AuthController {
     return this.authService.connectGithub(code, req);
   }
 
+  @Delete("/disconect")
+  async servicedisconnect(@Body("service") service: string, @Req() req: Request) {
+    if (!service) throw new BadRequestException();
+
+    return this.authService.disconnectservice(service, req);
+  }
+
   @Post("/simpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
+
     if (!code) {
       throw new BadRequestException("Google authorization code is required");
     }
-
     return this.authService.connectGoogle(code, req);
   }
 
