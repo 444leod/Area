@@ -24,6 +24,7 @@ export class UsersService {
     token: string;
     refreshToken: string;
     service_id: ObjectId;
+    expiration_date: Date,
   }): Promise<User> {
     let user = await this.userModel.findOne({ email: userData.email });
     if (user) {
@@ -37,6 +38,8 @@ export class UsersService {
         user.authorizations[authIndex].data = {
           token: userData.token,
           refresh_token: userData.refreshToken,
+          expiration_date: userData.expiration_date,
+          created_at: new Date(),
         };
       } else {
         user.authorizations.push({
@@ -45,6 +48,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expiration_date: userData.expiration_date,
+            created_at: new Date(),
           },
         });
       }
@@ -62,6 +67,8 @@ export class UsersService {
           data: {
             token: userData.token,
             refresh_token: userData.refreshToken,
+            expiration_date: userData.expiration_date,
+            created_at: new Date(),
           },
         },
       ],
@@ -137,12 +144,7 @@ export class UsersService {
     return u.areas[index];
   }
 
-  async addOrUpdateAuthorizationWithToken(token: string, authData: {
-    service_id: ObjectId;
-    type: string;
-    accessToken: string;
-    refreshToken: string;
-  }): Promise<User> {
+  async addOrUpdateAuthorizationWithToken(token: string, authData:AuthorizationDto): Promise<User> {
     let decodedToken;
     try {
       decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -171,16 +173,20 @@ export class UsersService {
 
     if (authIndex !== -1) {
       user.authorizations[authIndex].data = {
-        token: authData.accessToken,
-        refresh_token: authData.refreshToken,
+        token: authData.data.token,
+        refresh_token: authData.data.refresh_token,
+        expiration_date: authData.data.expiration_date,
+        created_at: authData.data.created_at,
       };
     } else {
       user.authorizations.push({
         service_id: authData.service_id,
         type: authData.type,
         data: {
-          token: authData.accessToken,
-          refresh_token: authData.refreshToken,
+          token: authData.data.token,
+          refresh_token: authData.data.refresh_token,
+          expiration_date: authData.data.expiration_date,
+          created_at: authData.data.created_at,
         },
       });
     }

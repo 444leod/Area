@@ -17,7 +17,7 @@ async function main() {
 
     const groupAreaSend = (areas: AreaPacket[]) => {
         areas.forEach((area) => {
-            rabbitMQ.sendAreaToQueue(process.env.RMQ_QUEUE || '', area);
+            rabbitMQ.sendPacketToQueue(process.env.RMQ_QUEUE || '', area);
         });
     };
 
