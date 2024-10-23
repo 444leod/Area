@@ -1,9 +1,10 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte';
-    import {X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus, ArrowDown} from 'lucide-svelte';
+    import {X, Trash2, ToggleLeft, ToggleRight, Plus, Minus, ArrowDown} from 'lucide-svelte';
     import { getAreaById } from '$lib/modules/getAreaById';
     import { deleteAreaById } from '$lib/modules/deleteAreaById';
     import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
+    import { setError } from "$lib/store/errorMessage";
 
     export let areaId: string;
     export let token: string;
@@ -33,7 +34,7 @@
         if (!confirm('Are you sure you want to delete this area?')) {
             return;
         }
-        
+
         deleteLoading = true;
         try {
             await deleteAreaById(areaId, token);
@@ -41,7 +42,7 @@
             close();
         } catch (e) {
             error = `Error deleting area: ${e.message}`;
-            console.error(e);
+            setError(error);
         } finally {
             deleteLoading = false;
         }

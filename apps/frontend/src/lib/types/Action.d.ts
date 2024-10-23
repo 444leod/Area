@@ -2,6 +2,6 @@ import type { Param } from './Param';
 
 export 	interface Action {
     name: string;
-    ActionType: string;
+    type: string;
     params: Param[];
 }

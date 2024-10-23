@@ -1,0 +1,351 @@
+[{
+  "_id": {
+    "$oid": "6703d148ddf654a6d482dafb"
+  },
+  "name": "YouTube",
+  "description": "Service for YouTube actions",
+  "actions": [
+    {
+      "name": "videoPosted",
+      "description": "When video was posted",
+      "ActionType": "ON_YOUTUBE_VIDEO_POSTED",
+      "params": [
+        {
+          "name": "user_id",
+          "details": "user id of the user",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variables": [
+
+      ]
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6703d313722dee796788baa3"
+  },
+  "name": "Timer",
+  "description": "Service for Timer actions",
+  "actions": [
+    {
+      "name": "each X second",
+      "description": "make the reaction every X second",
+      "ActionType": "EACH_X_SECONDS",
+      "params": [
+        {
+          "name": "seconds",
+          "details": "number of seconds to wait for each trigger",
+          "type": "number",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6703f2e0bc8055c868eaf474"
+  },
+  "name": "Mail",
+  "description": "Service for Email actions",
+  "actions": [],
+  "reactions": [
+    {
+      "name": "sendemail",
+      "description": "send an email",
+      "ActionType": "SEND_EMAIL",
+      "params": [
+        {
+          "name": "to",
+          "details": "email adress of the target",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "subject",
+          "details": "subject of the email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "details": "body of the email",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6703f3dabc8055c868eaf47e"
+  },
+  "name": "Google task",
+  "description": "Service for Google task actions",
+  "actions": [],
+  "reactions": [
+    {
+      "name": "Create new task",
+      "description": "for create new task",
+      "ActionType": "CREATE_GOOGLE_TASK",
+      "params": [
+        {
+          "name": "title",
+          "details": "title of the task",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "body",
+          "details": "body of the task",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "670e71ff92b0948adfdca0b3"
+  },
+  "name": "Jira",
+  "description": "for all jira action",
+  "actions": [
+    {
+      "name": "new issue",
+      "description": "when new issue created",
+      "ActionType": "ON_NEW_JIRA_TICKET",
+      "params": []
+    },
+    {
+      "name": "new project",
+      "description": "when new project created",
+      "ActionType": "ON_NEW_JIRA_PROJECT",
+      "params": []
+    }
+  ],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "670f8cbd7920482a14597bc7"
+  },
+  "name": "Github",
+  "description": "for all Github action",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671615e2364ae76a17d3b472"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "67161618561699a108a0ed4f"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671616302469d490066724ac"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716163a21d3b8c58412da5a"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716164161acb044c81272b0"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671616ac1a3debf312180e14"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671616ba440821af754bbe92"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716171cfd297e2f0b082de1"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "67161721bbbcaa355e8060d2"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716172ccd6e707e6c428302"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716172ec81b836ac065fe19"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716175a12a1ce24983ac11b"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716176e3e174fbd116e4385"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "67161772a6e52e8e61cdd21f"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671617770e32d61c964fc23e"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671617afd4a621215ddfb3e6"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671617b4b095d67c8b8e0ccf"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "67161810b916f113ace815a9"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716182c6de755fa78d65126"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671618380473bda229cb513c"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716187d2fdd653a4206ad89"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "6716187f7050579c62702e24"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+},
+{
+  "_id": {
+    "$oid": "671618879271b74646f0d7a6"
+  },
+  "name": "Test",
+  "description": "This is a test",
+  "actions": [],
+  "reactions": []
+}]
