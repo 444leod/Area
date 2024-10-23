@@ -13,15 +13,13 @@ export class ServicesService {
     // Delete all services from DB
     await this.serviceModel.deleteMany({});
 
-    // Put services in DB from JSON
-    const json_services: Service[] = SERVICES['default'];
-    json_services.forEach(async (service) => {
+    const services: Service[] = SERVICES['default'];
+    services.forEach(async (service) => {
+      // Create new ID for new Services without IDs
       service._id = service._id != undefined ? new ObjectId(service._id) : new ObjectId();
       await this.serviceModel.create(service);
     });
-
-    // Update JSON with potential new IDs
-    fs.writeFile('services.json', JSON.stringify(json_services, null, 2), () => {});
+    fs.writeFile('services.json', JSON.stringify(SERVICES, null, 2), () => {})
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
