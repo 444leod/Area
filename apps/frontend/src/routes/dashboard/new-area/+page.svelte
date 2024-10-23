@@ -221,6 +221,24 @@
 								/>
 							</div>
 						</div>
+						<div class="card variant-ghost-secondary p-4 mb-8">
+							<div class="flex items-start gap-4">
+								<div class="p-2 rounded-full variant-soft-primary">
+									<Icon icon="mdi:information" class="w-6 h-6" />
+								</div>
+								<div>
+									<h3 class="h3 mb-2">What this Area will do:</h3>
+									<p class="text-base">
+										On the app <span class="font-semibold text-primary-500">{$triggerApp?.name || ''}</span> {$selectedTrigger?.description?.toLowerCase() || ''},
+										<span class="font-semibold text-secondary-500">{$actionApp?.name || ''}</span> will {$selectedAction?.description?.toLowerCase() || ''}.
+									</p>
+									<div class="mt-4 flex items-center gap-2 text-sm">
+										<Icon icon="mdi:clock-outline" class="w-4 h-4" />
+										<span>This automation will run automatically once set up.</span>
+									</div>
+								</div>
+							</div>
+						</div>
 						{#if $selectedTrigger}
 							<h3 class="h3 mb-2">Trigger Details</h3>
 							{#each $selectedTrigger.params as param}

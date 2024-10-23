@@ -63,7 +63,7 @@
 			'a pull request state has changed to the one selected': 'mdi:source-pull',
 			'sendemail': 'mdi:email-send',
 			'send message': 'mdi:message-text',
-			'Create new task': 'mdi:checkbox-marked-plus-outline'
+			'Create new task': 'material-symbols:task-outline',
 		};
 
 		if (actionSpecificIcons[item]) {
