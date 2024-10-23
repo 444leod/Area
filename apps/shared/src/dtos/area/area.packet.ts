@@ -5,6 +5,6 @@ import { AuthorizationDto } from "../user/authorization.dto";
 export interface AreaPacket {
     user_id: ObjectId;
     area: Area;
-    data: { [key: string]: string };
+    data: { [key: string]: any };
     authorizations: AuthorizationDto[];
 }
