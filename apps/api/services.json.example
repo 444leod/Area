@@ -1,0 +1,34 @@
+{
+  "name": "EXAMPLE_SERVICE",
+  "description": "EXAMPLE_SERVICE_DESCRIPTION",
+  "actions": [
+    {
+      "name": "EXAPLE_ACTION",
+      "description": "EXAMPLE_ACTION_DESCRIPTION",
+      "action_type": "EXAMPLE_ACTION",
+      "params": [
+        {
+          "name": "exampleField",
+          "details": "An example field.",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "reactions": [
+    {
+      "name": "EXAMPLE_REACTION",
+      "description": "EXAMPLE_REACTION_DESCRIPTION",
+      "reaction_type": "EXAMPLE_REACTION",
+      "params": [
+        {
+          "name": "exampleField",
+          "details": "An example field.",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

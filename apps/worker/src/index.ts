@@ -68,7 +68,6 @@ async function handleArea(areaPacket: AreaPacket) {
         console.error(`Action ${actionType} not supported.`);
         return;
     }
-
     const reactionFunction = reactionsMap[reactionType];
     if (!reactionFunction) {
         console.error(`Reaction ${reactionType} not supported.`);
