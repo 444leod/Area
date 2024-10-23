@@ -27,6 +27,7 @@ export class AreasHelper {
         SEND_EMAIL: undefined,
         CREATE_GOOGLE_TASK: undefined,
         SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
+        CREATE_PULL_REQUEST_COMMENT: undefined,
     };
 
     build(dto: AreaCreationDto): Area {
@@ -35,13 +36,14 @@ export class AreasHelper {
             service_id: this._reactions_services[dto.reaction.type],
             informations: dto.reaction,
         };
-        return {
+        const area: Area = {
             _id: new ObjectId(),
             name: dto.name,
             action: action,
             reaction: reaction,
             active: true,
-        } as Area;
+        };
+        return area;
     }
 
     toDto(area: Area): AreaDto {

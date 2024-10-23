@@ -4,6 +4,7 @@
     import { oauthGoogle } from "$lib/modules/oauthGoogle";
     import {oauthAtlassian} from "$lib/modules/oauthAtlassian";
     import { oauthGithub } from "$lib/modules/oauthGithub";
+    import {oauthSpotify} from "$lib/modules/oauthSpotify";
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings } from '@skeletonlabs/skeleton';
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
@@ -30,6 +31,12 @@
             description: "Connect to use Github in your automations",
             icon: "logos:github-icon",
             oauthFunction: oauthGithub
+        },
+        {
+            name: "Spotify",
+            description: "Connect to use Spotify in your automations",
+            icon: "logos:spotify-icon",
+            oauthFunction: oauthSpotify
         }
     ];
 

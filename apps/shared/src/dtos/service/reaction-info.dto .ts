@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { ReactionTypes } from "../reactions";
-  
+
 export class ReactionCreationDto {
     @ApiProperty()
     @IsNotEmpty()
@@ -14,12 +14,11 @@ export class ReactionCreationDto {
 
     @IsNotEmpty()
     @ApiProperty()
-    ActionType: string
+    reaction_type: string
 
     @ApiProperty({ type: [Object], default: [] })
-    params: { name: string; type: 'string' | 'number'; ActionType: ReactionTypes }[];
+    params: { name: string; type: 'string' | 'number'; reaction_type: ReactionTypes }[];
 }
-
 
 export class ReactionInfo {
     @ApiProperty()
@@ -32,8 +31,8 @@ export class ReactionInfo {
 
     @IsNotEmpty()
     @ApiProperty()
-    ActionType: string
+    reaction_type: string
 
     @ApiProperty({ type: [Object] })
-    params: { name: string; type: 'string' | 'number'; ActionType: ReactionTypes }[];
+    params: { name: string; type: 'string' | 'number'; reaction_type: ReactionTypes }[];
 }

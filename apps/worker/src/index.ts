@@ -5,8 +5,8 @@ import { reactionsMap } from './reactions/reactions-map';
 
 dotenv.config();
 
-if (!process.env.RMQ_QUEUE) {
-    throw new Error('RMQ_QUEUE must be defined as environment variable');
+if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
+    throw new Error('RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable');
 }
 
 const rabbitMQ = new RabbitMQService();
@@ -25,7 +25,13 @@ async function run() {
             await mongoDB.createCollection('users'); // Wait for collection creation
         }
 
-        rabbitMQ.consumeArea(process.env.RMQ_QUEUE || '', handleArea).then(() => {});
+        const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
+        const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WREA_QUEUE || '')).messageCount;
+        const selectedQueue = areaQueueStress >= webhQueueStress
+            ? process.env.RMQ_AREA_QUEUE
+            : process.env.RMQ_WREA_QUEUE;
+
+        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => { });
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -69,14 +75,9 @@ async function handleArea(areaPacket: AreaPacket) {
     }
 
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-
     const res = await actionFunction(areaPacket, mongoDB);
-
-    if (!res) {
+    if (!res)
         return;
-    }
-
     console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-
     await reactionFunction(res, mongoDB);
 }

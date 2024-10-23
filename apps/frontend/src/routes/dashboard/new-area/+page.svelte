@@ -83,6 +83,7 @@
 				}
 				break;
 		}
+
 		if (errors.length > 0) {
 			setError(errors.join('\n'));
 			return false;
@@ -91,8 +92,9 @@
 	}
 
 	function nextStep(): void {
-		if (validateStep())
+		if (validateStep()) {
 			currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
+		}
 	}
 
 	function prevStep(): void {
@@ -173,7 +175,7 @@
 				<AvailableVariable {dynamicVariables} />
 			{/if}
 			<div class={ $currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full' }>
-				<div class="card variant-soft p-4 md:p-6 h-full overflow-y-auto">
+				<div class="card variant-soft flex flex-col p-4 md:p-6 h-full overflow-y-auto">
 					{#if showSuccessAnimation}
 						<Success/>
 					{:else if $currentStep === 0 || $currentStep === 2}

@@ -48,7 +48,6 @@
 	function handleAreaDeleted(event: CustomEvent) {
 		const deletedAreaId = event.detail.areaId;
 		areas = areas.filter(area => area._id !== deletedAreaId);
-		// Update stats after deletion
 		stats = {
 			...stats,
 			totalAutomations: areas.length,
