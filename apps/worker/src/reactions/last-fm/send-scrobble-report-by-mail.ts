@@ -4,8 +4,8 @@ import {
   SendScrobbleReportByEmailInfos,
   sendMail,
   GetWeeklyScobblesResponse,
-	getWeeklyScobbles,
-	Track,
+  getWeeklyScobbles,
+  Track,
   mailStyle,
   mailFooter,
 } from "@area/shared";
@@ -20,8 +20,8 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   );
 
   if (data === null) {
-		console.error("No data found for the given username");
-		return;
+    console.error("No data found for the given username");
+    return;
   }
 
   if (

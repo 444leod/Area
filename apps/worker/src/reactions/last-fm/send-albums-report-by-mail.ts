@@ -4,8 +4,8 @@ import {
   SendAlbumsReportByEmailInfos,
   sendMail,
   GetWeeklyAlbumsResponse,
-	getWeeklyAlbums,
-	Album,
+  getWeeklyAlbums,
+  Album,
   mailStyle,
   mailFooter,
 } from "@area/shared";
@@ -20,8 +20,8 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   );
 
   if (data === null) {
-		console.error("No data found for the given username");
-		return;
+    console.error("No data found for the given username");
+    return;
   }
 
   if (

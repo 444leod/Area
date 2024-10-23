@@ -4,8 +4,8 @@ import {
   SendArtistsReportByEmailInfos,
   sendMail,
   GetWeeklyArtistsResponse,
-	getWeeklyArtists,
-	Artist,
+  getWeeklyArtists,
+  Artist,
   mailStyle,
   mailFooter,
 } from "@area/shared";
@@ -20,8 +20,8 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   );
 
   if (data === null) {
-		console.error("No data found for the given username");
-		return;
+    console.error("No data found for the given username");
+    return;
   }
 
   if (
