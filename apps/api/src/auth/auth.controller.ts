@@ -45,6 +45,15 @@ export class AuthController {
     return this.authService.connectGithub(code, req);
   }
 
+  @Post("/spotify")
+  async spotifyconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Spotify authorization code is required");
+    }
+
+    return this.authService.connectSpotify(code, req);
+  }
+
   @Post("/simpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {

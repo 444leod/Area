@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Zap, PlusCircle, Settings, BarChart2, LogOut, Info } from 'lucide-svelte';
+	import { PlusCircle, BarChart2, LogOut, Info } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import AreaDetailsPopup from '$lib/components/new-area/AreaDetailsPopup.svelte';
 

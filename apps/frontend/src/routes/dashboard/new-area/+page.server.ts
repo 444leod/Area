@@ -32,8 +32,8 @@ export const actions: Actions = {
 
 		const { type, params } = actionDetails;
 		const newAction = { type, ...params };
-		const { type: reactionType, params: reactionParams } = reactionDetails;
-		const newReaction = { type: reactionType, ...reactionParams };
+		const { type: reaction_type, params: reactionParams } = reactionDetails;
+		const newReaction = { type: reaction_type, ...reactionParams };
 		const newArea = {
 			name: areaName,
 			action: newAction,
