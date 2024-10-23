@@ -19,8 +19,8 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: A
 
     const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
 
-    const title = reaction.content?.title || 'title';
-    const body = reaction.content?.body || 'body';
+    const title = reaction?.title || 'title';
+    const body = reaction?.body || 'body';
 
     const tasks = google.tasks('v1');
 

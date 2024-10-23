@@ -3,101 +3,52 @@ import {
   AreaPacket,
   SendArtistsReportByEmailInfos,
   sendMail,
-  GetWeeklyArtistsResponse,
   getWeeklyArtists,
-  Artist,
-  mailStyle,
-  mailFooter,
 } from "@area/shared";
+import { Liquid } from 'liquidjs';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+const engine = new Liquid();
 
 export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction.informations as SendArtistsReportByEmailInfos;
-  const nb_artists: number =
-    typeof reaction.nb_artists === "number"
-      ? reaction.nb_artists
-      : parseInt(reaction.nb_artists);
+  const nb_artists = typeof reaction.nb_artists === "number"
+    ? reaction.nb_artists
+    : parseInt(reaction.nb_artists);
+
   if (Number.isNaN(nb_artists)) {
-    console.error("Invalid number of artists to display, fix the dynamic variable");
+    console.error("Invalid number of tracks to display, fix the dynamic variable");
     return;
   }
-  const data: GetWeeklyArtistsResponse | null = await getWeeklyArtists(
+
+  const data = await getWeeklyArtists(
     reaction.username,
     process.env.LASTFM_API_KEY || ""
   );
 
-  if (data === null) {
+  if (!data) {
     console.error("No data found for the given username");
     return;
   }
 
-  if (
-    !data.weeklyartistchart.artist ||
-    data.weeklyartistchart.artist.length === 0
-  ) {
-    const noArtistsEmailBody = `
-          <!DOCTYPE html>
-          <html>
-          ${mailStyle}
-          <body>
-            <h2>Weekly Music Recap</h2>
-            <p>No artists were played this week.</p>
-          ${mailFooter}
-          </body>
-          </html>
-        `;
-    await sendMail(reaction.to, reaction.subject, noArtistsEmailBody, "html");
-    return;
-  }
-
-  const totalArtistsAvailable = data.weeklyartistchart.artist.length;
+  const tracks = data.weeklyartistchart.artist || [];
+  const totalArtistsAvailable = tracks.length;
   const artistsToDisplay = Math.min(nb_artists, totalArtistsAvailable);
-  const firstXArtists: Artist[] = data.weeklyartistchart.artist.slice(
-    0,
-    artistsToDisplay
-  );
+  const firstXArtists = tracks.slice(0, artistsToDisplay);
 
-  const emailBody = `
-        <!DOCTYPE html>
-        <html>
-        ${mailStyle}
-        <body>
-          <h2>Your Weekly Artists Recap</h2>
-          
-          ${
-            firstXArtists.length > 0
-              ? `
-            <p>Your most played artist this week is: 
-              <span class="highlight">${firstXArtists[0].name}</span>!
-            </p>
-          `
-              : ""
-          }
-    
-          <h3>Your Top ${artistsToDisplay} artists This Week:</h3>
-          ${
-            nb_artists > totalArtistsAvailable
-              ? `<p class="note">Note: You requested ${nb_artists} artists, but you only played ${totalArtistsAvailable} different artists this week.</p>`
-              : ""
-          }
-          
-          <ul class="track-list">
-            ${firstXArtists
-              .map(
-                (track, index) => `
-              <li class="track-item">
-                ${index + 1}. <span class="highlight">${track.name}</span>
-                <span class="playcount">(${track.playcount} plays)</span>
-              </li>
-            `
-              )
-              .join("")}
-          </ul>
-          ${mailFooter}
-        </body>
-        </html>
-      `;
+  const templatePath = path.join(__dirname, '../../templates/weekly-music-report.liquid');
+  const weeklyMusicTemplate = await fs.readFile(templatePath, 'utf8');
+
+  const emailBody = await engine.parseAndRender(weeklyMusicTemplate, {
+    type: 'Artists',
+    items: firstXArtists,
+    itemsToDisplay: artistsToDisplay,
+    requestedItems: nb_artists,
+    totalItems: totalArtistsAvailable
+  });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
 };

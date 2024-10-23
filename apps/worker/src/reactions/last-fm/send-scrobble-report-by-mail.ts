@@ -3,103 +3,52 @@ import {
   AreaPacket,
   SendScrobbleReportByEmailInfos,
   sendMail,
-  GetWeeklyScobblesResponse,
-  getWeeklyScobbles,
-  Track,
-  mailStyle,
-  mailFooter,
+  getWeeklyScrobbles,
 } from "@area/shared";
+import { Liquid } from 'liquidjs';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+const engine = new Liquid();
 
 export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction.informations as SendScrobbleReportByEmailInfos;
-  const nb_tracks: number =
-    typeof reaction.nb_tracks === "number"
-      ? reaction.nb_tracks
-      : parseInt(reaction.nb_tracks);
+  const nb_tracks = typeof reaction.nb_tracks === "number"
+    ? reaction.nb_tracks
+    : parseInt(reaction.nb_tracks);
+
   if (Number.isNaN(nb_tracks)) {
-    console.error("Invalid number of tracks to tracks, fix the dynamic variable");
+    console.error("Invalid number of tracks to display, fix the dynamic variable");
     return;
   }
-  const data: GetWeeklyScobblesResponse | null = await getWeeklyScobbles(
+
+  const data = await getWeeklyScrobbles(
     reaction.username,
     process.env.LASTFM_API_KEY || ""
   );
 
-  if (data === null) {
+  if (!data) {
     console.error("No data found for the given username");
     return;
   }
 
-  if (
-    !data.weeklytrackchart.track ||
-    data.weeklytrackchart.track.length === 0
-  ) {
-    const noTracksEmailBody = `
-          <!DOCTYPE html>
-          <html>
-          ${mailStyle}
-          <body>
-            <h2>Weekly Music Recap</h2>
-            <p>No tracks were played this week.</p>
-            ${mailFooter}
-          </body>
-          </html>
-        `;
-    await sendMail(reaction.to, reaction.subject, noTracksEmailBody, "html");
-    return;
-  }
-
-  const totalTracksAvailable = data.weeklytrackchart.track.length;
+  const tracks = data.weeklytrackchart.track || [];
+  const totalTracksAvailable = tracks.length;
   const tracksToDisplay = Math.min(nb_tracks, totalTracksAvailable);
-  const firstXTracks: Track[] = data.weeklytrackchart.track.slice(
-    0,
-    tracksToDisplay
-  );
+  const firstXTracks = tracks.slice(0, tracksToDisplay);
 
-  const emailBody = `
-        <!DOCTYPE html>
-        <html>
-        ${mailStyle}
-        <body>
-          <h2>Your Weekly Music Recap</h2>
-          
-          ${
-            firstXTracks.length > 0
-              ? `
-            <p>Your most played track this week is: 
-              <span class="highlight">${firstXTracks[0].name}</span> by 
-              <span class="highlight">${firstXTracks[0].artist["#text"]}</span>!
-            </p>
-          `
-              : ""
-          }
-    
-          <h3>Your Top ${tracksToDisplay} Tracks This Week:</h3>
-          ${
-            nb_tracks > totalTracksAvailable
-              ? `<p class="note">Note: You requested ${nb_tracks} tracks, but you only played ${totalTracksAvailable} different tracks this week.</p>`
-              : ""
-          }
-          
-          <ul class="track-list">
-            ${firstXTracks
-              .map(
-                (track, index) => `
-              <li class="track-item">
-                ${index + 1}. <span class="highlight">${track.name}</span>
-                by <span class="highlight">${track.artist["#text"]}</span>
-                <span class="playcount">(${track.playcount} plays)</span>
-              </li>
-            `
-              )
-              .join("")}
-          </ul>
-          ${mailFooter}
-        </body>
-        </html>
-      `;
+  const templatePath = path.join(__dirname, '../../templates/weekly-music-report.liquid');
+  const weeklyMusicTemplate = await fs.readFile(templatePath, 'utf8');
+
+  const emailBody = await engine.parseAndRender(weeklyMusicTemplate, {
+    type: 'Tracks',
+    items: firstXTracks,
+    itemsToDisplay: tracksToDisplay,
+    requestedItems: nb_tracks,
+    totalItems: totalTracksAvailable
+  });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
 };

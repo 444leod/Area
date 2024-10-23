@@ -6,7 +6,7 @@ export interface BaseAttr {
   from: string;
   user: string;
   to: string;
-};
+}
 
 export interface Track {
   artist: {
@@ -28,7 +28,7 @@ export interface Track {
   playcount: string;
 }
 
-export interface GetWeeklyScobblesResponse {
+export interface GetWeeklyScrobblesResponse {
   weeklytrackchart: {
     track: Track[];
     "@attr": BaseAttr;
@@ -73,64 +73,68 @@ export interface GetWeeklyArtistsResponse {
   };
 }
 
-export async function getWeeklyScobbles(
+type ChartMethod =
+  | "user.getweeklytrackchart"
+  | "user.getweeklyalbumchart"
+  | "user.getweeklyartistchart";
+
+async function makeLastFMRequest<T>(
   username: string,
-  apiKey: string
-): Promise<GetWeeklyScobblesResponse | null> {
+  apiKey: string,
+  method: ChartMethod
+): Promise<T | null> {
   try {
-    const response = await axios.get(
-      `${domainName}?method=user.getweeklytrackchart&user=${username}&api_key=${apiKey}&format=json`
-    );
+    const response = await axios.get<T>(`${domainName}`, {
+      params: {
+        method,
+        user: username,
+        api_key: apiKey,
+        format: "json",
+      },
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Error on LastFM Request:", error.response?.statusText);
-      return null;
+      console.error(
+        `Error on LastFM ${method} Request:`,
+        error.response?.statusText
+      );
     } else {
-      console.error("Error on LastFM Request:", error);
-      return null;
+      console.error(`Error on LastFM ${method} Request:`, error);
     }
+    return null;
   }
+}
+
+export async function getWeeklyScrobbles(
+  username: string,
+  apiKey: string
+): Promise<GetWeeklyScrobblesResponse | null> {
+  return makeLastFMRequest<GetWeeklyScrobblesResponse>(
+    username,
+    apiKey,
+    "user.getweeklytrackchart"
+  );
 }
 
 export async function getWeeklyAlbums(
   username: string,
   apiKey: string
 ): Promise<GetWeeklyAlbumsResponse | null> {
-  try {
-    const response = await axios.get(
-      `${domainName}?method=user.getweeklyalbumchart&user=${username}&api_key=${apiKey}&format=json`
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error on LastFM Request:", error.response?.statusText);
-      return null;
-    } else {
-      console.error("Error on LastFM Request:", error);
-      return null;
-    }
-  }
+  return makeLastFMRequest<GetWeeklyAlbumsResponse>(
+    username,
+    apiKey,
+    "user.getweeklyalbumchart"
+  );
 }
 
 export async function getWeeklyArtists(
   username: string,
   apiKey: string
 ): Promise<GetWeeklyArtistsResponse | null> {
-  try {
-    const response = await axios.get(
-      `${domainName}?method=user.getweeklyartistchart&user=${username}&api_key=${apiKey}&format=json`
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error on LastFM Request:", error.response?.statusText);
-      return null;
-    } else {
-      console.error("Error on LastFM Request:", error);
-      return null;
-    }
-  }
+  return makeLastFMRequest<GetWeeklyArtistsResponse>(
+    username,
+    apiKey,
+    "user.getweeklyartistchart"
+  );
 }
-
-
