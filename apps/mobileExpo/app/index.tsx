@@ -31,7 +31,6 @@ export default function LoginScreen() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: "825177499555-dhg7f5e5lfcmj8jk006npd2aupm99jre.apps.googleusercontent.com",
     redirectUri: "com.jbazan.mobileexpo:/oauth2redirect",
-
   });
 
   const handleGoogleAuth = async (idToken: string, refreshToken: string, expireIn:string) => {
