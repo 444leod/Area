@@ -185,7 +185,10 @@
 						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 							{#each $apps.filter((app) => ($currentStep === 0 ? app.actions.length > 0 : app.reactions.length > 0)) as app (app._id)}
 								<AppCard
-										app={{...app, id: app._id, icon: 'mdi:application'}}
+										app={{
+											id: app._id,
+											name: app.name
+										}}
 										onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
 								/>
 							{/each}
