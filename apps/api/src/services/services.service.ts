@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {ReactionInfo, Service, ShortService} from '@area/shared';
-import { ActionCreationDto, ServiceCreationDto, ReactionCreationDto, ActionInfo } from '@area/shared';
+import { Service, ShortService } from '@area/shared';
 import { ObjectId } from 'mongodb';
 import * as SERVICES from '../../services.json'
 import * as fs from 'fs';
@@ -56,49 +55,4 @@ export class ServicesService {
     return service;
   }
 
-  async createService(serviceCreationDto: ServiceCreationDto): Promise<Service> {
-    const createdService = new this.serviceModel(serviceCreationDto);
-    return createdService.save();
-  }
-
-  async addAction(serviceId: string, actionCreationDto: ActionCreationDto): Promise<Service> {
-    const service = await this.serviceModel.findById(serviceId);
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    const action: ActionInfo = {
-      name: actionCreationDto.name,
-      description: actionCreationDto.description,
-      action_type: actionCreationDto.action_type,
-      params: actionCreationDto.params,
-    };
-
-    service.actions.push(action);
-    return service.save();
-  }
-
-  async addReaction(serviceId: string, reactionCreationDto: ReactionCreationDto): Promise<Service> {
-    const service = await this.serviceModel.findById(serviceId);
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    const reaction: ReactionInfo = {
-      name: reactionCreationDto.name,
-      description: reactionCreationDto.description,
-      reaction_type: reactionCreationDto.reaction_type,
-      params: reactionCreationDto.params,
-    };
-
-    service.reactions.push(reaction);
-    return service.save();
-  }
-
-  async deleteService(serviceId: string): Promise<void> {
-    const result = await this.serviceModel.deleteOne({ _id: serviceId }).exec();
-    if (result.deletedCount === 0) {
-      throw new NotFoundException('Service not found');
-    }
-  }
 }
