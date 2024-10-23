@@ -35,7 +35,7 @@
     });
 </script>
 
-<div class="flex items-center justify-center h-screen bg-gray-100">
+<div class="flex items-center justify-center">
     <div class="text-center">
         {#if loading}
             <div in:fade="{{ duration: 300 }}" out:fade="{{ duration: 300 }}">

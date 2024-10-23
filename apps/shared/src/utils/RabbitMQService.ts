@@ -59,6 +59,9 @@ export class RabbitMQService {
   }
 
   async queueStats(queue: string): Promise<client.Replies.AssertQueue> {
+    await this.channel.assertQueue(queue, {
+      durable: false,
+    });
     return await this.channel.checkQueue(queue);
   }
 
