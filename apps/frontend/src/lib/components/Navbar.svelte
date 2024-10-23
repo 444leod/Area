@@ -53,11 +53,10 @@
 	});
 </script>
 
-<nav class="p-4 bg-surface-100-800-token">
+<nav class="p-4 bg-opacity-30 bg-white">
 	<div class="container mx-auto flex justify-between items-center">
 		<a href="/" class="font-bold text-xl" data-testid="logo">Boogie's Area</a>
 
-		<!-- Desktop Menu -->
 		<div class="hidden md:flex items-center space-x-4" data-testid="desktop-menu">
 			{#if $authStore}
 				<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">

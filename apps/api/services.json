@@ -7,7 +7,7 @@
       {
         "name": "videoPosted",
         "description": "When video was posted by a given channel",
-        "action_type": "ON_YOUTUBE_VIDEO_POSTED",
+        "type": "ON_YOUTUBE_VIDEO_POSTED",
         "params": [
           {
             "name": "user_id",
@@ -108,7 +108,7 @@
       {
         "name": "each X second",
         "description": "make the reaction every X second",
-        "action_type": "EACH_X_SECONDS",
+        "type": "EACH_X_SECONDS",
         "params": [
           {
             "name": "seconds",
@@ -162,7 +162,7 @@
       {
         "name": "sendemail",
         "description": "send an email",
-        "action_type": "SEND_EMAIL",
+        "type": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
@@ -195,7 +195,7 @@
       {
         "name": "Create new task",
         "description": "for create new task",
-        "action_type": "CREATE_GOOGLE_TASK",
+        "type": "CREATE_GOOGLE_TASK",
         "params": [
           {
             "name": "title",
@@ -221,7 +221,7 @@
       {
         "name": "new issue",
         "description": "when new issue created",
-        "action_type": "ON_NEW_JIRA_TICKET",
+        "type": "ON_NEW_JIRA_TICKET",
         "params": [],
         "variables": [
           {
@@ -349,7 +349,7 @@
       {
         "name": "new project",
         "description": "when new project created",
-        "action_type": "ON_NEW_JIRA_PROJECT",
+        "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
         "variables": [
           {
@@ -438,7 +438,7 @@
       {
         "name": "new repository",
         "description": "when new repository created",
-        "action_type": "ON_NEW_GITHUB_REPOSITORY",
+        "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
         "variables": [
           {
@@ -530,7 +530,7 @@
       {
         "name": "a pull request state has changed to the one selected",
         "description": "when pull request state changed",
-        "action_type": "ON_PULL_REQUEST_STATE",
+        "type": "ON_PULL_REQUEST_STATE",
         "params": [
           {
             "name": "state",
@@ -679,7 +679,7 @@
       {
         "name": "send message",
         "description": "send message to discord",
-        "action_type": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
+        "type": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
         "params": [
           {
             "name": "webhook_url",
@@ -737,7 +737,7 @@
       {
         "name": "Last Week Scobble Report",
         "description": "Send scobble report by email",
-        "action_type": "SEND_SCROBBLE_REPORT_BY_MAIL",
+        "type": "SEND_SCROBBLE_REPORT_BY_MAIL",
         "params": [
           {
             "name": "to",
@@ -768,7 +768,7 @@
       {
         "name": "Last Week Albums Report",
         "description": "Send albums report by email",
-        "action_type": "SEND_ALBUMS_REPORT_BY_MAIL",
+        "type": "SEND_ALBUMS_REPORT_BY_MAIL",
         "params": [
           {
             "name": "to",
@@ -799,7 +799,7 @@
       {
         "name": "Last Week Artists Report",
         "description": "Send artists report by email",
-        "action_type": "SEND_ARTISTS_REPORT_BY_MAIL",
+        "type": "SEND_ARTISTS_REPORT_BY_MAIL",
         "params": [
           {
             "name": "to",

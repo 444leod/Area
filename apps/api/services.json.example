@@ -5,7 +5,7 @@
     {
       "name": "EXAPLE_ACTION",
       "description": "EXAMPLE_ACTION_DESCRIPTION",
-      "action_type": "EXAMPLE_ACTION",
+      "type": "EXAMPLE_ACTION",
       "params": [
         {
           "name": "exampleField",
@@ -20,7 +20,7 @@
     {
       "name": "EXAMPLE_REACTION",
       "description": "EXAMPLE_REACTION_DESCRIPTION",
-      "reaction_type": "EXAMPLE_REACTION",
+      "type": "EXAMPLE_REACTION",
       "params": [
         {
           "name": "exampleField",
