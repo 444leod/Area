@@ -7,15 +7,11 @@ import {
   Patch,
   Post,
   Request,
-  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
-
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiCreatedResponse,
-  ApiHeader,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -24,7 +20,6 @@ import {
 } from "@nestjs/swagger";
 import { AuthGuard } from "../auth/auth.guard";
 import { Area, AreaCreationDto, AreaDto } from "@area/shared";
-import { UsersService } from "../users/users.service";
 import { AreasHelper } from "./areas.helper";
 import { ObjectId } from "mongodb";
 import { AreasService } from "./areas.service";

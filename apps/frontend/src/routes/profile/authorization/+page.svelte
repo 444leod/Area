@@ -9,6 +9,7 @@
     import type { ModalSettings } from '@skeletonlabs/skeleton';
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
     import { Search } from 'lucide-svelte';
+    import { allServices } from "$lib/modules/allServices";
 
     export let data;
 
