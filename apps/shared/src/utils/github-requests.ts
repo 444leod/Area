@@ -21,6 +21,7 @@ interface ReducedRepository {
     watchers_count: number;
     created_at: string;
     updated_at: string;
+    visibility: string;
 }
 
 interface ReducedPullRequest {
@@ -91,7 +92,7 @@ export async function getUserRepositories(token: string): Promise<ReducedReposit
 export async function getSortedUserRepositoriesSince(
     token: string,
     since: Date,
-    sortKey: string = 'created_at',
+    sortKey: string = 'created',
     order: string = 'asc'
 ): Promise<ReducedRepository[] | null> {
     try {

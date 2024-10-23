@@ -54,7 +54,9 @@ async function main() {
                 const areaPacket: AreaPacket = {
                     user_id: obj._id,
                     area: obj.areas,
-                    data: null,
+                    data: {
+                        area_name: obj.areas.name,
+                    },
                     authorizations: obj.authorizations,
                 };
                 return areaPacket;

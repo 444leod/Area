@@ -42,13 +42,19 @@ export const handleOnPullRequestStateAction: ActionFunction = async (packet: Are
     area.action.history = history;
     await database.updateAreaHistory(packet.user_id, area);
 
-    //TODO: update with variables
     packet.data = {
-        title: `A repository has been updated: ${pr.title}`,
-        body: `description: ${pr.body}\nurl: ${pr.html_url}\nupdated at: ${pr.updated_at}\nstate: ${pr.state}`,
-        username: pr.user.login,
-        picture: pr.user.avatar_url,
-        date: new Date(pr.updated_at),
+        title: pr.title,
+        description: pr.body || '',
+        url: pr.html_url,
+        state: pr.state,
+        number: String(pr.number),
+        creator: pr.user.login,
+        creator_picture_url: pr.user.avatar_url,
+        created_at: new Date(pr.created_at).toDateString(),
+        creation_time: new Date(pr.created_at).toLocaleTimeString(),
+        creation_date: new Date(pr.created_at).toLocaleDateString(),
+        updated_at: new Date(pr.updated_at).toDateString(),
+        merged_at: pr.merged_at ? new Date(pr.merged_at).toDateString() : '',
     };
 
     return packet;

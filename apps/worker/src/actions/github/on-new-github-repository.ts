@@ -33,13 +33,16 @@ export const handleNewGithubRepositoryAction: ActionFunction = async (packet: Ar
     area.action.history = history;
     await database.updateAreaHistory(packet.user_id, area);
 
-    //TODO: update with variables
     packet.data = {
-        title: `A repository has been created: ${repo.name}`,
-        body: `description: ${repo.description}\nurl: ${repo.html_url}\ncreated at: ${repo.created_at}`,
-        username: repo.owner.login,
-        picture: repo.owner.avatar_url,
-        date: new Date(repo.created_at),
+        name: repo.name,
+        description: repo.description || '',
+        owner: repo.owner?.login,
+        owner_picture_url: repo.owner?.avatar_url,
+        created_at: new Date(repo.created_at).toDateString(),
+        creation_time: new Date(repo.created_at).toLocaleTimeString(),
+        creation_date: new Date(repo.created_at).toLocaleDateString(),
+        url: repo.html_url,
+        visibility: repo.visibility,
     };
 
     return packet;
