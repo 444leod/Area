@@ -14,6 +14,14 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction.informations as SendArtistsReportByEmailInfos;
+  const nb_artists: number =
+    typeof reaction.nb_artists === "number"
+      ? reaction.nb_artists
+      : parseInt(reaction.nb_artists);
+  if (Number.isNaN(nb_artists)) {
+    console.error("Invalid number of artists to display, fix the dynamic variable");
+    return;
+  }
   const data: GetWeeklyArtistsResponse | null = await getWeeklyArtists(
     reaction.username,
     process.env.LASTFM_API_KEY || ""
@@ -44,7 +52,7 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   }
 
   const totalArtistsAvailable = data.weeklyartistchart.artist.length;
-  const artistsToDisplay = Math.min(reaction.nb_artists, totalArtistsAvailable);
+  const artistsToDisplay = Math.min(nb_artists, totalArtistsAvailable);
   const firstXArtists: Artist[] = data.weeklyartistchart.artist.slice(
     0,
     artistsToDisplay
@@ -69,8 +77,8 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
     
           <h3>Your Top ${artistsToDisplay} artists This Week:</h3>
           ${
-            reaction.nb_artists > totalArtistsAvailable
-              ? `<p class="note">Note: You requested ${reaction.nb_artists} artists, but you only played ${totalArtistsAvailable} different artists this week.</p>`
+            nb_artists > totalArtistsAvailable
+              ? `<p class="note">Note: You requested ${nb_artists} artists, but you only played ${totalArtistsAvailable} different artists this week.</p>`
               : ""
           }
           

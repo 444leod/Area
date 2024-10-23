@@ -1,13 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { ReactionTypes } from "../reaction-types.enum";
 import { BaseReactionInfos } from "../reaction-infos.class";
+import { IsEmailOrVariable, IsNumberOrVariable } from "../../../validators/";
 
 export class SendAlbumsReportByEmailInfos extends BaseReactionInfos {
   type: ReactionTypes.SEND_ALBUMS_REPORT_BY_MAIL;
 
   @ApiProperty()
-  @IsEmail()
+  @IsEmailOrVariable()
   @IsNotEmpty()
   to: string;
 
@@ -23,7 +24,6 @@ export class SendAlbumsReportByEmailInfos extends BaseReactionInfos {
 
   @ApiProperty({ minimum: 1 })
   @IsNotEmpty()
-  @IsNumber()
-  @Min(1, { message: 'Number of albums must be at least 1' })
-  nb_albums: number;
+  @IsNumberOrVariable(1)
+  nb_albums: number | string;
 }

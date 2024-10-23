@@ -14,6 +14,14 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction.informations as SendAlbumsReportByEmailInfos;
+  const nb_albums: number =
+    typeof reaction.nb_albums === "number"
+      ? reaction.nb_albums
+      : parseInt(reaction.nb_albums);
+  if (Number.isNaN(nb_albums)) {
+    console.error("Invalid number of albums to display, fix the dynamic variable");
+    return;
+  }
   const data: GetWeeklyAlbumsResponse | null = await getWeeklyAlbums(
     reaction.username,
     process.env.LASTFM_API_KEY || ""
@@ -44,7 +52,7 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   }
 
   const totalAlbumsAvailable = data.weeklyalbumchart.album.length;
-  const albumsToDisplay = Math.min(reaction.nb_albums, totalAlbumsAvailable);
+  const albumsToDisplay = Math.min(nb_albums, totalAlbumsAvailable);
   const firstXAlbums: Album[] = data.weeklyalbumchart.album.slice(
     0,
     albumsToDisplay
@@ -70,8 +78,8 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
     
           <h3>Your Top ${albumsToDisplay} albums This Week:</h3>
           ${
-            reaction.nb_albums > totalAlbumsAvailable
-              ? `<p class="note">Note: You requested ${reaction.nb_albums} albums, but you only played ${totalAlbumsAvailable} different albums this week.</p>`
+            nb_albums > totalAlbumsAvailable
+              ? `<p class="note">Note: You requested ${nb_albums} albums, but you only played ${totalAlbumsAvailable} different albums this week.</p>`
               : ""
           }
           

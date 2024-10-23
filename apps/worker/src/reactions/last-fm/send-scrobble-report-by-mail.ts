@@ -14,6 +14,14 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction.informations as SendScrobbleReportByEmailInfos;
+  const nb_tracks: number =
+    typeof reaction.nb_tracks === "number"
+      ? reaction.nb_tracks
+      : parseInt(reaction.nb_tracks);
+  if (Number.isNaN(nb_tracks)) {
+    console.error("Invalid number of tracks to tracks, fix the dynamic variable");
+    return;
+  }
   const data: GetWeeklyScobblesResponse | null = await getWeeklyScobbles(
     reaction.username,
     process.env.LASTFM_API_KEY || ""
@@ -44,7 +52,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   }
 
   const totalTracksAvailable = data.weeklytrackchart.track.length;
-  const tracksToDisplay = Math.min(reaction.nb_tracks, totalTracksAvailable);
+  const tracksToDisplay = Math.min(nb_tracks, totalTracksAvailable);
   const firstXTracks: Track[] = data.weeklytrackchart.track.slice(
     0,
     tracksToDisplay
@@ -70,8 +78,8 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
     
           <h3>Your Top ${tracksToDisplay} Tracks This Week:</h3>
           ${
-            reaction.nb_tracks > totalTracksAvailable
-              ? `<p class="note">Note: You requested ${reaction.nb_tracks} tracks, but you only played ${totalTracksAvailable} different tracks this week.</p>`
+            nb_tracks > totalTracksAvailable
+              ? `<p class="note">Note: You requested ${nb_tracks} tracks, but you only played ${totalTracksAvailable} different tracks this week.</p>`
               : ""
           }
           
