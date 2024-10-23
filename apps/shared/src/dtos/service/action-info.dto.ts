@@ -1,26 +1,9 @@
 import { ApiProperty, } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-
-export class ActionCreationDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    name: string;
-
-    @IsNotEmpty()
-    @ApiProperty()
-    description: string
-
-    @IsNotEmpty()
-    @ApiProperty()
-    action_type: string
-
-    @ApiProperty({ type: [Object], default: [] })
-    params: { name: string; type: 'string' | 'number';}[];
-}
+import { IsEmail, IsNotEmpty, IsString, ValidateNested } from "class-validator";
+import { ActionTypes } from "../actions";
+import { ActionParam } from "./action-param.class";
 
 export class ActionInfo {
-
     @ApiProperty()
     @IsEmail()
     name: string
@@ -31,8 +14,9 @@ export class ActionInfo {
 
     @IsNotEmpty()
     @ApiProperty()
-    action_type: string
+    type: ActionTypes
 
     @ApiProperty({ type: [Object] })
-    params: { name: string; type: 'string' | 'number';}[];
+    @ValidateNested()
+    params: ActionParam[];
 }
