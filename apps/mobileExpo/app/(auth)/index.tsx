@@ -26,13 +26,13 @@ export default function DashboardScreen() {
           'Authorization': `Bearer ${token}`
         }
       });
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
         setAreas(data);
       } else {
         throw new Error('Erreur lors de la récupération des AREAs');
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error('Erreur:', error);
       Alert.alert('Erreur', 'Impossible de récupérer vos AREAs');
     } finally {

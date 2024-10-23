@@ -126,7 +126,7 @@ const NewAreaScreen = () => {
         },
         body: JSON.stringify(newArea)
       });
-
+      const data = await response.json();
       Alert.alert('Success', 'New AREA created successfully');
       router.back();
     } catch (error) {
