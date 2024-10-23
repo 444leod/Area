@@ -238,8 +238,6 @@ export class AuthService {
 
             const createdAt = new Date();
 
-            const createdAt = new Date();
-
             try {
                 const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     service_id: GithubService._id,
@@ -312,7 +310,7 @@ export class AuthService {
                 return null;
             }
 
-            const SpotifyService = await this.adminService.getServiceByName('Spotify');
+            const SpotifyService = await this.servicesService.getServiceByName('Spotify');
 
             const createdAt = new Date();
             const expirationDate = new Date(createdAt.getTime() + expiresIn * 1000);
@@ -391,8 +389,6 @@ export class AuthService {
             expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
 
             const GoogleService = await this.servicesService.getServiceByName('Google task');
-
-            const createdAt = new Date();
 
             const createdAt = new Date();
 
