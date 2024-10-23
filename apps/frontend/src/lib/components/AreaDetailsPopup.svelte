@@ -1,9 +1,10 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte';
-    import { X, Trash2, ToggleLeft, ToggleRight, ArrowRight, Plus, Minus, ArrowDown, Copy, Check } from 'lucide-svelte';
+    import {X, Trash2, Copy,ToggleLeft, ToggleRight, Plus, Minus, ArrowDown} from 'lucide-svelte';
     import { getAreaById } from '$lib/modules/getAreaById';
     import { deleteAreaById } from '$lib/modules/deleteAreaById';
     import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
+    import { setError } from "$lib/store/errorMessage";
 
     export let areaId: string;
     export let token: string;
@@ -24,7 +25,7 @@
             loading = false;
         }
     });
-
+  
     function close() {
         dispatch('close');
     }
@@ -33,7 +34,7 @@
         if (!confirm('Are you sure you want to delete this area?')) {
             return;
         }
-
+        
         deleteLoading = true;
         try {
             await deleteAreaById(areaId, token);
@@ -41,7 +42,7 @@
             close();
         } catch (e) {
             error = `Error deleting area: ${e.message}`;
-            console.error(e);
+            setError(error);
         } finally {
             deleteLoading = false;
         }
@@ -89,7 +90,7 @@
                 <X size={24} />
             </button>
         </div>
-
+      
         {#if loading}
             <div class="flex justify-center items-center h-64">
                 <div class="loader"></div>
@@ -104,10 +105,10 @@
                         <span class="text-sm font-semibold text-surface-700-200-token">ID: {area._id}</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button
-                                on:click={toggleAreaButton}
-                                class="btn {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
-                                disabled={toggleLoading}
+                        <button 
+                            on:click={toggleAreaButton}
+                            class="btn {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
+                            disabled={toggleLoading}
                         >
                             {#if toggleLoading}
                                 <div class="loader-sm mr-2"></div>

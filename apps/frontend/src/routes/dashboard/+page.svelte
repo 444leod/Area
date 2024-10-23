@@ -2,7 +2,7 @@
 	import { PlusCircle, BarChart2, LogOut, Info } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
-	import AreaDetailsPopup from '$lib/components/new-area/AreaDetailsPopup.svelte';
+	import AreaDetailsPopup from '$lib/components/AreaDetailsPopup.svelte';
 
 	export let data: PageData;
 
@@ -43,6 +43,16 @@
 	function showAreaDetails(areaId: string) {
 		selectedAreaId = areaId;
 		showDetailsPopup = true;
+	}
+
+	function handleAreaDeleted(event: CustomEvent) {
+		const deletedAreaId = event.detail.areaId;
+		areas = areas.filter(area => area._id !== deletedAreaId);
+		stats = {
+			...stats,
+			totalAutomations: areas.length,
+			activeAutomations: areas.filter((area) => area.active).length
+		};
 	}
 
 	function closeDetailsPopup() {
@@ -151,5 +161,10 @@
 </div>
 
 {#if showDetailsPopup && selectedAreaId}
-	<AreaDetailsPopup areaId={selectedAreaId} token={data.token}  on:close={closeDetailsPopup}/>
+	<AreaDetailsPopup
+			areaId={selectedAreaId}
+			token={data.token}
+			on:close={closeDetailsPopup}
+			on:areaDeleted={handleAreaDeleted}
+	/>
 {/if}
