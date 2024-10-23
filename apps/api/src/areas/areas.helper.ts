@@ -27,6 +27,7 @@ export class AreasHelper {
         SEND_EMAIL: undefined,
         CREATE_GOOGLE_TASK: undefined,
         SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
+        CREATE_PULL_REQUEST_COMMENT: undefined,
     };
 
     build(dto: AreaCreationDto): Area {
