@@ -36,6 +36,15 @@ export class AuthController {
     return this.authService.connectAtlassian(code, req);
   }
 
+  @Post("/discord")
+  async discordconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Atlassian authorization code is required");
+    }
+
+    return this.authService.connectDiscord(code, req);
+  }
+
   @Post("/github")
   async githubconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {

@@ -188,6 +188,82 @@ export class AuthService {
         }
     }
 
+    async connectDiscord(code: string, req: Request) {
+        const clientId = process.env.DISCORD_CLIENT_ID;
+        const clientSecret = process.env.DISCORD_CLIENT_SECRET;
+        const redirectUri = `${process.env.FRONTEND_URL}/login/oauth/discord`;
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (!token) {
+            console.error('error token');
+            throw new UnauthorizedException('invalid Token');
+        }
+
+        if (!clientId || !clientSecret || !code) {
+            console.error('Client ID, Client Secret or Code missing');
+            throw new Error('Invalid clientId, clientSecret, or code');
+        }
+
+        try {
+            const response = await fetch('https://discord.com/api/oauth2/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    grant_type: 'authorization_code',
+                    code: code,
+                    redirect_uri: redirectUri
+                })
+            });
+
+            if (!response.ok) {
+                console.error('Error on Discord request:', response.statusText);
+                return null;
+            }
+
+            const data = await response.json();
+
+            const accessToken = data.access_token;
+            const refreshToken = data.refresh_token;
+            const expiresIn = data.expires_in;
+
+            if (!accessToken) {
+                console.error('No access token received');
+                return null;
+            }
+
+            const DiscordService = await this.servicesService.getServiceByName('Discord');
+
+            const createdAt = new Date();
+            const expirationDate = new Date(createdAt.getTime() + expiresIn * 1000);
+
+            try {
+                const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
+                    service_id: DiscordService._id,
+                    type: AuthorizationsTypes.DISCORD,
+                    data: {
+                        token: accessToken,
+                        refresh_token: refreshToken,
+                        created_at: createdAt,
+                        expiration_date: expirationDate,
+                    }
+                });
+
+                return 1;
+            } catch (error) {
+                console.error('Error updating permission:', error);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error connecting to Discord:', error);
+            return null;
+        }
+    }
+
     async connectGithub(code: string, req: Request) {
         const clientId = process.env.GITHUB_CLIENT_ID;
         const clientSecret = process.env.GITHUB_CLIENT_SECRET;

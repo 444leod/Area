@@ -3,4 +3,5 @@ export enum AuthorizationsTypes {
     GOOGLE = 'GOOGLE',
     GITHUB = 'GITHUB',
     SPOTIFY = 'SPOTIFY',
+    DISCORD = 'DISCORD',
 }

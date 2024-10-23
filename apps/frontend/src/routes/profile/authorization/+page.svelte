@@ -5,11 +5,11 @@
     import {oauthAtlassian} from "$lib/modules/oauthAtlassian";
     import { oauthGithub } from "$lib/modules/oauthGithub";
     import {oauthSpotify} from "$lib/modules/oauthSpotify";
+    import { oauthDiscord } from "$lib/modules/oauthDiscord";
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings } from '@skeletonlabs/skeleton';
     import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
     import { Search } from 'lucide-svelte';
-    import { allServices } from "$lib/modules/allServices";
 
     export let data;
 
@@ -38,6 +38,12 @@
             description: "Connect to use Spotify in your automations",
             icon: "logos:spotify-icon",
             oauthFunction: oauthSpotify
+        },
+        {
+            name: "Discord",
+            description: "Connect to use Discord in your automations",
+            icon: "logos:discord-icon",
+            oauthFunction: oauthDiscord
         }
     ];
 

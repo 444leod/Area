@@ -31,7 +31,7 @@
 
         if (code && token) {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/atlassian`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/discord`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -40,16 +40,16 @@
                     body: JSON.stringify({ code }),
                 });
                 if (response.ok) {
-                    goto('/profile/authorization?success=1&service=atlassian');
+                    goto('/profile/authorization?success=1&service=discord');
                 } else {
                     throw new Error(`Error during Auth`);
                 }
             } catch (error) {
                 setError(error);
-                goto('/profile/authorization?success=0&service=atlassian');
+                goto('/profile/authorization?success=0&service=discord');
             }
         } else {
-            goto('/profile/authorization?success=0&service=atlassian');
+            goto('/profile/authorization?success=0&service=discord');
         }
     });
 </script>
