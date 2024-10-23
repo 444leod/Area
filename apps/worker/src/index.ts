@@ -75,9 +75,39 @@ async function handleArea(areaPacket: AreaPacket) {
     }
 
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-    const res = await actionFunction(areaPacket, mongoDB);
-    if (!res)
+
+    let res: AreaPacket | null;
+    try {
+        res = await actionFunction(areaPacket, mongoDB);
+    } catch (error: any) {
+        if (error.response) {
+            console.error({
+                message: error.message,
+                url: error.config.url,
+                status: error.response.status,
+                statusText: error.response.statusText,
+            });
+        } else {
+            console.error({ message: error.message });
+        }
         return;
+    }
+    if (!res) return;
+
     console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-    await reactionFunction(res, mongoDB);
+
+    try {
+        await reactionFunction(res, mongoDB);
+    } catch (error: any) {
+        if (error.response) {
+            console.error({
+                message: error.message,
+                url: error.config.url,
+                status: error.response.status,
+                statusText: error.response.statusText,
+            });
+        } else {
+            console.error({ message: error.message });
+        }
+    }
 }

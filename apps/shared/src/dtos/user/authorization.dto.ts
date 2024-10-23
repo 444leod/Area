@@ -1,13 +1,11 @@
-import { ObjectId } from "mongodb";
+export class TokenDto {
+    token: string;
+    refresh_token: string;
+    created_at: Date;
+    expiration_date: Date | null;
+}
 
 export class AuthorizationDto {
-    service_id: ObjectId;
     type: string;
-    data: {
-        token: string;
-        refresh_token: string;
-        expiration_date: Date,
-        created_at: Date,
-        [key: string]: any;
-    };
+    data: TokenDto;
 }

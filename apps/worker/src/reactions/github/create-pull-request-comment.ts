@@ -1,12 +1,8 @@
 import { ReactionFunction } from '../reaction-function';
-import { MongoDBService, AreaPacket, CreatePullRequestCommentClass, createPullRequestComment } from '@area/shared';
+import { MongoDBService, AreaPacket, CreatePullRequestCommentClass, createPullRequestComment, getAuthorizationToken } from '@area/shared';
 
 export const handleCreatePullRequestCommentReaction: ReactionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await database.getAuthorizationData(packet.user_id, 'GITHUB');
-    if (!token) {
-        console.error('github token not found.');
-        return;
-    }
+    const { token } = await getAuthorizationToken(packet.user_id, 'GITHUB', database);
 
     const area = packet.area;
     const reaction = area.reaction.informations as CreatePullRequestCommentClass;

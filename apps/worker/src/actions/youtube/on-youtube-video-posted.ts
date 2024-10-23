@@ -5,22 +5,11 @@ import {
     OnYoutubeVideoPostedClass,
     OnYoutubeVideoPostedHistoryDTO,
     getChannelVideos,
-    getNewGoogleTokens,
+    getAuthorizationToken,
 } from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    let { token, refresh_token } = (await database.getAuthorizationData(packet.user_id, 'GOOGLE')) as {
-        token: string;
-        refresh_token: string;
-    };
-    if (!token) {
-        console.error('Google token not found.');
-        return null;
-    }
-
-    ({ token, refresh_token } = await getNewGoogleTokens({ token, refresh_token }));
-
-    await database.updateAuthorizationData(packet.user_id, 'GOOGLE', { token, refresh_token });
+    const { token } = await getAuthorizationToken(packet.user_id, 'GOOGLE', database);
 
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;
@@ -44,12 +33,12 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
     let video;
 
     if (history.lastVideoTimestamp === undefined || history.lastVideoTimestamp === 0) {
-        history.lastVideoTimestamp = newVideos[0].date.getTime();
-        video = undefined;
+        // history.lastVideoTimestamp = newVideos[0].date.getTime();
+        // video = undefined;
 
         // FOR TESTING PURPOSES, DO NOT DELETE
-        // history.lastVideoTimestamp = newVideos[newVideos.length - 1].date.getTime();
-        // video = newVideos[newVideos.length - 1];
+        history.lastVideoTimestamp = newVideos[newVideos.length - 1].date.getTime();
+        video = newVideos[newVideos.length - 1];
     } else {
         newVideos = newVideos.filter((video) => video.date.getTime() > history.lastVideoTimestamp);
         if (newVideos.length === 0) {

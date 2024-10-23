@@ -1,12 +1,15 @@
 import { ActionFunction } from '../action-function';
-import { MongoDBService, AreaPacket, getRepositoryPullRequests, OnPullRequestStateClass, OnPullRequestStateHistoryDTO } from '@area/shared';
+import {
+    MongoDBService,
+    AreaPacket,
+    getRepositoryPullRequests,
+    OnPullRequestStateClass,
+    OnPullRequestStateHistoryDTO,
+    getAuthorizationToken,
+} from '@area/shared';
 
 export const handleOnPullRequestStateAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await database.getAuthorizationData(packet.user_id, 'GITHUB');
-    if (!token) {
-        console.error('github token not found.');
-        return null;
-    }
+    const { token } = await getAuthorizationToken(packet.user_id, 'GITHUB', database);
 
     const area = packet.area;
     const action = area.action.informations as OnPullRequestStateClass;
