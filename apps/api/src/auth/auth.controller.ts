@@ -45,6 +45,15 @@ export class AuthController {
     return this.authService.connectGithub(code, req);
   }
 
+  @Post("/spotify")
+  async spotifyconnection(@Body("code") code: string, @Req() req: Request) {
+    if (!code) {
+      throw new BadRequestException("Spotify authorization code is required");
+    }
+
+    return this.authService.connectSpotify(code, req);
+  }
+
   @Post("/simpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
@@ -63,11 +72,11 @@ export class AuthController {
   }
 
   @Post("/google/mobile")
-  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean, @Body("refreshToken") refreshToken: string) {
+  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean, @Body("refreshToken") refreshToken: string, @Body("expired_at") expired_at: Date) {
     if (!token) {
       throw new BadRequestException("Google token is required");
     }
-    return this.authService.handleGoogleMobileAuth(token, refreshToken, isMobile);
+    return this.authService.handleGoogleMobileAuth(token, refreshToken, isMobile, expired_at);
   }
 
   @Post("/register")

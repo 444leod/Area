@@ -71,7 +71,7 @@ const NewAreaScreen = () => {
   const selectTriggerOrAction = (item, type) => {
     if (type === 'trigger') {
       setSelectedTrigger(item);
-      setActionDetails({ type: item.ActionType, params: {} });
+      setActionDetails({ type: item.action_type, params: {} });
       item.params.forEach(param => {
         setActionDetails(prev => ({
           ...prev,
@@ -80,7 +80,7 @@ const NewAreaScreen = () => {
       });
     } else {
       setSelectedAction(item);
-      setReactionDetails({ type: item.ActionType, params: {} });
+      setReactionDetails({ type: item.action_type, params: {} });
       item.params.forEach(param => {
         setReactionDetails(prev => ({
           ...prev,
@@ -180,7 +180,7 @@ const NewAreaScreen = () => {
               </Title>
               {items.map(item => (
                   <Button
-                      key={item.ActionType}
+                      key={item.action_type}
                       mode="outlined"
                       style={styles.itemButton}
                       onPress={() => selectTriggerOrAction(item, currentStep === 1 ? 'trigger' : 'action')}

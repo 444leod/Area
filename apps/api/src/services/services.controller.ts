@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Param, Get, Delete } from '@nestjs/common';
-import { AdminService } from './services.service';
+import { ServicesService } from './services.service';
 import { ActionCreationDto } from '@area/shared';
 import { ReactionCreationDto } from '@area/shared';
 import { ServiceCreationDto } from '@area/shared';
@@ -7,7 +7,7 @@ import { ObjectId } from 'mongodb';
 
 @Controller('services')
 export class ServicesController {
-  constructor(private readonly servicesService: AdminService) {}
+  constructor(private readonly servicesService: ServicesService) {}
 
   @Get()
   async getAllServices() {

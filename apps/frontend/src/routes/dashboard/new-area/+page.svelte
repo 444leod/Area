@@ -110,7 +110,7 @@
 	function selectTriggerOrAction(item: Action, type: 'trigger' | 'action'): void {
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
-			actionDetails.set({ type: item.ActionType, params: {} });
+			actionDetails.set({ type: item.action_type, params: {} });
 			item.params.forEach(param => {
 				actionDetails.update(details => {
 					details.params[param.name] = '';
@@ -120,7 +120,7 @@
 			dynamicVariables.set(item.variables || []);
 		} else {
 			selectedAction.set(item);
-			reactionDetails.set({ type: item.ActionType, params: {} });
+			reactionDetails.set({ type: item.action_type, params: {} });
 			item.params.forEach(param => {
 				reactionDetails.update(details => {
 					details.params[param.name] = '';
@@ -172,7 +172,7 @@
 				<AvailableVariable {dynamicVariables} />
 			{/if}
 			<div class={ $currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full' }>
-				<div class="card variant-soft p-4 md:p-6 h-full overflow-y-auto">
+				<div class="card variant-soft flex flex-col p-4 md:p-6 h-full overflow-y-auto">
 					{#if showSuccessAnimation}
 						<Success/>
 					{:else if $currentStep === 0 || $currentStep === 2}
@@ -204,7 +204,7 @@
 					{:else if $currentStep === 4}
 						<h2 class="h2 mb-4 text-center">Set up Details</h2>
 						<div class="mb-4">
-							<label for="automation-name" class="label">Automation Name *</label>
+							<label for="automation-name" class="label h4">Automation Name *</label>
 							<input
 									id="automation-name"
 									type="text"
@@ -216,8 +216,8 @@
 						{#if $selectedTrigger}
 							<h3 class="h3 mb-2">Trigger Details</h3>
 							{#each $selectedTrigger.params as param}
-								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+								<div class="mb-4 space-y-10">
+									<label for={param.name} class="label h4">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
@@ -247,7 +247,7 @@
 							<h3 class="h3 mb-2">Action Details</h3>
 							{#each $selectedAction.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="label h4">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
