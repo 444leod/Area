@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import StringInput from "@/components/inputs/StringInput";
 import NumberInput from '@/components/inputs/NumberInput';
 import BooleanInput from '@/components/inputs/BooleanInput';
+import DateInput from "@/components/inputs/DateInput";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -19,6 +20,7 @@ const NewAreaScreen = () => {
   const [automationName, setAutomationName] = useState('');
   const [actionDetails, setActionDetails] = useState({ type: '', params: {} });
   const [reactionDetails, setReactionDetails] = useState({ type: '', params: {} });
+  const [dynamicVariables, setDynamicVariables] = useState([]);
   const theme = useTheme();
   const router = useRouter();
 
@@ -69,18 +71,26 @@ const NewAreaScreen = () => {
   };
 
   const selectTriggerOrAction = (item, type) => {
+    console.log('Selected item:', item);
     if (type === 'trigger') {
       setSelectedTrigger(item);
-      setActionDetails({ type: item.action_type, params: {} });
+      setActionDetails({
+        type: item.type,
+        params: {}
+      });
       item.params.forEach(param => {
         setActionDetails(prev => ({
           ...prev,
           params: { ...prev.params, [param.name]: '' }
         }));
       });
+      setDynamicVariables(item.variables || []);
     } else {
       setSelectedAction(item);
-      setReactionDetails({ type: item.action_type, params: {} });
+      setReactionDetails({
+        type: item.type,
+        params: {}
+      });
       item.params.forEach(param => {
         setReactionDetails(prev => ({
           ...prev,
@@ -146,6 +156,8 @@ const NewAreaScreen = () => {
         return <NumberInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
       case 'boolean':
         return <BooleanInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
+      case 'date':
+        return <DateInput key={`${store}-${param.name}`} param={param} value={value} required={param.required} dynamicVariables={dynamicVariables} updateParamValue={updateValue}/>
       default:
         return <StringInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
     }
