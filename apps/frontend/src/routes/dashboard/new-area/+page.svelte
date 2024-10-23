@@ -83,7 +83,6 @@
 				}
 				break;
 		}
-
 		if (errors.length > 0) {
 			setError(errors.join('\n'));
 			return false;
@@ -92,9 +91,8 @@
 	}
 
 	function nextStep(): void {
-		if (validateStep()) {
+		if (validateStep())
 			currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
-		}
 	}
 
 	function prevStep(): void {
@@ -310,8 +308,8 @@
 										<StringInput
 												{param}
 												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												value={$reactionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
 												isAction={false}
 										/>
@@ -319,8 +317,8 @@
 										<NumberInput
 												{param}
 												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												value={$reactionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
 												isAction={false}
 										/>
@@ -328,19 +326,19 @@
 										<BooleanInput
 												{param}
 												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												value={$reactionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
-												isAction={true}
+												isAction={false}
 										/>
 									{:else if param.type === 'enum'}
 										<Select
 												options={param.items}
-												value={$actionDetails.params[param.name]}
-												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
+												value={$reactionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
 												required={param.required}
 												dynamicVariables={$dynamicVariables}
-												isAction={true}
+												isAction={false}
 										/>
 									{:else if param.type === 'date'}
 										<DateInput
@@ -354,8 +352,8 @@
 										<TextInput
 												{param}
 												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												value={$reactionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
 												dynamicVariables={$dynamicVariables}
 												isAction={false}
 										/>
