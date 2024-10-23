@@ -116,8 +116,39 @@ const NewAreaScreen = () => {
     }
   };
 
+  const validateInputs = () => {
+    const errors = [];
+    if (!automationName.trim()) {
+      errors.push("Automation name is required");
+    }
+    if (selectedTrigger?.params) {
+      selectedTrigger.params.forEach(param => {
+        if (param.required && !actionDetails.params[param.name]) {
+          errors.push(`Trigger parameter "${param.name}" is required`);
+        }
+      });
+    }
+    if (selectedAction?.params) {
+      selectedAction.params.forEach(param => {
+        if (param.required && !reactionDetails.params[param.name]) {
+          errors.push(`Action parameter "${param.name}" is required`);
+        }
+      });
+    }
+    return errors;
+  };
+
   const handleCreateArea = async () => {
     try {
+      const validationErrors = validateInputs();
+      if (validationErrors.length > 0) {
+        Alert.alert(
+            'Validation Error',
+            validationErrors.join('\n'),
+            [{ text: 'OK' }]
+        );
+        return;
+      }
       const token = await AsyncStorage.getItem('userToken');
       if (!token) {
         Alert.alert('Error', 'Not authorized');
@@ -129,7 +160,6 @@ const NewAreaScreen = () => {
         action: { type: actionDetails.type, ...actionDetails.params },
         reaction: { type: reactionDetails.type, ...reactionDetails.params }
       };
-      console.log(newArea)
       const response = await fetch(`${API_URL}/areas`, {
         method: 'POST',
         headers: {
@@ -139,7 +169,9 @@ const NewAreaScreen = () => {
         body: JSON.stringify(newArea)
       });
       const data = await response.json();
-      console.log('response', data);
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create automation' + data.message);
+      }
       Alert.alert('Success', 'New AREA created successfully');
       router.back();
     } catch (error) {
