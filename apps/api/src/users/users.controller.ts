@@ -3,7 +3,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  Req,
   Request,
   UnauthorizedException,
   UseGuards,
