@@ -5,6 +5,16 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { ObjectId } from "mongodb";
+
+export interface AuthentifiedUser {
+  id: string,
+  email: string,
+}
+
+export interface AuthRequest {
+  user: AuthentifiedUser
+}
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -24,7 +34,11 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
-      request["user"] = payload;
+      const user: AuthentifiedUser = {
+        id: payload.sub,
+        email: payload.email
+      };
+      request["user"] = user;
     } catch {
       throw new UnauthorizedException();
     }

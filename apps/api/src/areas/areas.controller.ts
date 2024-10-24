@@ -18,7 +18,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import { AuthGuard } from "../auth/auth.guard";
+import { AuthGuard, AuthRequest } from "../auth/auth.guard";
 import { Area, AreaCreationDto, AreaDto } from "@area/shared";
 import { AreasHelper } from "./areas.helper";
 import { ObjectId } from "mongodb";
@@ -48,7 +48,7 @@ export class AreasController {
   @ApiUnauthorizedResponse(AreasUnauthorizedOptions)
   @ApiNotFoundResponse(AreasNotFoundOptions)
   @ApiNotFoundResponse(AreasUserNotFoundOptions)
-  async getAreaById(@Request() req, @Param("id") id: string): Promise<Area> {
+  async getAreaById(@Request() req: AuthRequest, @Param("id") id: string): Promise<Area> {
     return await this.areasService.getUserArea(req.user, new ObjectId(id));
   }
 

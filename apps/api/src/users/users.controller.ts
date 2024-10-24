@@ -1,5 +1,5 @@
-import { Controller, Get, Req, Request, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../auth/auth.guard';
+import { Controller, Delete, Get, Req, Request, Response, UseGuards } from '@nestjs/common';
+import { AuthentifiedUser, AuthGuard, AuthRequest } from '../auth/auth.guard';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UserUnauthorizedOptions, AuthorizationOkOptions, UserNotFoundOptions } from './swagger-content';
@@ -9,9 +9,9 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @UseGuards(AuthGuard)
-    @Get('profile')
-    async getUserProfile(@Request() req) {
-        return await this.usersService.findByEmail(req.user.email);
+    @Get('ping')
+    async getUserProfile(@Request() req: AuthRequest): Promise<AuthentifiedUser> {
+        return req.user;
     }
 
     @ApiBearerAuth('token')
@@ -21,5 +21,11 @@ export class UsersController {
     @Get('authorization')
     async getUserAuthorizations(@Req() req: Request) {
         return this.usersService.getUserAuthorizations(req);
+    }
+
+    @UseGuards(AuthGuard)
+    @Delete()
+    async deleteUser(@Request() req: AuthRequest): Promise<void> {
+        return await this.usersService.deleteUser(req.user);
     }
 }
