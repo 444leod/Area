@@ -30,10 +30,15 @@ export const actions: Actions = {
 		const reactionDetails = JSON.parse(formData.get('reactionDetails') as string);
 		const areaName = formData.get('areaName') as string;
 
-		const { type, params } = actionDetails;
-		const newAction = { type, ...params };
-		const { type: reactionType, params: reactionParams } = reactionDetails;
-		const newReaction = { type: reactionType, ...reactionParams };
+		const newAction = {
+			type: actionDetails.type,
+			...actionDetails.params
+		};
+		const newReaction = {
+			type: reactionDetails.type,
+			...reactionDetails.params
+		};
+
 		const newArea = {
 			name: areaName,
 			action: newAction,

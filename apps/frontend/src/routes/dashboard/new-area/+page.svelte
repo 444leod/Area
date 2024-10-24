@@ -13,6 +13,9 @@
 	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
 	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
 	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
+	import DateInput from "$lib/components/new-area/Inputs/DateInput.svelte";
+	import Select from "$lib/components/new-area/Inputs/Select.svelte";
+	import TextInput from "$lib/components/new-area/Inputs/TextInput.svelte";
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
@@ -110,7 +113,7 @@
 	function selectTriggerOrAction(item: Action, type: 'trigger' | 'action'): void {
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
-			actionDetails.set({ type: item.ActionType, params: {} });
+			actionDetails.set({ type: item.type, params: {} });
 			item.params.forEach(param => {
 				actionDetails.update(details => {
 					details.params[param.name] = '';
@@ -120,7 +123,7 @@
 			dynamicVariables.set(item.variables || []);
 		} else {
 			selectedAction.set(item);
-			reactionDetails.set({ type: item.ActionType, params: {} });
+			reactionDetails.set({ type: item.type, params: {} });
 			item.params.forEach(param => {
 				reactionDetails.update(details => {
 					details.params[param.name] = '';
@@ -172,7 +175,7 @@
 				<AvailableVariable {dynamicVariables} />
 			{/if}
 			<div class={ $currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full' }>
-				<div class="card variant-soft p-4 md:p-6 h-full overflow-y-auto">
+				<div class="card variant-soft flex flex-col p-4 md:p-6 h-full overflow-y-auto">
 					{#if showSuccessAnimation}
 						<Success/>
 					{:else if $currentStep === 0 || $currentStep === 2}
@@ -182,7 +185,10 @@
 						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 							{#each $apps.filter((app) => ($currentStep === 0 ? app.actions.length > 0 : app.reactions.length > 0)) as app (app._id)}
 								<AppCard
-										app={{...app, id: app._id, icon: 'mdi:application'}}
+										app={{
+											id: app._id,
+											name: app.name
+										}}
 										onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
 								/>
 							{/each}
@@ -204,26 +210,48 @@
 					{:else if $currentStep === 4}
 						<h2 class="h2 mb-4 text-center">Set up Details</h2>
 						<div class="mb-4">
-							<label for="automation-name" class="label">Automation Name *</label>
-							<input
-									id="automation-name"
-									type="text"
-									class="input w-full"
-									bind:value={$automationName}
-									placeholder="Enter a name for your automation"
-							/>
+							<label for="automation-name" class="label h3">Automation Name *</label>
+							<div class="rounded-lg p-4 variant-ghost">
+								<input
+										id="automation-name"
+										type="text"
+										class="input w-full"
+										bind:value={$automationName}
+										placeholder="Enter a name for your automation"
+								/>
+							</div>
+						</div>
+						<div class="card variant-ghost-secondary p-4 mb-8">
+							<div class="flex items-start gap-4">
+								<div class="p-2 rounded-full variant-soft-primary">
+									<Icon icon="mdi:information" class="w-6 h-6" />
+								</div>
+								<div>
+									<h3 class="h3 mb-2">What this Area will do:</h3>
+									<p class="text-base">
+										On the app <span class="font-semibold text-primary-500">{$triggerApp?.name || ''}</span> {$selectedTrigger?.description?.toLowerCase() || ''},
+										<span class="font-semibold text-secondary-500">{$actionApp?.name || ''}</span> will {$selectedAction?.description?.toLowerCase() || ''}.
+									</p>
+									<div class="mt-4 flex items-center gap-2 text-sm">
+										<Icon icon="mdi:clock-outline" class="w-4 h-4" />
+										<span>This automation will run automatically once set up.</span>
+									</div>
+								</div>
+							</div>
 						</div>
 						{#if $selectedTrigger}
 							<h3 class="h3 mb-2">Trigger Details</h3>
 							{#each $selectedTrigger.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
 												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
@@ -231,13 +259,43 @@
 												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
 												{param}
+												required={param.required}
 												value={$actionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
+										/>
+									{:else if param.type === 'enum'}
+										<Select
+												options={param.items}
+												value={$actionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
 												required={param.required}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
+										/>
+									{:else if param.type === 'date'}
+										<DateInput
+												{param}
+												required={param.required}
+												value={$actionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+										/>
+									{:else if param.type === 'text'}
+										<TextInput
+												{param}
+												required={param.required}
+												value={$actionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={true}
 										/>
 									{/if}
 								</div>
@@ -247,13 +305,15 @@
 							<h3 class="h3 mb-2">Action Details</h3>
 							{#each $selectedAction.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="label">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
 									{#if param.type === 'string'}
 										<StringInput
 												{param}
 												required={param.required}
 												value={$reactionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
@@ -261,6 +321,8 @@
 												required={param.required}
 												value={$reactionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
@@ -268,6 +330,34 @@
 												required={param.required}
 												value={$reactionDetails.params[param.name]}
 												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
+										/>
+									{:else if param.type === 'enum'}
+										<Select
+												options={param.items}
+												value={$reactionDetails.params[param.name]}
+												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
+												required={param.required}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
+										/>
+									{:else if param.type === 'date'}
+										<DateInput
+												{param}
+												required={param.required}
+												value={$reactionDetails.params[param.name]}
+												dynamicVariables={$dynamicVariables}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+										/>
+									{:else if param.type === 'text'}
+										<TextInput
+												{param}
+												required={param.required}
+												value={$reactionDetails.params[param.name]}
+												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+												dynamicVariables={$dynamicVariables}
+												isAction={false}
 										/>
 									{/if}
 								</div>

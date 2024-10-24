@@ -45,6 +45,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"chart.js": "^4.4.5",
 		"gsap": "^3.12.5",
 		"lucide-svelte": "^0.446.0"
 	}

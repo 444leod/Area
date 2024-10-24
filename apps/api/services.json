@@ -1,0 +1,722 @@
+[{
+  "_id": "6703d148ddf654a6d482dafb",
+  "name": "YouTube",
+  "description": "Service for YouTube actions",
+  "actions": [
+    {
+      "name": "videoPosted",
+      "description": "When video was posted by a given channel",
+      "type": "ON_YOUTUBE_VIDEO_POSTED",
+      "params": [
+        {
+          "name": "user_id",
+          "details": "user id of the user",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variables": [
+        {
+          "name": "area_name",
+          "description": "name of the area",
+          "type": "string",
+          "template": "My AREA #1"
+        },
+        {
+          "name": "full_execution_date",
+          "description": "full date of the trigger",
+          "type": "date",
+          "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+        },
+        {
+          "name": "execution_date",
+          "description": "date of the trigger",
+          "type": "string",
+          "template":  "22/10/2024"
+        },
+        {
+          "name": "execution_time",
+          "description": "time of the trigger",
+          "type": "string",
+          "template": "12:00"
+        },
+        {
+          "name": "title",
+          "description": "title of the video",
+          "type": "string",
+          "template": "My video title"
+        },
+        {
+          "name": "description",
+          "description": "description of the video",
+          "type": "string",
+          "template": "My video description"
+        },
+        {
+          "name": "url",
+          "description": "URL of the video",
+          "type": "string",
+          "template": "https://www.youtube.com/watch?v=videoID"
+        },
+        {
+          "name": "published_at",
+          "description": "date the video was published",
+          "type": "date",
+          "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+        },
+        {
+          "name": "publication_time",
+          "description": "time the video was published",
+          "type": "string",
+          "template": "12:00"
+        },
+        {
+          "name": "publication_date",
+          "description": "date the video was published",
+          "type": "string",
+          "template": "22/10/2024"
+        },
+        {
+          "name": "channel_title",
+          "description": "name of the video creator's channel",
+          "type": "string",
+          "template": "My Channel"
+        },
+        {
+          "name": "channel_id",
+          "description": "ID of the video creator's channel",
+          "type": "string",
+          "template": "UC1234567890"
+        },
+        {
+          "name": "thumbnail_url",
+          "description": "URL of the video thumbnail",
+          "type": "string",
+          "template": "https://img.youtube.com/vi/videoID/default.jpg"
+        }
+      ]
+    }
+  ],
+  "reactions": []
+},
+  {
+    "_id": "6703d313722dee796788baa3",
+    "name": "Timer",
+    "description": "Service for Timer actions",
+    "actions": [
+      {
+        "name": "each X second",
+        "description": "make the reaction every X second",
+        "type": "EACH_X_SECONDS",
+        "params": [
+          {
+            "name": "seconds",
+            "details": "number of seconds to wait for each trigger",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "seconds",
+            "description": "number of seconds to wait for each trigger",
+            "type": "number",
+            "template": "3"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template":  "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          }
+        ]
+      }
+    ],
+    "reactions": []
+  },
+  {
+    "_id": "6703f2e0bc8055c868eaf474",
+    "name": "Mail",
+    "description": "Service for Email actions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "sendemail",
+        "description": "send an email",
+        "type": "SEND_EMAIL",
+        "params": [
+          {
+            "name": "to",
+            "details": "email adress of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "details": "body of the email",
+            "type": "string",
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "6703f3dabc8055c868eaf47e",
+    "name": "Google task",
+    "description": "Service for Google task actions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "Create new task",
+        "description": "for create new task",
+        "type": "CREATE_GOOGLE_TASK",
+        "params": [
+          {
+            "name": "title",
+            "details": "title of the task",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "details": "body of the task",
+            "type": "string",
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "_id": "670e71ff92b0948adfdca0b3",
+    "name": "Atlassian",
+    "description": "for all Atlassian action",
+    "actions": [
+      {
+        "name": "new issue",
+        "description": "when new issue created",
+        "type": "ON_NEW_JIRA_TICKET",
+        "params": [],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template":  "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "title",
+            "description": "The summary or title of the ticket",
+            "type": "string",
+            "template": "Fix bug in login flow"
+          },
+          {
+            "name": "key",
+            "description": "Unique identifier for the ticket",
+            "type": "string",
+            "template": "BUG-101"
+          },
+          {
+            "name": "assignee",
+            "description": "The name of the person assigned to the ticket",
+            "type": "string",
+            "template": "Jane Doe"
+          },
+          {
+            "name": "assignee_picture_url",
+            "description": "URL of the assignee's profile picture",
+            "type": "string",
+            "template": "https://example.com/avatar/jane.jpg"
+          },
+          {
+            "name": "reporter",
+            "description": "The name of the person who created the ticket",
+            "type": "string",
+            "template": "John Smith"
+          },
+          {
+            "name": "reporter_picture_url",
+            "description": "URL of the reporter's profile picture",
+            "type": "string",
+            "template": "https://example.com/avatar/john.jpg"
+          },
+          {
+            "name": "created_at",
+            "description": "Full timestamp of when the ticket was created",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "creation_time",
+            "description": "The time portion of when the ticket was created",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "creation_date",
+            "description": "The date portion of when the ticket was created",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "project_name",
+            "description": "The name of the project the ticket belongs to",
+            "type": "string",
+            "template": "Backend API"
+          },
+          {
+            "name": "project_key",
+            "description": "Unique identifier for the project",
+            "type": "string",
+            "template": "BACKEND"
+          },
+          {
+            "name": "project_picture_url",
+            "description": "URL of the project's avatar or logo",
+            "type": "string",
+            "template": "https://example.com/project-logo.png"
+          },
+          {
+            "name": "type",
+            "description": "The type of the ticket (e.g., Bug, Task, Story)",
+            "type": "string",
+            "template": "Bug"
+          },
+          {
+            "name": "priority",
+            "description": "The priority level of the ticket",
+            "type": "string",
+            "template": "High"
+          },
+          {
+            "name": "status",
+            "description": "The current status of the ticket (e.g., Open, In Progress, Closed)",
+            "type": "string",
+            "template": "Open"
+          },
+          {
+            "name": "labels",
+            "description": "Comma-separated labels associated with the ticket",
+            "type": "string",
+            "template": "bug, urgent, backend"
+          }
+        ]
+      },
+      {
+        "name": "new project",
+        "description": "when new project created",
+        "type": "ON_NEW_JIRA_PROJECT",
+        "params": [],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template":  "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "name",
+            "description": "Name of the project",
+            "type": "string",
+            "template": "Awesome Project"
+          },
+          {
+            "name": "key",
+            "description": "Unique key or identifier for the project",
+            "type": "string",
+            "template": "AREA-123"
+          },
+          {
+            "name": "picture_url",
+            "description": "URL for the project's avatar or logo",
+            "type": "string",
+            "template": "https://example.com/project-avatar.png"
+          },
+          {
+            "name": "description",
+            "description": "Brief description of the project",
+            "type": "string",
+            "template": "A project that handles area management"
+          },
+          {
+            "name": "lead",
+            "description": "Name of the project lead",
+            "type": "string",
+            "template": "Jane Doe"
+          },
+          {
+            "name": "lead_picture_url",
+            "description": "URL for the lead's profile picture",
+            "type": "string",
+            "template": "https://example.com/lead-avatar.png"
+          },
+          {
+            "name": "category",
+            "description": "Category or type of the project",
+            "type": "string",
+            "template": "Software"
+          },
+          {
+            "name": "type",
+            "description": "Type of the project (e.g., software, business)",
+            "type": "string",
+            "template": "software"
+          }
+
+        ]
+      }
+    ],
+    "reactions": []
+  },
+  {
+    "_id": "670f8cbd7920482a14597bc7",
+    "name": "Github",
+    "description": "for all Github action",
+    "actions": [
+      {
+        "name": "new repository",
+        "description": "when new repository created",
+        "type": "ON_NEW_GITHUB_REPOSITORY",
+        "params": [],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template":  "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "name",
+            "description": "name of the repository",
+            "type": "string",
+            "template": "My repository"
+          },
+          {
+            "name": "owner",
+            "description": "owner of the repository",
+            "type": "string",
+            "template": "John Doe"
+          },
+          {
+            "name": "owner_picture_url",
+            "description": "picture of the owner",
+            "type": "string",
+            "template": "https://avatars.githubusercontent.com/u/114572827?v=4"
+          },
+          {
+            "name": "picture_url",
+            "description": "picture of the repository",
+            "type": "string",
+            "template": ""
+          },
+          {
+            "name": "description",
+            "description": "description of the repository",
+            "type": "string",
+            "template": "My repository description"
+          },
+          {
+            "name": "created_at",
+            "description": "date of the repository",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "creation_time",
+            "description": "time of the creation of the repository",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "creation_date",
+            "description": "date of the creation of the repository",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "url",
+            "description": "url of the repository",
+            "type": "string",
+            "template": "https://github.com/example/example-repository"
+          },
+          {
+            "name": "visibility",
+            "description": "visibility of the repository",
+            "type": "string",
+            "template": "public"
+          }
+        ]
+      },
+      {
+        "name": "a pull request state has changed to the one selected",
+        "description": "when pull request state changed",
+        "type": "ON_PULL_REQUEST_STATE",
+        "params": [
+          {
+            "name": "state",
+            "details": "state of the pull request",
+            "type": "enum",
+            "items": [
+              "all",
+              "open",
+              "closed"
+            ],
+            "required": true
+          },
+          {
+            "name": "owner",
+            "details": "owner of the repository",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "repository",
+            "details": "repository name",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template":  "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "repository_name",
+            "description": "name of the repository",
+            "type": "string",
+            "template": "My repository"
+          },
+          {
+            "name": "creator",
+            "description": "creator of the pull request",
+            "type": "string",
+            "template": "John Doe"
+          },
+          {
+            "name": "creator_picture_url",
+            "description": "picture of the creator",
+            "type": "string",
+            "template": "https://avatars.githubusercontent.com/u/114572827?v=4"
+          },
+          {
+            "name": "repository_picture_url",
+            "description": "picture of the repository",
+            "type": "string",
+            "template": ""
+          },
+          {
+            "name": "title",
+            "description": "title of the pull request",
+            "type": "string",
+            "template": "My pull request"
+          },
+          {
+            "name": "description",
+            "description": "description of the pull request",
+            "type": "string",
+            "template": "My pull request description"
+          },
+          {
+            "name": "url",
+            "description": "url of the pull request",
+            "type": "string",
+            "template": "https://github.com/User/Project/pull/111"
+          },
+          {
+            "name": "state",
+            "description": "state of the pull request",
+            "type": "string",
+            "template": "open"
+          },
+          {
+            "name": "number",
+            "description": "number of the pull request",
+            "type": "string",
+            "template": "111"
+          },
+          {
+            "name": "created_at",
+            "description": "date of the pull request",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "creation_time",
+            "description": "time of the creation of the pull request",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "creation_date",
+            "description": "date of the creation of the pull request",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "updated_at",
+            "description": "date of the update of the pull request",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "merged_at",
+            "description": "date of the merge of the pull request",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          }
+        ]
+      }
+    ],
+    "reactions": []
+  },
+  {
+    "_id": "670f8cbd7920482a14597111",
+    "name": "Discord",
+    "description": "Discord interactions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "send message",
+        "description": "send message to discord",
+        "type": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
+        "params": [
+          {
+            "name": "webhook_url",
+            "details": "webhook url of the discord",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "title of the message",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "body",
+            "details": "body of the message",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "username",
+            "details": "username of the message",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "avatar_url",
+            "details": "avatar url of the message",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "thumbnail_url",
+            "details": "thumbnail url of the message",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
+  }]

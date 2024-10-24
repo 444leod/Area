@@ -6,6 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import StringInput from "@/components/inputs/StringInput";
 import NumberInput from '@/components/inputs/NumberInput';
 import BooleanInput from '@/components/inputs/BooleanInput';
+import DateInput from "@/components/inputs/DateInput";
+import TextInput from "@/components/inputs/TextInput";
+import SelectInput from "@/components/inputs/SelectInput";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -19,6 +22,7 @@ const NewAreaScreen = () => {
   const [automationName, setAutomationName] = useState('');
   const [actionDetails, setActionDetails] = useState({ type: '', params: {} });
   const [reactionDetails, setReactionDetails] = useState({ type: '', params: {} });
+  const [dynamicVariables, setDynamicVariables] = useState([]);
   const theme = useTheme();
   const router = useRouter();
 
@@ -71,16 +75,23 @@ const NewAreaScreen = () => {
   const selectTriggerOrAction = (item, type) => {
     if (type === 'trigger') {
       setSelectedTrigger(item);
-      setActionDetails({ type: item.ActionType, params: {} });
+      setActionDetails({
+        type: item.type,
+        params: {}
+      });
       item.params.forEach(param => {
         setActionDetails(prev => ({
           ...prev,
           params: { ...prev.params, [param.name]: '' }
         }));
       });
+      setDynamicVariables(item.variables || []);
     } else {
       setSelectedAction(item);
-      setReactionDetails({ type: item.ActionType, params: {} });
+      setReactionDetails({
+        type: item.type,
+        params: {}
+      });
       item.params.forEach(param => {
         setReactionDetails(prev => ({
           ...prev,
@@ -105,8 +116,39 @@ const NewAreaScreen = () => {
     }
   };
 
+  const validateInputs = () => {
+    const errors = [];
+    if (!automationName.trim()) {
+      errors.push("Automation name is required");
+    }
+    if (selectedTrigger?.params) {
+      selectedTrigger.params.forEach(param => {
+        if (param.required && !actionDetails.params[param.name]) {
+          errors.push(`Trigger parameter "${param.name}" is required`);
+        }
+      });
+    }
+    if (selectedAction?.params) {
+      selectedAction.params.forEach(param => {
+        if (param.required && !reactionDetails.params[param.name]) {
+          errors.push(`Action parameter "${param.name}" is required`);
+        }
+      });
+    }
+    return errors;
+  };
+
   const handleCreateArea = async () => {
     try {
+      const validationErrors = validateInputs();
+      if (validationErrors.length > 0) {
+        Alert.alert(
+            'Validation Error',
+            validationErrors.join('\n'),
+            [{ text: 'OK' }]
+        );
+        return;
+      }
       const token = await AsyncStorage.getItem('userToken');
       if (!token) {
         Alert.alert('Error', 'Not authorized');
@@ -114,10 +156,10 @@ const NewAreaScreen = () => {
       }
 
       const newArea = {
+        name: automationName,
         action: { type: actionDetails.type, ...actionDetails.params },
         reaction: { type: reactionDetails.type, ...reactionDetails.params }
       };
-
       const response = await fetch(`${API_URL}/areas`, {
         method: 'POST',
         headers: {
@@ -126,7 +168,10 @@ const NewAreaScreen = () => {
         },
         body: JSON.stringify(newArea)
       });
-
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create automation' + data.message);
+      }
       Alert.alert('Success', 'New AREA created successfully');
       router.back();
     } catch (error) {
@@ -141,13 +186,17 @@ const NewAreaScreen = () => {
 
     switch (param.type) {
       case 'string':
-        return <StringInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
+        return <StringInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} required={param.required} dynamicVariables={dynamicVariables} isAction={store === 'action'}/>
       case 'number':
-        return <NumberInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
-      case 'boolean':
-        return <BooleanInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
+        return <NumberInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} required={param.required} dynamicVariables={dynamicVariables} isAction={store === 'action'}/>
+      case 'date':
+        return <DateInput key={`${store}-${param.name}`} param={param} value={value} required={param.required} dynamicVariables={dynamicVariables} updateParamValue={updateValue}/>
+      case 'text':
+        return <TextInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} required={param.required} dynamicVariables={dynamicVariables} isAction={store === 'action'}/>;
+      case 'enum':
+        return <SelectInput key={`${store}-${param.name}`} param={param} options={param.items} value={value} updateParamValue={updateValue} required={param.required} dynamicVariables={dynamicVariables} isAction={store === 'action'}/>
       default:
-        return <StringInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} />;
+        return <StringInput key={`${store}-${param.name}`} param={param} value={value} updateParamValue={updateValue} required={param.required} dynamicVariables={dynamicVariables} isAction={store === 'action'}/>
     }
   };
 
@@ -180,7 +229,7 @@ const NewAreaScreen = () => {
               </Title>
               {items.map(item => (
                   <Button
-                      key={item.ActionType}
+                      key={item.action_type}
                       mode="outlined"
                       style={styles.itemButton}
                       onPress={() => selectTriggerOrAction(item, currentStep === 1 ? 'trigger' : 'action')}
@@ -196,9 +245,16 @@ const NewAreaScreen = () => {
               <Title style={styles.stepTitle}>Set up Details</Title>
               <StringInput
                   key="automation-name"
-                  param={{ name: 'Automation Name' }}
+                  param={{
+                    name: 'Automation Name',
+                    details: 'Enter a name for your automation',
+                    required: true
+                  }}
                   value={automationName}
                   updateParamValue={(_, value) => setAutomationName(value)}
+                  required={true}
+                  dynamicVariables={[]}
+                  isAction={true}
               />
               {selectedTrigger && (
                   <>

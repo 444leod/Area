@@ -21,6 +21,7 @@ interface ReducedRepository {
     watchers_count: number;
     created_at: string;
     updated_at: string;
+    visibility: string;
 }
 
 interface ReducedPullRequest {
@@ -91,7 +92,7 @@ export async function getUserRepositories(token: string): Promise<ReducedReposit
 export async function getSortedUserRepositoriesSince(
     token: string,
     since: Date,
-    sortKey: string = 'created_at',
+    sortKey: string = 'created',
     order: string = 'asc'
 ): Promise<ReducedRepository[] | null> {
     try {
@@ -110,5 +111,20 @@ export async function getSortedUserRepositoriesSince(
     } catch (error) {
         console.error(error);
         return null;
+    }
+}
+
+export async function createPullRequestComment(token: string, owner: string, repository: string, pullRequestNumber: number, body: string): Promise<void> {
+    try {
+        await axios.post(`https://api.github.com/repos/${owner}/${repository}/issues/${pullRequestNumber}/comments`,
+            { body },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+    } catch (error) {
+        console.error(error);
     }
 }

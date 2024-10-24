@@ -4,47 +4,25 @@ import {
     AreaPacket,
     OnNewJiraTicketHistoryDTO,
     getJiraDomains,
-    getNewAtlassianToken,
     getDomainsTicketsAfterDate,
+    getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
-function getTicketFields(ticket: any): string[] {
-    const fields = ticket.fields;
-    const fieldsArray = [];
-
-    if (fields.issuetype) fieldsArray.push(`Type: ${fields.issuetype.name}`);
-    if (fields.priority) fieldsArray.push(`Priority: ${fields.priority.name}`);
-    if (fields.status) fieldsArray.push(`Status: ${fields.status.name}`);
-
-    return fieldsArray;
-}
-
 export const handleNewJiraTicketAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const atlassian_token = await database.getAuthorizationData(packet.user_id, 'ATLASSIAN');
-    if (!atlassian_token) {
-        console.error('atlassian token not found.');
-        return null;
-    }
-
-    const new_tokens = await getNewAtlassianToken(atlassian_token);
-
-    if (new_tokens === null) {
-        return null;
-    }
-
-    await database.updateAuthorizationData(packet.user_id, 'ATLASSIAN', new_tokens);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.ATLASSIAN, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewJiraTicketHistoryDTO;
 
-    const domains = await getJiraDomains(atlassian_token);
+    const domains = await getJiraDomains(token);
 
     if (domains === null || domains.length === 0) {
         return null;
     }
 
     const date = history.lastCreationTimestamp ? new Date(history.lastCreationTimestamp) : new Date(0);
-    const tickets = await getDomainsTicketsAfterDate(domains, atlassian_token, date);
+    const tickets = await getDomainsTicketsAfterDate(domains, token, date);
 
     if (history.lastCreationTimestamp === null) {
         history.lastCreationTimestamp = new Date().getTime();
@@ -70,14 +48,23 @@ export const handleNewJiraTicketAction: ActionFunction = async (packet: AreaPack
 
     await database.updateAreaHistory(packet.user_id, area);
 
-    const fields = getTicketFields(ticket);
-
     packet.data = {
-        title: `The ticket ${ticket.key} "${ticket.fields.summary || 'missing summary'}" has been created on jira.`,
-        body: fields.length > 0 ? fields.join('\n') : 'No informations',
-        username: ticket.fields.assignee?.displayName || undefined,
-        picture: ticket.fields.assignee?.avatarUrls['48x48'] || undefined,
-        date: new Date(ticket.fields.created),
+        title: ticket.fields.summary,
+        key: ticket.key,
+        assignee: ticket.fields.assignee?.displayName || undefined,
+        assignee_picture_url: ticket.fields.assignee?.avatarUrls['48x48'] || undefined,
+        reporter: ticket.fields.reporter?.displayName || undefined,
+        reporter_picture_url: ticket.fields.reporter?.avatarUrls['48x48'] || undefined,
+        created_at: new Date(ticket.fields.created).toString(),
+        creation_time: new Date(ticket.fields.created).toLocaleTimeString(),
+        creation_date: new Date(ticket.fields.created).toLocaleDateString(),
+        project_name: ticket.fields.project.name,
+        project_key: ticket.fields.project.key,
+        project_picture_url: ticket.fields.project?.avatarUrls['48x48'],
+        type: ticket.fields.issuetype?.name,
+        priority: ticket.fields.priority?.name,
+        status: ticket.fields.status?.name,
+        labels: ticket.fields.labels.join(', ') || undefined,
     };
 
     return packet;
