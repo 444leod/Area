@@ -15,16 +15,12 @@ export const ProfileOkOptions: ApiResponseOptions = {
     email: "john.doe@cia.com",
     password: "SOMEHASHEDPASSWORD",
     authorizations: [],
-    areas: []
-  }
+    areas: [],
+  },
 };
 
 export const AuthorizationsOkOptions: ApiResponseOptions = {
   description: "List of authorization types for the authenticated user.",
   status: 200,
-  example: [
-    "Atlassian",
-    "Google",
-    "Jira",
-  ],
+  example: ["Atlassian", "Google", "Jira"],
 };

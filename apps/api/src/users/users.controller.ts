@@ -46,7 +46,7 @@ export class UsersController {
   @HttpCode(204)
   @ApiResponse({
     status: 204,
-    description: "User deleted successfuly. No content sent."
+    description: "User deleted successfuly. No content sent.",
   })
   @ApiResponse(UserUnauthorizedOptions)
   async deleteUser(@Request() req: AuthRequest): Promise<void> {
