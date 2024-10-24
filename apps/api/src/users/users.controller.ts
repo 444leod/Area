@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   HttpCode,
+  Patch,
   Request,
   UnauthorizedException,
   UseGuards,
@@ -15,7 +17,8 @@ import {
   ProfileOkOptions,
   AuthorizationsOkOptions,
 } from "./swagger-content";
-import { User } from "@area/shared";
+import { DisconnectServiceDto, User } from "@area/shared";
+
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
@@ -38,6 +41,12 @@ export class UsersController {
   @Get("authorizations")
   async getUserAuthorizations(@Request() req: AuthRequest) {
     return this.usersService.getUserAuthorizations(req.user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch("services")
+  async disconnectUserService(@Request() req: AuthRequest, @Body() dto: DisconnectServiceDto) {
+    return this.usersService.removeAuthorization(req.user, dto.type);
   }
 
   @UseGuards(AuthGuard)
