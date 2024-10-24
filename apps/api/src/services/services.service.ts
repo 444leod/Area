@@ -1,34 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Service, ShortService } from '@area/shared';
-import { ObjectId } from 'mongodb';
-import * as fs from 'fs';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Service, ShortService } from "@area/shared";
+import { ObjectId } from "mongodb";
+import * as SERVICES from "../../services.json";
+import * as fs from "fs";
 
 @Injectable()
 export class ServicesService {
+  async updateServicesFromJson(): Promise<void> {
+    // Delete all services from DB
+    await this.serviceModel.deleteMany({});
 
-  async updateServicesFromJson() : Promise<void> {
-    let modified: boolean = false;
-    const read_data: string = fs.readFileSync('services.json', 'utf8');
-    const services: Service[] = JSON.parse(read_data);
+    const services: Service[] = SERVICES["default"];
     services.forEach(async (service) => {
-      if (service._id != undefined) {
-        service._id = new ObjectId(service._id);
-        await this.serviceModel.findByIdAndUpdate(service._id, service);
-      } else {
-        modified = true;
-        service._id = new ObjectId();
-        await this.serviceModel.create(service);
-      }
+      // Create new ID for new Services without IDs
+      service._id =
+        service._id != undefined ? new ObjectId(service._id) : new ObjectId();
+      await this.serviceModel.create(service);
     });
-    if (modified) {
-      const data = JSON.stringify(services, null, 2);
-      fs.writeFile('services.json', data, () => {});
-    }
+    fs.writeFile("services.json", JSON.stringify(SERVICES, null, 2), () => {});
   }
 
-  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
+  constructor(
+    @InjectModel(Service.name) private readonly serviceModel: Model<Service>,
+  ) {
     this.updateServicesFromJson();
   }
 
@@ -38,12 +34,16 @@ export class ServicesService {
 
   async getAllServicesShort(): Promise<ShortService[]> {
     const services: Service[] = await this.serviceModel.find().exec();
-    return services.map((value, _) => {
+    return services.map((value) => {
       const short: ShortService = {
         name: value.name,
-        actions: value.actions.map((a, _) => {return {name: a.name, description: a.description}}),
-        reactions: value.reactions.map((r, _) => {return {name: r.name, description: r.description}}),
-      }
+        actions: value.actions.map((a) => {
+          return { name: a.name, description: a.description };
+        }),
+        reactions: value.reactions.map((r) => {
+          return { name: r.name, description: r.description };
+        }),
+      };
       return short;
     });
   }
@@ -54,9 +54,7 @@ export class ServicesService {
 
   async getServiceById(id: ObjectId): Promise<Service> {
     const service = await this.serviceModel.findById(id).exec();
-    if (!service)
-      throw new NotFoundException("Unknown service.");
+    if (!service) throw new NotFoundException("Unknown service.");
     return service;
   }
-
 }

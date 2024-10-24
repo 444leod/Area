@@ -1,6 +1,6 @@
 module.exports = {
     root: true,
-    
+
     parser: '@typescript-eslint/parser',
 
     extends: [
@@ -26,13 +26,6 @@ module.exports = {
     ],
 
     rules:{
-        'prettier/prettier': ['warn', {
-            tabWidth: 4,
-            singleQuote: true,
-            endOfLine: 'auto',
-            printWidth: 140,
-        }],
-
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -43,6 +36,5 @@ module.exports = {
         '@typescript-eslint/no-unsafe-member-access': 'off',
 
         semi: ['error', 'always'],
-        quotes: ['warn', 'single', { allowTemplateLiterals: true }],
     }
 };

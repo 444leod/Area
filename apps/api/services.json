@@ -179,7 +179,7 @@
           {
             "name": "body",
             "details": "body of the email",
-            "type": "text",
+            "type": "string",
             "required": true
           }
         ]
@@ -206,13 +206,7 @@
           {
             "name": "body",
             "details": "body of the task",
-            "type": "text",
-            "required": true
-          },
-          {
-            "name": "date",
-            "details": "date of the task",
-            "type": "date",
+            "type": "string",
             "required": true
           }
         ]
@@ -430,7 +424,6 @@
             "type": "string",
             "template": "software"
           }
-
         ]
       }
     ],
@@ -542,11 +535,7 @@
             "name": "state",
             "details": "state of the pull request",
             "type": "enum",
-            "items": [
-              "open",
-              "closed",
-              "merged"
-            ],
+            "items": ["all", "open", "closed"],
             "required": true
           },
           {
@@ -702,7 +691,7 @@
           {
             "name": "body",
             "details": "body of the message",
-            "type": "text",
+            "type": "string",
             "required": false
           },
           {
@@ -722,114 +711,6 @@
             "details": "thumbnail url of the message",
             "type": "string",
             "required": false
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "_id": "6717b7eb384bc2bb5e86b654",
-    "name": "Spotify",
-    "description": "Service for Spotify actions",
-    "actions": [],
-    "reactions": []
-  },
-  {
-    "_id": "6703f2e0bc8055c868eabeef",
-    "name": "LastFM",
-    "description": "Service for LastFM actions",
-    "actions": [],
-    "reactions": [
-      {
-        "name": "Last Week Scobble Report",
-        "description": "Send scobble report by email",
-        "type": "SEND_SCROBBLE_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_tracks",
-            "details": "Number of tracks to be reported",
-            "type": "number",
-            "required": true
-          }
-        ]
-      },
-      {
-        "name": "Last Week Albums Report",
-        "description": "Send albums report by email",
-        "type": "SEND_ALBUMS_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_albums",
-            "details": "Number of albums to be reported",
-            "type": "number",
-            "required": true
-          }
-        ]
-      },
-      {
-        "name": "Last Week Artists Report",
-        "description": "Send artists report by email",
-        "type": "SEND_ARTISTS_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_artists",
-            "details": "Number of artists to be reported",
-            "type": "number",
-            "required": true
           }
         ]
       }

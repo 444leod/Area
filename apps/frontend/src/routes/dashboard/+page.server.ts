@@ -1,14 +1,14 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import {setError} from "../../lib/store/errorMessage";
+import { setError } from '../../lib/store/errorMessage';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
 export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
-  const token = cookies.get('token');
-  if (!token) {
-      throw error(401, 'Unauthorized');
-  }
+	const token = cookies.get('token');
+	if (!token) {
+		throw error(401, 'Unauthorized');
+	}
 	try {
 		const response = await fetch(`${API_URL}/areas`, {
 			headers: {

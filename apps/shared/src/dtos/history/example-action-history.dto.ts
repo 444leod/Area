@@ -2,6 +2,6 @@
 import { ActionTypes } from "../actions";
 
 export interface ExampleActionHistoryDTO {
-    type: ActionTypes.EXAMPLE_ACTION;
-    exampleHistory: string[];
+  type: ActionTypes.EXAMPLE_ACTION;
+  exampleHistory: string[];
 }

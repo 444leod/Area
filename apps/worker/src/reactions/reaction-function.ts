@@ -1,3 +1,6 @@
-import { MongoDBService, AreaPacket, WebhookreaPacket } from '@area/shared';
+import { MongoDBService, AreaPacket } from "@area/shared";
 
-export type ReactionFunction = (packet: AreaPacket, database: MongoDBService) => Promise<void>;
+export type ReactionFunction = (
+  packet: AreaPacket,
+  database: MongoDBService,
+) => Promise<void>;

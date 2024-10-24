@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { BadRequestException, ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { APP_PIPE } from "@nestjs/core";
 

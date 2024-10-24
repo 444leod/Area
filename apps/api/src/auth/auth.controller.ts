@@ -3,17 +3,13 @@ import {
   Body,
   Controller,
   HttpCode,
-  Res,
   HttpStatus,
   Post,
-  Get,
   Req,
-  UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
-import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags("Auth")
 @Controller("/auth")
@@ -72,11 +68,21 @@ export class AuthController {
   }
 
   @Post("/google/mobile")
-  async googleMobileAuth(@Body("token") token: string, @Body("isMobile") isMobile: boolean, @Body("refreshToken") refreshToken: string, @Body("expired_at") expired_at: Date) {
+  async googleMobileAuth(
+    @Body("token") token: string,
+    @Body("isMobile") isMobile: boolean,
+    @Body("refreshToken") refreshToken: string,
+    @Body("expired_at") expired_at: Date,
+  ) {
     if (!token) {
       throw new BadRequestException("Google token is required");
     }
-    return this.authService.handleGoogleMobileAuth(token, refreshToken, isMobile, expired_at);
+    return this.authService.handleGoogleMobileAuth(
+      token,
+      refreshToken,
+      isMobile,
+      expired_at,
+    );
   }
 
   @Post("/register")

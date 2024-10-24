@@ -16,10 +16,10 @@ export class BaseActionInfos {
 }
 
 export type ActionInfos =
-    | ExampleActionInfos
-    | EachXSecondsActionInfos
-    | OnYoutubeVideoPostedClass
-    | OnNewJiraTicketClass
-    | OnNewJiraProjectClass
-    | OnNewGithubRepositoryClass
-    | OnPullRequestStateClass;
+  | ExampleActionInfos
+  | EachXSecondsActionInfos
+  | OnYoutubeVideoPostedClass
+  | OnNewJiraTicketClass
+  | OnNewJiraProjectClass
+  | OnNewGithubRepositoryClass
+  | OnPullRequestStateClass;

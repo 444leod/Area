@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { setError} from "$lib/store/errorMessage";
+import { setError } from '$lib/store/errorMessage';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -63,7 +63,7 @@ export const actions: Actions = {
 			const createdArea = await response.json();
 			return { success: true, area: createdArea };
 		} catch (err) {
-			setError('Error creating new area:' + err)
+			setError('Error creating new area:' + err);
 			return fail(500, { message: 'Failed to create automation' });
 		}
 	}
