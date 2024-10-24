@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { ReactionTypes } from "../reactions";
-import { ReactionParam } from "./reaction-param.class";
+import { ServiceParam } from "./service-param.class";
 
 export class ReactionInfo {
     @ApiProperty()
@@ -12,6 +12,6 @@ export class ReactionInfo {
     @ApiProperty()
     type: ReactionTypes
 
-    @ApiProperty({ type: [Object] })
-    params: ReactionParam[];
+    @ApiProperty({ type: [ServiceParam] })
+    params: ServiceParam[];
 }

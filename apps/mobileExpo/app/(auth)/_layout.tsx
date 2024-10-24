@@ -31,6 +31,15 @@ export default function AuthLayout() {
           ),
         }}
       />
+        <Tabs.Screen
+            name="profile/authorization/index"
+            options={{
+                title: "Authorization",
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="person-outline" size={size} color={color} />
+                ),
+            }}
+        />
     </Tabs>
   );
 }
