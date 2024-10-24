@@ -14,8 +14,8 @@ import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -29,41 +29,55 @@ export default function LoginScreen() {
   const router = useRouter();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "825177499555-dhg7f5e5lfcmj8jk006npd2aupm99jre.apps.googleusercontent.com",
+    androidClientId:
+      "825177499555-dhg7f5e5lfcmj8jk006npd2aupm99jre.apps.googleusercontent.com",
     redirectUri: "com.jbazan.mobileexpo:/oauth2redirect",
   });
 
-  const handleGoogleAuth = async (idToken: string, refreshToken: string, expireIn:string) => {
+  const handleGoogleAuth = async (
+    idToken: string,
+    refreshToken: string,
+    expireIn: string,
+  ) => {
     try {
-      const expirationDate = new Date(Date.now() + parseInt(expireIn) * 1000).toISOString();
+      const expirationDate = new Date(
+        Date.now() + parseInt(expireIn) * 1000,
+      ).toISOString();
       const response = await fetch(`${API_URL}/auth/google/mobile`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify({ token: idToken, refreshToken, isMobile: true, expired_at: expirationDate })
+        body: JSON.stringify({
+          token: idToken,
+          refreshToken,
+          isMobile: true,
+          expired_at: expirationDate,
+        }),
       });
       if (!response.ok) {
         const errorBody = await response.text();
         console.error("Error response body:", errorBody);
-        throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
+        throw new Error(
+          `HTTP error! status: ${response.status}, body: ${errorBody}`,
+        );
       }
 
       const data = await response.json();
       if (!data.token) {
-        throw new Error('No token received from server');
+        throw new Error("No token received from server");
       }
 
       await AsyncStorage.setItem("userToken", data.token);
       setLoading(false);
       router.replace("/(auth)/");
     } catch (error) {
-      console.error('Detailed error during Google authentication:', error);
+      console.error("Detailed error during Google authentication:", error);
       setLoading(false);
       Alert.alert(
-          "Authentication Error",
-          `Failed to authenticate: ${error.message}. Please try again later.`
+        "Authentication Error",
+        `Failed to authenticate: ${error.message}. Please try again later.`,
       );
     }
   };
@@ -74,13 +88,13 @@ export default function LoginScreen() {
       const { id_token } = response.params;
       const refresh_token = response.authentication?.refreshToken;
 
-      const expiresIn  = response.authentication?.expiresIn;
-        handleGoogleAuth(id_token, refresh_token, expiresIn);
+      const expiresIn = response.authentication?.expiresIn;
+      handleGoogleAuth(id_token, refresh_token, expiresIn);
     } else if (response?.type === "error") {
       console.error("Google Sign-In error:", response.error);
       Alert.alert(
-          "Sign-In Error",
-          "An error occurred during Google Sign-In. Please try again."
+        "Sign-In Error",
+        "An error occurred during Google Sign-In. Please try again.",
       );
     }
   }, [response]);
@@ -122,10 +136,7 @@ export default function LoginScreen() {
       }
     } catch (error) {
       console.error("Error during login:", error);
-      Alert.alert(
-          "Error",
-          "Unable to login. Please check your credentials.",
-      );
+      Alert.alert("Error", "Unable to login. Please check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -140,61 +151,61 @@ export default function LoginScreen() {
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient
-            colors={["#4c669f", "#3b5998", "#192f6a"]}
-            style={styles.background}
-        />
-        <Animated.View
-            entering={FadeInUp.duration(1000).springify()}
-            style={styles.titleContainer}
-        >
-          <Text style={styles.title}>Welcome</Text>
-          <Text style={styles.subtitle}>Connect to your account</Text>
-        </Animated.View>
+    <SafeAreaView style={styles.container}>
+      <LinearGradient
+        colors={["#4c669f", "#3b5998", "#192f6a"]}
+        style={styles.background}
+      />
+      <Animated.View
+        entering={FadeInUp.duration(1000).springify()}
+        style={styles.titleContainer}
+      >
+        <Text style={styles.title}>Welcome</Text>
+        <Text style={styles.subtitle}>Connect to your account</Text>
+      </Animated.View>
 
-        <Animated.View
-            entering={FadeInDown.duration(1000).springify()}
-            style={styles.formContainer}
+      <Animated.View
+        entering={FadeInDown.duration(1000).springify()}
+        style={styles.formContainer}
+      >
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleLogin}
+          disabled={loading}
         >
-          <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-          />
-          <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-          />
-          <TouchableOpacity
-              style={styles.button}
-              onPress={handleLogin}
-              disabled={loading}
-          >
-            {loading ? (
-                <ActivityIndicator color="white" />
-            ) : (
-                <Text style={styles.buttonText}>Login</Text>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity
-              style={styles.googleButton}
-              onPress={handleGoogleLogin}
-              disabled={loading}
-          >
-            <Text style={styles.buttonText}>Login with Google</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-            <Text style={styles.signupButtonText}>Sign Up</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </SafeAreaView>
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={handleGoogleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>Login with Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+          <Text style={styles.signupButtonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </SafeAreaView>
   );
 }
 

@@ -5,7 +5,6 @@ import { Model, Document } from "mongoose";
 import { ObjectId } from "mongodb";
 import { AuthentifiedUser } from "src/auth/auth.guard";
 
-
 @Injectable()
 export class AreasService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) { }
@@ -17,9 +16,11 @@ export class AreasService {
     return u;
   }
 
-  async getWebhookReaById(id: ObjectId): Promise<{ uid: ObjectId, auths: AuthorizationDto[], area: Area }> {
+  async getWebhookReaById(
+    id: ObjectId,
+  ): Promise<{ uid: ObjectId; auths: AuthorizationDto[]; area: Area }> {
     const user = await this.userModel
-      .findOne({ "areas._id": id }, { "_id": 1, "authorizations": 1, "areas.$": 1 })
+      .findOne({ "areas._id": id }, { _id: 1, authorizations: 1, "areas.$": 1 })
       .exec();
     if (!user || user.areas.length == 0)
       throw new NotFoundException("Area not found");

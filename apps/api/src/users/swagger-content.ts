@@ -1,18 +1,18 @@
-import { ApiResponseOptions } from '@nestjs/swagger';
+import { ApiResponseOptions } from "@nestjs/swagger";
 
 export const UserUnauthorizedOptions: ApiResponseOptions = {
   description: "Invalid token",
-  status: 401,  // Unauthorized
+  status: 401, // Unauthorized
 };
 
 export const AuthorizationOkOptions: ApiResponseOptions = {
   description: "List of authorization types for the authenticated user.",
   status: 200,
   schema: {
-    type: 'array',
+    type: "array",
     items: {
-      type: 'string',
-      example: 'Atlassian',
+      type: "string",
+      example: "Atlassian",
     },
   },
 };

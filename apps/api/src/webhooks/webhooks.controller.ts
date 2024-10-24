@@ -10,7 +10,7 @@ import { AreaPacket } from "@area/shared";
 export class WebhookController {
   constructor(
     private readonly queueService: QueueService,
-    private readonly areasService: AreasService
+    private readonly areasService: AreasService,
   ) {}
 
   @Post("/:id")
@@ -25,9 +25,9 @@ export class WebhookController {
       area: user.area,
       data: {
         headers: request.headers,
-        request: request.body
+        request: request.body,
       },
-      authorizations: user.auths
+      authorizations: user.auths,
     };
     this.queueService.send(packet);
   }

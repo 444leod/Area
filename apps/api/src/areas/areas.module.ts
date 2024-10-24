@@ -12,6 +12,6 @@ import { UserSchema } from "src/users/user.schema";
   ],
   controllers: [AreasController],
   providers: [AreasService, AreasHelper],
-  exports: [AreasService]
+  exports: [AreasService],
 })
 export class AreasModule {}
