@@ -3,7 +3,6 @@ import { ServicesService } from "./services/services.service";
 
 @Controller()
 export class AppController {
-
   constructor(private readonly servicesService: ServicesService) {}
 
   @Get("/about.json")
@@ -14,7 +13,7 @@ export class AppController {
       },
       server: {
         current_time: new Date().getTime(),
-        services: await this.servicesService.getAllServicesShort()
+        services: await this.servicesService.getAllServicesShort(),
       },
     };
   }

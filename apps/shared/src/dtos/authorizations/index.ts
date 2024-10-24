@@ -1,1 +1,1 @@
-export * from './authorizations-types.enum';
+export * from "./authorizations-types.enum";

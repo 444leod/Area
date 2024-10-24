@@ -5,7 +5,7 @@
 	import { authStore } from '$lib/store/authStore';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { setError } from "$lib/store/errorMessage";
+	import { setError } from '$lib/store/errorMessage';
 
 	let isMenuOpen = false;
 
@@ -59,35 +59,63 @@
 
 		<div class="hidden md:flex items-center space-x-4" data-testid="desktop-menu">
 			{#if $authStore}
-				<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-profile-button">
+				<a
+					href="/profile"
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-profile-button"
+				>
 					<User class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Profile </span>
 				</a>
-				<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-dashboard-button">
+				<a
+					href="/dashboard"
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-dashboard-button"
+				>
 					<LayoutDashboard class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Dashboard </span>
 				</a>
-				<a href="/profile/authorization" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-dashboard-button">
+				<a
+					href="/profile/authorization"
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-dashboard-button"
+				>
 					<KeyRound class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Authorizations </span>
 				</a>
-				<button on:click={logout} class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-logout-button">
+				<button
+					on:click={logout}
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-logout-button"
+				>
 					<LogOut class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Logout </span>
 				</button>
 			{:else}
-				<a href="/login" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-login-button">
+				<a
+					href="/login"
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-login-button"
+				>
 					<LogIn class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Login </span>
 				</a>
-				<a href="/signup" class="btn btn-sm btn-hover variant-filled-primary" data-testid="desktop-signup-button">
+				<a
+					href="/signup"
+					class="btn btn-sm btn-hover variant-filled-primary"
+					data-testid="desktop-signup-button"
+				>
 					<UserPlus class="mr-2" size={18} />
 					<span class="hidden sm:inline"> Sign Up </span>
 				</a>
 			{/if}
 			<LightSwitch data-testid="desktop-light-switch" />
 		</div>
-		<button class="md:hidden btn btn-sm variant-ghost-surface" on:click={toggleMenu} data-testid="mobile-menu-button">
+		<button
+			class="md:hidden btn btn-sm variant-ghost-surface"
+			on:click={toggleMenu}
+			data-testid="mobile-menu-button"
+		>
 			{#if isMenuOpen}
 				<X size={24} />
 			{:else}
@@ -101,24 +129,51 @@
 		<div class="md:hidden mt-4" transition:slide={{ duration: 300 }} data-testid="mobile-menu">
 			<div class="flex flex-col space-y-2">
 				{#if $authStore}
-					<a href="/profile" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-profile-button">
+					<a
+						href="/profile"
+						class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
+						on:click={toggleMenu}
+						data-testid="mobile-profile-button"
+					>
 						<User class="mr-2" size={18} />
 						Profile
 					</a>
-					<a href="/dashboard" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-dashboard-button">
+					<a
+						href="/dashboard"
+						class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
+						on:click={toggleMenu}
+						data-testid="mobile-dashboard-button"
+					>
 						<LayoutDashboard class="mr-2" size={18} />
 						Dashboard
 					</a>
-					<button on:click={() => { logout(); toggleMenu(); }} class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" data-testid="mobile-logout-button">
+					<button
+						on:click={() => {
+							logout();
+							toggleMenu();
+						}}
+						class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
+						data-testid="mobile-logout-button"
+					>
 						<LogOut class="mr-2" size={18} />
 						Logout
 					</button>
 				{:else}
-					<a href="/login" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-login-button">
+					<a
+						href="/login"
+						class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
+						on:click={toggleMenu}
+						data-testid="mobile-login-button"
+					>
 						<LogIn class="mr-2" size={18} />
 						Login
 					</a>
-					<a href="/signup" class="btn btn-sm btn-hover variant-filled-primary w-full justify-start" on:click={toggleMenu} data-testid="mobile-signup-button">
+					<a
+						href="/signup"
+						class="btn btn-sm btn-hover variant-filled-primary w-full justify-start"
+						on:click={toggleMenu}
+						data-testid="mobile-signup-button"
+					>
 						<UserPlus class="mr-2" size={18} />
 						Sign Up
 					</a>

@@ -10,18 +10,18 @@
 	import AppCard from '$lib/components/new-area/AppCard.svelte';
 	import AutomationSummary from '$lib/components/new-area/AutomationSummary.svelte';
 	import TriggerBtn from '$lib/components/new-area/TriggerBtn.svelte';
-	import StringInput from "$lib/components/new-area/Inputs/StringInput.svelte";
-	import NumberInput from "$lib/components/new-area/Inputs/NumberInput.svelte";
-	import BooleanInput from "$lib/components/new-area/Inputs/BooleanInput.svelte";
-	import DateInput from "$lib/components/new-area/Inputs/DateInput.svelte";
-	import Select from "$lib/components/new-area/Inputs/Select.svelte";
-	import TextInput from "$lib/components/new-area/Inputs/TextInput.svelte";
+	import StringInput from '$lib/components/new-area/Inputs/StringInput.svelte';
+	import NumberInput from '$lib/components/new-area/Inputs/NumberInput.svelte';
+	import BooleanInput from '$lib/components/new-area/Inputs/BooleanInput.svelte';
+	import DateInput from '$lib/components/new-area/Inputs/DateInput.svelte';
+	import Select from '$lib/components/new-area/Inputs/Select.svelte';
+	import TextInput from '$lib/components/new-area/Inputs/TextInput.svelte';
 	import type { App } from '$lib/types/App';
 	import type { Action } from '$lib/types/Action';
 	import type { ActionDetails } from '$lib/types/ActionDetails';
-	import Success from "$lib/components/new-area/Success.svelte";
-	import { setError } from "$lib/store/errorMessage";
-	import AvailableVariable from "$lib/components/new-area/AvailableVariable.svelte";
+	import Success from '$lib/components/new-area/Success.svelte';
+	import { setError } from '$lib/store/errorMessage';
+	import AvailableVariable from '$lib/components/new-area/AvailableVariable.svelte';
 
 	export let data: PageData;
 	let apps: Writable<App[]> = writable([]);
@@ -47,35 +47,37 @@
 	let actionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 	let reactionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 	let showSuccessAnimation = false;
-	let dynamicVariables: Writable<{name: string, type: string, description: string, template: string}[]> = writable([]);
+	let dynamicVariables: Writable<
+		{ name: string; type: string; description: string; template: string }[]
+	> = writable([]);
 
 	function validateStep(): boolean {
 		let errors: string[] = [];
 
 		switch ($currentStep) {
 			case 0:
-				if (!$triggerApp) errors.push("Please select a trigger app");
+				if (!$triggerApp) errors.push('Please select a trigger app');
 				break;
 			case 1:
-				if (!$selectedTrigger) errors.push("Please select a trigger");
+				if (!$selectedTrigger) errors.push('Please select a trigger');
 				break;
 			case 2:
-				if (!$actionApp) errors.push("Please select an action app");
+				if (!$actionApp) errors.push('Please select an action app');
 				break;
 			case 3:
-				if (!$selectedAction) errors.push("Please select an action");
+				if (!$selectedAction) errors.push('Please select an action');
 				break;
 			case 4:
-				if (!$automationName) errors.push("Automation name is required");
+				if (!$automationName) errors.push('Automation name is required');
 				if ($selectedTrigger) {
-					$selectedTrigger.params.forEach(param => {
+					$selectedTrigger.params.forEach((param) => {
 						if (param.required && !$actionDetails.params[param.name]) {
 							errors.push(`Trigger parameter "${param.name}" is required`);
 						}
 					});
 				}
 				if ($selectedAction) {
-					$selectedAction.params.forEach(param => {
+					$selectedAction.params.forEach((param) => {
 						if (param.required && !$reactionDetails.params[param.name]) {
 							errors.push(`Action parameter "${param.name}" is required`);
 						}
@@ -114,8 +116,8 @@
 		if (type === 'trigger') {
 			selectedTrigger.set(item);
 			actionDetails.set({ type: item.type, params: {} });
-			item.params.forEach(param => {
-				actionDetails.update(details => {
+			item.params.forEach((param) => {
+				actionDetails.update((details) => {
 					details.params[param.name] = '';
 					return details;
 				});
@@ -124,8 +126,8 @@
 		} else {
 			selectedAction.set(item);
 			reactionDetails.set({ type: item.type, params: {} });
-			item.params.forEach(param => {
-				reactionDetails.update(details => {
+			item.params.forEach((param) => {
+				reactionDetails.update((details) => {
 					details.params[param.name] = '';
 					return details;
 				});
@@ -134,8 +136,12 @@
 		nextStep();
 	}
 
-	function updateParamValue(store: Writable<ActionDetails>, paramName: string, value: string | number | boolean): void {
-		store.update(details => {
+	function updateParamValue(
+		store: Writable<ActionDetails>,
+		paramName: string,
+		value: string | number | boolean
+	): void {
+		store.update((details) => {
 			details.params[paramName] = value;
 			return details;
 		});
@@ -165,31 +171,31 @@
 
 		<ProgressBar {steps} currentStep={$currentStep} />
 		<MobileIndicator
-				currentStep={$currentStep}
-				totalSteps={steps.length}
-				stepName={steps[$currentStep]}
+			currentStep={$currentStep}
+			totalSteps={steps.length}
+			stepName={steps[$currentStep]}
 		/>
 
 		<div class="flex flex-col lg:flex-row gap-4 flex-grow">
 			{#if $currentStep === 4 && $dynamicVariables.length > 0}
 				<AvailableVariable {dynamicVariables} />
 			{/if}
-			<div class={ $currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full' }>
+			<div class={$currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full'}>
 				<div class="card variant-soft flex flex-col p-4 md:p-6 h-full overflow-y-auto">
 					{#if showSuccessAnimation}
-						<Success/>
+						<Success />
 					{:else if $currentStep === 0 || $currentStep === 2}
 						<h2 class="h2 mb-4 text-center" in:fade>
 							Choose {$currentStep === 0 ? 'a Trigger' : 'an Action'} App
 						</h2>
 						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-							{#each $apps.filter((app) => ($currentStep === 0 ? app.actions.length > 0 : app.reactions.length > 0)) as app (app._id)}
+							{#each $apps.filter( (app) => ($currentStep === 0 ? app.actions.length > 0 : app.reactions.length > 0) ) as app (app._id)}
 								<AppCard
-										app={{
-											id: app._id,
-											name: app.name
-										}}
-										onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
+									app={{
+										id: app._id,
+										name: app.name
+									}}
+									onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
 								/>
 							{/each}
 						</div>
@@ -200,10 +206,11 @@
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 							{#each ($currentStep === 1 ? $triggerApp?.actions : $actionApp?.reactions) || [] as item}
 								<TriggerBtn
-										item={item.name}
-										type={$currentStep === 1 ? 'trigger' : 'action'}
-										appName={$triggerApp?.name || $actionApp?.name}
-										onClick={() => selectTriggerOrAction(item, $currentStep === 1 ? 'trigger' : 'action')}
+									item={item.name}
+									type={$currentStep === 1 ? 'trigger' : 'action'}
+									appName={$triggerApp?.name || $actionApp?.name}
+									onClick={() =>
+										selectTriggerOrAction(item, $currentStep === 1 ? 'trigger' : 'action')}
 								/>
 							{/each}
 						</div>
@@ -213,11 +220,11 @@
 							<label for="automation-name" class="label h3">Automation Name *</label>
 							<div class="rounded-lg p-4 variant-ghost">
 								<input
-										id="automation-name"
-										type="text"
-										class="input w-full"
-										bind:value={$automationName}
-										placeholder="Enter a name for your automation"
+									id="automation-name"
+									type="text"
+									class="input w-full"
+									bind:value={$automationName}
+									placeholder="Enter a name for your automation"
 								/>
 							</div>
 						</div>
@@ -229,8 +236,12 @@
 								<div>
 									<h3 class="h3 mb-2">What this Area will do:</h3>
 									<p class="text-base">
-										On the app <span class="font-semibold text-primary-500">{$triggerApp?.name || ''}</span> {$selectedTrigger?.description?.toLowerCase() || ''},
-										<span class="font-semibold text-secondary-500">{$actionApp?.name || ''}</span> will {$selectedAction?.description?.toLowerCase() || ''}.
+										On the app <span class="font-semibold text-primary-500"
+											>{$triggerApp?.name || ''}</span
+										>
+										{$selectedTrigger?.description?.toLowerCase() || ''},
+										<span class="font-semibold text-secondary-500">{$actionApp?.name || ''}</span>
+										will {$selectedAction?.description?.toLowerCase() || ''}.
 									</p>
 									<div class="mt-4 flex items-center gap-2 text-sm">
 										<Icon icon="mdi:clock-outline" class="w-4 h-4" />
@@ -243,59 +254,65 @@
 							<h3 class="h3 mb-2">Trigger Details</h3>
 							{#each $selectedTrigger.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label
+									>
 									{#if param.type === 'string'}
 										<StringInput
-												{param}
-												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={true}
+											{param}
+											required={param.required}
+											value={$actionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(actionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={true}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
-												{param}
-												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={true}
+											{param}
+											required={param.required}
+											value={$actionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(actionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={true}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
-												{param}
-												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={true}
+											{param}
+											required={param.required}
+											value={$actionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(actionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={true}
 										/>
 									{:else if param.type === 'enum'}
 										<Select
-												options={param.items}
-												value={$actionDetails.params[param.name]}
-												on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
-												required={param.required}
-												dynamicVariables={$dynamicVariables}
-												isAction={true}
+											options={param.items}
+											value={$actionDetails.params[param.name]}
+											on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
+											required={param.required}
+											dynamicVariables={$dynamicVariables}
+											isAction={true}
 										/>
 									{:else if param.type === 'date'}
 										<DateInput
-												{param}
-												required={param.required}
-												value={$actionDetails.params[param.name]}
-												dynamicVariables={$dynamicVariables}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
+											{param}
+											required={param.required}
+											value={$actionDetails.params[param.name]}
+											dynamicVariables={$dynamicVariables}
+											updateParamValue={(name, value) =>
+												updateParamValue(actionDetails, name, value)}
 										/>
 									{:else if param.type === 'text'}
 										<TextInput
-												{param}
-												required={param.required}
-												value={$actionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(actionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={true}
+											{param}
+											required={param.required}
+											value={$actionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(actionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={true}
 										/>
 									{/if}
 								</div>
@@ -305,59 +322,65 @@
 							<h3 class="h3 mb-2">Action Details</h3>
 							{#each $selectedAction.params as param}
 								<div class="mb-4">
-									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label>
+									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label
+									>
 									{#if param.type === 'string'}
 										<StringInput
-												{param}
-												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={false}
+											{param}
+											required={param.required}
+											value={$reactionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(reactionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={false}
 										/>
 									{:else if param.type === 'number'}
 										<NumberInput
-												{param}
-												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={false}
+											{param}
+											required={param.required}
+											value={$reactionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(reactionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={false}
 										/>
 									{:else if param.type === 'boolean'}
 										<BooleanInput
-												{param}
-												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={false}
+											{param}
+											required={param.required}
+											value={$reactionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(reactionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={false}
 										/>
 									{:else if param.type === 'enum'}
 										<Select
-												options={param.items}
-												value={$reactionDetails.params[param.name]}
-												on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
-												required={param.required}
-												dynamicVariables={$dynamicVariables}
-												isAction={false}
+											options={param.items}
+											value={$reactionDetails.params[param.name]}
+											on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
+											required={param.required}
+											dynamicVariables={$dynamicVariables}
+											isAction={false}
 										/>
 									{:else if param.type === 'date'}
 										<DateInput
-												{param}
-												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												dynamicVariables={$dynamicVariables}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
+											{param}
+											required={param.required}
+											value={$reactionDetails.params[param.name]}
+											dynamicVariables={$dynamicVariables}
+											updateParamValue={(name, value) =>
+												updateParamValue(reactionDetails, name, value)}
 										/>
 									{:else if param.type === 'text'}
 										<TextInput
-												{param}
-												required={param.required}
-												value={$reactionDetails.params[param.name]}
-												updateParamValue={(name, value) => updateParamValue(reactionDetails, name, value)}
-												dynamicVariables={$dynamicVariables}
-												isAction={false}
+											{param}
+											required={param.required}
+											value={$reactionDetails.params[param.name]}
+											updateParamValue={(name, value) =>
+												updateParamValue(reactionDetails, name, value)}
+											dynamicVariables={$dynamicVariables}
+											isAction={false}
 										/>
 									{/if}
 								</div>
@@ -367,24 +390,28 @@
 					{:else if $currentStep === 5}
 						<h2 class="h2 mb-4 text-center">Test & Review</h2>
 						<AutomationSummary
-								name={$automationName}
-								triggerApp={$triggerApp?.name}
-								triggerAction={$selectedTrigger?.name}
-								actionApp={$actionApp?.name}
-								selectedAction={$selectedAction?.name}
+							name={$automationName}
+							triggerApp={$triggerApp?.name}
+							triggerAction={$selectedTrigger?.name}
+							actionApp={$actionApp?.name}
+							selectedAction={$selectedAction?.name}
 						/>
 						<form
-								method="POST"
-								action="?/createArea"
-								use:enhance={() => {
+							method="POST"
+							action="?/createArea"
+							use:enhance={() => {
 								return async ({ result }) => {
 									handleCreateAreaResult(result);
 								};
 							}}
-								on:submit={handleSubmit}
+							on:submit={handleSubmit}
 						>
 							<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
-							<input type="hidden" name="reactionDetails" value={JSON.stringify($reactionDetails)} />
+							<input
+								type="hidden"
+								name="reactionDetails"
+								value={JSON.stringify($reactionDetails)}
+							/>
 							<input type="hidden" name="areaName" value={$automationName} />
 							<button type="submit" class="btn variant-filled-primary w-full">
 								<Icon icon="mdi:flash" class="w-4 h-4 mr-2" />
@@ -400,11 +427,14 @@
 				<Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" />
 				Back
 			</button>
-			<button class="btn variant-soft" on:click={nextStep} disabled={$currentStep >= steps.length - 1}>
+			<button
+				class="btn variant-soft"
+				on:click={nextStep}
+				disabled={$currentStep >= steps.length - 1}
+			>
 				Next
 				<Icon icon="mdi:arrow-right" class="w-4 h-4 ml-2" />
 			</button>
 		</div>
 	</div>
 </div>
-

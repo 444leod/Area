@@ -24,7 +24,9 @@ export class ServicesService {
     fs.writeFile('services.json', data, () => {});
   }
 
-  constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
+  constructor(
+    @InjectModel(Service.name) private readonly serviceModel: Model<Service>,
+  ) {
     this.updateServicesFromJson();
   }
 
@@ -34,12 +36,16 @@ export class ServicesService {
 
   async getAllServicesShort(): Promise<ShortService[]> {
     const services: Service[] = await this.serviceModel.find().exec();
-    return services.map((value, _) => {
+    return services.map((value) => {
       const short: ShortService = {
         name: value.name,
-        actions: value.actions.map((a, _) => {return {name: a.name, description: a.description}}),
-        reactions: value.reactions.map((r, _) => {return {name: r.name, description: r.description}}),
-      }
+        actions: value.actions.map((a) => {
+          return { name: a.name, description: a.description };
+        }),
+        reactions: value.reactions.map((r) => {
+          return { name: r.name, description: r.description };
+        }),
+      };
       return short;
     });
   }
@@ -50,9 +56,7 @@ export class ServicesService {
 
   async getServiceById(id: ObjectId): Promise<Service> {
     const service = await this.serviceModel.findById(id).exec();
-    if (!service)
-      throw new NotFoundException("Unknown service.");
+    if (!service) throw new NotFoundException("Unknown service.");
     return service;
   }
-
 }

@@ -8,11 +8,11 @@
 
 	function getIconForApp(appName: string, type: 'trigger' | 'action'): string {
 		const iconMap: Record<string, Record<string, string>> = {
-			'Google': {
+			Google: {
 				trigger: 'logos:google-icon',
 				action: 'logos:google-icon'
 			},
-			'Gmail': {
+			Gmail: {
 				trigger: 'logos:google-gmail',
 				action: 'logos:google-gmail'
 			},
@@ -20,35 +20,35 @@
 				trigger: 'mdi:clipboard-check-outline',
 				action: 'mdi:clipboard-plus-outline'
 			},
-			'YouTube': {
+			YouTube: {
 				trigger: 'logos:youtube-icon',
 				action: 'logos:youtube-icon'
 			},
-			'Spotify': {
+			Spotify: {
 				trigger: 'logos:spotify-icon',
 				action: 'logos:spotify-icon'
 			},
-			'Timer': {
+			Timer: {
 				trigger: 'mdi:timer',
 				action: 'mdi:timer-cog'
 			},
-			'Mail': {
+			Mail: {
 				trigger: 'mdi:email-alert',
 				action: 'mdi:email-send'
 			},
-			'Discord': {
+			Discord: {
 				trigger: 'logos:discord-icon',
 				action: 'logos:discord-icon'
 			},
-			'Atlassian': {
+			Atlassian: {
 				trigger: 'logos:atlassian',
 				action: 'logos:atlassian'
 			},
-			'GitHub': {
+			GitHub: {
 				trigger: 'logos:github-icon',
 				action: 'logos:github-icon'
 			},
-			'LastFM': {
+			LastFM: {
 				trigger: 'logos:lastfm',
 				action: 'logos:lastfm'
 			}
@@ -58,12 +58,12 @@
 			'new issue': 'mdi:alert-circle',
 			'new project': 'mdi:folder-plus',
 			'new repository': 'mdi:source-repository',
-			'videoPosted': 'mdi:youtube',
+			videoPosted: 'mdi:youtube',
 			'each X second': 'mdi:timer-outline',
 			'a pull request state has changed to the one selected': 'mdi:source-pull',
-			'sendemail': 'mdi:email-send',
+			sendemail: 'mdi:email-send',
 			'send message': 'mdi:message-text',
-			'Create new task': 'material-symbols:task-outline',
+			'Create new task': 'material-symbols:task-outline'
 		};
 
 		if (actionSpecificIcons[item]) {
@@ -85,14 +85,9 @@
 </script>
 
 <button
-		class="btn variant-soft flex items-center justify-start p-4 h-auto text-left hover:variant-soft-primary transition-colors duration-200"
-		on:click={onClick}
+	class="btn variant-soft flex items-center justify-start p-4 h-auto text-left hover:variant-soft-primary transition-colors duration-200"
+	on:click={onClick}
 >
-	<Icon
-			icon={iconName}
-			class="text-2xl md:text-3xl mr-2 md:mr-4"
-			width="24"
-			height="24"
-	/>
+	<Icon icon={iconName} class="text-2xl md:text-3xl mr-2 md:mr-4" width="24" height="24" />
 	<span class="text-sm md:text-base">{item}</span>
 </button>

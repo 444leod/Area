@@ -32,7 +32,7 @@ import { AppController } from "./app.controller";
     AreasModule,
     WebhooksModule,
     UsersModule,
-    ServicesModule
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [],

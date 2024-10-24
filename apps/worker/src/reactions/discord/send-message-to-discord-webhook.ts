@@ -1,45 +1,40 @@
-import { ReactionFunction } from '../reaction-function';
-import { AreaPacket, SendMessageToDiscordWebhookInfos } from '@shared/src';
-import { WebhookClient, EmbedBuilder } from 'discord.js';
+import { ReactionFunction } from "../reaction-function";
+import { AreaPacket, SendMessageToDiscordWebhookInfos } from "@shared/src";
+import { WebhookClient, EmbedBuilder } from "discord.js";
 
-export const handleSendMessageToDiscordWebhookReaction: ReactionFunction = async (packet: AreaPacket) => {
-    const reaction = packet.area.reaction.informations as SendMessageToDiscordWebhookInfos;
-
-    const { webhook_url } = reaction;
-    const { title, body, date, username, picture } = packet.data || {
-        title: `Area ${packet.area._id} has been triggered.`,
-        body: '',
-        date: undefined,
-        username: undefined,
-        picture: undefined,
-    };
+export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
+  async (packet: AreaPacket) => {
+    const reaction = packet.area.reaction
+      .informations as SendMessageToDiscordWebhookInfos;
 
     try {
-        const client = new WebhookClient({
-            url: webhook_url,
-        });
-        const embed = new EmbedBuilder().setTitle(title);
-        if (body) {
-            embed.setDescription(body);
-        }
-        if (date) {
-            embed.setTimestamp(new Date(date));
-        }
-        if (username) {
-            if (picture) {
-                embed.setAuthor({ name: username, iconURL: picture });
-            } else {
-                embed.setAuthor({ name: username });
-            }
+      const client = new WebhookClient({
+        url: reaction.webhook_url,
+      });
+      const embed = new EmbedBuilder().setTitle(reaction.title);
+      if (reaction.body) {
+        embed.setDescription(reaction.body);
+      }
+      // if (reaction.date) {
+      //     embed.setTimestamp(new Date(reaction.date));
+      // }
+      if (reaction.username) {
+        if (reaction.avatar_url) {
+          embed.setAuthor({
+            name: reaction.username,
+            iconURL: reaction.avatar_url,
+          });
         } else {
-            if (picture) {
-                embed.setThumbnail(picture);
-            }
+          embed.setAuthor({ name: reaction.username });
         }
-        await client.send({
-            embeds: [embed],
-        });
+      }
+      if (reaction.thumbnail_url) {
+        embed.setThumbnail(reaction.thumbnail_url);
+      }
+      await client.send({
+        embeds: [embed],
+      });
     } catch (error: any) {
-        console.error('Error in sending message to discord webhook: ', error);
+      console.error("Error in sending message to discord webhook: ", error);
     }
-};
+  };
