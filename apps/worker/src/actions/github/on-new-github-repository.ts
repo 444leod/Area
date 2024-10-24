@@ -1,12 +1,15 @@
 import { ActionFunction } from '../action-function';
-import { MongoDBService, AreaPacket, OnNewGithubRepositoryHistoryDTO, getSortedUserRepositoriesSince } from '@area/shared';
+import {
+    MongoDBService,
+    AreaPacket,
+    OnNewGithubRepositoryHistoryDTO,
+    getSortedUserRepositoriesSince,
+    getAuthorizationToken,
+    AuthorizationsTypes,
+} from '@area/shared';
 
 export const handleNewGithubRepositoryAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await database.getAuthorizationData(packet.user_id, 'GITHUB');
-    if (!token) {
-        console.error('github token not found.');
-        return null;
-    }
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GITHUB, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewGithubRepositoryHistoryDTO;
@@ -33,13 +36,16 @@ export const handleNewGithubRepositoryAction: ActionFunction = async (packet: Ar
     area.action.history = history;
     await database.updateAreaHistory(packet.user_id, area);
 
-    //TODO: update with variables
     packet.data = {
-        title: `A repository has been created: ${repo.name}`,
-        body: `description: ${repo.description}\nurl: ${repo.html_url}\ncreated at: ${repo.created_at}`,
-        username: repo.owner.login,
-        picture: repo.owner.avatar_url,
-        date: new Date(repo.created_at),
+        name: repo.name,
+        description: repo.description || '',
+        owner: repo.owner?.login,
+        owner_picture_url: repo.owner?.avatar_url,
+        created_at: new Date(repo.created_at).toDateString(),
+        creation_time: new Date(repo.created_at).toLocaleTimeString(),
+        creation_date: new Date(repo.created_at).toLocaleDateString(),
+        url: repo.html_url,
+        visibility: repo.visibility,
     };
 
     return packet;

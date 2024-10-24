@@ -8,7 +8,6 @@
     "authorizations": [
       {
         "_id": "ObjectId()",
-        "service_Id": "ObjectId()",
         "type": "GOOGLE",
         "data": "FALSEDATA"
       }

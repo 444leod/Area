@@ -5,22 +5,12 @@ import {
     OnYoutubeVideoPostedClass,
     OnYoutubeVideoPostedHistoryDTO,
     getChannelVideos,
-    getNewGoogleTokens,
+    getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    let { token, refresh_token } = (await database.getAuthorizationData(packet.user_id, 'GOOGLE')) as {
-        token: string;
-        refresh_token: string;
-    };
-    if (!token) {
-        console.error('Google token not found.');
-        return null;
-    }
-
-    ({ token, refresh_token } = await getNewGoogleTokens({ token, refresh_token }));
-
-    await database.updateAuthorizationData(packet.user_id, 'GOOGLE', { token, refresh_token });
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GOOGLE, database);
 
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;
@@ -38,18 +28,19 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
             title: video?.snippet?.title,
             description: video?.snippet?.description,
             date: new Date(video?.snippet?.publishedAt || 0),
+            snippet: video.snippet,
         };
     });
 
     let video;
 
     if (history.lastVideoTimestamp === undefined || history.lastVideoTimestamp === 0) {
-        history.lastVideoTimestamp = newVideos[0].date.getTime();
-        video = undefined;
+        // history.lastVideoTimestamp = newVideos[0].date.getTime();
+        // video = undefined;
 
         // FOR TESTING PURPOSES, DO NOT DELETE
-        // history.lastVideoTimestamp = newVideos[newVideos.length - 1].date.getTime();
-        // video = newVideos[newVideos.length - 1];
+        history.lastVideoTimestamp = newVideos[newVideos.length - 1].date.getTime();
+        video = newVideos[newVideos.length - 1];
     } else {
         newVideos = newVideos.filter((video) => video.date.getTime() > history.lastVideoTimestamp);
         if (newVideos.length === 0) {
@@ -67,11 +58,15 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: Are
     }
 
     packet.data = {
-        title: video.title || 'title',
-        body: video.description || '',
-        date: video.date,
-        username: undefined,
-        picture: undefined,
+        title: video.title,
+        description: video.description,
+        url: `https://www.youtube.com/watch?v=${video.id}`,
+        published_at: video.date.toDateString(),
+        publication_time: video.date.toLocaleTimeString(),
+        publication_date: video.date.toLocaleDateString(),
+        channel_title: video.snippet.channelTitle,
+        channel_id: video.snippet.channelId,
+        thumbnail_url: video.snippet?.thumbnails?.high?.url || video.snippet?.thumbnails?.default?.url,
     };
 
     return packet;

@@ -1,4 +1,4 @@
-import { AreaPacket, RabbitMQService, MongoDBService } from '@area/shared';
+import { AreaPacket, RabbitMQService, MongoDBService, replaceField, ReactionInfos } from '@area/shared';
 import dotenv from 'dotenv';
 import { actionsMap } from './actions/actions-map';
 import { reactionsMap } from './reactions/reactions-map';
@@ -27,11 +27,9 @@ async function run() {
 
         const areaQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_AREA_QUEUE || '')).messageCount;
         const webhQueueStress = (await rabbitMQ.queueStats(process.env.RMQ_WREA_QUEUE || '')).messageCount;
-        const selectedQueue = areaQueueStress >= webhQueueStress
-            ? process.env.RMQ_AREA_QUEUE
-            : process.env.RMQ_WREA_QUEUE;
+        const selectedQueue = areaQueueStress >= webhQueueStress ? process.env.RMQ_AREA_QUEUE : process.env.RMQ_WREA_QUEUE;
 
-        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => { });
+        rabbitMQ.consumePacket(selectedQueue || '', handleArea).then(() => {});
 
         process.on('SIGINT', async () => {
             isRunning = false;
@@ -75,9 +73,62 @@ async function handleArea(areaPacket: AreaPacket) {
     }
 
     console.log(`Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`);
-    const res = await actionFunction(areaPacket, mongoDB);
-    if (!res)
+
+    let res: AreaPacket | null;
+    try {
+        res = await actionFunction(areaPacket, mongoDB);
+    } catch (error: any) {
+        if (error.response) {
+            console.error({
+                message: error.message,
+                url: error.config.url,
+                status: error.response.status,
+                statusText: error.response.statusText,
+            });
+        } else {
+            console.error({ message: error.message });
+        }
         return;
+    }
+    if (!res) return;
+
+    res.data.area_name = res.area.name;
+    res.data.full_execution_date = new Date().toString();
+    res.data.execution_date = new Date().toLocaleDateString();
+    res.data.execution_time = new Date().toLocaleTimeString();
+
+    console.log(`Reaction: `, res.area.reaction.informations);
+
+    Object.keys(res.area.reaction.informations).forEach((key: string) => {
+        const infos = res.area.reaction.informations;
+
+        if (
+            key === 'type' ||
+            !(key in infos) ||
+            typeof infos[key as keyof ReactionInfos] !== 'string' ||
+            !infos[key as keyof ReactionInfos]
+        ) {
+            return;
+        }
+
+        infos[key as keyof ReactionInfos] = replaceField(infos[key as keyof ReactionInfos] as string, res.data) as any; // petit bypass mais je verifie le type donc c'est fine
+    });
+
+    console.log(`Updated reaction: `, res.area.reaction.informations);
+
     console.log(`Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`);
-    await reactionFunction(res, mongoDB);
+    try {
+        await reactionFunction(res, mongoDB);
+    } catch (error: any) {
+        if (error.response) {
+            console.error({
+                message: error.message,
+                url: error.config.url,
+                status: error.response.status,
+                statusText: error.response.statusText,
+            });
+        } else {
+            console.error({ message: error.message });
+        }
+    }
 }
