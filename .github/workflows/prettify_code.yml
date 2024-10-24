@@ -9,7 +9,8 @@ on:
 jobs:
   run_prettier:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -31,3 +32,4 @@ jobs:
         with:
           prettier_options: --write .
           prettier_plugins: prettier-plugin-svelte
+          file_pattern: apps
