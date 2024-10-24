@@ -68,7 +68,7 @@ export class UsersService {
         }
 
         const id = tokenPayload.sub;
-        const user: User | null = await this.userModel.findById(id);
+        const user: User = await this.userModel.findById(id);
 
         if (!user) {
             console.error('User not found');
