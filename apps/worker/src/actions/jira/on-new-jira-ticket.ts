@@ -6,6 +6,7 @@ import {
     getJiraDomains,
     getDomainsTicketsAfterDate,
     getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 function getTicketFields(ticket: any): string[] {
@@ -20,7 +21,7 @@ function getTicketFields(ticket: any): string[] {
 }
 
 export const handleNewJiraTicketAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await getAuthorizationToken(packet.user_id, 'ATLASSIAN', database);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.ATLASSIAN, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewJiraTicketHistoryDTO;

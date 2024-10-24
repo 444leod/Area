@@ -6,6 +6,7 @@ import {
     getDomainsProjects,
     OnNewJiraProjectHistoryDTO,
     getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 function getProjectBody(project: any): string[] {
@@ -20,7 +21,7 @@ function getProjectBody(project: any): string[] {
 }
 
 export const handleNewJiraProjectAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await getAuthorizationToken(packet.user_id, 'ATLASSIAN', database);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.ATLASSIAN, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewJiraProjectHistoryDTO;

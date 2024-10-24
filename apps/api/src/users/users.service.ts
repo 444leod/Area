@@ -1,4 +1,4 @@
-import { Area, User, UserRegistrationDto, TokenDto, AuthorizationDto } from '@area/shared';
+import { Area, User, UserRegistrationDto, TokenDto, AuthorizationDto, AuthorizationsTypes } from '@area/shared';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -20,12 +20,12 @@ export class UsersService {
     async findOrCreateUser(userData: { email: string; first_name: string; last_name: string; token: TokenDto }): Promise<User> {
         const user = await this.userModel.findOne({ email: userData.email });
         if (user) {
-            const authIndex = user.authorizations.findIndex((auth) => auth.type === 'GOOGLE');
+            const authIndex = user.authorizations.findIndex((auth) => auth.type === AuthorizationsTypes.GOOGLE);
             if (authIndex !== -1) {
                 user.authorizations[authIndex].data = userData.token;
             } else {
                 user.authorizations.push({
-                    type: 'GOOGLE',
+                    type: AuthorizationsTypes.GOOGLE,
                     data: userData.token,
                 });
             }
@@ -38,7 +38,7 @@ export class UsersService {
             email: userData.email,
             authorizations: [
                 {
-                    type: 'GOOGLE',
+                    type: AuthorizationsTypes.GOOGLE,
                     data: userData.token,
                 },
             ],

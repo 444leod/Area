@@ -1,18 +1,19 @@
 import { MongoDBService } from "./MongoDBService";
-import { TokenDto } from "../dtos";
+import {AuthorizationsTypes, TokenDto} from "../dtos";
 import { ObjectId } from 'mongodb';
 import { google } from 'googleapis';
 import axios from "axios";
 
 type NewTokenGetter = (oldToken: TokenDto) => Promise<TokenDto>;
 
-const authorizationRegenerator: { [key: string]: NewTokenGetter } = {
+const authorizationRegenerator: { [key in AuthorizationsTypes]: NewTokenGetter } = {
     GOOGLE: getNewGoogleTokens,
     ATLASSIAN: getNewAtlassianTokens,
-    GITHUB: getNewGithubTokens,
+    GITHUB: getNonRenewableToken,
+    SPOTIFY: getNonRenewableToken
 };
 
-export async function getAuthorizationToken(userId: ObjectId, type: string, database: MongoDBService): Promise<TokenDto> {
+export async function getAuthorizationToken(userId: ObjectId, type: AuthorizationsTypes, database: MongoDBService): Promise<TokenDto> {
     const auth = await database.getAuthorization(userId, type);
     if (!auth) {
         throw new Error(`No token found for user ${userId} and type ${type}`);
@@ -83,7 +84,7 @@ async function getNewAtlassianTokens(oldToken: TokenDto): Promise<TokenDto> {
         };
 }
 
-function getNewGithubTokens(oldToken: TokenDto): Promise<TokenDto> {
+function getNonRenewableToken(oldToken: TokenDto): Promise<TokenDto> {
     return new Promise((resolve, reject) => {
         if (oldToken) {
             resolve(oldToken);

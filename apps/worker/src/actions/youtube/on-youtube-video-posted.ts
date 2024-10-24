@@ -6,10 +6,11 @@ import {
     OnYoutubeVideoPostedHistoryDTO,
     getChannelVideos,
     getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await getAuthorizationToken(packet.user_id, 'GOOGLE', database);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GOOGLE, database);
 
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;

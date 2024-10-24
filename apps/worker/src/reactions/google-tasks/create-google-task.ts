@@ -1,9 +1,9 @@
 import { ReactionFunction } from '../reaction-function';
-import { AreaPacket, CreateGoogleTaskInfos, getAuthorizationToken, MongoDBService } from '@area/shared';
+import { AreaPacket, AuthorizationsTypes, CreateGoogleTaskInfos, getAuthorizationToken, MongoDBService } from '@area/shared';
 import { google } from 'googleapis';
 
 export const handleCreateGoogleTaskReaction: ReactionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await getAuthorizationToken(packet.user_id, 'GOOGLE', database);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GOOGLE, database);
 
     const reaction = packet.area.reaction.informations as CreateGoogleTaskInfos;
 

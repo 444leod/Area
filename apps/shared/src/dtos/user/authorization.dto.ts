@@ -1,3 +1,5 @@
+import {AuthorizationsTypes} from "../authorizations";
+
 export class TokenDto {
     token: string;
     refresh_token: string;
@@ -6,6 +8,6 @@ export class TokenDto {
 }
 
 export class AuthorizationDto {
-    type: string;
+    type: AuthorizationsTypes;
     data: TokenDto;
 }

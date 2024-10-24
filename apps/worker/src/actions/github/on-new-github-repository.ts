@@ -5,10 +5,11 @@ import {
     OnNewGithubRepositoryHistoryDTO,
     getSortedUserRepositoriesSince,
     getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 export const handleNewGithubRepositoryAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const { token } = await getAuthorizationToken(packet.user_id, 'GITHUB', database);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GITHUB, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewGithubRepositoryHistoryDTO;

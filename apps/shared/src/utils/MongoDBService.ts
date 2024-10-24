@@ -1,5 +1,5 @@
 import { Db, MongoClient, ObjectId, ClientSession } from 'mongodb';
-import { Area } from '../dtos';
+import {Area, AuthorizationsTypes} from '../dtos';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import { TokenDto, AuthorizationDto } from '../dtos'
@@ -122,7 +122,7 @@ export class MongoDBService {
         });
     }
 
-    async getAuthorization(userId: ObjectId, type: string): Promise<AuthorizationDto | null> {
+    async getAuthorization(userId: ObjectId, type: AuthorizationsTypes): Promise<AuthorizationDto | null> {
         return this.executeWithSession(async () => {
             const user = await this._db.collection('users').findOne({ _id: new ObjectId(userId) });
             if (!user)
