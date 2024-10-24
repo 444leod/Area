@@ -9,8 +9,7 @@ on:
 jobs:
   run_prettier:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
 
     steps:
       - name: Checkout
