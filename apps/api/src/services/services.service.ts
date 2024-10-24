@@ -1,7 +1,11 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { ActionTypes, AuthorizationsTypes, ReactionTypes, Service, ShortService } from "@area/shared";
+import {
+  AuthorizationsTypes,
+  Service,
+  ShortService,
+} from "@area/shared";
 import { ObjectId } from "mongodb";
 import * as fs from "fs";
 import { ServiceTypeList } from "./service-type-list.interface";
@@ -21,7 +25,7 @@ export class ServicesService {
       }
     }
     const data = JSON.stringify(services, null, 2);
-    fs.writeFile("services.json", data, () => { });
+    fs.writeFile("services.json", data, () => {});
   }
 
   constructor(
@@ -60,17 +64,22 @@ export class ServicesService {
     return service;
   }
 
-  async getAreaTypesFromAuthType(authType: AuthorizationsTypes): Promise<ServiceTypeList> {
+  async getAreaTypesFromAuthType(
+    authType: AuthorizationsTypes,
+  ): Promise<ServiceTypeList> {
     let service: Service;
     const types: ServiceTypeList = {
       actionTypes: [],
-      reactionTypes: []
+      reactionTypes: [],
     };
-    service = await this.serviceModel.findOne({ "actions.authorization": authType }, { "actions.$": 1 }).exec();
+    service = await this.serviceModel
+      .findOne({ "actions.authorization": authType }, { "actions.$": 1 })
+      .exec();
     if (service)
-      for (const action of service.actions)
-        types.actionTypes.push(action.type);
-    service = await this.serviceModel.findOne({ "reactions.authorization": authType }, { "reactions.$": 1 }).exec();
+      for (const action of service.actions) types.actionTypes.push(action.type);
+    service = await this.serviceModel
+      .findOne({ "reactions.authorization": authType }, { "reactions.$": 1 })
+      .exec();
     if (service)
       for (const reaction of service.reactions)
         types.reactionTypes.push(reaction.type);

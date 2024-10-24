@@ -45,7 +45,10 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Patch("services")
-  async disconnectUserService(@Request() req: AuthRequest, @Body() dto: DisconnectServiceDto) {
+  async disconnectUserService(
+    @Request() req: AuthRequest,
+    @Body() dto: DisconnectServiceDto,
+  ) {
     return this.usersService.removeAuthorization(req.user, dto.type);
   }
 

@@ -6,7 +6,6 @@ import {
   Reaction,
   Action,
   AreaDto,
-  AuthorizationsTypes,
 } from "@area/shared";
 import { Injectable } from "@nestjs/common";
 import { ActionBuilder } from "./builders/actions/action.builder";
@@ -21,7 +20,6 @@ import { OnPullRequestStateBuilder } from "./builders/actions/on-pull-request-st
 
 @Injectable()
 export class AreasHelper {
-
   private _actions_builders: Record<ActionTypes, ActionBuilder> = {
     EXAMPLE_ACTION: new ExampleActionBuilder(),
     EACH_X_SECONDS: new EachXSecondsActionBuilder(),
