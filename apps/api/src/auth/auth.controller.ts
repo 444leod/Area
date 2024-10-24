@@ -3,17 +3,13 @@ import {
   Body,
   Controller,
   HttpCode,
-  Res,
   HttpStatus,
   Post,
-  Get,
   Req,
-  UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UserLoginDto, UserRegistrationDto } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "@nestjs/passport";
 
 @ApiTags("Auth")
 @Controller("/auth")

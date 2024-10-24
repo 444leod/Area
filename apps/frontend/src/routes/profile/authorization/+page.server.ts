@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 	}
 
 	try {
-		const response = await fetch(`${API_URL}/users/authorization`, {
+		const response = await fetch(`${API_URL}/users/authorizations`, {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}

@@ -4,7 +4,6 @@ import { UsersService } from "./users.service";
 import { User } from "@area/shared";
 import { Model } from "mongoose";
 import { ObjectId } from "mongodb";
-import { find } from "rxjs";
 
 describe("UsersService", () => {
   let service: UsersService;

@@ -1,4 +1,3 @@
-import { AreaDto } from "@area/shared";
 import { ApiResponseOptions } from "@nestjs/swagger";
 
 export const AreasUnauthorizedOptions: ApiResponseOptions = {

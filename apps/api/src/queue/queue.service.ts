@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Area, AreaPacket, RabbitMQService } from "@area/shared";
-import { ObjectId } from "mongodb";
+import { AreaPacket, RabbitMQService } from "@area/shared";
 
 @Injectable()
 export class QueueService {
