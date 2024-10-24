@@ -3,23 +3,29 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Service, ShortService } from '@area/shared';
 import { ObjectId } from 'mongodb';
-import * as SERVICES from '../../services.json'
 import * as fs from 'fs';
 
 @Injectable()
 export class ServicesService {
 
   async updateServicesFromJson() : Promise<void> {
-    // Delete all services from DB
-    await this.serviceModel.deleteMany({});
-
-    const services: Service[] = SERVICES['default'];
+    let modified: boolean = false;
+    const read_data: string = fs.readFileSync('services.json', 'utf8');
+    const services: Service[] = JSON.parse(read_data);
     services.forEach(async (service) => {
-      // Create new ID for new Services without IDs
-      service._id = service._id != undefined ? new ObjectId(service._id) : new ObjectId();
-      await this.serviceModel.create(service);
+      if (service._id != undefined) {
+        service._id = new ObjectId(service._id);
+        await this.serviceModel.findByIdAndUpdate(service._id, service);
+      } else {
+        modified = true;
+        service._id = new ObjectId();
+        await this.serviceModel.create(service);
+      }
     });
-    fs.writeFile('services.json', JSON.stringify(SERVICES, null, 2), () => {})
+    if (modified) {
+      const data = JSON.stringify(services, null, 2);
+      fs.writeFile('services.json', data, () => {});
+    }
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
