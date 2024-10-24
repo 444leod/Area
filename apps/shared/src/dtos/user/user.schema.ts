@@ -1,9 +1,9 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 import { Area } from "../area";
 import { ObjectId } from "mongodb";
-import { AuthorizationDto } from "./authorization.dto"
+import { AuthorizationDto } from "./authorization.dto";
 
-@Schema({versionKey: false})
+@Schema({ versionKey: false })
 export class User {
   _id: ObjectId;
 

@@ -8,7 +8,7 @@ import {
   OnNewJiraTicketClass,
   OnYoutubeVideoPostedClass,
   OnNewGithubRepositoryClass,
-  OnPullRequestStateClass
+  OnPullRequestStateClass,
 } from "../actions";
 import {
   BaseReactionInfos,
@@ -22,17 +22,37 @@ import {
   SendAlbumsReportByEmailInfos,
   SendArtistsReportByEmailInfos
 } from "../reactions";
-import { IsNotEmpty, IsNotEmptyObject, IsString, ValidateNested } from "class-validator";
+import {
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsString,
+  ValidateNested,
+} from "class-validator";
 import { Type } from "class-transformer";
 
-@ApiExtraModels(ExampleActionInfos, EachXSecondsActionInfos, OnYoutubeVideoPostedClass, OnNewJiraTicketClass, OnNewJiraTicketClass, OnNewGithubRepositoryClass, OnPullRequestStateClass)
-@ApiExtraModels(ExampleReactionInfos, SendEmailReactionInfos, CreateGoogleTaskInfos, SendMessageToDiscordWebhookInfos, SendScrobbleReportByEmailInfos, SendAlbumsReportByEmailInfos, SendArtistsReportByEmailInfos)
+@ApiExtraModels(
+  ExampleActionInfos,
+  EachXSecondsActionInfos,
+  OnYoutubeVideoPostedClass,
+  OnNewJiraTicketClass,
+  OnNewJiraTicketClass,
+  OnNewGithubRepositoryClass,
+  OnPullRequestStateClass,
+)
+@ApiExtraModels(
+  ExampleReactionInfos,
+  SendEmailReactionInfos,
+  CreateGoogleTaskInfos,
+  SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
+)
 export class AreaCreationDto {
-
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  name: string
+  name: string;
 
   @ApiProperty({
     oneOf: [
@@ -54,11 +74,20 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
         { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
-        { value: OnYoutubeVideoPostedClass, name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED },
+        {
+          value: OnYoutubeVideoPostedClass,
+          name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED,
+        },
         { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
         { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
-        { value: OnNewGithubRepositoryClass, name: ActionTypes.ON_NEW_GITHUB_REPOSITORY },
-        { value: OnPullRequestStateClass, name: ActionTypes.ON_PULL_REQUEST_STATE },
+        {
+          value: OnNewGithubRepositoryClass,
+          name: ActionTypes.ON_NEW_GITHUB_REPOSITORY,
+        },
+        {
+          value: OnPullRequestStateClass,
+          name: ActionTypes.ON_PULL_REQUEST_STATE,
+        },
       ],
     },
   })
@@ -84,11 +113,26 @@ export class AreaCreationDto {
       subTypes: [
         { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
         { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
-        { value: CreateGoogleTaskInfos, name: ReactionTypes.CREATE_GOOGLE_TASK },
-        { value: SendMessageToDiscordWebhookInfos, name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK },
-        { value: SendScrobbleReportByEmailInfos, name: ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL },
-        { value: SendAlbumsReportByEmailInfos, name: ReactionTypes.SEND_ALBUMS_REPORT_BY_MAIL },
-        { value: SendArtistsReportByEmailInfos, name: ReactionTypes.SEND_ARTISTS_REPORT_BY_MAIL },
+        {
+          value: CreateGoogleTaskInfos,
+          name: ReactionTypes.CREATE_GOOGLE_TASK,
+        },
+        {
+          value: SendMessageToDiscordWebhookInfos,
+          name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK,
+        },
+        {
+          value: SendScrobbleReportByEmailInfos,
+          name: ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL,
+        },
+        {
+          value: SendAlbumsReportByEmailInfos,
+          name: ReactionTypes.SEND_ALBUMS_REPORT_BY_MAIL,
+        },
+        {
+          value: SendArtistsReportByEmailInfos,
+          name: ReactionTypes.SEND_ARTISTS_REPORT_BY_MAIL,
+        },
       ],
     },
   })

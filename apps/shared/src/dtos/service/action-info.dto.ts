@@ -1,21 +1,21 @@
-import { ApiProperty, } from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 import { ActionTypes } from "../actions";
-import { ActionParam } from "./action-param.class";
+import { ServiceParam } from "./service-param.class";
 import { ActionVariable } from "./action-variable.class";
 
 export class ActionInfo {
-    @ApiProperty()
-    name: string
+  @ApiProperty()
+  name: string;
 
-    @ApiProperty()
-    description: string
+  @ApiProperty()
+  description: string;
 
-    @ApiProperty()
-    type: ActionTypes
+  @ApiProperty()
+  type: ActionTypes;
 
-    @ApiProperty({ type: [ActionParam] })
-    params: ActionParam[];
+  @ApiProperty({ type: [ServiceParam] })
+  params: ServiceParam[];
 
-    @ApiProperty({ type: [ActionVariable] })
-    variables: ActionVariable[];
+  @ApiProperty({ type: [ActionVariable] })
+  variables?: ActionVariable[];
 }

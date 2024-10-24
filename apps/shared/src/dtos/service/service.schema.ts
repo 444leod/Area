@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { ActionInfo } from "./action-info.dto";
 import { ReactionInfo } from "./reaction-info.dto ";
 
-@Schema({versionKey: false})
+@Schema({ versionKey: false })
 export class Service {
   _id: ObjectId;
 

@@ -1,10 +1,10 @@
 import { Tabs } from "expo-router";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 export default function AuthLayout() {
   return (
     <Tabs>
-    <Tabs.Screen
+      <Tabs.Screen
         name="index"
         options={{
           title: "Home",
@@ -26,6 +26,15 @@ export default function AuthLayout() {
         name="profile/index"
         options={{
           title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile/authorization/index"
+        options={{
+          title: "Authorization",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),
