@@ -1,15 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Service, ShortService } from '@area/shared';
-import { ObjectId } from 'mongodb';
-import * as fs from 'fs';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Service, ShortService } from "@area/shared";
+import { ObjectId } from "mongodb";
+import * as fs from "fs";
 
 @Injectable()
 export class ServicesService {
-
-  async updateServicesFromJson() : Promise<void> {
-    const read_data: string = fs.readFileSync('services.json', 'utf8');
+  async updateServicesFromJson(): Promise<void> {
+    const read_data: string = fs.readFileSync("services.json", "utf8");
     const services: Service[] = JSON.parse(read_data);
     for (let service of services) {
       if (service._id != undefined) {
@@ -19,9 +18,9 @@ export class ServicesService {
         service._id = new ObjectId();
         await this.serviceModel.create(service);
       }
-    };
+    }
     const data = JSON.stringify(services, null, 2);
-    fs.writeFile('services.json', data, () => {});
+    fs.writeFile("services.json", data, () => {});
   }
 
   constructor(
