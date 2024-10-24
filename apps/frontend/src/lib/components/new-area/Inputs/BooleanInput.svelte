@@ -1,4 +1,3 @@
-```svelte
 <script lang="ts">
     import { fade, slide } from 'svelte/transition';
     import { Variable, ToggleLeft, Check } from 'lucide-svelte';
@@ -167,4 +166,3 @@
         transform: scale(1.2);
     }
 </style>
-```
