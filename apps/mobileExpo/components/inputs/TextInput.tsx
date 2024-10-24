@@ -1,17 +1,18 @@
+// components/inputs/TextInput.tsx
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput as PaperTextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { CustomIcon } from '@/components/CustomIcon';
 
-interface NumberInputProps {
+interface TextInputProps {
     param: {
         name: string;
         details?: string;
         required?: boolean;
     };
-    value: string | number;
-    updateParamValue: (paramName: string, value: string | number) => void;
+    value: string;
+    updateParamValue: (paramName: string, value: string) => void;
     required?: boolean;
     dynamicVariables: Array<{
         name: string;
@@ -22,33 +23,35 @@ interface NumberInputProps {
     isAction?: boolean;
 }
 
-const NumberInput: React.FC<NumberInputProps> = ({param, value, updateParamValue, required, dynamicVariables, isAction}) => {
+const TextInput: React.FC<TextInputProps> = ({
+                                                 param,
+                                                 value,
+                                                 updateParamValue,
+                                                 required,
+                                                 dynamicVariables = [],
+                                                 isAction
+                                             }) => {
     const [isUsingVariable, setIsUsingVariable] = useState(false);
     const [selectedVariable, setSelectedVariable] = useState('');
 
-    // Filter only number variables
-    const numberVariables = dynamicVariables.filter(v =>
-        v.type === 'number' ||
-        v.type === 'integer' ||
-        v.name.toLowerCase().includes('count') ||
-        v.name.toLowerCase().includes('amount')
+    // Filter text-compatible variables
+    const textVariables = dynamicVariables.filter(v =>
+        v.type === 'string' ||
+        v.type === 'text' ||
+        !['boolean', 'number', 'date'].includes(v.type)
     );
 
-    if (isAction || numberVariables.length === 0) {
+    // If this is an action input, or there are no variables, show simple input
+    if (isAction || textVariables.length === 0) {
         return (
-            <TextInput
+            <PaperTextInput
                 label={param.name}
-                value={value.toString()}
-                onChangeText={(text) => {
-                    const number = parseFloat(text);
-                    if (!isNaN(number)) {
-                        updateParamValue(param.name, number);
-                    }
-                }}
-                keyboardType="numeric"
+                value={value}
+                onChangeText={(text) => updateParamValue(param.name, text)}
                 mode="outlined"
-                style={{ marginBottom: 10 }}
-                required={required}
+                multiline
+                numberOfLines={4}
+                style={styles.simpleInput}
                 placeholder={param.details}
             />
         );
@@ -62,7 +65,7 @@ const NumberInput: React.FC<NumberInputProps> = ({param, value, updateParamValue
                     onPress={() => setIsUsingVariable(!isUsingVariable)}
                 >
                     <CustomIcon
-                        name={isUsingVariable ? "variable" : "numeric"}
+                        name={isUsingVariable ? "variable" : "text"}
                         size={20}
                         color={isUsingVariable ? "#fff" : "#000"}
                     />
@@ -77,7 +80,7 @@ const NumberInput: React.FC<NumberInputProps> = ({param, value, updateParamValue
                             ? selectedVariable
                                 ? 'Using variable'
                                 : 'Select a variable'
-                            : 'Enter number'}
+                            : 'Enter text'}
                     </Text>
                 </View>
             </View>
@@ -94,10 +97,10 @@ const NumberInput: React.FC<NumberInputProps> = ({param, value, updateParamValue
                         }}
                     >
                         <Picker.Item
-                            label="Choose a number variable..."
+                            label="Choose a text variable..."
                             value=""
                         />
-                        {numberVariables.map((variable) => (
+                        {textVariables.map((variable) => (
                             <Picker.Item
                                 key={variable.name}
                                 label={`${variable.name} - ${variable.description}`}
@@ -107,19 +110,14 @@ const NumberInput: React.FC<NumberInputProps> = ({param, value, updateParamValue
                     </Picker>
                 </View>
             ) : (
-                <TextInput
+                <PaperTextInput
                     label={param.name}
-                    value={value.toString()}
-                    onChangeText={(text) => {
-                        const number = parseFloat(text);
-                        if (!isNaN(number)) {
-                            updateParamValue(param.name, number);
-                        }
-                    }}
-                    keyboardType="numeric"
+                    value={value}
+                    onChangeText={(text) => updateParamValue(param.name, text)}
                     mode="outlined"
-                    style={{ marginBottom: 0 }}
-                    required={required}
+                    multiline
+                    numberOfLines={4}
+                    style={styles.textArea}
                     placeholder={param.details}
                 />
             )}
@@ -169,6 +167,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#e0e0e0',
         marginTop: 8,
-    }
+    },
+    simpleInput: {
+        marginBottom: 10,
+    },
+    textArea: {
+        minHeight: 100,
+    },
 });
-export default NumberInput;
+
+export default TextInput;
