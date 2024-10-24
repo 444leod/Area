@@ -50,7 +50,7 @@ export class UsersService {
         return await this.userModel.findById(id).exec();
     }
 
-    async getUserAuthorization(req: Request): Promise<string[]> {
+    async getUserAuthorizations(req: Request): Promise<string[]> {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
 
