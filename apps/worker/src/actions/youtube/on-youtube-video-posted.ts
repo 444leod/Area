@@ -5,22 +5,12 @@ import {
     OnYoutubeVideoPostedClass,
     OnYoutubeVideoPostedHistoryDTO,
     getChannelVideos,
-    getNewGoogleTokens,
+    getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
 export const handleYoutubeVideoPostedAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    let { token, refresh_token } = (await database.getAuthorizationData(packet.user_id, 'GOOGLE')) as {
-        token: string;
-        refresh_token: string;
-    };
-    if (!token) {
-        console.error('Google token not found.');
-        return null;
-    }
-
-    ({ token, refresh_token } = await getNewGoogleTokens({ token, refresh_token }));
-
-    await database.updateAuthorizationData(packet.user_id, 'GOOGLE', { token, refresh_token });
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.GOOGLE, database);
 
     const area = packet.area;
     const action = area.action.informations as OnYoutubeVideoPostedClass;

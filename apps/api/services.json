@@ -1,105 +1,104 @@
-[
-  {
-    "_id": "6703d148ddf654a6d482dafb",
-    "name": "YouTube",
-    "description": "Service for YouTube actions",
-    "actions": [
-      {
-        "name": "videoPosted",
-        "description": "When video was posted by a given channel",
-        "type": "ON_YOUTUBE_VIDEO_POSTED",
-        "params": [
-          {
-            "name": "user_id",
-            "details": "user id of the user",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "variables": [
-          {
-            "name": "area_name",
-            "description": "name of the area",
-            "type": "string",
-            "template": "My AREA #1"
-          },
-          {
-            "name": "full_execution_date",
-            "description": "full date of the trigger",
-            "type": "date",
-            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
-          },
-          {
-            "name": "execution_date",
-            "description": "date of the trigger",
-            "type": "string",
-            "template": "22/10/2024"
-          },
-          {
-            "name": "execution_time",
-            "description": "time of the trigger",
-            "type": "string",
-            "template": "12:00"
-          },
-          {
-            "name": "title",
-            "description": "title of the video",
-            "type": "string",
-            "template": "My video title"
-          },
-          {
-            "name": "description",
-            "description": "description of the video",
-            "type": "string",
-            "template": "My video description"
-          },
-          {
-            "name": "url",
-            "description": "URL of the video",
-            "type": "string",
-            "template": "https://www.youtube.com/watch?v=videoID"
-          },
-          {
-            "name": "published_at",
-            "description": "date the video was published",
-            "type": "date",
-            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
-          },
-          {
-            "name": "publication_time",
-            "description": "time the video was published",
-            "type": "string",
-            "template": "12:00"
-          },
-          {
-            "name": "publication_date",
-            "description": "date the video was published",
-            "type": "string",
-            "template": "22/10/2024"
-          },
-          {
-            "name": "channel_title",
-            "description": "name of the video creator's channel",
-            "type": "string",
-            "template": "My Channel"
-          },
-          {
-            "name": "channel_id",
-            "description": "ID of the video creator's channel",
-            "type": "string",
-            "template": "UC1234567890"
-          },
-          {
-            "name": "thumbnail_url",
-            "description": "URL of the video thumbnail",
-            "type": "string",
-            "template": "https://img.youtube.com/vi/videoID/default.jpg"
-          }
-        ]
-      }
-    ],
-    "reactions": []
-  },
+[{
+  "_id": "6703d148ddf654a6d482dafb",
+  "name": "YouTube",
+  "description": "Service for YouTube actions",
+  "actions": [
+    {
+      "name": "videoPosted",
+      "description": "When video was posted by a given channel",
+      "type": "ON_YOUTUBE_VIDEO_POSTED",
+      "params": [
+        {
+          "name": "user_id",
+          "details": "user id of the user",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "variables": [
+        {
+          "name": "area_name",
+          "description": "name of the area",
+          "type": "string",
+          "template": "My AREA #1"
+        },
+        {
+          "name": "full_execution_date",
+          "description": "full date of the trigger",
+          "type": "date",
+          "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+        },
+        {
+          "name": "execution_date",
+          "description": "date of the trigger",
+          "type": "string",
+          "template":  "22/10/2024"
+        },
+        {
+          "name": "execution_time",
+          "description": "time of the trigger",
+          "type": "string",
+          "template": "12:00"
+        },
+        {
+          "name": "title",
+          "description": "title of the video",
+          "type": "string",
+          "template": "My video title"
+        },
+        {
+          "name": "description",
+          "description": "description of the video",
+          "type": "string",
+          "template": "My video description"
+        },
+        {
+          "name": "url",
+          "description": "URL of the video",
+          "type": "string",
+          "template": "https://www.youtube.com/watch?v=videoID"
+        },
+        {
+          "name": "published_at",
+          "description": "date the video was published",
+          "type": "date",
+          "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+        },
+        {
+          "name": "publication_time",
+          "description": "time the video was published",
+          "type": "string",
+          "template": "12:00"
+        },
+        {
+          "name": "publication_date",
+          "description": "date the video was published",
+          "type": "string",
+          "template": "22/10/2024"
+        },
+        {
+          "name": "channel_title",
+          "description": "name of the video creator's channel",
+          "type": "string",
+          "template": "My Channel"
+        },
+        {
+          "name": "channel_id",
+          "description": "ID of the video creator's channel",
+          "type": "string",
+          "template": "UC1234567890"
+        },
+        {
+          "name": "thumbnail_url",
+          "description": "URL of the video thumbnail",
+          "type": "string",
+          "template": "https://img.youtube.com/vi/videoID/default.jpg"
+        }
+      ]
+    }
+  ],
+  "reactions": []
+},
   {
     "_id": "6703d313722dee796788baa3",
     "name": "Timer",
@@ -140,7 +139,7 @@
             "name": "execution_date",
             "description": "date of the trigger",
             "type": "string",
-            "template": "22/10/2024"
+            "template":  "22/10/2024"
           },
           {
             "name": "execution_time",
@@ -179,7 +178,7 @@
           {
             "name": "body",
             "details": "body of the email",
-            "type": "text",
+            "type": "string",
             "required": true
           }
         ]
@@ -206,13 +205,7 @@
           {
             "name": "body",
             "details": "body of the task",
-            "type": "text",
-            "required": true
-          },
-          {
-            "name": "date",
-            "details": "date of the task",
-            "type": "date",
+            "type": "string",
             "required": true
           }
         ]
@@ -246,7 +239,7 @@
             "name": "execution_date",
             "description": "date of the trigger",
             "type": "string",
-            "template": "22/10/2024"
+            "template":  "22/10/2024"
           },
           {
             "name": "execution_time",
@@ -374,7 +367,7 @@
             "name": "execution_date",
             "description": "date of the trigger",
             "type": "string",
-            "template": "22/10/2024"
+            "template":  "22/10/2024"
           },
           {
             "name": "execution_time",
@@ -463,7 +456,7 @@
             "name": "execution_date",
             "description": "date of the trigger",
             "type": "string",
-            "template": "22/10/2024"
+            "template":  "22/10/2024"
           },
           {
             "name": "execution_time",
@@ -543,9 +536,9 @@
             "details": "state of the pull request",
             "type": "enum",
             "items": [
+              "all",
               "open",
-              "closed",
-              "merged"
+              "closed"
             ],
             "required": true
           },
@@ -579,7 +572,7 @@
             "name": "execution_date",
             "description": "date of the trigger",
             "type": "string",
-            "template": "22/10/2024"
+            "template":  "22/10/2024"
           },
           {
             "name": "execution_time",
@@ -702,7 +695,7 @@
           {
             "name": "body",
             "details": "body of the message",
-            "type": "text",
+            "type": "string",
             "required": false
           },
           {
@@ -726,113 +719,4 @@
         ]
       }
     ]
-  },
-  {
-    "_id": "6717b7eb384bc2bb5e86b654",
-    "name": "Spotify",
-    "description": "Service for Spotify actions",
-    "actions": [],
-    "reactions": []
-  },
-  {
-    "_id": "6703f2e0bc8055c868eabeef",
-    "name": "LastFM",
-    "description": "Service for LastFM actions",
-    "actions": [],
-    "reactions": [
-      {
-        "name": "Last Week Scobble Report",
-        "description": "Send scobble report by email",
-        "type": "SEND_SCROBBLE_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_tracks",
-            "details": "Number of tracks to be reported",
-            "type": "number",
-            "required": true
-          }
-        ]
-      },
-      {
-        "name": "Last Week Albums Report",
-        "description": "Send albums report by email",
-        "type": "SEND_ALBUMS_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_albums",
-            "details": "Number of albums to be reported",
-            "type": "number",
-            "required": true
-          }
-        ]
-      },
-      {
-        "name": "Last Week Artists Report",
-        "description": "Send artists report by email",
-        "type": "SEND_ARTISTS_REPORT_BY_MAIL",
-        "params": [
-          {
-            "name": "to",
-            "details": "email adress of the target",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "subject",
-            "details": "subject of the email",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "username",
-            "details": "LastFM username",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "nb_artists",
-            "details": "Number of artists to be reported",
-            "type": "number",
-            "required": true
-          }
-        ]
-      }
-    ]
-  }
-]
+  }]

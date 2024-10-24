@@ -1,10 +1,9 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
-import { UserLoginDto, UserRegistrationDto, AuthorizationsTypes } from '@area/shared';
+import { UserLoginDto, UserRegistrationDto, AuthorizationsTypes, TokenDto } from '@area/shared';
 import { JwtService } from '@nestjs/jwt';
 import { ServicesService } from '../services/services.service';
-import { ObjectId } from 'mongodb';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
@@ -49,7 +48,6 @@ export class AuthService {
 
             const oauth2 = google.oauth2({ version: 'v2', auth: this.webOAuth2Client });
             const { data } = await oauth2.userinfo.get();
-            const googleServiceId = new ObjectId('64ff2e8e2a6e4b3f78abcd12');
 
             const expiresIn = tokens.expiry_date ? (tokens.expiry_date - Date.now()) / 1000 : null;
 
@@ -63,17 +61,19 @@ export class AuthService {
                 email: data.email,
                 first_name: data.given_name,
                 last_name: data.family_name,
-                token: tokens.access_token,
-                refreshToken: tokens.refresh_token,
-                service_id: googleServiceId,
-                expiration_date: expirationDate,
+                token: {
+                    token: tokens.access_token,
+                    refresh_token: tokens.refresh_token,
+                    expiration_date: expirationDate,
+                    created_at: new Date(),
+                } as TokenDto,
             });
 
             const payload = { sub: user._id.toHexString(), email: user.email };
             return {
                 token: await this.jwtService.signAsync(payload),
             };
-        } catch (error) {
+        } catch {
             throw new InternalServerErrorException('Error processing Google callback');
         }
     }
@@ -93,22 +93,23 @@ export class AuthService {
                 });
             }
             const payload = ticket.getPayload();
-            const googleServiceId = new ObjectId('64ff2e8e2a6e4b3f78abcd12');
             const user = await this.usersService.findOrCreateUser({
                 email: payload.email,
                 first_name: payload.given_name,
                 last_name: payload.family_name,
-                refreshToken: refreshToken,
-                token: token,
-                service_id: googleServiceId,
-                expiration_date: expired_at,
+                token: {
+                    token: token,
+                    refresh_token: refreshToken,
+                    expiration_date: expired_at,
+                    created_at: new Date(),
+                } as TokenDto,
             });
 
             const jwtPayload = { sub: user._id.toHexString(), email: user.email };
             return {
                 token: await this.jwtService.signAsync(jwtPayload),
             };
-        } catch (error) {
+        } catch {
             throw new UnauthorizedException('Invalid Google token');
         }
     }
@@ -164,17 +165,15 @@ export class AuthService {
             expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
             const createdAt = new Date();
 
-            const AtlassianService = await this.servicesService.getServiceByName('Atlassian');
             try {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-                    service_id: AtlassianService._id,
                     type: AuthorizationsTypes.ATLASSIAN,
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
                         expiration_date: expirationDate,
                         created_at: createdAt,
-                    },
+                    } as TokenDto,
                 });
 
                 return 1;
@@ -234,20 +233,17 @@ export class AuthService {
                 return null;
             }
 
-            const GithubService = await this.servicesService.getServiceByName('Github');
-
             const createdAt = new Date();
 
             try {
-                const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-                    service_id: GithubService._id,
+                await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     type: AuthorizationsTypes.GITHUB,
                     data: {
                         token: accessToken,
                         refresh_token: null,
                         created_at: createdAt,
                         expiration_date: null,
-                    },
+                    } as TokenDto,
                 });
 
                 return 1;
@@ -285,13 +281,13 @@ export class AuthService {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${basicAuth}`
+                    Authorization: `Basic ${basicAuth}`,
                 },
                 body: new URLSearchParams({
                     grant_type: 'authorization_code',
                     code: code,
-                    redirect_uri: redirectUri
-                })
+                    redirect_uri: redirectUri,
+                }),
             });
 
             if (!response.ok) {
@@ -310,21 +306,18 @@ export class AuthService {
                 return null;
             }
 
-            const SpotifyService = await this.servicesService.getServiceByName('Spotify');
-
             const createdAt = new Date();
             const expirationDate = new Date(createdAt.getTime() + expiresIn * 1000);
 
             try {
-                const result = await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-                    service_id: SpotifyService._id,
+                await this.usersService.addOrUpdateAuthorizationWithToken(token, {
                     type: AuthorizationsTypes.SPOTIFY,
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
                         created_at: createdAt,
                         expiration_date: expirationDate,
-                    }
+                    } as TokenDto,
                 });
 
                 return 1;
@@ -388,20 +381,17 @@ export class AuthService {
             const expirationDate = new Date();
             expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
 
-            const GoogleService = await this.servicesService.getServiceByName('Google task');
-
             const createdAt = new Date();
 
             try {
                 await this.usersService.addOrUpdateAuthorizationWithToken(token, {
-                    service_id: GoogleService._id,
                     type: AuthorizationsTypes.GOOGLE,
                     data: {
                         token: accessToken,
                         refresh_token: refreshToken,
                         created_at: createdAt,
                         expiration_date: expirationDate,
-                    },
+                    } as TokenDto,
                 });
 
                 return 1;

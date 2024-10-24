@@ -3,47 +3,25 @@ import {
     MongoDBService,
     AreaPacket,
     getJiraDomains,
-    getNewAtlassianToken,
     getDomainsProjects,
     OnNewJiraProjectHistoryDTO,
+    getAuthorizationToken,
+    AuthorizationsTypes,
 } from '@area/shared';
 
-function getProjectBody(project: any): string[] {
-    const lines = [];
-
-    if (project.description && project.description.length > 0) lines.push(`description: ${project.description}`);
-    if (project.self) lines.push(`url: ${project.self}`);
-    if (project.projectCategory) lines.push(`category: ${project.projectCategory.name}`);
-    if (project.projectTypeKey) lines.push(`type: ${project.projectTypeKey}`);
-
-    return lines;
-}
-
 export const handleNewJiraProjectAction: ActionFunction = async (packet: AreaPacket, database: MongoDBService) => {
-    const atlassian_token = await database.getAuthorizationData(packet.user_id, 'ATLASSIAN');
-    if (!atlassian_token) {
-        console.error('atlassian token not found.');
-        return null;
-    }
-
-    const new_tokens = await getNewAtlassianToken(atlassian_token);
-
-    if (new_tokens === null) {
-        return null;
-    }
-
-    await database.updateAuthorizationData(packet.user_id, 'ATLASSIAN', new_tokens);
+    const { token } = await getAuthorizationToken(packet.user_id, AuthorizationsTypes.ATLASSIAN, database);
 
     const area = packet.area;
     const history = area.action.history as OnNewJiraProjectHistoryDTO;
 
-    const domains = await getJiraDomains(atlassian_token);
+    const domains = await getJiraDomains(token);
 
     if (domains === null || domains.length === 0) {
         return null;
     }
 
-    const projects = await getDomainsProjects(domains, atlassian_token);
+    const projects = await getDomainsProjects(domains, token);
 
     if (history.projectList === null) {
         history.projectList = projects.map((project: any) => project.key);
