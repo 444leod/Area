@@ -1,4 +1,13 @@
-import { BadRequestException, Body, Controller, HttpCode, Param, Post, Req, Response } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  Param,
+  Post,
+  Req,
+  Response,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { QueueService } from "src/queue/queue.service";
 import { AreasService } from "src/areas/areas.service";
@@ -10,7 +19,7 @@ import { Area, AreaPacket } from "@area/shared";
 export class WebhookController {
   constructor(
     private readonly queueService: QueueService,
-    private readonly areasService: AreasService
+    private readonly areasService: AreasService,
   ) {}
 
   @Post("/:id")
@@ -25,10 +34,10 @@ export class WebhookController {
       area: user.area,
       data: {
         headers: request.headers,
-        request: request.body
+        request: request.body,
       },
-      authorizations: user.auths
-    }
+      authorizations: user.auths,
+    };
     this.queueService.send(packet);
   }
 }

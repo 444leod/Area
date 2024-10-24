@@ -3,9 +3,9 @@
 	import { authStore } from '$lib/store/authStore';
 	import { enhance } from '$app/forms';
 	import { Mail, Lock, User, UserPlus } from 'lucide-svelte';
-	import { oauthGoogle } from "$lib/modules/oauthGoogle";
+	import { oauthGoogle } from '$lib/modules/oauthGoogle';
 	import { goto } from '$app/navigation';
-	import { setError } from "$lib/store/errorMessage";
+	import { setError } from '$lib/store/errorMessage';
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
@@ -29,11 +29,11 @@
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim"><User /></div>
 					<input
-							name="first_name"
-							type="text"
-							placeholder="John"
-							bind:value={first_name}
-							required
+						name="first_name"
+						type="text"
+						placeholder="John"
+						bind:value={first_name}
+						required
 					/>
 				</div>
 			</label>
@@ -49,11 +49,11 @@
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim"><Mail /></div>
 					<input
-							name="email"
-							type="email"
-							placeholder="your@email.com"
-							bind:value={email}
-							required
+						name="email"
+						type="email"
+						placeholder="your@email.com"
+						bind:value={email}
+						required
 					/>
 				</div>
 			</label>
@@ -62,11 +62,11 @@
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim"><Lock /></div>
 					<input
-							name="password"
-							type="password"
-							placeholder="Create a strong password"
-							bind:value={password}
-							required
+						name="password"
+						type="password"
+						placeholder="Create a strong password"
+						bind:value={password}
+						required
 					/>
 				</div>
 			</label>
@@ -75,11 +75,11 @@
 				<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 					<div class="input-group-shim"><Lock /></div>
 					<input
-							name="confirmPassword"
-							type="password"
-							placeholder="Confirm your password"
-							bind:value={confirmPassword}
-							required
+						name="confirmPassword"
+						type="password"
+						placeholder="Confirm your password"
+						bind:value={confirmPassword}
+						required
 					/>
 				</div>
 			</label>

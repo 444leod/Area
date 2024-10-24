@@ -1,15 +1,15 @@
-import { ApiProperty } from "@nestjs/swagger"
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ActionVariable {
-    @ApiProperty()
-    name: string
+  @ApiProperty()
+  name: string;
 
-    @ApiProperty()
-    description: string
+  @ApiProperty()
+  description: string;
 
-    @ApiProperty()
-    type: 'string' | 'number' | 'date' | 'text' | 'boolean'
+  @ApiProperty()
+  type: "string" | "number" | "date" | "text" | "boolean";
 
-    @ApiProperty()
-    template: string
+  @ApiProperty()
+  template: string;
 }

@@ -84,10 +84,18 @@
 			Automate your workflow. Connect your apps. Boost your productivity.
 		</p>
 		<div class="flex justify-center space-x-4 mb-12">
-			<a href="/dashboard" in:fly={{ x: -50, duration: 1000, delay: 1000 }} class="btn variant-filled-primary">
+			<a
+				href="/dashboard"
+				in:fly={{ x: -50, duration: 1000, delay: 1000 }}
+				class="btn variant-filled-primary"
+			>
 				Get Started
 			</a>
-			<a href="/login" in:fly={{ x: 50, duration: 1000, delay: 1000 }} class="btn variant-soft-secondary">
+			<a
+				href="/login"
+				in:fly={{ x: 50, duration: 1000, delay: 1000 }}
+				class="btn variant-soft-secondary"
+			>
 				Login
 			</a>
 		</div>
@@ -119,7 +127,9 @@
 			<div class="marquee-container overflow-hidden mb-16">
 				<div class="marquee flex">
 					{#each marqueeServices as service, i (i)}
-						<div class="flex-shrink-0 w-32 h-32 mx-4 flex flex-col items-center justify-center hover:scale-110 transition-transform duration-200">
+						<div
+							class="flex-shrink-0 w-32 h-32 mx-4 flex flex-col items-center justify-center hover:scale-110 transition-transform duration-200"
+						>
 							<Icon icon={service.icon} width="48" height="48" class="mb-2" />
 							<div class="text-center text-sm font-semibold">{service.name}</div>
 						</div>
