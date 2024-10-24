@@ -5,11 +5,8 @@ import {
   AreaCreationDto,
   ReactionTypes,
   Area,
-  AreaDto,
 } from "@area/shared";
 import { ObjectId } from "mongodb";
-import { ExampleActionBuilder } from "./builders/actions/example.builder";
-import { EachXSecondsActionBuilder } from "./builders/actions/each-x-sec.builder";
 
 describe("AreasHelper", () => {
   let areasHelper: AreasHelper;
@@ -52,6 +49,7 @@ describe("AreasHelper", () => {
     it("should convert an Area object to AreaDto", () => {
       const area: Area = {
         _id: new ObjectId(),
+        name: "Example",
         action: {
           service_id: new ObjectId(),
           informations: {

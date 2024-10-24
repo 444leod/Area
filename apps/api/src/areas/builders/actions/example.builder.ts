@@ -1,5 +1,4 @@
 import { Action, ActionTypes, ExampleActionInfos } from "@area/shared";
-import { ObjectId } from "mongodb";
 import { ActionBuilder } from "./action.builder";
 
 export class ExampleActionBuilder implements ActionBuilder {
@@ -12,6 +11,6 @@ export class ExampleActionBuilder implements ActionBuilder {
                 type: ActionTypes.EXAMPLE_ACTION,
                 exampleHistory: []
             }
-        }
+        };
     }
 }

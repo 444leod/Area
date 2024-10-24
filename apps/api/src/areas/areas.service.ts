@@ -10,7 +10,7 @@ import { AuthentifiedUser } from "src/auth/auth.guard";
 export class AreasService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) { }
 
-  async findCurrentUser(user: AuthentifiedUser): Promise<(Document<unknown, {}, User> & User)> {
+  async findCurrentUser(user: AuthentifiedUser): Promise<(Document<unknown, unknown, User> & User)> {
     const u = await this.userModel.findById(user.id);
     if (!u)
       throw new NotFoundException("User not found");

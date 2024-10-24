@@ -1,8 +1,7 @@
-import { Area, User, UserRegistrationDto, TokenDto, AuthorizationDto, AuthorizationsTypes } from '@area/shared';
+import { User, UserRegistrationDto, TokenDto, AuthorizationDto, AuthorizationsTypes } from '@area/shared';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ObjectId } from 'mongodb';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { AuthentifiedUser } from 'src/auth/auth.guard';

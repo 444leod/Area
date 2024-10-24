@@ -60,7 +60,7 @@ export class AreasController {
   @ApiNotFoundResponse(AreasUserNotFoundOptions)
   async getUserAreas(@Request() req): Promise<AreaDto[]> {
     const areas = await this.areasService.getUserAreas(req.user);
-    return areas.map((area, _) => this.areasHelper.toDto(area));
+    return areas.map((area) => this.areasHelper.toDto(area));
   }
 
   @Post()

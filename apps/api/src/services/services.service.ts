@@ -31,13 +31,13 @@ export class ServicesService {
 
     async getAllServicesShort(): Promise<ShortService[]> {
         const services: Service[] = await this.serviceModel.find().exec();
-        return services.map((value, _) => {
+        return services.map((value) => {
             const short: ShortService = {
                 name: value.name,
-                actions: value.actions.map((a, _) => {
+                actions: value.actions.map((a) => {
                     return { name: a.name, description: a.description };
                 }),
-                reactions: value.reactions.map((r, _) => {
+                reactions: value.reactions.map((r) => {
                     return { name: r.name, description: r.description };
                 }),
             };

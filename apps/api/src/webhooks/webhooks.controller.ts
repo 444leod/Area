@@ -1,9 +1,9 @@
-import { BadRequestException, Body, Controller, HttpCode, Param, Post, Req, Response } from "@nestjs/common";
+import { BadRequestException, Controller, HttpCode, Param, Post, Req } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { QueueService } from "src/queue/queue.service";
 import { AreasService } from "src/areas/areas.service";
 import { ObjectId } from "mongodb";
-import { Area, AreaPacket } from "@area/shared";
+import { AreaPacket } from "@area/shared";
 
 @ApiTags("Other")
 @Controller("webhooks")
@@ -28,7 +28,7 @@ export class WebhookController {
         request: request.body
       },
       authorizations: user.auths
-    }
+    };
     this.queueService.send(packet);
   }
 }
