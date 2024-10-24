@@ -208,6 +208,12 @@
             "details": "body of the task",
             "type": "text",
             "required": true
+          },
+          {
+            "name": "date",
+            "details": "date of the task",
+            "type": "date",
+            "required": true
           }
         ]
       }

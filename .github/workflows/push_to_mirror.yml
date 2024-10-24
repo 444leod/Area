@@ -131,13 +131,22 @@ jobs:
           done
 
           if [ "$ERROR" -ne 0 ]; then
+            echo "Cleaning up Docker resources due to error..."
             docker compose down
+            docker system prune -a -f
+            docker volume prune -f
             exit 1
           fi
 
       - name: Tear down Docker
         if: always()
         run: docker compose down
+
+      - name: Cleanup Docker resources
+        if: always()
+        run: |
+          docker system prune -a -f
+          docker volume prune -f
 
   push_to_mirror:
     name: Push to mirror
