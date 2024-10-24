@@ -20,7 +20,7 @@ import {
   SendMessageToDiscordWebhookInfos,
   SendScrobbleReportByEmailInfos,
   SendAlbumsReportByEmailInfos,
-  SendArtistsReportByEmailInfos
+  SendArtistsReportByEmailInfos,
 } from "../reactions";
 import {
   IsNotEmpty,

@@ -5,28 +5,32 @@ import {
   sendMail,
   getWeeklyAlbums,
 } from "@area/shared";
-import { Liquid } from 'liquidjs';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import { Liquid } from "liquidjs";
+import * as fs from "fs/promises";
+import * as path from "path";
 
 const engine = new Liquid();
 
 export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
-  packet: AreaPacket
+  packet: AreaPacket,
 ) => {
-  const reaction = packet.area.reaction.informations as SendAlbumsReportByEmailInfos;
-  const nb_albums = typeof reaction.nb_albums === "number"
-    ? reaction.nb_albums
-    : parseInt(reaction.nb_albums);
+  const reaction = packet.area.reaction
+    .informations as SendAlbumsReportByEmailInfos;
+  const nb_albums =
+    typeof reaction.nb_albums === "number"
+      ? reaction.nb_albums
+      : parseInt(reaction.nb_albums);
 
   if (Number.isNaN(nb_albums)) {
-    console.error("Invalid number of albums to display, fix the dynamic variable");
+    console.error(
+      "Invalid number of albums to display, fix the dynamic variable",
+    );
     return;
   }
 
   const data = await getWeeklyAlbums(
     reaction.username,
-    process.env.LASTFM_API_KEY || ""
+    process.env.LASTFM_API_KEY || "",
   );
 
   if (!data) {
@@ -39,15 +43,18 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   const albumsToDisplay = Math.min(nb_albums, totalAlbumsAvailable);
   const firstXAlbums = albums.slice(0, albumsToDisplay);
 
-  const templatePath = path.join(__dirname, '../../templates/weekly-music-report.liquid');
-  const weeklyMusicTemplate = await fs.readFile(templatePath, 'utf8');
+  const templatePath = path.join(
+    __dirname,
+    "../../templates/weekly-music-report.liquid",
+  );
+  const weeklyMusicTemplate = await fs.readFile(templatePath, "utf8");
 
   const emailBody = await engine.parseAndRender(weeklyMusicTemplate, {
-    type: 'Albums',
+    type: "Albums",
     items: firstXAlbums,
     itemsToDisplay: albumsToDisplay,
     requestedItems: nb_albums,
-    totalItems: totalAlbumsAvailable
+    totalItems: totalAlbumsAvailable,
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");

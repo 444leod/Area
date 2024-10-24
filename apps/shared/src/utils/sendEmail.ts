@@ -6,7 +6,7 @@ export const sendMail = async (
   to: string,
   subject: string,
   body: string,
-  format: EmailFormat = "text"
+  format: EmailFormat = "text",
 ) => {
   const transporter = nodemailer.createTransport({
     service: process.env.MAIL_SERVICE_SENDER_HOST,

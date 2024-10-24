@@ -1,5 +1,5 @@
-import { ReactionFunction } from '../reaction-function';
-import { AreaPacket, SendEmailReactionInfos, sendMail } from '@area/shared';
+import { ReactionFunction } from "../reaction-function";
+import { AreaPacket, SendEmailReactionInfos, sendMail } from "@area/shared";
 
 export const handleSendEmailReaction: ReactionFunction = async (
   packet: AreaPacket,

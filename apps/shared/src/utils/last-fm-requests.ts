@@ -81,7 +81,7 @@ type ChartMethod =
 async function makeLastFMRequest<T>(
   username: string,
   apiKey: string,
-  method: ChartMethod
+  method: ChartMethod,
 ): Promise<T | null> {
   try {
     const response = await axios.get<T>(`${domainName}`, {
@@ -97,7 +97,7 @@ async function makeLastFMRequest<T>(
     if (axios.isAxiosError(error)) {
       console.error(
         `Error on LastFM ${method} Request:`,
-        error.response?.statusText
+        error.response?.statusText,
       );
     } else {
       console.error(`Error on LastFM ${method} Request:`, error);
@@ -108,33 +108,33 @@ async function makeLastFMRequest<T>(
 
 export async function getWeeklyScrobbles(
   username: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<GetWeeklyScrobblesResponse | null> {
   return makeLastFMRequest<GetWeeklyScrobblesResponse>(
     username,
     apiKey,
-    "user.getweeklytrackchart"
+    "user.getweeklytrackchart",
   );
 }
 
 export async function getWeeklyAlbums(
   username: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<GetWeeklyAlbumsResponse | null> {
   return makeLastFMRequest<GetWeeklyAlbumsResponse>(
     username,
     apiKey,
-    "user.getweeklyalbumchart"
+    "user.getweeklyalbumchart",
   );
 }
 
 export async function getWeeklyArtists(
   username: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<GetWeeklyArtistsResponse | null> {
   return makeLastFMRequest<GetWeeklyArtistsResponse>(
     username,
     apiKey,
-    "user.getweeklyartistchart"
+    "user.getweeklyartistchart",
   );
 }
