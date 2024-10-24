@@ -5,36 +5,26 @@ import { WebhookClient, EmbedBuilder } from 'discord.js';
 export const handleSendMessageToDiscordWebhookReaction: ReactionFunction = async (packet: AreaPacket) => {
     const reaction = packet.area.reaction.informations as SendMessageToDiscordWebhookInfos;
 
-    const { webhook_url } = reaction;
-    const { title, body, date, username, picture } = packet.data || {
-        title: `Area ${packet.area._id} has been triggered.`,
-        body: '',
-        date: undefined,
-        username: undefined,
-        picture: undefined,
-    };
-
     try {
         const client = new WebhookClient({
-            url: webhook_url,
+            url: reaction.webhook_url,
         });
-        const embed = new EmbedBuilder().setTitle(title);
-        if (body) {
-            embed.setDescription(body);
+        const embed = new EmbedBuilder().setTitle(reaction.title);
+        if (reaction.body) {
+            embed.setDescription(reaction.body);
         }
-        if (date) {
-            embed.setTimestamp(new Date(date));
-        }
-        if (username) {
-            if (picture) {
-                embed.setAuthor({ name: username, iconURL: picture });
+        // if (reaction.date) {
+        //     embed.setTimestamp(new Date(reaction.date));
+        // }
+        if (reaction.username) {
+            if (reaction.avatar_url) {
+                embed.setAuthor({ name: reaction.username, iconURL: reaction.avatar_url });
             } else {
-                embed.setAuthor({ name: username });
+                embed.setAuthor({ name: reaction.username });
             }
-        } else {
-            if (picture) {
-                embed.setThumbnail(picture);
-            }
+        }
+        if (reaction.thumbnail_url) {
+            embed.setThumbnail(reaction.thumbnail_url);
         }
         await client.send({
             embeds: [embed],

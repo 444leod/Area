@@ -27,7 +27,7 @@ export class UsersService {
                 user.authorizations.push({
                     type: AuthorizationsTypes.GOOGLE,
                     data: userData.token,
-                });
+                } as AuthorizationDto);
             }
             return await user.save();
         }

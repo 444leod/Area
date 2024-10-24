@@ -30,7 +30,7 @@ export async function getJiraDomainProjects(domainId: string, token: string): Pr
             },
             params: {
                 status: ['live'],
-                expand: 'description,lead'
+                expand: 'description,lead,url'
             }
         });
 
@@ -54,7 +54,7 @@ export async function getDomainTickets(domainId: string, token: string, date: Da
             },
             params: {
                 maxResults: 10,
-                fields: 'summary,created,priority,status,issuetype,assignee',
+                fields: 'summary,created,priority,status,issuetype,assignee,reporter,project,labels',
                 jql: `created >= "${date.toISOString().split('.')[0].replace('T', ' ').split(':').splice(0, 2).join(':')}" ORDER BY created DESC`
             }
         });

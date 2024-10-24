@@ -10,12 +10,15 @@ if (!process.env.RMQ_QUEUE) {
 const rabbitMQ = new RabbitMQService();
 const mongoDB = new MongoDBService();
 
+let num = 0;
+
 let isRunning = true;
 async function main() {
     await rabbitMQ.connect();
     await mongoDB.connect();
 
     const groupAreaSend = (areas: AreaPacket[]) => {
+        console.log(`Sending ${areas.length} areas, #${num++}`);
         areas.forEach((area) => {
             rabbitMQ.sendPacketToQueue(process.env.RMQ_QUEUE || '', area);
         });
@@ -54,7 +57,9 @@ async function main() {
                 const areaPacket: AreaPacket = {
                     user_id: obj._id,
                     area: obj.areas,
-                    data: null,
+                    data: {
+                        area_name: obj.areas.name,
+                    },
                     authorizations: obj.authorizations,
                 };
                 return areaPacket;

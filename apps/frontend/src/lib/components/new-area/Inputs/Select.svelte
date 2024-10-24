@@ -1,4 +1,3 @@
-```svelte
 <script lang="ts">
     import { fade, slide } from 'svelte/transition';
     import { Variable, ListFilter, Check } from 'lucide-svelte';
@@ -165,4 +164,3 @@
         padding-right: 2.5rem;
     }
 </style>
-```
