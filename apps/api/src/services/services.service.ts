@@ -11,6 +11,7 @@ export class ServicesService {
 
   async updateServicesFromJson() : Promise<void> {
     // Delete all services from DB
+    /*
     await this.serviceModel.deleteMany({});
 
     const services: Service[] = SERVICES['default'];
@@ -18,8 +19,12 @@ export class ServicesService {
       // Create new ID for new Services without IDs
       service._id = service._id != undefined ? new ObjectId(service._id) : new ObjectId();
       await this.serviceModel.create(service);
-    });
-    fs.writeFile('services.json', JSON.stringify(SERVICES, null, 2), () => {})
+    })
+
+    const servicesFromDB = await this.serviceModel.find().exec();
+    fs.writeFile('services.json', JSON.stringify(servicesFromDB, null, 2), () => {})
+
+     */
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
