@@ -9,23 +9,19 @@ import * as fs from 'fs';
 export class ServicesService {
 
   async updateServicesFromJson() : Promise<void> {
-    let modified: boolean = false;
     const read_data: string = fs.readFileSync('services.json', 'utf8');
     const services: Service[] = JSON.parse(read_data);
-    services.forEach(async (service) => {
+    for (let service of services) {
       if (service._id != undefined) {
         service._id = new ObjectId(service._id);
         await this.serviceModel.findByIdAndUpdate(service._id, service);
       } else {
-        modified = true;
         service._id = new ObjectId();
         await this.serviceModel.create(service);
       }
-    });
-    if (modified) {
-      const data = JSON.stringify(services, null, 2);
-      fs.writeFile('services.json', data, () => {});
-    }
+    };
+    const data = JSON.stringify(services, null, 2);
+    fs.writeFile('services.json', data, () => {});
   }
 
   constructor(@InjectModel(Service.name) private readonly serviceModel: Model<Service>) {
