@@ -10,7 +10,7 @@ export class ServicesService {
   async updateServicesFromJson(): Promise<void> {
     const read_data: string = fs.readFileSync("services.json", "utf8");
     const services: Service[] = JSON.parse(read_data);
-    for (let service of services) {
+    for (const service of services) {
       if (service._id != undefined) {
         service._id = new ObjectId(service._id);
         await this.serviceModel.findByIdAndUpdate(service._id, service);
