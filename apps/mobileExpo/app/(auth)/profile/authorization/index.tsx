@@ -56,7 +56,7 @@ const ServiceCard = ({ name, description, icon, webUrl, customColor }) => {
 };
 
 const ServiceConnectionsScreen = ({ authorizations = [] }) => {
-  const BASE_WEB_URL = "https://127.0.0.1:8081/profile/authorization"; // Remplace par ton URL de base
+  const BASE_WEB_URL = "https://127.0.0.1:8081/profile/authorizations"; // Remplace par ton URL de base
 
   const services = [
     {
