@@ -17,6 +17,10 @@ export class UsersService {
         return await user.save();
     }
 
+    async deleteUser(user: AuthentifiedUser) : Promise<void> {
+        this.userModel.findByIdAndDelete(user.id);
+    }
+
     //TODO: rename with google
     async findOrCreateUser(userData: { email: string; first_name: string; last_name: string; token: TokenDto }): Promise<User> {
         const user = await this.userModel.findOne({ email: userData.email });
