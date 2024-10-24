@@ -7,12 +7,12 @@ import {
 import { JwtService } from "@nestjs/jwt";
 
 export interface AuthentifiedUser {
-  id: string,
-  email: string,
+  id: string;
+  email: string;
 }
 
 export interface AuthRequest {
-  user: AuthentifiedUser
+  user: AuthentifiedUser;
 }
 
 @Injectable()
@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
       });
       const user: AuthentifiedUser = {
         id: payload.sub,
-        email: payload.email
+        email: payload.email,
       };
       request["user"] = user;
     } catch {

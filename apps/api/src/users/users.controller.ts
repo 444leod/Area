@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, Req, Request, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  Req,
+  Request,
+  UseGuards,
+} from "@nestjs/common";
 import { AuthGuard, AuthRequest } from "../auth/auth.guard";
 import { UsersService } from "./users.service";
 import { ApiBearerAuth, ApiTags, ApiResponse } from "@nestjs/swagger";
@@ -14,7 +21,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  async getUserProfile(@Request() req) {
+  async getUserProfile(@Request() req: AuthRequest) {
     return await this.usersService.findByEmail(req.user.email);
   }
 
@@ -30,6 +37,6 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Delete()
   async deleteUser(@Request() req: AuthRequest): Promise<void> {
-      return await this.usersService.deleteUser(req.user);
+    return await this.usersService.deleteUser(req.user);
   }
 }

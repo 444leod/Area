@@ -7,12 +7,13 @@ import { AuthentifiedUser } from "src/auth/auth.guard";
 
 @Injectable()
 export class AreasService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async findCurrentUser(user: AuthentifiedUser): Promise<(Document<unknown, unknown, User> & User)> {
+  async findCurrentUser(
+    user: AuthentifiedUser,
+  ): Promise<Document<unknown, unknown, User> & User> {
     const u = await this.userModel.findById(user.id);
-    if (!u)
-      throw new NotFoundException("User not found");
+    if (!u) throw new NotFoundException("User not found");
     return u;
   }
 
@@ -45,7 +46,10 @@ export class AreasService {
     return await user.save();
   }
 
-  async removeAreaFromUser(_user: AuthentifiedUser, id: ObjectId): Promise<User> {
+  async removeAreaFromUser(
+    _user: AuthentifiedUser,
+    id: ObjectId,
+  ): Promise<User> {
     const user = await this.findCurrentUser(_user);
     if (!user.areas.find((a) => a._id.equals(id)))
       throw new NotFoundException("Area not found.");

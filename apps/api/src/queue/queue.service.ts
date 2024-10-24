@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AreaPacket, RabbitMQService } from '@area/shared';
+import { AreaPacket, RabbitMQService } from "@area/shared";
 
 @Injectable()
 export class QueueService {

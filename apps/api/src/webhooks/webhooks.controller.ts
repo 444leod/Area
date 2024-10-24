@@ -1,4 +1,11 @@
-import { BadRequestException, Controller, HttpCode, Param, Post, Req } from "@nestjs/common";
+import {
+  BadRequestException,
+  Controller,
+  HttpCode,
+  Param,
+  Post,
+  Req,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { QueueService } from "src/queue/queue.service";
 import { AreasService } from "src/areas/areas.service";
