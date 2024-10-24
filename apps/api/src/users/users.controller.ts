@@ -2,8 +2,10 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Req,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard, AuthRequest } from "../auth/auth.guard";
@@ -14,6 +16,7 @@ import {
   AuthorizationOkOptions,
   UserNotFoundOptions,
 } from "./swagger-content";
+import { User } from "@area/shared";
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
@@ -21,8 +24,10 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get("profile")
-  async getUserProfile(@Request() req: AuthRequest) {
-    return await this.usersService.findByEmail(req.user.email);
+  async getUserProfile(@Request() req: AuthRequest): Promise<User> {
+    const user = await this.usersService.findById(req.user.id);
+    if (!user) throw new UnauthorizedException();
+    return user;
   }
 
   @ApiBearerAuth("token")
@@ -36,7 +41,8 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Delete()
+  @HttpCode(204)
   async deleteUser(@Request() req: AuthRequest): Promise<void> {
-    return await this.usersService.deleteUser(req.user);
+    await this.usersService.deleteUser(req.user);
   }
 }

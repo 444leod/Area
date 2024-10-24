@@ -34,8 +34,9 @@ export class UsersService {
     return await this.userModel.findOne({ email: email }).exec();
   }
 
-  async deleteUser(user: AuthentifiedUser): Promise<void> {
-    return await this.userModel.findByIdAndDelete(user.id);
+  async deleteUser(_user: AuthentifiedUser): Promise<void> {
+    const user = await this.userModel.findByIdAndDelete(_user.id);
+    if (!user) throw new UnauthorizedException();
   }
 
   //TODO: rename with google
