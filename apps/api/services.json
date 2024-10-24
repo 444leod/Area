@@ -8,6 +8,7 @@
         "name": "videoPosted",
         "description": "When video was posted by a given channel",
         "type": "ON_YOUTUBE_VIDEO_POSTED",
+        "authorization": "GOOGLE",
         "params": [
           {
             "name": "user_id",
@@ -196,6 +197,7 @@
         "name": "Create new task",
         "description": "for create new task",
         "type": "CREATE_GOOGLE_TASK",
+        "authorization": "GOOGLE",
         "params": [
           {
             "name": "title",
@@ -223,6 +225,7 @@
         "description": "when new issue created",
         "type": "ON_NEW_JIRA_TICKET",
         "params": [],
+        "authorization": "ATLASSIAN",
         "variables": [
           {
             "name": "area_name",
@@ -351,6 +354,7 @@
         "description": "when new project created",
         "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
+        "authorization": "ATLASSIAN",
         "variables": [
           {
             "name": "area_name",
@@ -439,6 +443,7 @@
         "description": "when new repository created",
         "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
+        "authorization": "GITHUB",
         "variables": [
           {
             "name": "area_name",
@@ -530,12 +535,17 @@
         "name": "a pull request state has changed to the one selected",
         "description": "when pull request state changed",
         "type": "ON_PULL_REQUEST_STATE",
+        "authorization": "GITHUB",
         "params": [
           {
             "name": "state",
             "details": "state of the pull request",
             "type": "enum",
-            "items": ["all", "open", "closed"],
+            "items": [
+              "all",
+              "open",
+              "closed"
+            ],
             "required": true
           },
           {
