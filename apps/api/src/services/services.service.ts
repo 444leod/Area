@@ -1,11 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import {
-  AuthorizationsTypes,
-  Service,
-  ShortService,
-} from "@area/shared";
+import { AuthorizationsTypes, Service, ShortService } from "@area/shared";
 import { ObjectId } from "mongodb";
 import * as fs from "fs";
 import { ServiceTypeList } from "./service-type-list.interface";
