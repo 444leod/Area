@@ -26,6 +26,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { ActionRegistry } from "../actions/action.decorator";
 
 @ApiExtraModels(
   ExampleActionInfos,
@@ -65,24 +66,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: [
-        { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
-        { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
-        {
-          value: OnYoutubeVideoPostedClass,
-          name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED,
-        },
-        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
-        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
-        {
-          value: OnNewGithubRepositoryClass,
-          name: ActionTypes.ON_NEW_GITHUB_REPOSITORY,
-        },
-        {
-          value: OnPullRequestStateClass,
-          name: ActionTypes.ON_PULL_REQUEST_STATE,
-        },
-      ],
+      subTypes: ActionRegistry.sub_types
     },
   })
   action: ActionInfos;

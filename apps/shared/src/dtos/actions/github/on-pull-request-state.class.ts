@@ -1,6 +1,7 @@
 import { ActionTypes } from "../action-types.enum";
 import { BaseActionInfos } from "../action-infos.class";
 import { IsString, IsEnum, IsNotEmpty } from "class-validator";
+import { RegisterAction } from "../action.decorator";
 
 enum PullRequestStates {
   OPEN = "open",
@@ -8,6 +9,7 @@ enum PullRequestStates {
   ALL = "all",
 }
 
+@RegisterAction(ActionTypes.ON_PULL_REQUEST_STATE)
 export class OnPullRequestStateClass extends BaseActionInfos {
   type: ActionTypes.ON_PULL_REQUEST_STATE;
 
