@@ -6,7 +6,7 @@
 	import { oauthGithub } from '$lib/modules/oauthGithub';
 	import { oauthSpotify } from '$lib/modules/oauthSpotify';
 	import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
-	import ServiceModal from "$lib/components/ServiceModal.svelte";
+	import ServiceModal from '$lib/components/ServiceModal.svelte';
 	import { Search } from 'lucide-svelte';
 
 	export let data;
@@ -16,19 +16,19 @@
 
 	function getRelatedServices(serviceName: string) {
 		const serviceMap = {
-			'Google': ['Google task', 'YouTube', 'Mail'],
-			'Atlassian': ['Atlassian'],
-			'Github': ['Github'],
-			'Spotify': ['Spotify'],
-			'Discord': ['Discord']
+			Google: ['Google task', 'YouTube', 'Mail'],
+			Atlassian: ['Atlassian'],
+			Github: ['Github'],
+			Spotify: ['Spotify'],
+			Discord: ['Discord']
 		};
 		const relatedNames = serviceMap[serviceName] || [serviceName];
-		const relatedServices = relatedNames.map(name =>
-				data.services.find(s => s.name === name)
-		).filter(Boolean);
+		const relatedServices = relatedNames
+			.map((name) => data.services.find((s) => s.name === name))
+			.filter(Boolean);
 		return {
-			actions: relatedServices.flatMap(s => s.actions || []),
-			reactions: relatedServices.flatMap(s => s.reactions || [])
+			actions: relatedServices.flatMap((s) => s.actions || []),
+			reactions: relatedServices.flatMap((s) => s.reactions || [])
 		};
 	}
 
@@ -73,9 +73,9 @@
 	let showDisconnected = true;
 
 	$: filteredServices = services.filter(
-			(service) =>
-					service.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-					((showConnected && service.connected) || (showDisconnected && !service.connected))
+		(service) =>
+			service.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+			((showConnected && service.connected) || (showDisconnected && !service.connected))
 	);
 
 	function connectService(service) {
@@ -106,9 +106,9 @@
 	function openServiceModal(service) {
 		selectedService = {
 			...service,
-			description: `${service.description}\n\nIncludes services: ${
-					getRelatedServices(service.name).relatedServices?.map(s => s.name).join(', ')
-			}`
+			description: `${service.description}\n\nIncludes services: ${getRelatedServices(service.name)
+				.relatedServices?.map((s) => s.name)
+				.join(', ')}`
 		};
 		showModal = true;
 	}
@@ -123,7 +123,7 @@
 	<h1 class="h1 mb-8 text-center">Manage Your Service Connections</h1>
 	<div class="flex flex-col md:flex-row justify-between items-center mb-8">
 		<div
-				class="input-group input-group-divider grid-cols-[auto_1fr_auto] w-full md:w-1/2 mb-4 md:mb-0"
+			class="input-group input-group-divider grid-cols-[auto_1fr_auto] w-full md:w-1/2 mb-4 md:mb-0"
 		>
 			<div class="input-group-shim"><Search size={20} /></div>
 			<input type="search" placeholder="Search services..." bind:value={searchTerm} />
@@ -144,21 +144,17 @@
 		{#each filteredServices as service (service.name)}
 			<div in:fly={{ y: 50, duration: 300, delay: 150, easing: quintOut }}>
 				<ServiceCard
-						name={service.name}
-						description={service.description}
-						icon={service.icon}
-						connected={service.connected}
-						onConnect={() => connectService(service)}
-						onDisconnect={() => disconnectService(service)}
-						onDetails={() => openServiceModal(service)}
+					name={service.name}
+					description={service.description}
+					icon={service.icon}
+					connected={service.connected}
+					onConnect={() => connectService(service)}
+					onDisconnect={() => disconnectService(service)}
+					onDetails={() => openServiceModal(service)}
 				/>
 			</div>
 		{/each}
 	</div>
 </div>
 
-<ServiceModal
-		show={showModal}
-		service={selectedService}
-		onClose={closeModal}
-/>
+<ServiceModal show={showModal} service={selectedService} onClose={closeModal} />
