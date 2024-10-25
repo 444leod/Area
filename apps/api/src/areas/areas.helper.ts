@@ -15,7 +15,6 @@ export class AreasHelper {
 
   constructor (private readonly servicesService: ServicesService) {}
 
-
   build(dto: AreaCreationDto): Area {
     const action: Action = {
       service_id: this.servicesService.area_services[dto.action.type],

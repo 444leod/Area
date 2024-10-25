@@ -27,6 +27,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { ActionRegistry } from "../actions/action.decorator";
+import { ReactionRegistry } from "../reactions/reaction.decorator";
 
 @ApiExtraModels(
   ExampleActionInfos,
@@ -85,18 +86,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: [
-        { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
-        { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
-        {
-          value: CreateGoogleTaskInfos,
-          name: ReactionTypes.CREATE_GOOGLE_TASK,
-        },
-        {
-          value: SendMessageToDiscordWebhookInfos,
-          name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK,
-        },
-      ],
+      subTypes: ReactionRegistry.sub_types
     },
   })
   reaction: ReactionInfos;
