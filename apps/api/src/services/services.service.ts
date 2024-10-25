@@ -69,12 +69,12 @@ export class ServicesService {
       reactionTypes: [],
     };
     service = await this.serviceModel
-      .findOne({ "actions.authorization": authType }, { "actions.$": 1 })
+      .findOne({ "actions.authorizations": authType }, { "actions.$": 1 })
       .exec();
     if (service)
       for (const action of service.actions) types.actionTypes.push(action.type);
     service = await this.serviceModel
-      .findOne({ "reactions.authorization": authType }, { "reactions.$": 1 })
+      .findOne({ "reactions.authorizations": authType }, { "reactions.$": 1 })
       .exec();
     if (service)
       for (const reaction of service.reactions)
