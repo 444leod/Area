@@ -1,6 +1,8 @@
 import { ActionTypes } from "../../actions";
+import { History } from "../history.decorator";
 
-export interface OnYoutubeVideoPostedHistoryDTO {
+@History(ActionTypes.ON_YOUTUBE_VIDEO_POSTED)
+export class OnYoutubeVideoPostedHistoryDTO {
   type: ActionTypes.ON_YOUTUBE_VIDEO_POSTED;
-  lastVideoTimestamp: number;
+  lastVideoTimestamp: number = 0;
 }

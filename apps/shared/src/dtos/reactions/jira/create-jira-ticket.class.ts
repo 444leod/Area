@@ -4,9 +4,11 @@ import {
   IsOptional,
 } from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
-import { ReactionTypes } from "../reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
+import { ReactionTypes } from "../reaction-types.enum";
+import { RegisterReaction } from "../reaction.decorator";
 
+@RegisterReaction(ReactionTypes.CREATE_JIRA_TICKET)
 export class CreateJiraTicketInfos extends BaseReactionInfos {
   type: ReactionTypes.CREATE_JIRA_TICKET;
 

@@ -7,6 +7,7 @@ import {
   JiraAPI,
   JiraTicketCreate,
   CreateJiraTicketInfos,
+  ReactionTypes,
 } from "@area/shared";
 
 export const handleCreateJiraTicketReaction: ReactionFunction = async (
