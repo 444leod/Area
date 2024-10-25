@@ -1,10 +1,8 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
   HttpCode,
-  Patch,
   Request,
   UnauthorizedException,
   UseGuards,
@@ -17,7 +15,7 @@ import {
   ProfileOkOptions,
   AuthorizationsOkOptions,
 } from "./swagger-content";
-import { DisconnectServiceDto, User } from "@area/shared";
+import { User } from "@area/shared";
 
 @ApiTags("Users")
 @Controller("users")
