@@ -11,7 +11,11 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { DisconnectServiceDto, UserLoginDto, UserRegistrationDto } from "@area/shared";
+import {
+  DisconnectServiceDto,
+  UserLoginDto,
+  UserRegistrationDto,
+} from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard, AuthRequest } from "./auth.guard";
 import { UsersService } from "src/users/users.service";

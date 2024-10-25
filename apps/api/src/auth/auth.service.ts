@@ -442,6 +442,4 @@ export class AuthService {
       token: await this.jwtService.signAsync(payload),
     };
   }
-
-  
 }
