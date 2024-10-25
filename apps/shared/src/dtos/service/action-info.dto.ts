@@ -17,8 +17,8 @@ export class ActionInfo {
   @ApiProperty({ type: [ServiceParam] })
   params: ServiceParam[];
 
-  @ApiProperty({ enum: AuthorizationsTypes })
-  authorization?: AuthorizationsTypes;
+  @ApiProperty({ type: [AuthorizationsTypes] })
+  authorizations?: AuthorizationsTypes[];
 
   @ApiProperty({ type: [ActionVariable] })
   variables?: ActionVariable[];
