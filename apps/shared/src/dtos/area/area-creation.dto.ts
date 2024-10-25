@@ -73,7 +73,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: ActionRegistry.sub_types
+      subTypes: ActionRegistry.sub_types,
     },
   })
   action: ActionInfos;
@@ -95,7 +95,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: ReactionRegistry.sub_types
+      subTypes: ReactionRegistry.sub_types,
     },
   })
   reaction: ReactionInfos;

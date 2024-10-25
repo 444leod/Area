@@ -12,16 +12,15 @@ import { ServicesService } from "src/services/services.service";
 
 @Injectable()
 export class AreasHelper {
-
-  constructor (private readonly servicesService: ServicesService) {}
+  constructor(private readonly servicesService: ServicesService) {}
 
   build(dto: AreaCreationDto): Area {
     const action: Action = {
       service_id: this.servicesService.area_services[dto.action.type],
       informations: dto.action,
       history: HistoryRegistry.create(dto.action.type),
-      is_webhook: false // TODO
-    }
+      is_webhook: false, // TODO
+    };
     const reaction: Reaction = {
       service_id: this.servicesService.area_services[dto.reaction.type],
       informations: dto.reaction,

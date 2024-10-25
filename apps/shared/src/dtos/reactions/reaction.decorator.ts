@@ -9,13 +9,15 @@ export class ReactionRegistry {
   }
 
   static get sub_types(): {
-    name: string,
-    value: ClassConstructor<any>
+    name: string;
+    value: ClassConstructor<any>;
   }[] {
-    return Array.from(ReactionRegistry.registry.entries()).map(([type, value]) => ({
-      value,
-      name: type
-    }));
+    return Array.from(ReactionRegistry.registry.entries()).map(
+      ([type, value]) => ({
+        value,
+        name: type,
+      }),
+    );
   }
 }
 

@@ -10,7 +10,7 @@ import { ServicesModule } from "src/services/services.module";
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    ServicesModule
+    ServicesModule,
   ],
   controllers: [AreasController],
   providers: [AreasService, AreasHelper],

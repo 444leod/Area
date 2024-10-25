@@ -9,13 +9,15 @@ export class ActionRegistry {
   }
 
   static get sub_types(): {
-    name: string,
-    value: ClassConstructor<any>
+    name: string;
+    value: ClassConstructor<any>;
   }[] {
-    return Array.from(ActionRegistry.registry.entries()).map(([type, value]) => ({
-      value,
-      name: type
-    }));
+    return Array.from(ActionRegistry.registry.entries()).map(
+      ([type, value]) => ({
+        value,
+        name: type,
+      }),
+    );
   }
 }
 

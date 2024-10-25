@@ -1,13 +1,17 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { ActionTypes, ReactionTypes, Service, ShortService } from "@area/shared";
+import {
+  ActionTypes,
+  ReactionTypes,
+  Service,
+  ShortService,
+} from "@area/shared";
 import { ObjectId } from "mongodb";
 import * as fs from "fs";
 
 @Injectable()
 export class ServicesService {
-
   area_services = new Map<ActionTypes | ReactionTypes, ObjectId>();
 
   async updateServicesFromJson(): Promise<void> {
