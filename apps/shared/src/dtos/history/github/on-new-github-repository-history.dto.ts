@@ -1,6 +1,8 @@
 import { ActionTypes } from "../../actions";
+import { History } from "../history.decorator";
 
-export interface OnNewGithubRepositoryHistoryDTO {
+@History(ActionTypes.ON_NEW_GITHUB_REPOSITORY)
+export class OnNewGithubRepositoryHistoryDTO {
   type: ActionTypes.ON_NEW_GITHUB_REPOSITORY;
-  lastCreationTimestamp: number;
+  lastCreationTimestamp: number = 0;
 }

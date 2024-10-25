@@ -6,3 +6,4 @@ export * from "./jira/on-new-jira-ticket-history.dto";
 export * from "./jira/on-new-jira-project-history.dto";
 export * from "./github/on-new-github-repository-history.dto";
 export * from "./github/on-pull-request-state-history.dto";
+export * from "./history.decorator"

@@ -1,49 +1,30 @@
 import {
-  ActionTypes,
   Area,
   AreaCreationDto,
-  ReactionTypes,
   Reaction,
   Action,
   AreaDto,
+  HistoryRegistry,
 } from "@area/shared";
 import { Injectable } from "@nestjs/common";
-import { ActionBuilder } from "./builders/actions/action.builder";
-import { ExampleActionBuilder } from "./builders/actions/example.builder";
-import { EachXSecondsActionBuilder } from "./builders/actions/each-x-sec.builder";
-import { OnYoutubeVideoPostedBuilder } from "./builders/actions/on-youtube-video-posted";
 import { ObjectId } from "mongodb";
-import { OnNewJiraTicketBuilder } from "./builders/actions/on-new-jira-ticket";
-import { OnNewJiraProjectBuilder } from "./builders/actions/on-new-jira-project";
-import { OnNewGithubRepositoryBuilder } from "./builders/actions/on-new-github-repository";
-import { OnPullRequestStateBuilder } from "./builders/actions/on-pull-request-state";
+import { ServicesService } from "src/services/services.service";
 
 @Injectable()
 export class AreasHelper {
-  private _actions_builders: Record<ActionTypes, ActionBuilder> = {
-    EXAMPLE_ACTION: new ExampleActionBuilder(),
-    EACH_X_SECONDS: new EachXSecondsActionBuilder(),
-    ON_YOUTUBE_VIDEO_POSTED: new OnYoutubeVideoPostedBuilder(),
-    ON_NEW_JIRA_TICKET: new OnNewJiraTicketBuilder(),
-    ON_NEW_JIRA_PROJECT: new OnNewJiraProjectBuilder(),
-    ON_NEW_GITHUB_REPOSITORY: new OnNewGithubRepositoryBuilder(),
-    ON_PULL_REQUEST_STATE: new OnPullRequestStateBuilder(),
-  };
-  // TODO : replace with DB services
-  private _reactions_services: Record<ReactionTypes, ObjectId | undefined> = {
-    EXAMPLE_REACTION: undefined,
-    SEND_EMAIL: undefined,
-    CREATE_GOOGLE_TASK: undefined,
-    SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
-    CREATE_PULL_REQUEST_COMMENT: undefined,
-  };
+
+  constructor (private readonly servicesService: ServicesService) {}
+
 
   build(dto: AreaCreationDto): Area {
-    const action: Action = this._actions_builders[dto.action.type]?.build(
-      dto.action,
-    );
+    const action: Action = {
+      service_id: this.servicesService.area_services[dto.action.type],
+      informations: dto.action,
+      history: HistoryRegistry.create(dto.action.type),
+      is_webhook: false // TODO
+    }
     const reaction: Reaction = {
-      service_id: this._reactions_services[dto.reaction.type],
+      service_id: this.servicesService.area_services[dto.reaction.type],
       informations: dto.reaction,
     };
     const area: Area = {
