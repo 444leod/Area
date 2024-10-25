@@ -35,6 +35,9 @@ export class AreasHelper {
     SEND_EMAIL: undefined,
     CREATE_GOOGLE_TASK: undefined,
     SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
+    SEND_SCROBBLE_REPORT_BY_MAIL: undefined,
+    SEND_ALBUMS_REPORT_BY_MAIL: undefined,
+    SEND_ARTISTS_REPORT_BY_MAIL: undefined,
     CREATE_PULL_REQUEST_COMMENT: undefined,
   };
 

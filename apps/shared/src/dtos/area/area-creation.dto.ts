@@ -18,6 +18,9 @@ import {
   ReactionTypes,
   SendEmailReactionInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
 } from "../reactions";
 import {
   IsNotEmpty,
@@ -41,6 +44,9 @@ import { Type } from "class-transformer";
   SendEmailReactionInfos,
   CreateGoogleTaskInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -93,6 +99,9 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendEmailReactionInfos) },
       { $ref: getSchemaPath(CreateGoogleTaskInfos) },
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) },
+      { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
+      { $ref: getSchemaPath(SendAlbumsReportByEmailInfos) },
+      { $ref: getSchemaPath(SendArtistsReportByEmailInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -111,6 +120,18 @@ export class AreaCreationDto {
         {
           value: SendMessageToDiscordWebhookInfos,
           name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK,
+        },
+        {
+          value: SendScrobbleReportByEmailInfos,
+          name: ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL,
+        },
+        {
+          value: SendAlbumsReportByEmailInfos,
+          name: ReactionTypes.SEND_ALBUMS_REPORT_BY_MAIL,
+        },
+        {
+          value: SendArtistsReportByEmailInfos,
+          name: ReactionTypes.SEND_ARTISTS_REPORT_BY_MAIL,
         },
       ],
     },

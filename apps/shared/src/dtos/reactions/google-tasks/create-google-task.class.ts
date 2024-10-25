@@ -11,8 +11,6 @@ import { ReactionTypes } from "../reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDateOrVariable } from "../../../validators";
 
-class CreateGoogleTaskContent {}
-
 export class CreateGoogleTaskInfos extends BaseReactionInfos {
   type: ReactionTypes.CREATE_GOOGLE_TASK;
 
