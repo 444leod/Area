@@ -1,6 +1,5 @@
 [
   {
-    "_id": "6703d148ddf654a6d482dafb",
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [
@@ -102,7 +101,6 @@
     "reactions": []
   },
   {
-    "_id": "6703d313722dee796788baa3",
     "name": "Timer",
     "description": "Service for Timer actions",
     "actions": [
@@ -155,7 +153,6 @@
     "reactions": []
   },
   {
-    "_id": "6703f2e0bc8055c868eaf474",
     "name": "Mail",
     "description": "Service for Email actions",
     "actions": [],
@@ -188,7 +185,6 @@
     ]
   },
   {
-    "_id": "6703f3dabc8055c868eaf47e",
     "name": "Google task",
     "description": "Service for Google task actions",
     "actions": [],
@@ -216,7 +212,6 @@
     ]
   },
   {
-    "_id": "670e71ff92b0948adfdca0b3",
     "name": "Atlassian",
     "description": "for all Atlassian action",
     "actions": [
@@ -434,7 +429,6 @@
     "reactions": []
   },
   {
-    "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
     "actions": [
@@ -672,7 +666,6 @@
     "reactions": []
   },
   {
-    "_id": "670f8cbd7920482a14597111",
     "name": "Discord",
     "description": "Discord interactions",
     "actions": [],
