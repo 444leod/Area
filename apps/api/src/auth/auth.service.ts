@@ -14,7 +14,6 @@ import {
   TokenDto,
 } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
-import { ServicesService } from "../services/services.service";
 import { google } from "googleapis";
 import { ConfigService } from "@nestjs/config";
 import { OAuth2Client } from "google-auth-library";
@@ -28,7 +27,6 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly servicesService: ServicesService,
   ) {
     this.webOAuth2Client = new google.auth.OAuth2(
       this.configService.get("GOOGLE_CLIENT_ID"),
@@ -444,4 +442,6 @@ export class AuthService {
       token: await this.jwtService.signAsync(payload),
     };
   }
+
+  
 }
