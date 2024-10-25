@@ -23,12 +23,10 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 		if (!servicesResponse.ok || !authorizationsResponse.ok) {
 			throw new Error('Failed to fetch data');
 		}
-
 		const [services, authorizations] = await Promise.all([
 			servicesResponse.json(),
 			authorizationsResponse.json()
 		]);
-
 		return { services, authorizations };
 	} catch (err) {
 		setError(err);
