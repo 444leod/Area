@@ -573,11 +573,7 @@
             "name": "state",
             "details": "state of the pull request",
             "type": "enum",
-            "items": [
-              "all",
-              "open",
-              "closed"
-            ],
+            "items": ["all", "open", "closed"],
             "required": true
           },
           {
