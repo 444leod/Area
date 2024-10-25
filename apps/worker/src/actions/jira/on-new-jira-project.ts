@@ -2,11 +2,10 @@ import { ActionFunction } from "../action-function";
 import {
   MongoDBService,
   AreaPacket,
-  getJiraDomains,
-  getDomainsProjects,
   OnNewJiraProjectHistoryDTO,
   getAuthorizationToken,
   AuthorizationsTypes,
+  JiraAPI,
 } from "@area/shared";
 
 export const handleNewJiraProjectAction: ActionFunction = async (
@@ -22,22 +21,19 @@ export const handleNewJiraProjectAction: ActionFunction = async (
   const area = packet.area;
   const history = area.action.history as OnNewJiraProjectHistoryDTO;
 
-  const domains = await getJiraDomains(token);
+  const jira = new JiraAPI(token);
+  await jira.init();
 
-  if (domains === null || domains.length === 0) {
-    return null;
-  }
-
-  const projects = await getDomainsProjects(domains, token);
+  const projects = await jira.getProjects();
 
   if (history.projectList === null) {
-    history.projectList = projects.map((project: any) => project.key);
+    history.projectList = projects.map((project) => project.key);
     area.action.history = history;
     await database.updateAreaHistory(packet.user_id, area);
     return null;
   }
 
-  if (projects === null || projects.length === 0) {
+  if (projects.length === 0) {
     return null;
   }
 

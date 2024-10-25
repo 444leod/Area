@@ -13,6 +13,7 @@ import {
 import {
   BaseReactionInfos,
   CreateGoogleTaskInfos,
+  CreateJiraTicketInfos,
   ExampleReactionInfos,
   ReactionInfos,
   ReactionTypes,
@@ -41,6 +42,7 @@ import { Type } from "class-transformer";
   SendEmailReactionInfos,
   CreateGoogleTaskInfos,
   SendMessageToDiscordWebhookInfos,
+  CreateJiraTicketInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -93,6 +95,7 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendEmailReactionInfos) },
       { $ref: getSchemaPath(CreateGoogleTaskInfos) },
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) },
+      { $ref: getSchemaPath(CreateJiraTicketInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -111,6 +114,10 @@ export class AreaCreationDto {
         {
           value: SendMessageToDiscordWebhookInfos,
           name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK,
+        },
+        {
+          value: CreateJiraTicketInfos,
+          name: ReactionTypes.CREATE_JIRA_TICKET,
         },
       ],
     },

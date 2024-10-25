@@ -1,6 +1,5 @@
 [
   {
-    "_id": "6703d148ddf654a6d482dafb",
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [
@@ -101,7 +100,6 @@
     "reactions": []
   },
   {
-    "_id": "6703d313722dee796788baa3",
     "name": "Timer",
     "description": "Service for Timer actions",
     "actions": [
@@ -154,19 +152,18 @@
     "reactions": []
   },
   {
-    "_id": "6703f2e0bc8055c868eaf474",
     "name": "Mail",
     "description": "Service for Email actions",
     "actions": [],
     "reactions": [
       {
-        "name": "sendemail",
+        "name": "Send email",
         "description": "send an email",
         "type": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
-            "details": "email adress of the target",
+            "details": "email address of the target",
             "type": "string",
             "required": true
           },
@@ -187,7 +184,6 @@
     ]
   },
   {
-    "_id": "6703f3dabc8055c868eaf47e",
     "name": "Google task",
     "description": "Service for Google task actions",
     "actions": [],
@@ -214,7 +210,6 @@
     ]
   },
   {
-    "_id": "670e71ff92b0948adfdca0b3",
     "name": "Atlassian",
     "description": "for all Atlassian action",
     "actions": [
@@ -427,10 +422,47 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Create issue",
+        "description": "Create a new issue in a given Jira project",
+        "type": "CREATE_JIRA_TICKET",
+        "params": [
+          {
+            "name": "project_key",
+            "details": "Key of the project where the issue will be created",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_type",
+            "details": "Type of the issue to be created (e.g., Bug, Task, Story)",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "Title of the issue",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "details": "Description of the issue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "assignee_name",
+            "details": "Name of the assignee for the issue",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
   },
   {
-    "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
     "actions": [
@@ -535,7 +567,11 @@
             "name": "state",
             "details": "state of the pull request",
             "type": "enum",
-            "items": ["all", "open", "closed"],
+            "items": [
+              "all",
+              "open",
+              "closed"
+            ],
             "required": true
           },
           {
@@ -666,7 +702,6 @@
     "reactions": []
   },
   {
-    "_id": "670f8cbd7920482a14597111",
     "name": "Discord",
     "description": "Discord interactions",
     "actions": [],

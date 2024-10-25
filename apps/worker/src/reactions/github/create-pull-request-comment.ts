@@ -2,7 +2,7 @@ import { ReactionFunction } from "../reaction-function";
 import {
   MongoDBService,
   AreaPacket,
-  CreatePullRequestCommentClass,
+  CreatePullRequestCommentInfos,
   createPullRequestComment,
   getAuthorizationToken,
   AuthorizationsTypes,
@@ -19,7 +19,7 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
   );
 
   const area = packet.area;
-  const reaction = area.reaction.informations as CreatePullRequestCommentClass;
+  const reaction = area.reaction.informations as CreatePullRequestCommentInfos;
 
   if (isNaN(Number(reaction.pull_request_number))) {
     console.error("pull request number is not a number.");

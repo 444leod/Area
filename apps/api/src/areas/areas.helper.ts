@@ -1,11 +1,11 @@
 import {
+  Action,
   ActionTypes,
   Area,
   AreaCreationDto,
-  ReactionTypes,
-  Reaction,
-  Action,
   AreaDto,
+  Reaction,
+  ReactionTypes,
 } from "@area/shared";
 import { Injectable } from "@nestjs/common";
 import { ActionBuilder } from "./builders/actions/action.builder";
@@ -36,6 +36,7 @@ export class AreasHelper {
     CREATE_GOOGLE_TASK: undefined,
     SEND_MESSAGE_TO_DISCORD_WEBHOOK: undefined,
     CREATE_PULL_REQUEST_COMMENT: undefined,
+    CREATE_JIRA_TICKET: undefined,
   };
 
   build(dto: AreaCreationDto): Area {
@@ -46,14 +47,13 @@ export class AreasHelper {
       service_id: this._reactions_services[dto.reaction.type],
       informations: dto.reaction,
     };
-    const area: Area = {
+    return {
       _id: new ObjectId(),
       name: dto.name,
       action: action,
       reaction: reaction,
       active: true,
     };
-    return area;
   }
 
   toDto(area: Area): AreaDto {

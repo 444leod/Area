@@ -5,7 +5,8 @@ import { CreateGoogleTaskInfos } from "./google-tasks/create-google-task.class";
 import { ReactionTypes } from "./reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
 import { SendMessageToDiscordWebhookInfos } from "./discord/send-message-to-discord-webhook.class";
-import { CreatePullRequestCommentClass } from "./github/create-pull-request-comment.class";
+import { CreatePullRequestCommentInfos } from "./github/create-pull-request-comment.class";
+import { CreateJiraTicketInfos } from "./jira/create-jira-ticket.class";
 
 export class BaseReactionInfos {
   @ApiProperty()
@@ -18,4 +19,5 @@ export type ReactionInfos =
   | SendEmailReactionInfos
   | CreateGoogleTaskInfos
   | SendMessageToDiscordWebhookInfos
-  | CreatePullRequestCommentClass;
+  | CreatePullRequestCommentInfos
+  | CreateJiraTicketInfos;
