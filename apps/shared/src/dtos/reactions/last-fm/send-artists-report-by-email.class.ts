@@ -2,15 +2,14 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 import { ReactionTypes } from "../reaction-types.enum";
 import { BaseReactionInfos } from "../reaction-infos.class";
-import { IsEmailOrVariable } from "../../../validators/";
-import { RegisterReaction } from "../reaction.decorator";
+import { IsEmailOrVariable, IsNumberOrVariable } from "../../../validators/";
 
-@RegisterReaction(ReactionTypes.SEND_EMAIL)
-export class SendEmailReactionInfos extends BaseReactionInfos {
-  type: ReactionTypes.SEND_EMAIL;
+export class SendArtistsReportByEmailInfos extends BaseReactionInfos {
+  type: ReactionTypes.SEND_ARTISTS_REPORT_BY_MAIL;
 
   @ApiProperty()
   @IsEmailOrVariable()
+  @IsNotEmpty()
   to: string;
 
   @ApiProperty()
@@ -21,5 +20,10 @@ export class SendEmailReactionInfos extends BaseReactionInfos {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  body: string;
+  username: string;
+
+  @ApiProperty({ minimum: 1 })
+  @IsNotEmpty()
+  @IsNumberOrVariable(1)
+  nb_artists: number | string;
 }

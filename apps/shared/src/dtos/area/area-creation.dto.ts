@@ -18,6 +18,9 @@ import {
   ReactionTypes,
   SendEmailReactionInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
 } from "../reactions";
 import {
   IsNotEmpty,
@@ -43,6 +46,9 @@ import { ReactionRegistry } from "../reactions/reaction.decorator";
   SendEmailReactionInfos,
   CreateGoogleTaskInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -78,6 +84,9 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendEmailReactionInfos) },
       { $ref: getSchemaPath(CreateGoogleTaskInfos) },
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) },
+      { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
+      { $ref: getSchemaPath(SendAlbumsReportByEmailInfos) },
+      { $ref: getSchemaPath(SendArtistsReportByEmailInfos) },
     ],
   })
   @IsNotEmptyObject()
