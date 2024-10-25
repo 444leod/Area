@@ -1,25 +1,30 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Service, ShortService } from "@area/shared";
+import {
+  ActionTypes,
+  ReactionTypes,
+  Service,
+  ShortService,
+} from "@area/shared";
 import { ObjectId } from "mongodb";
-import * as SERVICES from "../../services.json";
 import * as fs from "fs";
 
 @Injectable()
 export class ServicesService {
-  async updateServicesFromJson(): Promise<void> {
-    // Delete all services from DB
-    await this.serviceModel.deleteMany({});
+  area_services = new Map<ActionTypes | ReactionTypes, ObjectId>();
 
-    const services: Service[] = SERVICES["default"];
-    services.forEach(async (service) => {
-      // Create new ID for new Services without IDs
-      service._id =
-        service._id != undefined ? new ObjectId(service._id) : new ObjectId();
-      await this.serviceModel.create(service);
-    });
-    fs.writeFile("services.json", JSON.stringify(SERVICES, null, 2), () => {});
+  async updateServicesFromJson(): Promise<void> {
+    const read_data: string = fs.readFileSync("services.json", "utf8");
+    const services: Service[] = JSON.parse(read_data);
+    await this.serviceModel.deleteMany({});
+    for (const service of services) {
+      service._id = new ObjectId();
+      this.serviceModel.create(service);
+      for (const area of [...service.actions, ...service.reactions]) {
+        this.area_services[area.type] = service._id;
+      }
+    }
   }
 
   constructor(

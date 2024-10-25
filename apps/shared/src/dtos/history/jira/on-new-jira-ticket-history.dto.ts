@@ -1,6 +1,8 @@
 import { ActionTypes } from "../../actions";
+import { History } from "../history.decorator";
 
-export interface OnNewJiraTicketHistoryDTO {
+@History(ActionTypes.ON_NEW_JIRA_TICKET)
+export class OnNewJiraTicketHistoryDTO {
   type: ActionTypes.ON_NEW_JIRA_TICKET;
-  lastCreationTimestamp: number;
+  lastCreationTimestamp: number = 0;
 }

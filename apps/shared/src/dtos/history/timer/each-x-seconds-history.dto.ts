@@ -1,6 +1,8 @@
 import { ActionTypes } from "../../actions";
+import { History } from "../history.decorator";
 
-export interface EachXSecondsHistoryDTO {
+@History(ActionTypes.EACH_X_SECONDS)
+export class EachXSecondsHistoryDTO {
   type: ActionTypes.EACH_X_SECONDS;
-  lastExecutionTimestamp: number;
+  lastExecutionTimestamp: number = 0;
 }

@@ -1,6 +1,8 @@
 import { ActionTypes } from "../../actions";
+import { History } from "../history.decorator";
 
-export interface OnPullRequestStateHistoryDTO {
+@History(ActionTypes.ON_PULL_REQUEST_STATE)
+export class OnPullRequestStateHistoryDTO {
   type: ActionTypes.ON_PULL_REQUEST_STATE;
-  lastUpdateTimestamp: number;
+  lastUpdateTimestamp: number = 0;
 }

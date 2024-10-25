@@ -1,6 +1,5 @@
 [
   {
-    "_id": "6703d148ddf654a6d482dafb",
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [
@@ -8,6 +7,7 @@
         "name": "videoPosted",
         "description": "When video was posted by a given channel",
         "type": "ON_YOUTUBE_VIDEO_POSTED",
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "user_id",
@@ -101,7 +101,6 @@
     "reactions": []
   },
   {
-    "_id": "6703d313722dee796788baa3",
     "name": "Timer",
     "description": "Service for Timer actions",
     "actions": [
@@ -154,7 +153,6 @@
     "reactions": []
   },
   {
-    "_id": "6703f2e0bc8055c868eaf474",
     "name": "Mail",
     "description": "Service for Email actions",
     "actions": [],
@@ -187,7 +185,6 @@
     ]
   },
   {
-    "_id": "6703f3dabc8055c868eaf47e",
     "name": "Google task",
     "description": "Service for Google task actions",
     "actions": [],
@@ -196,6 +193,7 @@
         "name": "Create new task",
         "description": "for create new task",
         "type": "CREATE_GOOGLE_TASK",
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "title",
@@ -214,7 +212,6 @@
     ]
   },
   {
-    "_id": "670e71ff92b0948adfdca0b3",
     "name": "Atlassian",
     "description": "for all Atlassian action",
     "actions": [
@@ -223,6 +220,7 @@
         "description": "when new issue created",
         "type": "ON_NEW_JIRA_TICKET",
         "params": [],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -351,6 +349,7 @@
         "description": "when new project created",
         "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -430,7 +429,6 @@
     "reactions": []
   },
   {
-    "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
     "actions": [
@@ -439,6 +437,7 @@
         "description": "when new repository created",
         "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
+        "authorizations": ["GITHUB"],
         "variables": [
           {
             "name": "area_name",
@@ -530,6 +529,7 @@
         "name": "a pull request state has changed to the one selected",
         "description": "when pull request state changed",
         "type": "ON_PULL_REQUEST_STATE",
+        "authorizations": ["GITHUB"],
         "params": [
           {
             "name": "state",
@@ -666,7 +666,6 @@
     "reactions": []
   },
   {
-    "_id": "670f8cbd7920482a14597111",
     "name": "Discord",
     "description": "Discord interactions",
     "actions": [],
