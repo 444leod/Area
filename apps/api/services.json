@@ -8,6 +8,7 @@
         "name": "videoPosted",
         "description": "When video was posted by a given channel",
         "type": "ON_YOUTUBE_VIDEO_POSTED",
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "user_id",
@@ -196,6 +197,7 @@
         "name": "Create new task",
         "description": "for create new task",
         "type": "CREATE_GOOGLE_TASK",
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "title",
@@ -223,6 +225,7 @@
         "description": "when new issue created",
         "type": "ON_NEW_JIRA_TICKET",
         "params": [],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -351,6 +354,7 @@
         "description": "when new project created",
         "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -439,6 +443,7 @@
         "description": "when new repository created",
         "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
+        "authorizations": ["GITHUB"],
         "variables": [
           {
             "name": "area_name",
@@ -530,6 +535,7 @@
         "name": "a pull request state has changed to the one selected",
         "description": "when pull request state changed",
         "type": "ON_PULL_REQUEST_STATE",
+        "authorizations": ["GITHUB"],
         "params": [
           {
             "name": "state",
