@@ -4,17 +4,35 @@ import { setError } from '$lib/store/errorMessage';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const load: PageServerLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch, cookies }) => {
+	const token = cookies.get('token');
+	if (!token) {
+		return { services: [], authorizations: [] };
+	}
+
 	try {
-		const response = await fetch(`${API_URL}/services`);
-		if (!response.ok) {
-			throw new Error('Failed to fetch services');
+		const [servicesResponse, authorizationsResponse] = await Promise.all([
+			fetch(`${API_URL}/services`),
+			fetch(`${API_URL}/users/authorizations`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
+		]);
+
+		if (!servicesResponse.ok || !authorizationsResponse.ok) {
+			throw new Error('Failed to fetch data');
 		}
-		const services = await response.json();
-		return { services };
+
+		const [services, authorizations] = await Promise.all([
+			servicesResponse.json(),
+			authorizationsResponse.json()
+		]);
+
+		return { services, authorizations };
 	} catch (err) {
 		setError(err);
-		return { services: [] };
+		return { services: [], authorizations: [] };
 	}
 };
 

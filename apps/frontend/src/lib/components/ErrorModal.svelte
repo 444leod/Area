@@ -46,7 +46,7 @@
 					<X class="w-6 h-6 hover:scale-110 transition-all" />
 				</button>
 			</div>
-			<p class="text-error-200 text-lg">{$errorMessage}</p>
+			<p class="text-error-200 text-lg">{@html $errorMessage}</p>
 			<div class="mt-6 flex justify-end">
 				<button
 					on:click={handleClose}
