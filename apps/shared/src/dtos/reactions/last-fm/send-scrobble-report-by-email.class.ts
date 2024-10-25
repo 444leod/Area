@@ -3,7 +3,9 @@ import { IsNotEmpty, IsString } from "class-validator";
 import { ReactionTypes } from "../reaction-types.enum";
 import { BaseReactionInfos } from "../reaction-infos.class";
 import { IsEmailOrVariable, IsNumberOrVariable } from "../../../validators/";
+import { RegisterReaction } from "../reaction.decorator";
 
+@RegisterReaction(ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL)
 export class SendScrobbleReportByEmailInfos extends BaseReactionInfos {
   type: ReactionTypes.SEND_SCROBBLE_REPORT_BY_MAIL;
 
