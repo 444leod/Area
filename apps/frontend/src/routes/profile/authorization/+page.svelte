@@ -9,6 +9,9 @@
 	import type { ModalSettings } from '@skeletonlabs/skeleton';
 	import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
 	import { Search } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import {setError} from "$lib/store/errorMessage";
+	import {simpleOauthGoogle} from "$lib/modules/simpleOauthGoogle";
 
 	export let data;
 
@@ -18,7 +21,7 @@
 			name: 'Google',
 			description: 'Connect to use Google services in your automations',
 			icon: 'devicon:google',
-			oauthFunction: oauthGoogle
+			oauthFunction: simpleOauthGoogle
 		},
 		{
 			name: 'Atlassian',
@@ -59,9 +62,50 @@
 		service.oauthFunction();
 	}
 
-	function disconnectService(service) {
-		//TODO: Implement disconnect service
-	}
+    async function fetchToken() {
+        try {
+            const response = await fetch('/api/get-token');
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.token;
+                if (token) {
+                    return token;
+                } else {
+                    return null
+                }
+            } else {
+                return null
+            }
+        } catch (error) {
+            setError(error);
+            return null
+        }
+    }
+
+    async function disconnectService(service) {
+        const token = await fetchToken();
+        const type = service.name.toUpperCase()
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ type: type }),
+            });
+            if (response.ok) {
+                await response.json();
+                alert("Deconnexion reussis")
+                goto('/profile');
+                service.connected = false;
+            } else {
+                throw new Error(`Error during disconnection`);
+            }
+        } catch (error) {
+            throw new Error(`Error during disconnection`);
+        }
+    }
 
 	function openServiceModal(service) {
 		const modal: ModalSettings = {
