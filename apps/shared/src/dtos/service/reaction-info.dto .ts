@@ -13,8 +13,8 @@ export class ReactionInfo {
   @ApiProperty()
   type: ReactionTypes;
 
-  @ApiProperty({ enum: AuthorizationsTypes })
-  authorization?: AuthorizationsTypes;
+  @ApiProperty({ type: [AuthorizationsTypes] })
+  authorizations?: AuthorizationsTypes[];
 
   @ApiProperty({ type: [ServiceParam] })
   params: ServiceParam[];
