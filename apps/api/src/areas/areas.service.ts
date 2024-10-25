@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
 import { ObjectId } from "mongodb";
-import { AuthentifiedUser } from "src/auth/auth.guard";
+import { AuthentifiedUser } from "../auth/auth-interfaces";
 
 @Injectable()
 export class AreasService {

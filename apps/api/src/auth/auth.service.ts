@@ -12,12 +12,13 @@ import {
   UserRegistrationDto,
   AuthorizationsTypes,
   TokenDto,
+  User,
 } from "@area/shared";
 import { JwtService } from "@nestjs/jwt";
-import { ServicesService } from "../services/services.service";
 import { google } from "googleapis";
 import { ConfigService } from "@nestjs/config";
 import { OAuth2Client } from "google-auth-library";
+import { TokenPayload } from "./auth-interfaces";
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,6 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly servicesService: ServicesService,
   ) {
     this.webOAuth2Client = new google.auth.OAuth2(
       this.configService.get("GOOGLE_CLIENT_ID"),
@@ -41,17 +41,31 @@ export class AuthService {
     );
   }
 
+  async generateUserToken(user: User): Promise<{ token: string }> {
+    const payload: TokenPayload = {
+      sub: user._id.toHexString(),
+      email: user.email,
+      roles: user.roles
+    };
+    return {
+      token: await this.jwtService.signAsync(payload)
+    }
+  }
+
   async login(dto: UserLoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user) throw new NotFoundException("User not found");
 
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid) throw new UnauthorizedException("Invalid password");
+    return await this.generateUserToken(user);
+  }
 
-    const payload = { sub: user._id.toHexString(), email: user.email };
-    return {
-      token: await this.jwtService.signAsync(payload),
-    };
+  async register(dto: UserRegistrationDto) {
+    const searched_user = await this.usersService.findByEmail(dto.email);
+    if (searched_user != undefined) throw new ConflictException("User already exists");
+    const newUser = await this.usersService.createUser(dto);
+    return await this.generateUserToken(newUser);
   }
 
   async handleGoogleCallback(code: string) {
@@ -433,15 +447,5 @@ export class AuthService {
       console.error("Error connecting to Google:", error);
       return 0;
     }
-  }
-
-  async register(dto: UserRegistrationDto) {
-    const user = await this.usersService.findByEmail(dto.email);
-    if (user != undefined) throw new ConflictException("User already exists");
-    const newUser = await this.usersService.createUser(dto);
-    const payload = { sub: newUser._id.toHexString(), email: newUser.email };
-    return {
-      token: await this.jwtService.signAsync(payload),
-    };
   }
 }

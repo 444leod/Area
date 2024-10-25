@@ -5,15 +5,8 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-
-export interface AuthentifiedUser {
-  id: string;
-  email: string;
-}
-
-export interface AuthRequest {
-  user: AuthentifiedUser;
-}
+import { AuthentifiedUser, TokenPayload } from "./auth-interfaces";
+import { Role } from "@area/shared";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -30,12 +23,13 @@ export class AuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException();
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload: TokenPayload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
       const user: AuthentifiedUser = {
         id: payload.sub,
         email: payload.email,
+        roles: payload.roles.map(v => Role[v])
       };
       request["user"] = user;
     } catch {
