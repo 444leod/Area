@@ -4,8 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
-    "types": ["node", "jest"],
-    "resolveJsonModule": true
+    "types": ["node", "jest"]
   },
 
   "include": ["src/**/*.js", "src/**/*.ts"],
