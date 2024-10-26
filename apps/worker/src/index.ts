@@ -120,6 +120,7 @@ async function handleArea(areaPacket: AreaPacket) {
   console.log(`Reaction: `, res.area.reaction.informations);
 
   Object.keys(res.area.reaction.informations).forEach((key: string) => {
+    // @ts-ignore res will not be null, there is an if before to prevent this.
     const infos = res.area.reaction.informations;
 
     if (
@@ -133,6 +134,7 @@ async function handleArea(areaPacket: AreaPacket) {
 
     infos[key as keyof ReactionInfos] = replaceField(
       infos[key as keyof ReactionInfos] as string,
+      // @ts-ignore res will not be null, there is an if before to prevent this.
       res.data,
     ) as any; // petit bypass mais je verifie le type donc c'est fine
   });

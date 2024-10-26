@@ -7,6 +7,7 @@ import { OnNewGithubRepositoryHistory } from "./github/on-new-github-repository.
 import { OnPullRequestStateHistory } from "./github/on-pull-request-state.history";
 import { OnNewVideoInPlaylistHistory } from "./youtube/on-video-in-playlist.history";
 import { OnNewGoogleTaskHistory } from "./google-tasks/on-new-google-task.history";
+import { OnGoogleTaskExpiredHistory } from "./google-tasks/on-google-task-expired.history";
 
 export type AnyHistory =
   | ExampleActionHistory
@@ -17,4 +18,5 @@ export type AnyHistory =
   | OnNewGithubRepositoryHistory
   | OnPullRequestStateHistory
   | OnNewVideoInPlaylistHistory
-  | OnNewGoogleTaskHistory;
+  | OnNewGoogleTaskHistory
+  | OnGoogleTaskExpiredHistory;
