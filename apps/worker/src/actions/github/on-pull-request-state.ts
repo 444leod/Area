@@ -3,8 +3,8 @@ import {
   MongoDBService,
   AreaPacket,
   getRepositoryPullRequests,
-  OnPullRequestStateClass,
-  OnPullRequestStateHistoryDTO,
+  OnPullRequestStateInfos,
+  OnPullRequestStateHistory,
   getAuthorizationToken,
   AuthorizationsTypes,
 } from "@area/shared";
@@ -20,8 +20,8 @@ export const handleOnPullRequestStateAction: ActionFunction = async (
   );
 
   const area = packet.area;
-  const action = area.action.informations as OnPullRequestStateClass;
-  const history = area.action.history as OnPullRequestStateHistoryDTO;
+  const action = area.action.informations as OnPullRequestStateInfos;
+  const history = area.action.history as OnPullRequestStateHistory;
 
   if (
     history.lastUpdateTimestamp === null ||

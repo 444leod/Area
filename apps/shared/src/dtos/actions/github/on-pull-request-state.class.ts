@@ -10,7 +10,7 @@ enum PullRequestStates {
 }
 
 @RegisterAction(ActionTypes.ON_PULL_REQUEST_STATE)
-export class OnPullRequestStateClass extends BaseActionInfos {
+export class OnPullRequestStateInfos extends BaseActionInfos {
   type: ActionTypes.ON_PULL_REQUEST_STATE;
 
   @IsEnum(PullRequestStates)

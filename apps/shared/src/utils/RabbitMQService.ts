@@ -39,6 +39,7 @@ export class RabbitMQService {
 
     this.channel = await this.connection.createChannel();
     this.connected = true;
+    console.log(`Successfully connected to RabbitMQ instance`);
   }
 
   async close(): Promise<void> {

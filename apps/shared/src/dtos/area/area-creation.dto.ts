@@ -1,21 +1,20 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
 import {
   ActionInfos,
-  ActionTypes,
   BaseActionInfos,
   EachXSecondsActionInfos,
   ExampleActionInfos,
-  OnNewJiraTicketClass,
-  OnYoutubeVideoPostedClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnNewJiraTicketInfos,
+  OnYoutubeVideoPostedInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 } from "../actions";
 import {
   BaseReactionInfos,
   CreateGoogleTaskInfos,
+  CreateJiraTicketInfos,
   ExampleReactionInfos,
   ReactionInfos,
-  ReactionTypes,
   SendEmailReactionInfos,
   SendMessageToDiscordWebhookInfos,
   SendScrobbleReportByEmailInfos,
@@ -30,16 +29,16 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { ActionRegistry } from "../actions/action.decorator";
-import { ReactionRegistry } from "../reactions/reaction.decorator";
+import { ReactionRegistry } from "../reactions";
 
 @ApiExtraModels(
   ExampleActionInfos,
   EachXSecondsActionInfos,
-  OnYoutubeVideoPostedClass,
-  OnNewJiraTicketClass,
-  OnNewJiraTicketClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnYoutubeVideoPostedInfos,
+  OnNewJiraTicketInfos,
+  OnNewJiraTicketInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 )
 @ApiExtraModels(
   ExampleReactionInfos,
@@ -49,6 +48,7 @@ import { ReactionRegistry } from "../reactions/reaction.decorator";
   SendScrobbleReportByEmailInfos,
   SendAlbumsReportByEmailInfos,
   SendArtistsReportByEmailInfos,
+  CreateJiraTicketInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -60,11 +60,11 @@ export class AreaCreationDto {
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
-      { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewGithubRepositoryClass) },
-      { $ref: getSchemaPath(OnPullRequestStateClass) },
+      { $ref: getSchemaPath(OnYoutubeVideoPostedInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewGithubRepositoryInfos) },
+      { $ref: getSchemaPath(OnPullRequestStateInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -87,6 +87,7 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
       { $ref: getSchemaPath(SendAlbumsReportByEmailInfos) },
       { $ref: getSchemaPath(SendArtistsReportByEmailInfos) },
+      { $ref: getSchemaPath(CreateJiraTicketInfos) },
     ],
   })
   @IsNotEmptyObject()

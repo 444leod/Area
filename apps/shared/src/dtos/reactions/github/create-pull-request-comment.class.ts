@@ -4,7 +4,7 @@ import { ReactionTypes } from "../reaction-types.enum";
 import { RegisterReaction } from "../reaction.decorator";
 
 @RegisterReaction(ReactionTypes.CREATE_PULL_REQUEST_COMMENT)
-export class CreatePullRequestCommentClass extends BaseReactionInfos {
+export class CreatePullRequestCommentInfos extends BaseReactionInfos {
   type: ReactionTypes.CREATE_PULL_REQUEST_COMMENT;
 
   @IsString()

@@ -96,9 +96,130 @@
             "template": "https://img.youtube.com/vi/videoID/default.jpg"
           }
         ]
+      },
+      {
+        "name": "New video in playlist",
+        "description": "When a new video is added to a playlist",
+        "type": "ON_NEW_VIDEO_IN_PLAYLIST",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "playlist_id",
+            "details": "ID of the playlist (LL for liked videos, WL & HL won't work)",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "video_id",
+            "description": "ID of the video",
+            "type": "string",
+            "template": "0q6s_P-E13U"
+          },
+          {
+            "name": "title",
+            "description": "title of the video",
+            "type": "string",
+            "template": "My video title"
+          },
+          {
+            "name": "description",
+            "description": "description of the video",
+            "type": "string",
+            "template": "My video description"
+          },
+          {
+            "name": "url",
+            "description": "URL of the video",
+            "type": "string",
+            "template": "https://www.youtube.com/watch?v=videoID"
+          },
+          {
+            "name": "published_at",
+            "description": "date the video was published",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "publication_time",
+            "description": "time the video was published",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "publication_date",
+            "description": "date the video was published",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "channel_title",
+            "description": "name of the video creator's channel",
+            "type": "string",
+            "template": "My Channel"
+          },
+          {
+            "name": "channel_id",
+            "description": "ID of the video creator's channel",
+            "type": "string",
+            "template": "UC1234567890"
+          },
+          {
+            "name": "thumbnail_url",
+            "description": "URL of the video thumbnail",
+            "type": "string",
+            "template": "https://img.youtube.com/vi/videoID/default.jpg"
+          }
+        ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Comment a video",
+        "description": "Comment a video",
+        "type": "COMMENT_YOUTUBE_VIDEO",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "video_id",
+            "details": "ID of the video",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "content",
+            "details": "Comment to post",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Timer",
@@ -158,13 +279,13 @@
     "actions": [],
     "reactions": [
       {
-        "name": "sendemail",
+        "name": "Send email",
         "description": "send an email",
         "type": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
-            "details": "email adress of the target",
+            "details": "email address of the target",
             "type": "string",
             "required": true
           },
@@ -426,7 +547,45 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Create issue",
+        "description": "Create a new issue in a given Jira project",
+        "type": "CREATE_JIRA_TICKET",
+        "params": [
+          {
+            "name": "project_key",
+            "details": "Key of the project where the issue will be created",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_type",
+            "details": "Type of the issue to be created (e.g., Bug, Task, Story)",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "Title of the issue",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "details": "Description of the issue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "assignee_name",
+            "details": "Name of the assignee for the issue",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Github",
