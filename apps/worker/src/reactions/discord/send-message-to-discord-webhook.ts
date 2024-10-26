@@ -1,5 +1,5 @@
 import { ReactionFunction } from "../reaction-function";
-import { AreaPacket, SendMessageToDiscordWebhookInfos } from "@shared/src";
+import { AreaPacket, SendMessageToDiscordWebhookInfos } from "@area/shared";
 import { WebhookClient, EmbedBuilder } from "discord.js";
 
 export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
@@ -16,6 +16,7 @@ export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
         embed.setDescription(reaction.body);
       }
       // if (reaction.date) {
+      //     if (typeof(reaction.date) === "string" && )
       //     embed.setTimestamp(new Date(reaction.date));
       // }
       if (reaction.username) {
