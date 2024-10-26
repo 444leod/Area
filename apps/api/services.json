@@ -136,6 +136,12 @@
             "template": "12:00"
           },
           {
+            "name": "video_id",
+            "description": "ID of the video",
+            "type": "string",
+            "template": "0q6s_P-E13U"
+          },
+          {
             "name": "title",
             "description": "title of the video",
             "type": "string",

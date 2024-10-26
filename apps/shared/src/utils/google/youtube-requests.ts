@@ -128,7 +128,7 @@ export async function getPlaylistVideos(
       const response = await youtube.playlistItems.list({
         part: ["snippet", "contentDetails"],
         playlistId: playlistId,
-        maxResults: 50, // Maximum allowed per page
+        maxResults: 50,
         pageToken: nextPageToken,
       });
 

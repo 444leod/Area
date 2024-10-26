@@ -34,16 +34,17 @@ export const handleOnNewYoutubeVideoInPlaylistAction: ActionFunction = async (
 
   let video;
 
-  if (!history.videoIds || history.videoIds.length === 0) {
+  if (!history.videoIds) {
     history.videoIds = videos.map(
       (video) => video.snippet?.resourceId?.videoId || "",
     );
 
-    video = videos[videos.length - 1];
+    video = null;
   } else {
     const newVideos = videos.filter(
       (video) =>
         video.snippet?.resourceId?.videoId &&
+        // @ts-expect-error history.videoIds will not be undefined here because of the previous if
         !history.videoIds.includes(video.snippet?.resourceId?.videoId),
     );
 
@@ -64,7 +65,9 @@ export const handleOnNewYoutubeVideoInPlaylistAction: ActionFunction = async (
   }
 
   if (
+    !oldVideoHistory ||
     oldVideoHistory.length !== history.videoIds.length ||
+    // @ts-expect-error history.videoIds will not be undefined here because !oldVideoHistory will be false if it is
     !oldVideoHistory.every((elem) => history.videoIds.includes(elem))
   ) {
     packet.area.action.history = history;
@@ -76,6 +79,7 @@ export const handleOnNewYoutubeVideoInPlaylistAction: ActionFunction = async (
   }
 
   packet.data = {
+    video_id: video.snippet?.resourceId?.videoId,
     title: video.snippet?.title,
     description: video.snippet?.description,
     url: `https://www.youtube.com/watch?v=${video.snippet?.resourceId?.videoId}`,
