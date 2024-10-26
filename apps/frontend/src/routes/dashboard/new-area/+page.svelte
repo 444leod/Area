@@ -39,10 +39,9 @@
 
 <div class="flex flex-col items-center gap-8 max-w-4xl mx-auto">
     <div class="text-center">
-        <h1 class="h1 mb-4">Create Your Automation</h1>
-        <p class="text-lg text-secondary-500">
+        <h3 class="h3 mb-4">
             Connect your favorite apps and automate your workflow in just a few steps.
-        </p>
+        </h3>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
@@ -55,15 +54,15 @@
         {/each}
     </div>
 
-    <div class="flex flex-col items-center gap-4 mt-8">
-        <button class="btn variant-filled-primary btn-xl" on:click={startAreaCreation}>
-            <Icon icon="mdi:plus" class="w-6 h-6 mr-2" />
-            Start Creating
-        </button>
+    <div class="flex flex-row items-center gap-4 mt-8">
         <a href="/dashboard" class="btn variant-soft-secondary">
             <Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" />
             Back to Dashboard
         </a>
+        <button class="btn variant-filled-primary" on:click={startAreaCreation}>
+            <Icon icon="mdi:plus" class="w-6 h-6 mr-2" />
+            Start Creating
+        </button>
     </div>
 
     <div class="card variant-ghost-secondary p-4 mt-8 w-full">

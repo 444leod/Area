@@ -3,11 +3,10 @@
 	import { getIconForApp } from "$lib/utils/getIconName";
 
 	export let item: string;
-	export let type: 'trigger' | 'action';
 	export let onClick: () => void;
 	export let appName: string;
 	export let description: string | undefined = undefined;
-
+	export let type;
 	const actionSpecificIcon = getActionSpecificIcon(item);
 	$: iconName = actionSpecificIcon || getIconForApp(appName);
 
@@ -29,19 +28,17 @@
 </script>
 
 <button
-		class="btn variant-soft flex flex-col items-start p-4 h-auto text-left hover:variant-soft-primary transition-colors duration-200 w-full"
+		class="btn variant-soft-surface flex items-center gap-4 p-4 shadow-md"
 		on:click={onClick}
 >
-	<div class="flex items-center w-full">
-		<Icon icon={iconName} class="text-2xl md:text-3xl mr-2 md:mr-4" width="24" height="24" />
-		<span class="text-sm md:text-base">{item}</span>
-	</div>
-
-	{#if description}
-		<p class="mt-2 text-sm opacity-70 pl-10">{description}</p>
-	{/if}
-
-	<div class="mt-3 pl-10 flex gap-2">
-		<slot name="footer" />
+	<Icon icon={iconName} class="text-3xl text-primary opacity-80" width="48" height="48" />
+	<div class="flex flex-col items-start w-full">
+		<span class="text-base md:text-lg font-semibold text-primary-dark">{item}</span>
+		{#if description}
+			<p class="mt-1 text-sm opacity-70 text-gray-600 pl-1 md:pl-2">{description}</p>
+		{/if}
+		<div class="mt-2 flex gap-3 pl-1 md:pl-2">
+			<slot name="footer" />
+		</div>
 	</div>
 </button>
