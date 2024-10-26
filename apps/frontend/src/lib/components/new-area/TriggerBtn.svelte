@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { getIconForApp } from "$lib/utils/getIconName";
+	import { getIconForApp } from '$lib/utils/getIconName';
 
 	export let item: string;
 	export let onClick: () => void;

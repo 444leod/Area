@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    import { areaStore } from "$lib/store/areaStore";
-    import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { areaStore } from '$lib/store/areaStore';
+	import Icon from '@iconify/svelte';
 
-    interface InfoCard {
-        title: string;
-        description: string;
-        icon: string;
-    }
+	interface InfoCard {
+		title: string;
+		description: string;
+		icon: string;
+	}
 
     const infoCards: InfoCard[] = [
         {
@@ -28,13 +28,13 @@
         }
     ];
 
-    onMount(() => {
-        areaStore.reset();
-    });
+	onMount(() => {
+		areaStore.reset();
+	});
 
-    async function startAreaCreation() {
-        await goto('/dashboard/new-area/trigger-app');
-    }
+	async function startAreaCreation() {
+		await goto('/dashboard/new-area/trigger-app');
+	}
 </script>
 
 <div class="flex flex-col items-center gap-8 max-w-4xl mx-auto">
@@ -44,15 +44,15 @@
         </h3>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-        {#each infoCards as card}
-            <div class="card variant-soft p-6 flex flex-col items-center text-center gap-4">
-                <Icon icon={card.icon} class="w-12 h-12 text-primary-500" />
-                <h3 class="h3">{card.title}</h3>
-                <p class="text-sm">{card.description}</p>
-            </div>
-        {/each}
-    </div>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+		{#each infoCards as card}
+			<div class="card variant-soft p-6 flex flex-col items-center text-center gap-4">
+				<Icon icon={card.icon} class="w-12 h-12 text-primary-500" />
+				<h3 class="h3">{card.title}</h3>
+				<p class="text-sm">{card.description}</p>
+			</div>
+		{/each}
+	</div>
 
     <div class="flex flex-row items-center gap-4 mt-8">
         <a href="/dashboard" class="btn variant-soft-secondary">
@@ -65,16 +65,16 @@
         </button>
     </div>
 
-    <div class="card variant-ghost-secondary p-4 mt-8 w-full">
-        <div class="flex items-start gap-4">
-            <Icon icon="mdi:information" class="w-6 h-6 flex-shrink-0 text-primary-500" />
-            <div>
-                <h4 class="h4 mb-2">Need Help?</h4>
-                <p class="text-sm">
-                    Check out our <a href="/docs" class="anchor">documentation</a> for guides and examples,
-                    or visit our <a href="/templates" class="anchor">templates</a> for pre-built automations.
-                </p>
-            </div>
-        </div>
-    </div>
+	<div class="card variant-ghost-secondary p-4 mt-8 w-full">
+		<div class="flex items-start gap-4">
+			<Icon icon="mdi:information" class="w-6 h-6 flex-shrink-0 text-primary-500" />
+			<div>
+				<h4 class="h4 mb-2">Need Help?</h4>
+				<p class="text-sm">
+					Check out our <a href="/docs" class="anchor">documentation</a> for guides and examples, or
+					visit our <a href="/templates" class="anchor">templates</a> for pre-built automations.
+				</p>
+			</div>
+		</div>
+	</div>
 </div>
