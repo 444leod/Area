@@ -2,8 +2,8 @@ import { ActionFunction } from "../action-function";
 import {
   MongoDBService,
   AreaPacket,
-  OnYoutubeVideoPostedClass,
-  OnYoutubeVideoPostedHistoryDTO,
+  OnYoutubeVideoPostedInfos,
+  OnYoutubeVideoPostedHistory,
   getChannelVideos,
   getAuthorizationToken,
   AuthorizationsTypes,
@@ -20,8 +20,8 @@ export const handleYoutubeVideoPostedAction: ActionFunction = async (
   );
 
   const area = packet.area;
-  const action = area.action.informations as OnYoutubeVideoPostedClass;
-  const history = area.action.history as OnYoutubeVideoPostedHistoryDTO;
+  const action = area.action.informations as OnYoutubeVideoPostedInfos;
+  const history = area.action.history as OnYoutubeVideoPostedHistory;
 
   const videos = await getChannelVideos(action.user_id, token);
 

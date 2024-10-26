@@ -16,6 +16,7 @@ export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
         embed.setDescription(reaction.body);
       }
       // if (reaction.date) {
+      //     if (typeof(reaction.date) === "string" && )
       //     embed.setTimestamp(new Date(reaction.date));
       // }
       if (reaction.username) {

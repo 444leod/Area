@@ -2,7 +2,7 @@ import { ActionFunction } from "../action-function";
 import {
   MongoDBService,
   AreaPacket,
-  OnNewJiraProjectHistoryDTO,
+  OnNewJiraProjectHistory,
   getAuthorizationToken,
   AuthorizationsTypes,
   JiraAPI,
@@ -19,7 +19,7 @@ export const handleNewJiraProjectAction: ActionFunction = async (
   );
 
   const area = packet.area;
-  const history = area.action.history as OnNewJiraProjectHistoryDTO;
+  const history = area.action.history as OnNewJiraProjectHistory;
 
   const jira = new JiraAPI(token);
   await jira.init();

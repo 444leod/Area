@@ -96,6 +96,106 @@
             "template": "https://img.youtube.com/vi/videoID/default.jpg"
           }
         ]
+      },
+      {
+        "name": "New video in playlist",
+        "description": "When a new video is added to a playlist",
+        "type": "ON_NEW_VIDEO_IN_PLAYLIST",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "playlist_id",
+            "details": "ID of the playlist (LL for liked videos, WL & HL won't work)",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "video_id",
+            "description": "ID of the video",
+            "type": "string",
+            "template": "0q6s_P-E13U"
+          },
+          {
+            "name": "title",
+            "description": "title of the video",
+            "type": "string",
+            "template": "My video title"
+          },
+          {
+            "name": "description",
+            "description": "description of the video",
+            "type": "string",
+            "template": "My video description"
+          },
+          {
+            "name": "url",
+            "description": "URL of the video",
+            "type": "string",
+            "template": "https://www.youtube.com/watch?v=videoID"
+          },
+          {
+            "name": "published_at",
+            "description": "date the video was published",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "publication_time",
+            "description": "time the video was published",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "publication_date",
+            "description": "date the video was published",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "channel_title",
+            "description": "name of the video creator's channel",
+            "type": "string",
+            "template": "My Channel"
+          },
+          {
+            "name": "channel_id",
+            "description": "ID of the video creator's channel",
+            "type": "string",
+            "template": "UC1234567890"
+          },
+          {
+            "name": "thumbnail_url",
+            "description": "URL of the video thumbnail",
+            "type": "string",
+            "template": "https://img.youtube.com/vi/videoID/default.jpg"
+          }
+        ]
       }
     ],
     "reactions": []
