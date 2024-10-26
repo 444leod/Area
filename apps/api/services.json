@@ -101,6 +101,7 @@
         "name": "New video in playlist",
         "description": "When a new video is added to a playlist",
         "type": "ON_NEW_VIDEO_IN_PLAYLIST",
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "playlist_id",
