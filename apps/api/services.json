@@ -105,7 +105,7 @@
         "params": [
           {
             "name": "playlist_id",
-            "details": "ID of the playlist (LL for liked videos, WL for watchlist)",
+            "details": "ID of the playlist (LL for liked videos, WL & HL won't work)",
             "type": "string",
             "required": true
           }
