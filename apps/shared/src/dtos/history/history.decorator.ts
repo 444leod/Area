@@ -2,8 +2,7 @@ import { ActionTypes } from "../actions";
 import { AnyHistory } from "./any.history";
 
 export class HistoryRegistry {
-  private static registry: Map<ActionTypes, new () => AnyHistory> =
-    new Map();
+  private static registry: Map<ActionTypes, new () => AnyHistory> = new Map();
 
   static register(type: ActionTypes, constructor: new () => AnyHistory) {
     this.registry.set(type, constructor);
