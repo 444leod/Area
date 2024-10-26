@@ -6,10 +6,10 @@ import { RegisterAction } from "../action.decorator";
 
 @RegisterAction(ActionTypes.ON_NEW_VIDEO_IN_PLAYLIST)
 export class OnNewVideoInPlaylistInfos extends BaseActionInfos {
-    type: ActionTypes.ON_NEW_VIDEO_IN_PLAYLIST;
+  type: ActionTypes.ON_NEW_VIDEO_IN_PLAYLIST;
 
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    playlist_id: string;
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  playlist_id: string;
 }
