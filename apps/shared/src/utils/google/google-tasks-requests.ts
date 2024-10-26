@@ -37,7 +37,10 @@ export async function createGoogleTask(
   }
 }
 
-export async function getGoogleTaskListByName(token: string, listName: string): Promise<string | null> {
+export async function getGoogleTaskListByName(
+  token: string,
+  listName: string,
+): Promise<string | null> {
   const tasks = getTasks(token);
 
   try {
@@ -57,10 +60,7 @@ export async function getGoogleTaskListByName(token: string, listName: string): 
   }
 }
 
-export async function getGoogleTasksByListId(
-  token: string,
-  listId: string,
-) {
+export async function getGoogleTasksByListId(token: string, listId: string) {
   const tasks = getTasks(token);
 
   try {
