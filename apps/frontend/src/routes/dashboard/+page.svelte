@@ -6,7 +6,6 @@
 	import { toggleAreaStatus } from "$lib/modules/toggleAreaStatus";
 	import { setError } from '$lib/store/errorMessage';
 	import { fade, fly } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 
 	export let data: PageData;
 
@@ -75,11 +74,10 @@
 				return a;
 			});
 		} catch (e) {
-			console.error(`Error toggling area status: ${e.message}`);
 			setError(`Error toggling area status: ${e.message}`);
 		} finally {
 			toggleLoadingMap.set(area._id, false);
-			areas = [...areas]; // Trigger reactivity
+			areas = [...areas];
 		}
 	}
 </script>
