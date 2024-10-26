@@ -27,10 +27,7 @@
 	}
 </script>
 
-<button
-		class="btn variant-soft-surface flex items-center gap-4 p-4 shadow-md"
-		on:click={onClick}
->
+<button class="btn variant-soft-surface flex items-center gap-4 p-4 shadow-md" on:click={onClick}>
 	<Icon icon={iconName} class="text-3xl text-primary opacity-80" width="48" height="48" />
 	<div class="flex flex-col items-start w-full">
 		<span class="text-base md:text-lg font-semibold text-primary-dark">{item}</span>
