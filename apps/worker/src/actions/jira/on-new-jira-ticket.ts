@@ -3,10 +3,9 @@ import {
   MongoDBService,
   AreaPacket,
   OnNewJiraTicketHistory,
-  getJiraDomains,
-  getDomainsTicketsAfterDate,
   getAuthorizationToken,
   AuthorizationsTypes,
+  JiraAPI,
 } from "@area/shared";
 
 export const handleNewJiraTicketAction: ActionFunction = async (
@@ -22,16 +21,14 @@ export const handleNewJiraTicketAction: ActionFunction = async (
   const area = packet.area;
   const history = area.action.history as OnNewJiraTicketHistory;
 
-  const domains = await getJiraDomains(token);
-
-  if (domains === null || domains.length === 0) {
-    return null;
-  }
+  const jira = new JiraAPI(token);
+  await jira.init();
 
   const date = history.lastCreationTimestamp
     ? new Date(history.lastCreationTimestamp)
     : new Date(0);
-  const tickets = await getDomainsTicketsAfterDate(domains, token, date);
+
+  const tickets = await jira.getTicketsAfter(date);
 
   if (history.lastCreationTimestamp === null) {
     history.lastCreationTimestamp = new Date().getTime();
@@ -40,7 +37,7 @@ export const handleNewJiraTicketAction: ActionFunction = async (
     return null;
   }
 
-  if (tickets === null || tickets.length === 0) {
+  if (tickets.length === 0) {
     return null;
   }
 

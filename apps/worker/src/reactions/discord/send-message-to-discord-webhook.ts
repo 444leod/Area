@@ -1,5 +1,5 @@
 import { ReactionFunction } from "../reaction-function";
-import { AreaPacket, SendMessageToDiscordWebhookInfos } from "@shared/src";
+import { AreaPacket, SendMessageToDiscordWebhookInfos } from "@area/shared";
 import { WebhookClient, EmbedBuilder } from "discord.js";
 
 export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
