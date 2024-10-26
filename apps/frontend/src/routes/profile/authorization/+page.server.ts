@@ -33,12 +33,12 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 			servicesResponse.json(),
 			authorizationsResponse.json()
 		]);
-		const transformedServices = services.map(service => ({
+		const transformedServices = services.map((service) => ({
 			...service,
-			actions: service.actions.map(action =>
+			actions: service.actions.map((action) =>
 				typeof action === 'object' ? action : { type: action }
 			),
-			reactions: service.reactions.map(reaction =>
+			reactions: service.reactions.map((reaction) =>
 				typeof reaction === 'object' ? reaction : { type: reaction }
 			)
 		}));

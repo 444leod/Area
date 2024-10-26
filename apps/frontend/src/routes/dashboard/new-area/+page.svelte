@@ -47,7 +47,9 @@
 	let actionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 	let reactionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
 	let showSuccessAnimation = false;
-	let dynamicVariables: Writable<{ name: string; type: string; description: string; template: string }[]> = writable([]);
+	let dynamicVariables: Writable<
+		{ name: string; type: string; description: string; template: string }[]
+	> = writable([]);
 	let userAuthorizations: string[] = data.authorizations || [];
 
 	function checkAuthorizations(item: Action): boolean {
@@ -58,17 +60,15 @@
 		if (!userAuthorizations || userAuthorizations.length === 0) {
 			return false;
 		}
-		return itemAuths.every(auth => userAuthorizations.includes(auth));
+		return itemAuths.every((auth) => userAuthorizations.includes(auth));
 	}
 
 	function handleAuthorizationCheck(item: Action, type: 'trigger' | 'action'): void {
 		item.authorizations = item.authorizations || [];
 		if (!checkAuthorizations(item)) {
-			const missingAuths = item.authorizations.filter(auth =>
-					!userAuthorizations.includes(auth)
-			);
+			const missingAuths = item.authorizations.filter((auth) => !userAuthorizations.includes(auth));
 			setError(
-					`You need to connect to the following services to use this ${type}: ${missingAuths.join(', ')}. ` +
+				`You need to connect to the following services to use this ${type}: ${missingAuths.join(', ')}. ` +
 					`Please visit the <a href="/profile/authorization">Authorizations page</a> to connect these services.`
 			);
 			return;
@@ -234,7 +234,8 @@
 									item={item.name}
 									type={$currentStep === 1 ? 'trigger' : 'action'}
 									appName={$triggerApp?.name || $actionApp?.name}
-									onClick={() => handleAuthorizationCheck(item, $currentStep === 1 ? 'trigger' : 'action')}
+									onClick={() =>
+										handleAuthorizationCheck(item, $currentStep === 1 ? 'trigger' : 'action')}
 								/>
 							{/each}
 						</div>
