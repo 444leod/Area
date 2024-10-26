@@ -9,6 +9,7 @@ import { SendScrobbleReportByEmailInfos } from "./last-fm/send-scrobble-report-b
 import { SendAlbumsReportByEmailInfos } from "./last-fm/send-albums-report-by-email.class";
 import { SendArtistsReportByEmailInfos } from "./last-fm/send-artists-report-by-email.class";
 import { CreatePullRequestCommentInfos } from "./github/create-pull-request-comment.class";
+import { CommentYoutubeVideoInfos } from "./youtube/comment-youtube-video.class";
 
 export class BaseReactionInfos {
   @ApiProperty()
@@ -24,4 +25,5 @@ export type ReactionInfos =
   | CreatePullRequestCommentInfos
   | SendScrobbleReportByEmailInfos
   | SendAlbumsReportByEmailInfos
-  | SendArtistsReportByEmailInfos;
+  | SendArtistsReportByEmailInfos
+  | CommentYoutubeVideoInfos;

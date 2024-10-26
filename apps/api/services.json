@@ -198,7 +198,29 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Comment a video",
+        "description": "Comment a video",
+        "type": "COMMENT_YOUTUBE_VIDEO",
+        "authorizations": ["GOOGLE"],
+        "params": [
+            {
+                "name": "video_id",
+                "details": "ID of the video",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "content",
+                "details": "Comment to post",
+                "type": "text",
+                "required": true
+            }
+        ]
+
+      }
+    ]
   },
   {
     "name": "Timer",
