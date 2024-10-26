@@ -9,7 +9,7 @@ import { CreateJiraTicketInfos } from "./jira/create-jira-ticket.class";
 import { SendScrobbleReportByEmailInfos } from "./last-fm/send-scrobble-report-by-email.class";
 import { SendAlbumsReportByEmailInfos } from "./last-fm/send-albums-report-by-email.class";
 import { SendArtistsReportByEmailInfos } from "./last-fm/send-artists-report-by-email.class";
-import { CreatePullRequestCommentInfos } from "./github/create-pull-request-comment.class";
+import { CommentGithubIssueInfos } from "./github/comment-github-issue.class";
 import { CommentYoutubeVideoInfos } from "./youtube/comment-youtube-video.class";
 
 export class BaseReactionInfos {
@@ -23,7 +23,7 @@ export type ReactionInfos =
   | SendEmailReactionInfos
   | CreateGoogleTaskInfos
   | SendMessageToDiscordWebhookInfos
-  | CreatePullRequestCommentInfos
+  | CommentGithubIssueInfos
   | SendScrobbleReportByEmailInfos
   | SendAlbumsReportByEmailInfos
   | SendArtistsReportByEmailInfos

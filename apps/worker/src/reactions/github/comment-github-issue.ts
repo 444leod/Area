@@ -2,13 +2,13 @@ import { ReactionFunction } from "../reaction-function";
 import {
   MongoDBService,
   AreaPacket,
-  CreatePullRequestCommentInfos,
-  createPullRequestComment,
+  CommentGithubIssueInfos,
+  commentGithubIssue,
   getAuthorizationToken,
   AuthorizationsTypes,
 } from "@area/shared";
 
-export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
+export const handleCommentGithubIssueReaction: ReactionFunction = async (
   packet: AreaPacket,
   database: MongoDBService,
 ) => {
@@ -19,19 +19,17 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
   );
 
   const area = packet.area;
-  const reaction = area.reaction.informations as CreatePullRequestCommentInfos;
+  const reaction = area.reaction.informations as CommentGithubIssueInfos;
 
-  if (isNaN(Number(reaction.pull_request_number))) {
-    throw new Error(
-      `Invalid pull request number: ${reaction.pull_request_number}`,
-    );
+  if (isNaN(Number(reaction.issue_number))) {
+    throw new Error(`Invalid issue number: ${reaction.issue_number}`);
   }
 
-  await createPullRequestComment(
+  await commentGithubIssue(
     token,
     reaction.owner,
     reaction.repository,
-    Number(reaction.pull_request_number),
+    Number(reaction.issue_number),
     reaction.body,
   );
   return;
