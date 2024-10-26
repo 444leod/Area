@@ -1,6 +1,7 @@
 import { google, youtube_v3 } from "googleapis";
+import { isAxiosError } from "axios";
 
-export async function getUserYoutubeChannelID(token: string) {
+function getYoutubeClient(token: string) {
   const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
@@ -11,18 +12,20 @@ export async function getUserYoutubeChannelID(token: string) {
     access_token: token,
   });
 
-  const youtube = google.youtube({
+  return google.youtube({
     version: "v3",
     auth: oauth2Client,
   });
+}
 
-  // @ts-ignore
+export async function getUserYoutubeChannelID(token: string) {
+  const youtube = getYoutubeClient(token);
+
   const response = await youtube.channels.list({
     part: ["id"],
     mine: true,
   });
 
-  // @ts-ignore
   return response.data.items[0].id;
 }
 
@@ -30,35 +33,18 @@ export async function getChannelIdByUsername(
   username: string,
   token: string,
 ): Promise<string | null> {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
-
-  oauth2Client.setCredentials({
-    access_token: token,
-  });
-
-  const youtube = google.youtube({
-    version: "v3",
-    auth: oauth2Client,
-  });
+  const youtube = getYoutubeClient(token);
 
   try {
-    // @ts-ignore
     const response = await youtube.channels.list({
       part: ["id"],
       forUsername: username,
     });
 
-    console.log(response);
-
     if (!response.data.items || response.data.items.length === 0) {
       return null;
     }
 
-    // @ts-ignore
     return response.data.items[0].id;
   } catch (error) {
     console.error("Error fetching channel ID:", error);
@@ -70,22 +56,8 @@ export async function getChannelVideos(
   channelId: string,
   token: string,
 ): Promise<any[]> {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
+  const youtube = getYoutubeClient(token);
 
-  oauth2Client.setCredentials({
-    access_token: token,
-  });
-
-  const youtube = google.youtube({
-    version: "v3",
-    auth: oauth2Client,
-  });
-
-  // @ts-ignore
   try {
     const response = await youtube.search.list({
       part: ["snippet"],
@@ -105,20 +77,7 @@ export async function getPlaylistVideos(
   playlistId: string,
   token: string,
 ): Promise<youtube_v3.Schema$PlaylistItem[]> {
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL,
-  );
-
-  oauth2Client.setCredentials({
-    access_token: token,
-  });
-
-  const youtube = google.youtube({
-    version: "v3",
-    auth: oauth2Client,
-  });
+  const youtube = getYoutubeClient(token);
 
   let videos: youtube_v3.Schema$PlaylistItem[] = [];
   let nextPageToken: string | undefined = undefined;
@@ -142,5 +101,36 @@ export async function getPlaylistVideos(
     return videos;
   } catch (error) {
     throw new Error("Error fetching playlist videos: " + error);
+  }
+}
+
+export async function commentYoutubeVideo(
+  token: string,
+  videoId: string,
+  text: string,
+) {
+  const youtube = getYoutubeClient(token);
+
+  try {
+    await youtube.commentThreads.insert({
+      part: ["snippet"],
+      requestBody: {
+        snippet: {
+          channelId: await getUserYoutubeChannelID(token),
+          videoId: videoId,
+          topLevelComment: {
+            snippet: {
+              textOriginal: text,
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.error("Error commenting video:", error.response?.data);
+    } else {
+      console.error("Error commenting video:", error);
+    }
   }
 }
