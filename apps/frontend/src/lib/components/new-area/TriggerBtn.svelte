@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { getIconForApp } from "$lib/utils/getIconName";
+	import { getIconForApp } from '$lib/utils/getIconName';
 
 	export let item: string;
 	export let type: 'trigger' | 'action';
@@ -29,8 +29,8 @@
 </script>
 
 <button
-		class="btn variant-soft flex flex-col items-start p-4 h-auto text-left hover:variant-soft-primary transition-colors duration-200 w-full"
-		on:click={onClick}
+	class="btn variant-soft flex flex-col items-start p-4 h-auto text-left hover:variant-soft-primary transition-colors duration-200 w-full"
+	on:click={onClick}
 >
 	<div class="flex items-center w-full">
 		<Icon icon={iconName} class="text-2xl md:text-3xl mr-2 md:mr-4" width="24" height="24" />
