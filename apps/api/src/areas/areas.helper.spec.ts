@@ -65,6 +65,14 @@ describe("AreasHelper", () => {
           },
         },
         active: true,
+        logs: [
+          {
+            type: "action",
+            date: new Date().toISOString(),
+            status: "success",
+            message: "This is a example log",
+          },
+        ]
       };
 
       const dto = areasHelper.toDto(area);

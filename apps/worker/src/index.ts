@@ -8,6 +8,7 @@ import {
 import dotenv from "dotenv";
 import { actionsMap } from "./actions/actions-map";
 import { reactionsMap } from "./reactions/reactions-map";
+import { AxiosError, isAxiosError } from "axios";
 
 dotenv.config();
 
@@ -91,21 +92,26 @@ async function handleArea(areaPacket: AreaPacket) {
     `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`,
   );
 
-  let res: AreaPacket | null;
+  let res: AreaPacket | null = null;
   try {
     res = await actionFunction(areaPacket, mongoDB);
-  } catch (error: any) {
-    if (error.response) {
-      console.error({
+  } catch (error: AxiosError | any) {
+    let errorLog: object = {};
+    if (isAxiosError(error)) {
+      errorLog = error.response ? {
         message: error.message,
-        url: error.config.url,
+        url: error.config?.url,
         status: error.response.status,
         statusText: error.response.statusText,
-      });
+      } : {
+        message: error.message,
+        description: "Request was made but no response received."
+      }
     } else {
-      console.error({ message: error.message });
+      errorLog = { message: error.message };
     }
-    return;
+    console.error(errorLog);
+    //log the message on MongoDB
   }
   if (!res) return;
 
@@ -153,4 +159,8 @@ async function handleArea(areaPacket: AreaPacket) {
       console.error({ message: error.message });
     }
   }
+}
+
+async function handleError(error: AxiosError | any) {
+
 }

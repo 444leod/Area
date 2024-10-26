@@ -5,3 +5,4 @@ export * from "./user";
 export * from "./area";
 export * from "./service";
 export * from "./authorizations";
+export * from "./log";
