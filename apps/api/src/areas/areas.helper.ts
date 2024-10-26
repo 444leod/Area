@@ -1,8 +1,8 @@
 import {
+  Action,
+  Reaction,
   Area,
   AreaCreationDto,
-  Reaction,
-  Action,
   AreaDto,
   HistoryRegistry,
 } from "@area/shared";
@@ -25,14 +25,13 @@ export class AreasHelper {
       service_id: this.servicesService.area_services[dto.reaction.type],
       informations: dto.reaction,
     };
-    const area: Area = {
+    return {
       _id: new ObjectId(),
       name: dto.name,
       action: action,
       reaction: reaction,
       active: true,
     };
-    return area;
   }
 
   toDto(area: Area): AreaDto {

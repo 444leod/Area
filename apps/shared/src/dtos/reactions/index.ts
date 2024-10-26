@@ -10,3 +10,5 @@ export * from "./last-fm/send-albums-report-by-email.class";
 export * from "./last-fm/send-artists-report-by-email.class";
 export * from "./github/create-pull-request-comment.class";
 export * from "./youtube/comment-youtube-video.class";
+export * from "./jira/create-jira-ticket.class";
+export * from "./reaction.decorator";

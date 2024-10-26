@@ -279,13 +279,13 @@
     "actions": [],
     "reactions": [
       {
-        "name": "sendemail",
+        "name": "Send email",
         "description": "send an email",
         "type": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
-            "details": "email adress of the target",
+            "details": "email address of the target",
             "type": "string",
             "required": true
           },
@@ -547,7 +547,45 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Create issue",
+        "description": "Create a new issue in a given Jira project",
+        "type": "CREATE_JIRA_TICKET",
+        "params": [
+          {
+            "name": "project_key",
+            "details": "Key of the project where the issue will be created",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_type",
+            "details": "Type of the issue to be created (e.g., Bug, Task, Story)",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "Title of the issue",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "details": "Description of the issue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "assignee_name",
+            "details": "Name of the assignee for the issue",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Github",
