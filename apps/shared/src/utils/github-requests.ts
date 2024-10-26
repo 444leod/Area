@@ -69,7 +69,9 @@ export async function getRepositoryPullRequests(params: {
 
     return response.data;
   } catch (error: any) {
-    throw new Error(`Error in getting repository pull requests: ${error.message}`);
+    throw new Error(
+      `Error in getting repository pull requests: ${error.message}`,
+    );
   }
 }
 
