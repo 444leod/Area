@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
-import { ReactionTypes } from "../reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDateOrVariable } from "../../../validators";
+import { ReactionTypes } from "../reaction-types.enum";
 import { RegisterReaction } from "../reaction.decorator";
 
 @RegisterReaction(ReactionTypes.CREATE_GOOGLE_TASK)

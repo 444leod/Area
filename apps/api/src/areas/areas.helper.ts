@@ -1,8 +1,10 @@
 import {
+  Action,
+  ActionTypes,
+  Reaction,
+  ReactionTypes,
   Area,
   AreaCreationDto,
-  Reaction,
-  Action,
   AreaDto,
   HistoryRegistry,
 } from "@area/shared";

@@ -13,6 +13,7 @@ import {
 import {
   BaseReactionInfos,
   CreateGoogleTaskInfos,
+  CreateJiraTicketInfos,
   ExampleReactionInfos,
   ReactionInfos,
   ReactionTypes,
@@ -49,6 +50,7 @@ import { ReactionRegistry } from "../reactions/reaction.decorator";
   SendScrobbleReportByEmailInfos,
   SendAlbumsReportByEmailInfos,
   SendArtistsReportByEmailInfos,
+  CreateJiraTicketInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -87,6 +89,7 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
       { $ref: getSchemaPath(SendAlbumsReportByEmailInfos) },
       { $ref: getSchemaPath(SendArtistsReportByEmailInfos) },
+      { $ref: getSchemaPath(CreateJiraTicketInfos) },
     ],
   })
   @IsNotEmptyObject()
