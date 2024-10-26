@@ -7,6 +7,7 @@ import { handleNewJiraProjectAction } from "./jira/on-new-jira-project";
 import { handleNewGithubRepositoryAction } from "./github/on-new-github-repository";
 import { handleOnPullRequestStateAction } from "./github/on-pull-request-state";
 import { handleOnNewYoutubeVideoInPlaylistAction } from "./youtube/on-video-in-playlist";
+import { handleOnNewGoogleTaskAction } from "./google-tasks/on-new-google-task";
 
 type ActionMap = {
   [string: string]: ActionFunction;
@@ -21,4 +22,5 @@ export const actionsMap: ActionMap = {
   ON_NEW_GITHUB_REPOSITORY: handleNewGithubRepositoryAction,
   ON_PULL_REQUEST_STATE: handleOnPullRequestStateAction,
   ON_NEW_VIDEO_IN_PLAYLIST: handleOnNewYoutubeVideoInPlaylistAction,
+  ON_NEW_GOOGLE_TASK: handleOnNewGoogleTaskAction,
 };

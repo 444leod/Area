@@ -287,7 +287,121 @@
   {
     "name": "Google task",
     "description": "Service for Google task actions",
-    "actions": [],
+    "actions": [
+      {
+        "name": "On new task",
+        "description": "When a task has been created",
+        "type": "ON_NEW_GOOGLE_TASK",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "list_name",
+            "details": "name of the list (will retrieve from personal list if not provided)",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "variables": [
+            {
+                "name": "area_name",
+                "description": "name of the area",
+                "type": "string",
+                "template": "My AREA #1"
+            },
+            {
+                "name": "full_execution_date",
+                "description": "full date of the trigger",
+                "type": "date",
+                "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+            },
+            {
+                "name": "execution_date",
+                "description": "date of the trigger",
+                "type": "string",
+                "template": "22/10/2024"
+            },
+            {
+                "name": "execution_time",
+                "description": "time of the trigger",
+                "type": "string",
+                "template": "12:00"
+            },
+          {
+            "name": "task_id",
+            "description": "ID of the task",
+            "type": "string",
+            "template": "1234567890"
+          },
+            {
+                "name": "title",
+                "description": "title of the task",
+                "type": "string",
+                "template": "My task title"
+            },
+            {
+                "name": "body",
+                "description": "body of the task",
+                "type": "string",
+                "template": "My task details"
+            },
+            {
+                "name": "list_name",
+                "description": "name of the list",
+                "type": "string",
+                "template": "My list"
+            },
+            {
+                "name": "list_id",
+                "description": "ID of the list",
+                "type": "string",
+                "template": "1234567890"
+            },
+            {
+                "name": "due_date",
+                "description": "due date of the task",
+                "type": "date",
+                "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+            },
+            {
+                "name": "due_time_string",
+                "description": "due time of the task",
+                "type": "string",
+                "template": "12:00"
+            },
+            {
+                "name": "due_date_string",
+                "description": "due date of the task as a string",
+                "type": "string",
+                "template": "22/10/2024"
+            },
+            {
+                "name": "status",
+                "description": "status of the task",
+                "type": "string",
+                "template": "completed"
+            },
+            {
+                "name": "created_at",
+                "description": "date of the creation of the task",
+                "type": "date",
+                "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+            },
+            {
+                "name": "creation_time",
+                "description": "time of the creation of the task",
+                "type": "string",
+                "template": "12:00"
+            },
+            {
+                "name": "creation_date",
+                "description": "date of the creation of the task",
+                "type": "string",
+                "template": "22/10/2024"
+            }
+        ]
+
+      }
+    ],
     "reactions": [
       {
         "name": "Create new task",
