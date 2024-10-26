@@ -2,7 +2,7 @@ import { Db, MongoClient, ObjectId, ClientSession } from "mongodb";
 import { Area, AuthorizationsTypes } from "../dtos";
 import fs from "fs";
 import dotenv from "dotenv";
-import { TokenDto, AuthorizationDto } from "../dtos";
+import { TokenDto, AuthorizationDto, Log, User } from "../dtos";
 
 dotenv.config();
 
@@ -29,7 +29,7 @@ export class MongoDBService {
       .map(([key]) => key);
     if (missingVariables.length > 0) {
       throw new Error(
-        `${missingVariables.join(", ")} must be defined as environment variables`,
+        `${missingVariables.join(", ")} must be defined as environment variables`
       );
     }
 
@@ -81,7 +81,7 @@ export class MongoDBService {
   }
 
   async executeWithSession<T>(
-    operation: (session: ClientSession) => Promise<T>,
+    operation: (session: ClientSession) => Promise<T>
   ): Promise<T> {
     if (!this._connected) {
       await this.connect();
@@ -120,21 +120,21 @@ export class MongoDBService {
   async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
-        .collection("users")
+        .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "areas._id": new ObjectId(area._id) },
-          { $set: { "areas.$.action.history": area.action.history } },
+          { $set: { "areas.$.action.history": area.action.history } }
         );
     });
   }
 
   async getAuthorization(
     userId: ObjectId,
-    type: AuthorizationsTypes,
+    type: AuthorizationsTypes
   ): Promise<AuthorizationDto | null> {
     return this.executeWithSession(async () => {
       const user = await this._db
-        .collection("users")
+        .collection<User>("users")
         .findOne({ _id: new ObjectId(userId) });
       if (!user) return null;
       const tokens = user.authorizations as AuthorizationDto[];
@@ -142,7 +142,7 @@ export class MongoDBService {
         return null;
       }
       return tokens.find(
-        (token: AuthorizationDto) => token.type === type,
+        (token: AuthorizationDto) => token.type === type
       ) as AuthorizationDto;
     });
   }
@@ -150,14 +150,29 @@ export class MongoDBService {
   async updateAuthorizationData(
     userId: ObjectId,
     type: string,
-    data: TokenDto,
+    data: TokenDto
   ): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
-        .collection("users")
+        .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "authorizations.type": type },
-          { $set: { "authorizations.$.data": data } },
+          { $set: { "authorizations.$.data": data } }
+        );
+    });
+  }
+
+  async addLogToArea(
+    userId: ObjectId,
+    areaId: ObjectId,
+    log: Log
+  ): Promise<void> {
+    await this.executeWithSession(async () => {
+      await this._db
+        .collection<User>("users")
+        .updateOne(
+          { _id: new ObjectId(userId), "areas._id": new ObjectId(areaId) },
+          { $push: { "areas.$.logs": log } }
         );
     });
   }
