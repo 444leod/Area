@@ -51,10 +51,8 @@
 		? textVariables.find((v) => v.name === selectedVariable)
 		: null;
 
-	$: {
-		if (isUsingVariable && selectedVariable) {
-			updateParamValue(param.name, `{{${selectedVariable}}}`);
-		}
+	$: if (isUsingVariable && selectedVariable && value !== `{{${selectedVariable}}}`) {
+		updateParamValue(param.name, `{{${selectedVariable}}}`);
 	}
 </script>
 

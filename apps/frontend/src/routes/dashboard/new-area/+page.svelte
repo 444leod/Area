@@ -1,465 +1,81 @@
 <script lang="ts">
-	import { writable, type Writable } from 'svelte/store';
-	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
-	import type { PageData } from './$types';
-	import { fade, fly } from 'svelte/transition';
-	import Icon from '@iconify/svelte';
-	import ProgressBar from '$lib/components/new-area/ProgressBar.svelte';
-	import MobileIndicator from '$lib/components/new-area/MobileIndicator.svelte';
-	import AppCard from '$lib/components/new-area/AppCard.svelte';
-	import AutomationSummary from '$lib/components/new-area/AutomationSummary.svelte';
-	import TriggerBtn from '$lib/components/new-area/TriggerBtn.svelte';
-	import StringInput from '$lib/components/new-area/Inputs/StringInput.svelte';
-	import NumberInput from '$lib/components/new-area/Inputs/NumberInput.svelte';
-	import BooleanInput from '$lib/components/new-area/Inputs/BooleanInput.svelte';
-	import DateInput from '$lib/components/new-area/Inputs/DateInput.svelte';
-	import Select from '$lib/components/new-area/Inputs/Select.svelte';
-	import TextInput from '$lib/components/new-area/Inputs/TextInput.svelte';
-	import type { App } from '$lib/types/App';
-	import type { Action } from '$lib/types/Action';
-	import type { ActionDetails } from '$lib/types/ActionDetails';
-	import Success from '$lib/components/new-area/Success.svelte';
-	import { setError } from '$lib/store/errorMessage';
-	import AvailableVariable from '$lib/components/new-area/AvailableVariable.svelte';
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { areaStore } from "$lib/store/areaStore";
+    import Icon from '@iconify/svelte';
 
-	export let data: PageData;
-	let apps: Writable<App[]> = writable([]);
-	$: {
-		if (data.services) {
-			apps.set(data.services);
-		}
-	}
-	const steps = [
-		'Choose Trigger App',
-		'Select Trigger',
-		'Choose Action App',
-		'Select Action',
-		'Set up Details',
-		'Test & Review'
-	];
-	let currentStep: Writable<number> = writable(0);
-	let triggerApp: Writable<App | null> = writable(null);
-	let selectedTrigger: Writable<Action | null> = writable(null);
-	let actionApp: Writable<App | null> = writable(null);
-	let selectedAction: Writable<Action | null> = writable(null);
-	let automationName: Writable<string> = writable('');
-	let actionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
-	let reactionDetails: Writable<ActionDetails> = writable({ type: '', params: {} });
-	let showSuccessAnimation = false;
-	let dynamicVariables: Writable<
-		{ name: string; type: string; description: string; template: string }[]
-	> = writable([]);
-	let userAuthorizations: string[] = data.authorizations || [];
+    interface InfoCard {
+        title: string;
+        description: string;
+        icon: string;
+    }
 
-	function checkAuthorizations(item: Action): boolean {
-		const itemAuths = item.authorizations || [];
-		if (itemAuths.length === 0) {
-			return true;
-		}
-		if (!userAuthorizations || userAuthorizations.length === 0) {
-			return false;
-		}
-		return itemAuths.every((auth) => userAuthorizations.includes(auth));
-	}
+    const infoCards: InfoCard[] = [
+        {
+            title: 'Choose Your Apps',
+            description: 'Select the apps you want to connect. Start with a trigger app that initiates your automation.',
+            icon: 'mdi:apps'
+        },
+        {
+            title: 'Configure Actions',
+            description: 'Define what happens and when. Set up your trigger conditions and resulting actions.',
+            icon: 'mdi:cog'
+        },
+        {
+            title: 'Activate & Go',
+            description: 'Review your setup, activate your automation, and let it work for you.',
+            icon: 'mdi:play-circle'
+        }
+    ];
 
-	function handleAuthorizationCheck(item: Action, type: 'trigger' | 'action'): void {
-		item.authorizations = item.authorizations || [];
-		if (!checkAuthorizations(item)) {
-			const missingAuths = item.authorizations.filter((auth) => !userAuthorizations.includes(auth));
-			setError(
-				`You need to connect to the following services to use this ${type}: ${missingAuths.join(', ')}. ` +
-					`Please visit the <a href="/profile/authorization">Authorizations page</a> to connect these services.`
-			);
-			return;
-		}
-		selectTriggerOrAction(item, type);
-	}
+    onMount(() => {
+        areaStore.reset();
+    });
 
-	function validateStep(): boolean {
-		let errors: string[] = [];
-
-		switch ($currentStep) {
-			case 0:
-				if (!$triggerApp) errors.push('Please select a trigger app');
-				break;
-			case 1:
-				if (!$selectedTrigger) errors.push('Please select a trigger');
-				break;
-			case 2:
-				if (!$actionApp) errors.push('Please select an action app');
-				break;
-			case 3:
-				if (!$selectedAction) errors.push('Please select an action');
-				break;
-			case 4:
-				if (!$automationName) errors.push('Automation name is required');
-				if ($selectedTrigger) {
-					$selectedTrigger.params.forEach((param) => {
-						if (param.required && !$actionDetails.params[param.name]) {
-							errors.push(`Trigger parameter "${param.name}" is required`);
-						}
-					});
-				}
-				if ($selectedAction) {
-					$selectedAction.params.forEach((param) => {
-						if (param.required && !$reactionDetails.params[param.name]) {
-							errors.push(`Action parameter "${param.name}" is required`);
-						}
-					});
-				}
-				break;
-		}
-
-		if (errors.length > 0) {
-			setError(errors.join('\n'));
-			return false;
-		}
-		return true;
-	}
-
-	function nextStep(): void {
-		if (validateStep()) {
-			currentStep.update((n) => (n < steps.length - 1 ? n + 1 : n));
-		}
-	}
-
-	function prevStep(): void {
-		currentStep.update((n) => (n > 0 ? n - 1 : n));
-	}
-
-	function selectApp(app: App, type: 'trigger' | 'action'): void {
-		if (type === 'trigger') {
-			triggerApp.set(app);
-		} else {
-			actionApp.set(app);
-		}
-		nextStep();
-	}
-
-	function selectTriggerOrAction(item: Action, type: 'trigger' | 'action'): void {
-		if (type === 'trigger') {
-			selectedTrigger.set(item);
-			actionDetails.set({ type: item.type, params: {} });
-			item.params.forEach((param) => {
-				actionDetails.update((details) => {
-					details.params[param.name] = '';
-					return details;
-				});
-			});
-			dynamicVariables.set(item.variables || []);
-		} else {
-			selectedAction.set(item);
-			reactionDetails.set({ type: item.type, params: {} });
-			item.params.forEach((param) => {
-				reactionDetails.update((details) => {
-					details.params[param.name] = '';
-					return details;
-				});
-			});
-		}
-		nextStep();
-	}
-
-	function updateParamValue(
-		store: Writable<ActionDetails>,
-		paramName: string,
-		value: string | number | boolean
-	): void {
-		store.update((details) => {
-			details.params[paramName] = value;
-			return details;
-		});
-	}
-
-	function handleSubmit(event: Event) {
-		if (!validateStep()) {
-			event.preventDefault();
-		}
-	}
-
-	function handleCreateAreaResult(result: { type: string; data?: { message: string } }): void {
-		if (result.type === 'success') {
-			showSuccessAnimation = true;
-			setTimeout(() => {
-				goto('/dashboard');
-			}, 2000);
-		} else {
-			setError(`Failed to create automation: ${result.data?.message || 'Unknown error'}`);
-		}
-	}
+    async function startAreaCreation() {
+        await goto('/dashboard/new-area/trigger-app');
+    }
 </script>
 
-<div class="container mx-auto px-4 py-8 flex">
-	<div class="flex-1">
-		<h1 class="h1 mb-8 text-center">Create New Automation</h1>
+<div class="flex flex-col items-center gap-8 max-w-4xl mx-auto">
+    <div class="text-center">
+        <h1 class="h1 mb-4">Create Your Automation</h1>
+        <p class="text-lg text-secondary-500">
+            Connect your favorite apps and automate your workflow in just a few steps.
+        </p>
+    </div>
 
-		<ProgressBar {steps} currentStep={$currentStep} />
-		<MobileIndicator
-			currentStep={$currentStep}
-			totalSteps={steps.length}
-			stepName={steps[$currentStep]}
-		/>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        {#each infoCards as card}
+            <div class="card variant-soft p-6 flex flex-col items-center text-center gap-4">
+                <Icon icon={card.icon} class="w-12 h-12 text-primary-500" />
+                <h3 class="h3">{card.title}</h3>
+                <p class="text-sm">{card.description}</p>
+            </div>
+        {/each}
+    </div>
 
-		<div class="flex flex-col lg:flex-row gap-4 flex-grow">
-			{#if $currentStep === 4 && $dynamicVariables.length > 0}
-				<AvailableVariable {dynamicVariables} />
-			{/if}
-			<div class={$currentStep >= 4 && $dynamicVariables.length > 0 ? 'w-full lg:w-3/4' : 'w-full'}>
-				<div class="card variant-soft flex flex-col p-4 md:p-6 h-full overflow-y-auto">
-					{#if showSuccessAnimation}
-						<Success />
-					{:else if $currentStep === 0 || $currentStep === 2}
-						<h2 class="h2 mb-4 text-center" in:fade>
-							Choose {$currentStep === 0 ? 'a Trigger' : 'an Action'} App
-						</h2>
-						<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-							{#each $apps.filter( (app) => ($currentStep === 0 ? app.actions.length > 0 : app.reactions.length > 0) ) as app (app._id)}
-								<AppCard
-									app={{
-										id: app._id,
-										name: app.name
-									}}
-									onClick={() => selectApp(app, $currentStep === 0 ? 'trigger' : 'action')}
-								/>
-							{/each}
-						</div>
-					{:else if $currentStep === 1 || $currentStep === 3}
-						<h2 class="h2 mb-4 text-center" in:fade>
-							Select {$currentStep === 1 ? 'Trigger' : 'Action'}
-						</h2>
-						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-							{#each ($currentStep === 1 ? $triggerApp?.actions : $actionApp?.reactions) || [] as item}
-								<TriggerBtn
-									item={item.name}
-									type={$currentStep === 1 ? 'trigger' : 'action'}
-									appName={$triggerApp?.name || $actionApp?.name}
-									onClick={() =>
-										handleAuthorizationCheck(item, $currentStep === 1 ? 'trigger' : 'action')}
-								/>
-							{/each}
-						</div>
-					{:else if $currentStep === 4}
-						<h2 class="h2 mb-4 text-center">Set up Details</h2>
-						<div class="mb-4">
-							<label for="automation-name" class="label h3">Automation Name *</label>
-							<div class="rounded-lg p-4 variant-ghost">
-								<input
-									id="automation-name"
-									type="text"
-									class="input w-full"
-									bind:value={$automationName}
-									placeholder="Enter a name for your automation"
-								/>
-							</div>
-						</div>
-						<div class="card variant-ghost-secondary p-4 mb-8">
-							<div class="flex items-start gap-4">
-								<div class="p-2 rounded-full variant-soft-primary">
-									<Icon icon="mdi:information" class="w-6 h-6" />
-								</div>
-								<div>
-									<h3 class="h3 mb-2">What this Area will do:</h3>
-									<p class="text-base">
-										On the app <span class="font-semibold text-primary-500"
-											>{$triggerApp?.name || ''}</span
-										>
-										{$selectedTrigger?.description?.toLowerCase() || ''},
-										<span class="font-semibold text-secondary-500">{$actionApp?.name || ''}</span>
-										will {$selectedAction?.description?.toLowerCase() || ''}.
-									</p>
-									<div class="mt-4 flex items-center gap-2 text-sm">
-										<Icon icon="mdi:clock-outline" class="w-4 h-4" />
-										<span>This automation will run automatically once set up.</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						{#if $selectedTrigger}
-							<h3 class="h3 mb-2">Trigger Details</h3>
-							{#each $selectedTrigger.params as param}
-								<div class="mb-4">
-									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label
-									>
-									{#if param.type === 'string'}
-										<StringInput
-											{param}
-											required={param.required}
-											value={$actionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(actionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={true}
-										/>
-									{:else if param.type === 'number'}
-										<NumberInput
-											{param}
-											required={param.required}
-											value={$actionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(actionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={true}
-										/>
-									{:else if param.type === 'boolean'}
-										<BooleanInput
-											{param}
-											required={param.required}
-											value={$actionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(actionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={true}
-										/>
-									{:else if param.type === 'enum'}
-										<Select
-											options={param.items}
-											value={$actionDetails.params[param.name]}
-											on:change={(e) => updateParamValue(actionDetails, param.name, e.detail)}
-											required={param.required}
-											dynamicVariables={$dynamicVariables}
-											isAction={true}
-										/>
-									{:else if param.type === 'date'}
-										<DateInput
-											{param}
-											required={param.required}
-											value={$actionDetails.params[param.name]}
-											dynamicVariables={$dynamicVariables}
-											updateParamValue={(name, value) =>
-												updateParamValue(actionDetails, name, value)}
-										/>
-									{:else if param.type === 'text'}
-										<TextInput
-											{param}
-											required={param.required}
-											value={$actionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(actionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={true}
-										/>
-									{/if}
-								</div>
-							{/each}
-						{/if}
-						{#if $selectedAction}
-							<h3 class="h3 mb-2">Action Details</h3>
-							{#each $selectedAction.params as param}
-								<div class="mb-4">
-									<label for={param.name} class="h3">{param.name}{param.required ? ' *' : ''}</label
-									>
-									{#if param.type === 'string'}
-										<StringInput
-											{param}
-											required={param.required}
-											value={$reactionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(reactionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={false}
-										/>
-									{:else if param.type === 'number'}
-										<NumberInput
-											{param}
-											required={param.required}
-											value={$reactionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(reactionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={false}
-										/>
-									{:else if param.type === 'boolean'}
-										<BooleanInput
-											{param}
-											required={param.required}
-											value={$reactionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(reactionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={false}
-										/>
-									{:else if param.type === 'enum'}
-										<Select
-											options={param.items}
-											value={$reactionDetails.params[param.name]}
-											on:change={(e) => updateParamValue(reactionDetails, param.name, e.detail)}
-											required={param.required}
-											dynamicVariables={$dynamicVariables}
-											isAction={false}
-										/>
-									{:else if param.type === 'date'}
-										<DateInput
-											{param}
-											required={param.required}
-											value={$reactionDetails.params[param.name]}
-											dynamicVariables={$dynamicVariables}
-											updateParamValue={(name, value) =>
-												updateParamValue(reactionDetails, name, value)}
-										/>
-									{:else if param.type === 'text'}
-										<TextInput
-											{param}
-											required={param.required}
-											value={$reactionDetails.params[param.name]}
-											updateParamValue={(name, value) =>
-												updateParamValue(reactionDetails, name, value)}
-											dynamicVariables={$dynamicVariables}
-											isAction={false}
-										/>
-									{/if}
-								</div>
-							{/each}
-						{/if}
-						<button class="btn variant-filled-primary w-full" on:click={nextStep}>Continue</button>
-					{:else if $currentStep === 5}
-						<h2 class="h2 mb-4 text-center">Test & Review</h2>
-						<AutomationSummary
-							name={$automationName}
-							triggerApp={$triggerApp?.name}
-							triggerAction={$selectedTrigger?.name}
-							actionApp={$actionApp?.name}
-							selectedAction={$selectedAction?.name}
-						/>
-						<form
-							method="POST"
-							action="?/createArea"
-							use:enhance={() => {
-								return async ({ result }) => {
-									handleCreateAreaResult(result);
-								};
-							}}
-							on:submit={handleSubmit}
-						>
-							<input type="hidden" name="actionDetails" value={JSON.stringify($actionDetails)} />
-							<input
-								type="hidden"
-								name="reactionDetails"
-								value={JSON.stringify($reactionDetails)}
-							/>
-							<input type="hidden" name="areaName" value={$automationName} />
-							<button type="submit" class="btn variant-filled-primary w-full">
-								<Icon icon="mdi:flash" class="w-4 h-4 mr-2" />
-								Activate Automation
-							</button>
-						</form>
-					{/if}
-				</div>
-			</div>
-		</div>
-		<div class="flex justify-between mt-8">
-			<button class="btn variant-soft" on:click={prevStep} disabled={$currentStep === 0}>
-				<Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" />
-				Back
-			</button>
-			<button
-				class="btn variant-soft"
-				on:click={nextStep}
-				disabled={$currentStep >= steps.length - 1}
-			>
-				Next
-				<Icon icon="mdi:arrow-right" class="w-4 h-4 ml-2" />
-			</button>
-		</div>
-	</div>
+    <div class="flex flex-col items-center gap-4 mt-8">
+        <button class="btn variant-filled-primary btn-xl" on:click={startAreaCreation}>
+            <Icon icon="mdi:plus" class="w-6 h-6 mr-2" />
+            Start Creating
+        </button>
+        <a href="/dashboard" class="btn variant-soft-secondary">
+            <Icon icon="mdi:arrow-left" class="w-4 h-4 mr-2" />
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div class="card variant-ghost-secondary p-4 mt-8 w-full">
+        <div class="flex items-start gap-4">
+            <Icon icon="mdi:information" class="w-6 h-6 flex-shrink-0 text-primary-500" />
+            <div>
+                <h4 class="h4 mb-2">Need Help?</h4>
+                <p class="text-sm">
+                    Check out our <a href="/docs" class="anchor">documentation</a> for guides and examples,
+                    or visit our <a href="/templates" class="anchor">templates</a> for pre-built automations.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
