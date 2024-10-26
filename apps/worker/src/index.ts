@@ -4,6 +4,7 @@ import {
   MongoDBService,
   replaceField,
   ReactionInfos,
+  LogType,
 } from "@area/shared";
 import dotenv from "dotenv";
 import { actionsMap } from "./actions/actions-map";
@@ -14,7 +15,7 @@ dotenv.config();
 
 if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
   throw new Error(
-    "RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable",
+    "RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable"
   );
 }
 
@@ -89,29 +90,14 @@ async function handleArea(areaPacket: AreaPacket) {
   }
 
   console.log(
-    `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`,
+    `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`
   );
 
   let res: AreaPacket | null = null;
   try {
     res = await actionFunction(areaPacket, mongoDB);
   } catch (error: AxiosError | any) {
-    let errorLog: object = {};
-    if (isAxiosError(error)) {
-      errorLog = error.response ? {
-        message: error.message,
-        url: error.config?.url,
-        status: error.response.status,
-        statusText: error.response.statusText,
-      } : {
-        message: error.message,
-        description: "Request was made but no response received."
-      }
-    } else {
-      errorLog = { message: error.message };
-    }
-    console.error(errorLog);
-    //log the message on MongoDB
+    await handleError(error, "action");
   }
   if (!res) return;
 
@@ -136,31 +122,38 @@ async function handleArea(areaPacket: AreaPacket) {
 
     infos[key as keyof ReactionInfos] = replaceField(
       infos[key as keyof ReactionInfos] as string,
-      res.data,
+      res.data
     ) as any; // petit bypass mais je verifie le type donc c'est fine
   });
 
   console.log(`Updated reaction: `, res.area.reaction.informations);
 
   console.log(
-    `Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`,
+    `Action ${areaPacket.area.action.informations.type} executed successfully (id: ${res.area._id})`
   );
   try {
     await reactionFunction(res, mongoDB);
-  } catch (error: any) {
-    if (error.response) {
-      console.error({
-        message: error.message,
-        url: error.config.url,
-        status: error.response.status,
-        statusText: error.response.statusText,
-      });
-    } else {
-      console.error({ message: error.message });
-    }
+  } catch (error: AxiosError | any) {
+    await handleError(error, "reaction");
   }
 }
 
-async function handleError(error: AxiosError | any) {
-
+async function handleError(error: AxiosError | any, type: LogType) {
+  const errorMessage = JSON.stringify(
+    isAxiosError(error)
+      ? error.response
+        ? {
+            message: error.message,
+            url: error.config?.url,
+            status: error.response.status,
+            statusText: error.response.statusText,
+          }
+        : {
+            message: error.message,
+            description: "Request was made but no response received.",
+          }
+      : { message: error.message }
+  );
+  console.error(errorMessage);
+  //log the message on MongoDB
 }
