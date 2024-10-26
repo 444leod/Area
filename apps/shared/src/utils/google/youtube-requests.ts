@@ -1,5 +1,5 @@
 import { google, youtube_v3 } from "googleapis";
-import {isAxiosError} from "axios";
+import { isAxiosError } from "axios";
 
 function getYoutubeClient(token: string) {
   const oauth2Client = new google.auth.OAuth2(
@@ -130,7 +130,7 @@ export async function commentYoutubeVideo(
     if (isAxiosError(error)) {
       console.error("Error commenting video:", error.response?.data);
     } else {
-        console.error("Error commenting video:", error);
+      console.error("Error commenting video:", error);
     }
   }
 }
