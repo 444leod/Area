@@ -2,7 +2,7 @@ import { ActionFunction } from "../action-function";
 import {
   MongoDBService,
   AreaPacket,
-  OnNewJiraTicketHistoryDTO,
+  OnNewJiraTicketHistory,
   getJiraDomains,
   getDomainsTicketsAfterDate,
   getAuthorizationToken,
@@ -20,7 +20,7 @@ export const handleNewJiraTicketAction: ActionFunction = async (
   );
 
   const area = packet.area;
-  const history = area.action.history as OnNewJiraTicketHistoryDTO;
+  const history = area.action.history as OnNewJiraTicketHistory;
 
   const domains = await getJiraDomains(token);
 

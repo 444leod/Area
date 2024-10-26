@@ -8,7 +8,7 @@ import { SendMessageToDiscordWebhookInfos } from "./discord/send-message-to-disc
 import { SendScrobbleReportByEmailInfos } from "./last-fm/send-scrobble-report-by-email.class";
 import { SendAlbumsReportByEmailInfos } from "./last-fm/send-albums-report-by-email.class";
 import { SendArtistsReportByEmailInfos } from "./last-fm/send-artists-report-by-email.class";
-import { CreatePullRequestCommentClass } from "./github/create-pull-request-comment.class";
+import { CreatePullRequestCommentInfos } from "./github/create-pull-request-comment.class";
 
 export class BaseReactionInfos {
   @ApiProperty()
@@ -21,7 +21,7 @@ export type ReactionInfos =
   | SendEmailReactionInfos
   | CreateGoogleTaskInfos
   | SendMessageToDiscordWebhookInfos
-  | CreatePullRequestCommentClass
+  | CreatePullRequestCommentInfos
   | SendScrobbleReportByEmailInfos
   | SendAlbumsReportByEmailInfos
   | SendArtistsReportByEmailInfos;

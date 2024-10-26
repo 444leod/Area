@@ -57,6 +57,7 @@ export class MongoDBService {
     }
     this._db = this._client.db(env.MONGODB_DB_NAME as string);
     this._connected = true;
+    console.log(`Successfully connected to Mongo DB instance`);
   }
 
   async close(): Promise<void> {

@@ -1,4 +1,4 @@
-import { google } from "googleapis";
+import { google, youtube_v3 } from "googleapis";
 
 export async function getUserYoutubeChannelID(token: string) {
   const oauth2Client = new google.auth.OAuth2(
@@ -98,5 +98,49 @@ export async function getChannelVideos(
   } catch (error) {
     console.error("Error fetching channel videos:", error);
     return [];
+  }
+}
+
+export async function getPlaylistVideos(
+    playlistId: string,
+    token: string,
+): Promise<youtube_v3.Schema$PlaylistItem[]> {
+  const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_CALLBACK_URL,
+  );
+
+  oauth2Client.setCredentials({
+    access_token: token,
+  });
+
+  const youtube = google.youtube({
+    version: "v3",
+    auth: oauth2Client,
+  });
+
+  let videos: youtube_v3.Schema$PlaylistItem[] = [];
+  let nextPageToken: string | undefined = undefined;
+
+  try {
+    do {
+      const response = await youtube.playlistItems.list({
+        part: ["snippet", "contentDetails"],
+        playlistId: playlistId,
+        maxResults: 50, // Maximum allowed per page
+        pageToken: nextPageToken,
+      });
+
+      if (response.data.items) {
+        videos.push(...response.data.items);
+      }
+
+      nextPageToken = response.data.nextPageToken;
+    } while (nextPageToken);
+
+    return videos;
+  } catch (error) {
+    throw new Error("Error fetching playlist videos: " + error);
   }
 }

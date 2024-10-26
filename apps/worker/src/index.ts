@@ -24,7 +24,10 @@ let isRunning = true;
 
 async function run() {
   try {
+    console.log(`Connecting to MongoDB`);
     await mongoDB.connect();
+
+    console.log(`Connecting to Rabbit MQ`);
     await rabbitMQ.connect();
 
     const collections = await mongoDB.listCollections();

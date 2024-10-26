@@ -1,21 +1,19 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
 import {
   ActionInfos,
-  ActionTypes,
   BaseActionInfos,
   EachXSecondsActionInfos,
   ExampleActionInfos,
-  OnNewJiraTicketClass,
-  OnYoutubeVideoPostedClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnNewJiraTicketInfos,
+  OnYoutubeVideoPostedInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 } from "../actions";
 import {
   BaseReactionInfos,
   CreateGoogleTaskInfos,
   ExampleReactionInfos,
   ReactionInfos,
-  ReactionTypes,
   SendEmailReactionInfos,
   SendMessageToDiscordWebhookInfos,
   SendScrobbleReportByEmailInfos,
@@ -35,11 +33,11 @@ import { ReactionRegistry } from "../reactions/reaction.decorator";
 @ApiExtraModels(
   ExampleActionInfos,
   EachXSecondsActionInfos,
-  OnYoutubeVideoPostedClass,
-  OnNewJiraTicketClass,
-  OnNewJiraTicketClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnYoutubeVideoPostedInfos,
+  OnNewJiraTicketInfos,
+  OnNewJiraTicketInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 )
 @ApiExtraModels(
   ExampleReactionInfos,
@@ -60,11 +58,11 @@ export class AreaCreationDto {
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
-      { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewGithubRepositoryClass) },
-      { $ref: getSchemaPath(OnPullRequestStateClass) },
+      { $ref: getSchemaPath(OnYoutubeVideoPostedInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewGithubRepositoryInfos) },
+      { $ref: getSchemaPath(OnPullRequestStateInfos) },
     ],
   })
   @IsNotEmptyObject()
