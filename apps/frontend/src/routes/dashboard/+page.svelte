@@ -1,26 +1,30 @@
 <script lang="ts">
-	import { PlusCircle, BarChart2, LogOut, Info } from 'lucide-svelte';
+	import { PlusCircle, LogOut, Info, ToggleLeft, ToggleRight } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import AreaDetailsPopup from '$lib/components/AreaDetailsPopup.svelte';
+	import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
+	import { setError } from '$lib/store/errorMessage';
+	import { fade, fly } from 'svelte/transition';
 
 	export let data: PageData;
 
 	let areas = data.services;
 	let selectedAreaId: string | null = null;
 	let showDetailsPopup = false;
+	let toggleLoadingMap = new Map();
 
-	let stats = {
+	$: stats = {
 		totalAutomations: areas.length,
 		activeAutomations: areas.filter((area) => area.active).length,
-		totalRuns: 0,
-		successRate: '99.5%'
+		totalRuns: areas.reduce((acc, area) => acc + (area.totalRuns || 0), 0),
+		successRate: calculateSuccessRate(areas)
 	};
 
-	function toggleAutomationStatus(area) {
-		area.active = !area.active;
-		areas = [...areas];
-		stats.activeAutomations = areas.filter((area) => area.active).length;
+	function calculateSuccessRate(areas) {
+		const totalRuns = areas.reduce((acc, area) => acc + (area.totalRuns || 0), 0);
+		const successfulRuns = areas.reduce((acc, area) => acc + (area.successfulRuns || 0), 0);
+		return totalRuns ? `${((successfulRuns / totalRuns) * 100).toFixed(1)}%` : '0%';
 	}
 
 	$: isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 640;
@@ -48,43 +52,65 @@
 	function handleAreaDeleted(event: CustomEvent) {
 		const deletedAreaId = event.detail.areaId;
 		areas = areas.filter((area) => area._id !== deletedAreaId);
-		stats = {
-			...stats,
-			totalAutomations: areas.length,
-			activeAutomations: areas.filter((area) => area.active).length
-		};
 	}
 
 	function closeDetailsPopup() {
 		showDetailsPopup = false;
 		selectedAreaId = null;
 	}
+
+	async function toggleAreaButton(area) {
+		if (toggleLoadingMap.get(area._id)) return;
+
+		toggleLoadingMap.set(area._id, true);
+		areas = [...areas]; // Trigger reactivity
+
+		try {
+			await toggleAreaStatus(area._id, data.token);
+			areas = areas.map((a) => {
+				if (a._id === area._id) {
+					return { ...a, active: !a.active };
+				}
+				return a;
+			});
+		} catch (e) {
+			setError(`Error toggling area status: ${e.message}`);
+		} finally {
+			toggleLoadingMap.set(area._id, false);
+			areas = [...areas];
+		}
+	}
 </script>
 
 <svelte:window on:resize={handleResize} />
 
 <div class="container mx-auto px-4 py-8">
-	<div class="flex flex-row items-center justify-between">
-		<h1 class="h1 mb-8">Dashboard</h1>
-		<button class="btn variant-soft-secondary" on:click={handleLogout}>
+	<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+		<h1 class="h1">Dashboard</h1>
+		<button class="btn variant-ghost-surface hover:variant-soft-surface" on:click={handleLogout}>
 			<LogOut class="w-4 h-4 mr-2" />
 			Logout
 		</button>
 	</div>
-	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-		{#each Object.entries(stats) as [key, value]}
-			<div class="card p-4 variant-soft">
-				<h3 class="h4 mb-2">
+
+	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+		{#each Object.entries(stats) as [key, value], i}
+			<div class="card variant-glass-surface p-6" in:fly={{ y: 20, duration: 300, delay: i * 100 }}>
+				<h3 class="h4 mb-3 opacity-75">
 					{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
 				</h3>
-				<p class="text-2xl font-bold">{value}</p>
+				<p class="text-3xl font-bold">{value}</p>
 			</div>
 		{/each}
 	</div>
-	<div class="card variant-soft p-4 mb-8">
-		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-			<h2 class="h2 mb-2 sm:mb-0">Your Automations</h2>
-			<a href="/dashboard/new-area" class="btn variant-filled-primary w-full sm:w-auto">
+
+	<div class="card variant-glass-surface p-6 mb-8" in:fade={{ duration: 300 }}>
+		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+			<h2 class="h2 mb-4 sm:mb-0">Your Automations</h2>
+			<a
+				href="/dashboard/new-area"
+				class="btn variant-filled-primary w-full sm:w-auto hover:variant-filled-secondary transition-colors duration-200"
+			>
 				<PlusCircle class="w-4 h-4 mr-2" />
 				New Automation
 			</a>
@@ -92,74 +118,91 @@
 
 		{#if isSmallScreen}
 			<div class="space-y-4">
-				{#each areas as area}
-					<div class="card p-4 variant-soft">
-						<h3 class="font-bold mb-2">{getAreaName(area)}</h3>
-						<div class="flex justify-between items-center mb-2">
-							<span
-								class="badge {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
+				{#each areas as area, i (area._id)}
+					<div class="card variant-soft p-4" in:fly={{ y: 20, duration: 300, delay: i * 50 }}>
+						<div class="flex justify-between items-center mb-4">
+							<h3 class="h3">{getAreaName(area)}</h3>
+							<button
+								class="btn-icon variant-soft hover:variant-filled-surface"
+								on:click={() => showAreaDetails(area._id)}
 							>
-								{area.active ? 'Active' : 'Paused'}
-							</span>
-						</div>
-						<div class="flex justify-between">
-							<button class="btn btn-sm variant-soft" on:click={() => toggleAutomationStatus(area)}>
-								{area.active ? 'Pause' : 'Activate'}
-							</button>
-							<button class="btn btn-sm variant-soft" on:click={() => showAreaDetails(area._id)}>
 								<Info class="w-4 h-4" />
 							</button>
 						</div>
+						<button
+							on:click={() => toggleAreaButton(area)}
+							class="btn w-full {area.active
+								? 'variant-filled-success hover:variant-soft-success'
+								: 'variant-filled-warning hover:variant-soft-warning'} transition-colors duration-200"
+							disabled={toggleLoadingMap.get(area._id)}
+						>
+							{#if toggleLoadingMap.get(area._id)}
+								<div class="loader-sm mr-2" />
+							{:else if area.active}
+								<ToggleRight class="w-5 h-5 mr-2" />
+							{:else}
+								<ToggleLeft class="w-5 h-5 mr-2" />
+							{/if}
+							{area.active ? 'Active' : 'Inactive'}
+						</button>
 					</div>
 				{/each}
 			</div>
 		{:else}
-			<table class="table table-compact table-hover">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Status</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each areas as area}
-						<tr>
-							<td class="font-bold">{getAreaName(area)}</td>
-							<td>
-								<span
-									class="badge {area.active ? 'variant-filled-success' : 'variant-filled-warning'}"
+			<div class="card variant-ringed-surface p-4">
+				{#if areas.length === 0}
+					<p class="text-center text-surface-400 py-8">No automations found, create a new one!</p>
+				{:else}
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th class="!p-4">Name</th>
+								<th class="!p-4">Status</th>
+								<th class="text-right !p-4">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each areas as area, i (area._id)}
+								<tr
+									class="hover:variant-soft-surface transition-colors duration-200"
+									in:fly={{ y: 20, duration: 300, delay: i * 50 }}
 								>
-									{area.active ? 'Active' : 'Paused'}
-								</span>
-							</td>
-							<td>
-								<button
-									class="btn btn-sm variant-soft"
-									on:click={() => toggleAutomationStatus(area)}
-								>
-									{area.active ? 'Pause' : 'Activate'}
-								</button>
-								<button
-									class="btn btn-sm variant-soft ml-2"
-									on:click={() => showAreaDetails(area._id)}
-								>
-									<Info class="w-4 h-4" />
-								</button>
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+									<td class="!p-4">
+										<span class="font-semibold h3">{getAreaName(area)}</span>
+									</td>
+									<td class="!p-4">
+										<button
+											on:click={() => toggleAreaButton(area)}
+											class="btn {area.active
+												? 'variant-filled-success hover:variant-soft-success'
+												: 'variant-filled-warning hover:variant-soft-warning'} transition-all duration-200"
+											disabled={toggleLoadingMap.get(area._id)}
+										>
+											{#if toggleLoadingMap.get(area._id)}
+												<div class="loader-sm mr-2" />
+											{:else if area.active}
+												<ToggleRight class="w-5 h-5 mr-2" />
+											{:else}
+												<ToggleLeft class="w-5 h-5 mr-2" />
+											{/if}
+											{area.active ? 'Active' : 'Inactive'}
+										</button>
+									</td>
+									<td class="!p-4 text-right">
+										<button
+											class="btn-icon variant-soft hover:variant-filled-surface transition-colors duration-200"
+											on:click={() => showAreaDetails(area._id)}
+										>
+											<Info class="w-4 h-4" />
+										</button>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				{/if}
+			</div>
 		{/if}
-	</div>
-
-	<div class="card variant-soft p-4">
-		<h2 class="h2 mb-4">Activity Overview</h2>
-		<div class="bg-surface-200 h-64 flex items-center justify-center">
-			<BarChart2 class="w-12 h-12 text-surface-500" />
-			<p class="ml-2">Activity chart will be displayed here</p>
-		</div>
 	</div>
 </div>
 
@@ -169,5 +212,44 @@
 		token={data.token}
 		on:close={closeDetailsPopup}
 		on:areaDeleted={handleAreaDeleted}
+		on:areaUpdated={({ detail }) => {
+			areas = areas.map((area) =>
+				area._id === detail.areaId ? { ...area, active: detail.active } : area
+			);
+		}}
 	/>
 {/if}
+
+<style>
+	.loader-sm {
+		border: 2px solid #f3f3f3;
+		border-top: 2px solid #ffffff;
+		border-radius: 50%;
+		width: 16px;
+		height: 16px;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	:global(.table) {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+	}
+
+	:global(.table th) {
+		text-transform: uppercase;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.025em;
+		color: var(--color-surface-500);
+	}
+</style>
