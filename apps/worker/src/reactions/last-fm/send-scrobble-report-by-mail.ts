@@ -4,6 +4,7 @@ import {
   SendScrobbleReportByEmailInfos,
   sendMail,
   getWeeklyScrobbles,
+  ValidationError,
 } from "@area/shared";
 import { Liquid } from "liquidjs";
 import * as fs from "fs/promises";
@@ -12,7 +13,7 @@ import * as path from "path";
 const engine = new Liquid();
 
 export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
-  packet: AreaPacket,
+  packet: AreaPacket
 ) => {
   const reaction = packet.area.reaction
     .informations as SendScrobbleReportByEmailInfos;
@@ -21,21 +22,18 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
       ? reaction.nb_tracks
       : parseInt(reaction.nb_tracks);
 
-  if (Number.isNaN(nb_tracks)) {
-    console.error(
-      "Invalid number of tracks to display, fix the dynamic variable",
+  if (Number.isNaN(nb_tracks))
+    throw new ValidationError(
+      "Invalid number of tracks to display, fix the dynamic variable"
     );
-    return false;
-  }
 
   const data = await getWeeklyScrobbles(
     reaction.username,
-    process.env.LASTFM_API_KEY || "",
+    process.env.LASTFM_API_KEY || ""
   );
 
   if (!data) {
-    console.error("No data found for the given username");
-    return false;
+    throw new ValidationError("No data found for the given username");
   }
 
   const tracks = data.weeklytrackchart.track || [];
@@ -45,7 +43,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
 
   const templatePath = path.join(
     __dirname,
-    "../../templates/weekly-music-report.liquid",
+    "../../templates/weekly-music-report.liquid"
   );
   const weeklyMusicTemplate = await fs.readFile(templatePath, "utf8");
 
@@ -58,5 +56,4 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
-  return true;
 };

@@ -6,6 +6,7 @@ import {
   createPullRequestComment,
   getAuthorizationToken,
   AuthorizationsTypes,
+  ValidationError,
 } from "@area/shared";
 
 export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
@@ -21,12 +22,8 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
   const area = packet.area;
   const reaction = area.reaction.informations as CreatePullRequestCommentInfos;
 
-  if (isNaN(Number(reaction.pull_request_number))) {
-    console.error(
-      `Invalid pull request number: ${reaction.pull_request_number}`,
-    );
-    return false;
-  }
+  if (isNaN(Number(reaction.pull_request_number)))
+    throw new ValidationError(`Invalid pull request number: ${reaction.pull_request_number}`);
 
   await createPullRequestComment(
     token,
@@ -35,5 +32,4 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
     Number(reaction.pull_request_number),
     reaction.body,
   );
-  return true;
 };

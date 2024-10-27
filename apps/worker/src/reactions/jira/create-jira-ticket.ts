@@ -7,16 +7,17 @@ import {
   JiraAPI,
   JiraTicketCreate,
   CreateJiraTicketInfos,
+  ValidationError,
 } from "@area/shared";
 
 export const handleCreateJiraTicketReaction: ReactionFunction = async (
   packet: AreaPacket,
-  database: MongoDBService,
+  database: MongoDBService
 ) => {
   const { token } = await getAuthorizationToken(
     packet.user_id,
     AuthorizationsTypes.ATLASSIAN,
-    database,
+    database
   );
 
   const area = packet.area;
@@ -31,10 +32,10 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
     (issueType) => issueType.name === reaction.issue_type || "Task",
   );
 
-  if (!issueTypes) {
-    console.error(`Issue type ${reaction.issue_type || "Task"} not found`);
-    return false;
-  }
+  if (!issueTypes)
+    throw new ValidationError(
+      `Issue type ${reaction.issue_type || "Task"} not found`
+    );
 
   const ticket: JiraTicketCreate = {
     fields: {
@@ -53,10 +54,8 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
       (member) => member.displayName === reaction.assignee_name,
     );
 
-    if (!assignee) {
-      console.error(`Assignee ${reaction.assignee_name} not found`);
-      return false;
-    }
+    if (!assignee)
+      throw new ValidationError(`Assignee ${reaction.assignee_name} not found`);
 
     ticket.fields.assignee = {
       accountId: assignee.accountId,
@@ -64,5 +63,4 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
   }
 
   await jira.createTicket(project, ticket);
-  return true;
 };

@@ -34,6 +34,4 @@ export const handleSendMessageToDiscordWebhookReaction: ReactionFunction =
     await client.send({
       embeds: [embed],
     });
-
-    return true;
   };

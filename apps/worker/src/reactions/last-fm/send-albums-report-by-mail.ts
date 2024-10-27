@@ -4,6 +4,7 @@ import {
   SendAlbumsReportByEmailInfos,
   sendMail,
   getWeeklyAlbums,
+  ValidationError,
 } from "@area/shared";
 import { Liquid } from "liquidjs";
 import * as fs from "fs/promises";
@@ -21,12 +22,11 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
       ? reaction.nb_albums
       : parseInt(reaction.nb_albums);
 
-  if (Number.isNaN(nb_albums)) {
-    console.error(
-      "Invalid number of albums to display, fix the dynamic variable",
+  if (Number.isNaN(nb_albums))
+    throw new ValidationError(
+      "Invalid number of albums to display, fix the dynamic variable"
     );
-    return false;
-  }
+    
 
   const data = await getWeeklyAlbums(
     reaction.username,
@@ -34,8 +34,7 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   );
 
   if (!data) {
-    console.error("No data found for the given username");
-    return false;
+    throw new ValidationError("No data found for the given username");
   }
 
   const albums = data.weeklyalbumchart.album || [];
@@ -58,5 +57,4 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
-  return true;
 };

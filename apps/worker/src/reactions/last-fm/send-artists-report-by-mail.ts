@@ -4,6 +4,7 @@ import {
   SendArtistsReportByEmailInfos,
   sendMail,
   getWeeklyArtists,
+  ValidationError,
 } from "@area/shared";
 import { Liquid } from "liquidjs";
 import * as fs from "fs/promises";
@@ -21,12 +22,10 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
       ? reaction.nb_artists
       : parseInt(reaction.nb_artists);
 
-  if (Number.isNaN(nb_artists)) {
-    console.error(
-      "Invalid number of tracks to display, fix the dynamic variable",
+  if (Number.isNaN(nb_artists))
+    throw new ValidationError(
+      "Invalid number of artists to display, fix the dynamic variable"
     );
-    return false;
-  }
 
   const data = await getWeeklyArtists(
     reaction.username,
@@ -34,14 +33,13 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   );
 
   if (!data) {
-    console.error("No data found for the given username");
-    return false;
+    throw new ValidationError("No data found for the given username");
   }
 
-  const tracks = data.weeklyartistchart.artist || [];
-  const totalArtistsAvailable = tracks.length;
+  const artists = data.weeklyartistchart.artist || [];
+  const totalArtistsAvailable = artists.length;
   const artistsToDisplay = Math.min(nb_artists, totalArtistsAvailable);
-  const firstXArtists = tracks.slice(0, artistsToDisplay);
+  const firstXArtists = artists.slice(0, artistsToDisplay);
 
   const templatePath = path.join(
     __dirname,
@@ -58,5 +56,4 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
-  return true;
 };

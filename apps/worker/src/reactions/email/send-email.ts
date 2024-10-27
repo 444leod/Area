@@ -7,5 +7,4 @@ export const handleSendEmailReaction: ReactionFunction = async (
   const reaction = packet.area.reaction.informations as SendEmailReactionInfos;
 
   await sendMail(reaction.to, reaction.subject, reaction.body);
-  return true;
 };

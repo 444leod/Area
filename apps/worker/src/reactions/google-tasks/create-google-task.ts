@@ -43,5 +43,4 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (
       notes: body,
     },
   });
-  return true;
 };

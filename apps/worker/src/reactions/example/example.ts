@@ -1,5 +1,3 @@
 import { ReactionFunction } from "../reaction-function";
 
-export const handleExampleReaction: ReactionFunction = async () => {
-  return true;
-};
+export const handleExampleReaction: ReactionFunction = async () => {};
