@@ -906,7 +906,7 @@
           {
             "name": "nb_tracks",
             "details": "number of tracks to analyse",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ]
@@ -938,7 +938,7 @@
           {
             "name": "nb_albums",
             "details": "number of albums to analyse",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ]
@@ -970,7 +970,7 @@
           {
             "name": "nb_artists",
             "details": "number of artists to analyse",
-            "type": "string",
+            "type": "number",
             "required": true
           }
         ]
