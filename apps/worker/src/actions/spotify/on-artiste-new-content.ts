@@ -30,7 +30,9 @@ export const handleOnNewArtistContentAction: ActionFunction = async (
   const releases =
     action.content_type === NewArtistContentType.ANY
       ? await spotify.getArtistReleases(artist.id)
-      : (await spotify.getArtistReleasesSortedByDateReducedByType(artist.id))[action.content_type] || [];
+      : (await spotify.getArtistReleasesSortedByDateReducedByType(artist.id))[
+          action.content_type
+        ] || [];
 
   if (!history.contentIds) {
     history.contentIds = releases.map((release) => release.id);
@@ -39,7 +41,9 @@ export const handleOnNewArtistContentAction: ActionFunction = async (
     return null;
   }
 
-  const newContent = releases.filter((release) => !history.contentIds?.includes(release.id));
+  const newContent = releases.filter(
+    (release) => !history.contentIds?.includes(release.id),
+  );
 
   if (newContent.length === 0) {
     return null;
