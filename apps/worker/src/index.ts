@@ -77,13 +77,15 @@ async function handleArea(areaPacket: AreaPacket) {
   const addLogToAreaWrapper = async (
     type: LogType,
     errorMessage: string,
-    status: LogStatus
+    status: LogStatus,
+    replacedVariables?: { [key: string]: any }
   ) => {
     await mongoDB.addLogToArea(areaPacket.user_id, areaPacket.area._id, {
       type: type,
       date: new Date().toISOString(),
       status: status,
       message: errorMessage,
+      replacedVariables: replacedVariables,
     });
   };
 
@@ -110,9 +112,9 @@ async function handleArea(areaPacket: AreaPacket) {
     await addLogToAreaWrapper(type, errorMessage, "exception_error");
   };
 
-  const handleNullError = async (type: LogType, errorMessage: string) => {
+  const handleValidationError = async (type: LogType, errorMessage: string) => {
     console.error(errorMessage);
-    await addLogToAreaWrapper(type, errorMessage, "null_error");
+    await addLogToAreaWrapper(type, errorMessage, "validation_error");
   };
 
   const actionType = areaPacket?.area.action?.informations?.type;
@@ -145,9 +147,9 @@ async function handleArea(areaPacket: AreaPacket) {
     await handleExceptionError(error, "action");
   }
   if (!updatedPacket) {
-    await handleNullError(
+    await handleValidationError(
       "action",
-      "Action failed returning null. Check your input"
+      "Action failed because of invalid inputs."
     );
     return;
   }
@@ -181,9 +183,12 @@ async function handleArea(areaPacket: AreaPacket) {
 
   console.log(`Updated reaction: `, updatedPacket.area.reaction.informations);
 
-  console.log(
-    `Action ${areaPacket.area.action.informations.type} executed successfully (id: ${updatedPacket.area._id})`
-  );
+  const actionSuccess = `Action ${areaPacket.area.action.informations.type} executed successfully (id: ${updatedPacket.area._id})`;
+  
+  console.log(actionSuccess);
+
+  addLogToAreaWrapper("action", actionSuccess, "success", updatedPacket.data);
+
   try {
     await reactionFunction(updatedPacket, mongoDB);
     // await addLogToAreaWrapper("reaction", "Success", "success");
