@@ -7,4 +7,6 @@ export * from "./jira/on-new-jira-ticket.history";
 export * from "./jira/on-new-jira-project.history";
 export * from "./github/on-new-github-repository.history";
 export * from "./github/on-pull-request-state.history";
+export * from "./spotify/on-new-artist-content.history";
+export * from "./spotify/on-spotify-playlist-update.history";
 export * from "./history.decorator";

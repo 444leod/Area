@@ -6,6 +6,8 @@ import { OnNewJiraProjectHistory } from "./jira/on-new-jira-project.history";
 import { OnNewGithubRepositoryHistory } from "./github/on-new-github-repository.history";
 import { OnPullRequestStateHistory } from "./github/on-pull-request-state.history";
 import { OnNewVideoInPlaylistHistory } from "./youtube/on-video-in-playlist.history";
+import { OnNewArtistContentHistory } from "./spotify/on-new-artist-content.history";
+import { OnSpotifyPlaylistUpdateHistory } from "./spotify/on-spotify-playlist-update.history";
 
 export type AnyHistory =
   | ExampleActionHistory
@@ -15,4 +17,6 @@ export type AnyHistory =
   | OnNewJiraProjectHistory
   | OnNewGithubRepositoryHistory
   | OnPullRequestStateHistory
-  | OnNewVideoInPlaylistHistory;
+  | OnNewVideoInPlaylistHistory
+  | OnNewArtistContentHistory
+  | OnSpotifyPlaylistUpdateHistory;

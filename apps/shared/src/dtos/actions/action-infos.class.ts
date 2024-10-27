@@ -8,6 +8,8 @@ import { OnNewJiraProjectInfos } from "./jira/on-new-jira-project.class";
 import { OnNewGithubRepositoryInfos } from "./github/on-new-github-repository.class";
 import { OnPullRequestStateInfos } from "./github/on-pull-request-state.class";
 import { OnNewVideoInPlaylistInfos } from "./youtube/on-video-in-playlist.class";
+import { OnNewArtistContentInfos } from "./spotify/on-new-artist-content.class";
+import { OnSpotifyPlaylistUpdateInfos } from "./spotify/on-spotify-playlist-update.class";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class BaseActionInfos {
@@ -24,4 +26,6 @@ export type ActionInfos =
   | OnNewJiraProjectInfos
   | OnNewGithubRepositoryInfos
   | OnPullRequestStateInfos
-  | OnNewVideoInPlaylistInfos;
+  | OnNewVideoInPlaylistInfos
+  | OnNewArtistContentInfos
+  | OnSpotifyPlaylistUpdateInfos;
