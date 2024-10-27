@@ -10,6 +10,7 @@ import { OnPullRequestStateInfos } from "./github/on-pull-request-state.class";
 import { OnNewVideoInPlaylistInfos } from "./youtube/on-video-in-playlist.class";
 import { OnNewArtistContentInfos } from "./spotify/on-new-artist-content.class";
 import { OnSpotifyPlaylistUpdateInfos } from "./spotify/on-spotify-playlist-update.class";
+import { OnNewGoogleTaskInfos } from "./google-tasks/on-new-google-task.class";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class BaseActionInfos {
@@ -28,4 +29,5 @@ export type ActionInfos =
   | OnPullRequestStateInfos
   | OnNewVideoInPlaylistInfos
   | OnNewArtistContentInfos
-  | OnSpotifyPlaylistUpdateInfos;
+  | OnSpotifyPlaylistUpdateInfos
+  | OnNewGoogleTaskInfos;

@@ -5,38 +5,61 @@
 	import { oauthAtlassian } from '$lib/modules/oauthAtlassian';
 	import { oauthGithub } from '$lib/modules/oauthGithub';
 	import { oauthSpotify } from '$lib/modules/oauthSpotify';
-	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-	import type { ModalSettings } from '@skeletonlabs/skeleton';
 	import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
+	import ServiceModal from '$lib/components/ServiceModal.svelte';
 	import { Search } from 'lucide-svelte';
 
 	export let data;
 
-	const modalStore = getModalStore();
+	let showModal = false;
+	let selectedService = null;
+
+	function getRelatedServices(serviceName: string) {
+		const serviceMap = {
+			Google: ['Google task', 'YouTube', 'Mail'],
+			Atlassian: ['Atlassian'],
+			Github: ['Github'],
+			Spotify: ['Spotify'],
+			Discord: ['Discord']
+		};
+		const relatedNames = serviceMap[serviceName] || [serviceName];
+		const relatedServices = relatedNames
+			.map((name) => data.services.find((s) => s.name === name))
+			.filter(Boolean);
+		return {
+			actions: relatedServices.flatMap((s) => s.actions || []),
+			reactions: relatedServices.flatMap((s) => s.reactions || [])
+		};
+	}
+
 	const allServices = [
 		{
 			name: 'Google',
-			description: 'Connect to use Google services in your automations',
+			description: 'Connect to use Google services (YouTube, Gmail, Tasks) in your automations',
 			icon: 'devicon:google',
-			oauthFunction: oauthGoogle
+			oauthFunction: oauthGoogle,
+			...getRelatedServices('Google')
 		},
 		{
 			name: 'Atlassian',
 			description: 'Connect to use Atlassian in your automations',
 			icon: 'logos:atlassian',
-			oauthFunction: oauthAtlassian
+			oauthFunction: oauthAtlassian,
+			...getRelatedServices('Atlassian')
 		},
 		{
 			name: 'Github',
 			description: 'Connect to use Github in your automations',
 			icon: 'logos:github-icon',
-			oauthFunction: oauthGithub
+			oauthFunction: oauthGithub,
+			...getRelatedServices('Github')
 		},
 		{
 			name: 'Spotify',
 			description: 'Connect to use Spotify in your automations',
 			icon: 'logos:spotify-icon',
-			oauthFunction: oauthSpotify
+			oauthFunction: oauthSpotify,
+			...getRelatedServices('Spotify')
 		}
 	];
 
@@ -59,25 +82,40 @@
 		service.oauthFunction();
 	}
 
-	function disconnectService(service) {
-		//TODO: Implement disconnect service
+	async function disconnectService(service) {
+		try {
+			const formData = new FormData();
+			formData.append('service', service.name);
+
+			const response = await fetch('?/disconnect', {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to disconnect service');
+			}
+
+			window.location.reload();
+		} catch (err) {
+			console.error('Error disconnecting service:', err);
+			// Handle error (show notification, etc.)
+		}
 	}
 
 	function openServiceModal(service) {
-		const modal: ModalSettings = {
-			type: 'alert',
-			title: `${service.name} Details`,
-			body: `
-                <div class="p-4">
-                    <p>${service.description}</p>
-                    <p class="mt-4"><strong>Status:</strong> ${service.connected ? 'Connected' : 'Not Connected'}</p>
-                </div>
-            `,
-			buttonTextConfirm: 'Close',
-			modalClasses: 'w-modal shadow-xl',
-			backdropClasses: 'bg-surface-500/30'
+		selectedService = {
+			...service,
+			description: `${service.description}\n\nIncludes services: ${getRelatedServices(service.name)
+				.relatedServices?.map((s) => s.name)
+				.join(', ')}`
 		};
-		modalStore.trigger(modal);
+		showModal = true;
+	}
+
+	function closeModal() {
+		showModal = false;
+		selectedService = null;
 	}
 </script>
 
@@ -119,4 +157,4 @@
 	</div>
 </div>
 
-<Modal />
+<ServiceModal show={showModal} service={selectedService} onClose={closeModal} />

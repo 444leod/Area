@@ -9,6 +9,7 @@ import { handleOnPullRequestStateAction } from "./github/on-pull-request-state";
 import { handleOnNewYoutubeVideoInPlaylistAction } from "./youtube/on-video-in-playlist";
 import { handleOnSpotifyPlaylistUpdateAction } from "./spotify/on-spotify-playlist-update";
 import { handleOnNewArtistContentAction } from "./spotify/on-artiste-new-content";
+import { handleOnNewGoogleTaskAction } from "./google-tasks/on-new-google-task";
 
 type ActionMap = {
   [string: string]: ActionFunction;
@@ -25,4 +26,5 @@ export const actionsMap: ActionMap = {
   ON_NEW_VIDEO_IN_PLAYLIST: handleOnNewYoutubeVideoInPlaylistAction,
   ON_SPOTIFY_PLAYLIST_UPDATE: handleOnSpotifyPlaylistUpdateAction,
   ON_NEW_ARTIST_CONTENT: handleOnNewArtistContentAction,
+  ON_NEW_GOOGLE_TASK: handleOnNewGoogleTaskAction,
 };

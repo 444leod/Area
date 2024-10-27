@@ -8,6 +8,7 @@ import { OnPullRequestStateHistory } from "./github/on-pull-request-state.histor
 import { OnNewVideoInPlaylistHistory } from "./youtube/on-video-in-playlist.history";
 import { OnNewArtistContentHistory } from "./spotify/on-new-artist-content.history";
 import { OnSpotifyPlaylistUpdateHistory } from "./spotify/on-spotify-playlist-update.history";
+import { OnNewGoogleTaskHistory } from "./google-tasks/on-new-google-task.history";
 
 export type AnyHistory =
   | ExampleActionHistory
@@ -19,4 +20,5 @@ export type AnyHistory =
   | OnPullRequestStateHistory
   | OnNewVideoInPlaylistHistory
   | OnNewArtistContentHistory
-  | OnSpotifyPlaylistUpdateHistory;
+  | OnSpotifyPlaylistUpdateHistory
+  | OnNewGoogleTaskHistory;
