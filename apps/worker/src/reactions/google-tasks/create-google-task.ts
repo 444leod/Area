@@ -5,8 +5,8 @@ import {
   CreateGoogleTaskInfos,
   getAuthorizationToken,
   MongoDBService,
+  createGoogleTask,
 } from "@area/shared";
-import { google } from "googleapis";
 
 export const handleCreateGoogleTaskReaction: ReactionFunction = async (
   packet: AreaPacket,
@@ -23,24 +23,5 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (
   const title = reaction.title;
   const body = reaction.body;
 
-  const tasks = google.tasks("v1");
-
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URL,
-  );
-
-  oauth2Client.setCredentials({
-    access_token: token,
-  });
-
-  await tasks.tasks.insert({
-    auth: oauth2Client,
-    tasklist: "@default",
-    requestBody: {
-      title: title,
-      notes: body,
-    },
-  });
+  await createGoogleTask(token, title, body);
 };
