@@ -873,5 +873,108 @@
         ]
       }
     ]
+  },
+  {
+    "name": "LastFM",
+    "description": "Service for LastFM actions and reactions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "Send Scrobble report by mail",
+        "description": "Sends a report of a user's last week scrobbles by mail",
+        "type": "SEND_SCROBBLE_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_tracks",
+            "details": "number of tracks to analyse",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Send albums report by mail",
+        "description": "Sends a report of a user's last week albums by mail",
+        "type": "SEND_ALBUMS_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_albums",
+            "details": "number of albums to analyse",
+            "type": "string",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Send artists report by mail",
+        "description": "Sends a report of a user's last week artists by mail",
+        "type": "SEND_ARTISTS_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_artists",
+            "details": "number of artists to analyse",
+            "type": "string",
+            "required": true
+          }
+        ]
+      }
+    ]
   }
 ]
