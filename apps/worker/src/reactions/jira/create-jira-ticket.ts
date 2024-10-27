@@ -12,12 +12,12 @@ import {
 
 export const handleCreateJiraTicketReaction: ReactionFunction = async (
   packet: AreaPacket,
-  database: MongoDBService
+  database: MongoDBService,
 ) => {
   const { token } = await getAuthorizationToken(
     packet.user_id,
     AuthorizationsTypes.ATLASSIAN,
-    database
+    database,
   );
 
   const area = packet.area;
@@ -34,7 +34,7 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
 
   if (!issueTypes)
     throw new ValidationError(
-      `Issue type ${reaction.issue_type || "Task"} not found`
+      `Issue type ${reaction.issue_type || "Task"} not found`,
     );
 
   const ticket: JiraTicketCreate = {

@@ -13,7 +13,7 @@ import * as path from "path";
 const engine = new Liquid();
 
 export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
-  packet: AreaPacket
+  packet: AreaPacket,
 ) => {
   const reaction = packet.area.reaction
     .informations as SendScrobbleReportByEmailInfos;
@@ -24,12 +24,12 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
 
   if (Number.isNaN(nb_tracks))
     throw new ValidationError(
-      "Invalid number of tracks to display, fix the dynamic variable"
+      "Invalid number of tracks to display, fix the dynamic variable",
     );
 
   const data = await getWeeklyScrobbles(
     reaction.username,
-    process.env.LASTFM_API_KEY || ""
+    process.env.LASTFM_API_KEY || "",
   );
 
   if (!data) {
@@ -43,7 +43,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
 
   const templatePath = path.join(
     __dirname,
-    "../../templates/weekly-music-report.liquid"
+    "../../templates/weekly-music-report.liquid",
   );
   const weeklyMusicTemplate = await fs.readFile(templatePath, "utf8");
 

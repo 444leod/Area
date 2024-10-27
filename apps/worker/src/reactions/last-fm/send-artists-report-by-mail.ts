@@ -24,7 +24,7 @@ export const handleSendArtistsReportByMailReaction: ReactionFunction = async (
 
   if (Number.isNaN(nb_artists))
     throw new ValidationError(
-      "Invalid number of artists to display, fix the dynamic variable"
+      "Invalid number of artists to display, fix the dynamic variable",
     );
 
   const data = await getWeeklyArtists(
