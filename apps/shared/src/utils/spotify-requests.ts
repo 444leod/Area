@@ -1,4 +1,5 @@
-import SpotifyWebApi from 'spotify-web-api-node';
+import SpotifyWebApi from "spotify-web-api-node";
+import util from "util";
 
 export class Playlist {
   id: string;
@@ -7,7 +8,7 @@ export class Playlist {
   external_urls: { spotify: string };
   followers: { total: number };
   images: { url: string }[];
-  owner: { id: string, display_name?: string, uri: string };
+  owner: { id: string; display_name?: string; uri: string };
   public: boolean;
   tracks: { total: number };
   uri: string;
@@ -20,7 +21,7 @@ export class PlaylistTrack {
   album: { name: string };
   uri: string;
   added_at: string;
-  added_by: { id: string, display_name: string, uri: string };
+  added_by: { id: string; display_name: string; uri: string };
   type?: string;
 }
 
@@ -87,19 +88,21 @@ export class SpotifyAPI {
   async getTrack(trackId: string): Promise<PlaylistTrack> {
     const track = (await this.spotify.getTrack(trackId)).body;
 
-    const added_by = { id: this.me.id, display_name: this.me.display_name, uri: this.me.uri };
+    const added_by = {
+      id: this.me.id,
+      display_name: this.me.display_name,
+      uri: this.me.uri,
+    };
     return {
       id: track.id,
       name: track.name,
-      artists: track.artists.map(
-        (artist: { id: any; name: any; uri: any }) => {
-          return {
-            id: artist.id,
-            name: artist.name,
-            uri: artist.uri,
-          };
-        },
-      ),
+      artists: track.artists.map((artist: { id: any; name: any; uri: any }) => {
+        return {
+          id: artist.id,
+          name: artist.name,
+          uri: artist.uri,
+        };
+      }),
       album: {
         name: track.album.name,
       },
@@ -110,54 +113,70 @@ export class SpotifyAPI {
         display_name: added_by.display_name,
         uri: added_by.uri,
       },
-      type: "track"
+      type: "track",
     };
   }
 
-  async getPlaylistTracks(playlistId: string, limit: number | null = 10): Promise<PlaylistTrack[]> {
+  async getPlaylistTracks(
+    playlistId: string,
+    limit: number | null = 10,
+  ): Promise<PlaylistTrack[]> {
     let total = 0;
     let tracks = [];
     do {
-      const response = await this.spotify.getPlaylistTracks(playlistId, { offset: tracks.length });
+      const response = await this.spotify.getPlaylistTracks(playlistId, {
+        offset: tracks.length,
+      });
       tracks = tracks.concat(response.body.items);
       total = response.body.total;
-    } while (total > tracks.length && (limit === null || tracks.length < limit));
+    } while (
+      total > tracks.length &&
+      (limit === null || tracks.length < limit)
+    );
 
-    return await Promise.all(tracks.map(async (item) => {
-      const added_by = item.added_by || { id: this.me.id, display_name: this.me.display_name, uri: this.me.uri };
-      const fullAddedBy = (await this.spotify.getUser(added_by.id)).body;
-      return {
-        id: item.track.id,
-        name: item.track.name,
-        artists: item.track.artists.map(
-          (artist: { id: any; name: any; uri: any }) => {
-            return {
-              id: artist.id,
-              name: artist.name,
-              uri: artist.uri,
-            };
+    return await Promise.all(
+      tracks.map(async (item) => {
+        const added_by = item.added_by || {
+          id: this.me.id,
+          display_name: this.me.display_name,
+          uri: this.me.uri,
+        };
+        const fullAddedBy = (await this.spotify.getUser(added_by.id)).body;
+        return {
+          id: item.track.id,
+          name: item.track.name,
+          artists: item.track.artists.map(
+            (artist: { id: any; name: any; uri: any }) => {
+              return {
+                id: artist.id,
+                name: artist.name,
+                uri: artist.uri,
+              };
+            },
+          ),
+          album: {
+            name: item.track.album.name,
           },
-        ),
-        album: {
-          name: item.track.album.name,
-        },
-        uri: item.track.uri,
-        added_at: item.added_at,
-        added_by: {
-          id: added_by.id,
-          display_name: fullAddedBy.display_name,
-          uri: added_by.uri,
-        },
-        type: item.track.type
-      };
-    }));
+          uri: item.track.uri,
+          added_at: item.added_at,
+          added_by: {
+            id: added_by.id,
+            display_name: fullAddedBy.display_name,
+            uri: added_by.uri,
+          },
+          type: item.track.type,
+        };
+      }),
+    );
   }
 
   async getUserPlaylists(): Promise<SpotifyApi.PlaylistObjectSimplified[]> {
     let total = 0;
     let playlists = [];
     do {
-      const response = await this.spotify.getUserPlaylists({ offset: playlists.length });
+      const response = await this.spotify.getUserPlaylists({
+        offset: playlists.length,
+      });
       playlists = playlists.concat(response.body.items);
       total = response.body.total;
     } while (total > playlists.length);
@@ -170,10 +189,15 @@ export class SpotifyAPI {
     let tracks = [];
     const me = await this.getUserInformations();
     do {
-      const response = await this.spotify.getMySavedTracks({ offset: tracks.length });
+      const response = await this.spotify.getMySavedTracks({
+        offset: tracks.length,
+      });
       tracks = tracks.concat(response.body.items);
       total = response.body.total;
-    } while (total > tracks.length && (limit === null || tracks.length < limit));
+    } while (
+      total > tracks.length &&
+      (limit === null || tracks.length < limit)
+    );
     return tracks.map((item) => {
       return {
         id: item.track.id,
@@ -191,7 +215,7 @@ export class SpotifyAPI {
         uri: item.track.uri,
         added_at: item.added_at,
         added_by: { id: me.id, display_name: me.display_name, uri: me.uri },
-        type: "track"
+        type: "track",
       };
     });
   }
@@ -204,14 +228,66 @@ export class SpotifyAPI {
     await this.spotify.addTracksToPlaylist(playlistId, [trackId]);
   }
 
-  async getArtistReleases(artistId: string, limit: number | null = 10) {
+  async getArtistReleases(
+    artistId: string,
+    limit: number | null = 10,
+  ): Promise<SpotifyApi.AlbumObjectSimplified[]> {
     let total = 0;
     let releases = [];
     do {
-      const response = await this.spotify.getArtistAlbums(artistId, { offset: releases.length });
+      const response = await this.spotify.getArtistAlbums(artistId, {
+        offset: releases.length,
+      });
       releases = releases.concat(response.body.items);
       total = response.body.total;
-    } while (total > releases.length && (limit === null || releases.length < limit));
+    } while (
+      total > releases.length &&
+      (limit === null || releases.length < limit)
+    );
     return releases;
   }
+
+  async getArtistReleasesSortedByDateReducedByType(
+    artistId: string,
+    limit: number | null = 10,
+  ): Promise<{ [key: string]: SpotifyApi.AlbumObjectSimplified[] }> {
+    const releases = await this.getArtistReleases(artistId, limit);
+    return releases
+      .sort(
+        (a, b) =>
+          new Date(b.release_date).getTime() -
+          new Date(a.release_date).getTime(),
+      )
+      .reduce((result, item) => {
+        (result[item["album_type"]] = result[item["album_type"]] || []).push(
+          item,
+        );
+        return result;
+      }, {});
+  }
+
+  async getArtistByName(
+    artistName: string,
+  ): Promise<SpotifyApi.ArtistObjectFull> {
+    const response = await this.spotify.searchArtists(artistName);
+    return response.body.artists.items[0];
+  }
 }
+
+async function main() {
+  const spotify = new SpotifyAPI(
+    "BQAcbIkJUajKvcdM-FykMVFHqzaz4bfPIAM6B-pTuyA-AK5t0WCIboOxhkB7JjjF8Dg3XvtiGx0CWCRX6VRyekGBZBwrPkJqJy1fdfa5EEDsHQrD-rFJS3_onh3hQ3aINubmRVDCdm4DkT4FZI1qpJGbY5qn6WuAhsZ8nha06PIVqy6cpl5-47AP68-SBMRseJfkq2LHRJ7PjZVqtciK2ysiRNRhjksBMUZ_uRImL-GNuJAslSzrl3STEAjeBnI9-UruxNz2u7rV3q1H9u0vPd329pmcT1m4TjN1iq7hAI9R17E0plcJKrJbdNynBE2iO5I9-w",
+  );
+
+  await spotify.init();
+  const luther = await spotify.getArtistByName("Alpha Wann");
+  const newReleases = await spotify.getArtistReleasesSortedByDateReducedByType(
+    luther.id,
+  );
+
+  console.log(util.inspect(newReleases, { depth: null, colors: true }));
+}
+
+// main().catch((error) =>
+//   console.error(util.inspect(error, { depth: null, colors: true })),
+// );

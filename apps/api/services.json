@@ -1014,7 +1014,110 @@
             "template": "https://open.spotify.com/track/songID"
           }
         ]
+      },
+      {
+        "name": "On new artist release",
+        "description": "When an artist drops new content (album or single).",
+        "type": "ON_NEW_ARTIST_CONTENT",
+        "authorizations": ["SPOTIFY"],
+        "params": [
+          {
+            "name": "artist_name",
+            "details": "Name of the artist",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "content_type",
+            "details": "Type of content",
+            "type": "enum",
+            "items": ["album", "single", "any"],
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "Name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "Full date of the trigger",
+            "type": "date",
+            "template": "Sat Oct 27 2024 12:00:00 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "Date of the trigger",
+            "type": "string",
+            "template": "27/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "Time of the trigger",
+            "type": "string",
+            "template": "12:00:00"
+          },
+          {
+            "name": "name",
+            "description": "Name of the content (album/single)",
+            "type": "string",
+            "template": "My New Album"
+          },
+          {
+            "name": "artists",
+            "description": "List of artists",
+            "type": "string",
+            "template": "Artist 1, Artist 2"
+          },
+          {
+            "name": "url",
+            "description": "URL of the content",
+            "type": "string",
+            "template": "https://open.spotify.com/album/albumID123"
+          },
+          {
+            "name": "tracks_number",
+            "description": "Total number of tracks in the content",
+            "type": "number",
+            "template": "10"
+          },
+          {
+            "name": "type",
+            "description": "Type of the content (album/single)",
+            "type": "string",
+            "template": "album"
+          },
+          {
+            "name": "cover_url",
+            "description": "Cover URL of the content (temporary url)",
+            "type": "string",
+            "template": "https://image.url/cover.jpg"
+          },
+          {
+            "name": "released_at",
+            "description": "Release date of the content",
+            "type": "string",
+            "template": "Mon Oct 01 2024 00:00:00 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "release_date",
+            "description": "Formatted release date",
+            "type": "string",
+            "template": "01/10/2024"
+          },
+          {
+            "name": "release_time",
+            "description": "Formatted release time",
+            "type": "string",
+            "template": "00:00:00"
+          }
+        ]
       }
+
+
     ],
     "reactions": []
   }

@@ -8,6 +8,7 @@ import { handleNewGithubRepositoryAction } from "./github/on-new-github-reposito
 import { handleOnPullRequestStateAction } from "./github/on-pull-request-state";
 import { handleOnNewYoutubeVideoInPlaylistAction } from "./youtube/on-video-in-playlist";
 import { handleOnSpotifyPlaylistUpdateAction } from "./spotify/on-spotify-playlist-update";
+import { handleOnNewArtistContentAction } from "./spotify/on-artiste-new-content";
 
 type ActionMap = {
   [string: string]: ActionFunction;
@@ -23,4 +24,5 @@ export const actionsMap: ActionMap = {
   ON_PULL_REQUEST_STATE: handleOnPullRequestStateAction,
   ON_NEW_VIDEO_IN_PLAYLIST: handleOnNewYoutubeVideoInPlaylistAction,
   ON_SPOTIFY_PLAYLIST_UPDATE: handleOnSpotifyPlaylistUpdateAction,
+  ON_NEW_ARTIST_CONTENT: handleOnNewArtistContentAction,
 };

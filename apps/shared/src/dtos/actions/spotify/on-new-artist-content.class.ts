@@ -4,12 +4,10 @@ import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { RegisterAction } from "../action.decorator";
 
-enum NewArtistContentType {
-  ALBUM = "ALBUM",
-  SINGLE = "SINGLE",
-  PLAYLIST = "PLAYLIST",
-  PODCAST = "PODCAST",
-  ANY = "ANY",
+export enum NewArtistContentType {
+  ALBUM = "album",
+  SINGLE = "single",
+  ANY = "any",
 }
 
 @RegisterAction(ActionTypes.ON_NEW_ARTIST_CONTENT)
@@ -19,7 +17,7 @@ export class OnNewArtistContentInfos extends BaseActionInfos {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  artist_id: string;
+  artist_name: string;
 
   @ApiProperty()
   @IsEnum(NewArtistContentType)
