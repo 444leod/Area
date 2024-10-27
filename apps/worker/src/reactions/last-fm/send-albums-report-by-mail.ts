@@ -25,7 +25,7 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
     console.error(
       "Invalid number of albums to display, fix the dynamic variable",
     );
-    return;
+    return false;
   }
 
   const data = await getWeeklyAlbums(
@@ -35,7 +35,7 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
 
   if (!data) {
     console.error("No data found for the given username");
-    return;
+    return false;
   }
 
   const albums = data.weeklyalbumchart.album || [];
@@ -58,4 +58,5 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
+  return true;
 };

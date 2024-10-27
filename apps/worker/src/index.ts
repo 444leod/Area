@@ -184,14 +184,25 @@ async function handleArea(areaPacket: AreaPacket) {
   console.log(`Updated reaction: `, updatedPacket.area.reaction.informations);
 
   const actionSuccess = `Action ${areaPacket.area.action.informations.type} executed successfully (id: ${updatedPacket.area._id})`;
-  
+
   console.log(actionSuccess);
 
   addLogToAreaWrapper("action", actionSuccess, "success", updatedPacket.data);
 
   try {
-    await reactionFunction(updatedPacket, mongoDB);
-    // await addLogToAreaWrapper("reaction", "Success", "success");
+    if (await reactionFunction(updatedPacket, mongoDB)) {
+      await addLogToAreaWrapper(
+        "reaction",
+        `Reaction ${areaPacket.area.reaction.informations.type} executed successfully (id: ${updatedPacket.area._id})`,
+        "success"
+      );
+    } else {
+      await addLogToAreaWrapper(
+        "reaction",
+        `Reaction ${areaPacket.area.reaction.informations.type} executed unsuccessfully (id: ${updatedPacket.area._id})`,
+        "validation_error"
+      );
+    }
   } catch (error: AxiosError | any) {
     await handleExceptionError(error, "reaction");
   }

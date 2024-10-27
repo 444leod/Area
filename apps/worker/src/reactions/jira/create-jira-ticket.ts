@@ -32,7 +32,8 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
   );
 
   if (!issueTypes) {
-    throw new Error(`Issue type ${reaction.issue_type || "Task"} not found`);
+    console.error(`Issue type ${reaction.issue_type || "Task"} not found`);
+    return false;
   }
 
   const ticket: JiraTicketCreate = {
@@ -53,7 +54,8 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
     );
 
     if (!assignee) {
-      throw new Error(`Assignee ${reaction.assignee_name} not found`);
+      console.error(`Assignee ${reaction.assignee_name} not found`);
+      return false;
     }
 
     ticket.fields.assignee = {
@@ -62,4 +64,5 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
   }
 
   await jira.createTicket(project, ticket);
+  return true;
 };

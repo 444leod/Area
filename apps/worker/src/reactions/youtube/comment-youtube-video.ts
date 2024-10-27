@@ -24,4 +24,5 @@ export const handleCommentYoutubeVideoReaction: ReactionFunction = async (
   const content = reaction.content;
 
   await commentYoutubeVideo(token, reaction.video_id, content);
+  return true;
 };

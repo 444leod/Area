@@ -35,16 +35,13 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (
     access_token: token,
   });
 
-  try {
-    await tasks.tasks.insert({
-      auth: oauth2Client,
-      tasklist: "@default",
-      requestBody: {
-        title: title,
-        notes: body,
-      },
-    });
-  } catch (error: any) {
-    console.error("Error in creating google task: ", error);
-  }
+  await tasks.tasks.insert({
+    auth: oauth2Client,
+    tasklist: "@default",
+    requestBody: {
+      title: title,
+      notes: body,
+    },
+  });
+  return true;
 };

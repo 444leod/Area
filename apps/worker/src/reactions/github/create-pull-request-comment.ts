@@ -22,9 +22,8 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
   const reaction = area.reaction.informations as CreatePullRequestCommentInfos;
 
   if (isNaN(Number(reaction.pull_request_number))) {
-    throw new Error(
-      `Invalid pull request number: ${reaction.pull_request_number}`,
-    );
+    console.error(`Invalid pull request number: ${reaction.pull_request_number}`);
+    return false;
   }
 
   await createPullRequestComment(
@@ -34,5 +33,5 @@ export const handleCreatePullRequestCommentReaction: ReactionFunction = async (
     Number(reaction.pull_request_number),
     reaction.body,
   );
-  return;
+  return true;
 };

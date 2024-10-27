@@ -25,7 +25,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
     console.error(
       "Invalid number of tracks to display, fix the dynamic variable",
     );
-    return;
+    return false;
   }
 
   const data = await getWeeklyScrobbles(
@@ -35,7 +35,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
 
   if (!data) {
     console.error("No data found for the given username");
-    return;
+    return false;
   }
 
   const tracks = data.weeklytrackchart.track || [];
@@ -58,4 +58,5 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   });
 
   await sendMail(reaction.to, reaction.subject, emailBody, "html");
+  return true;
 };
