@@ -273,21 +273,3 @@ export class SpotifyAPI {
     return response.body.artists.items[0];
   }
 }
-
-async function main() {
-  const spotify = new SpotifyAPI(
-    "BQAcbIkJUajKvcdM-FykMVFHqzaz4bfPIAM6B-pTuyA-AK5t0WCIboOxhkB7JjjF8Dg3XvtiGx0CWCRX6VRyekGBZBwrPkJqJy1fdfa5EEDsHQrD-rFJS3_onh3hQ3aINubmRVDCdm4DkT4FZI1qpJGbY5qn6WuAhsZ8nha06PIVqy6cpl5-47AP68-SBMRseJfkq2LHRJ7PjZVqtciK2ysiRNRhjksBMUZ_uRImL-GNuJAslSzrl3STEAjeBnI9-UruxNz2u7rV3q1H9u0vPd329pmcT1m4TjN1iq7hAI9R17E0plcJKrJbdNynBE2iO5I9-w",
-  );
-
-  await spotify.init();
-  const luther = await spotify.getArtistByName("Alpha Wann");
-  const newReleases = await spotify.getArtistReleasesSortedByDateReducedByType(
-    luther.id,
-  );
-
-  console.log(util.inspect(newReleases, { depth: null, colors: true }));
-}
-
-// main().catch((error) =>
-//   console.error(util.inspect(error, { depth: null, colors: true })),
-// );
