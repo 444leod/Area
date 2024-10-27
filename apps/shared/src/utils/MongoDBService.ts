@@ -29,7 +29,7 @@ export class MongoDBService {
       .map(([key]) => key);
     if (missingVariables.length > 0) {
       throw new Error(
-        `${missingVariables.join(", ")} must be defined as environment variables`
+        `${missingVariables.join(", ")} must be defined as environment variables`,
       );
     }
 
@@ -81,7 +81,7 @@ export class MongoDBService {
   }
 
   async executeWithSession<T>(
-    operation: (session: ClientSession) => Promise<T>
+    operation: (session: ClientSession) => Promise<T>,
   ): Promise<T> {
     if (!this._connected) {
       await this.connect();
@@ -123,14 +123,14 @@ export class MongoDBService {
         .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "areas._id": new ObjectId(area._id) },
-          { $set: { "areas.$.action.history": area.action.history } }
+          { $set: { "areas.$.action.history": area.action.history } },
         );
     });
   }
 
   async getAuthorization(
     userId: ObjectId,
-    type: AuthorizationsTypes
+    type: AuthorizationsTypes,
   ): Promise<AuthorizationDto | null> {
     return this.executeWithSession(async () => {
       const user = await this._db
@@ -142,7 +142,7 @@ export class MongoDBService {
         return null;
       }
       return tokens.find(
-        (token: AuthorizationDto) => token.type === type
+        (token: AuthorizationDto) => token.type === type,
       ) as AuthorizationDto;
     });
   }
@@ -150,14 +150,14 @@ export class MongoDBService {
   async updateAuthorizationData(
     userId: ObjectId,
     type: string,
-    data: TokenDto
+    data: TokenDto,
   ): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
         .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "authorizations.type": type },
-          { $set: { "authorizations.$.data": data } }
+          { $set: { "authorizations.$.data": data } },
         );
     });
   }
@@ -165,14 +165,14 @@ export class MongoDBService {
   async addLogToArea(
     userId: ObjectId,
     areaId: ObjectId,
-    log: Log
+    log: Log,
   ): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
         .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "areas._id": new ObjectId(areaId) },
-          { $push: { "areas.$.logs": log } }
+          { $push: { "areas.$.logs": log } },
         );
     });
   }

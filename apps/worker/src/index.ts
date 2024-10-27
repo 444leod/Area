@@ -16,7 +16,7 @@ dotenv.config();
 
 if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
   throw new Error(
-    "RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable"
+    "RMQ_AREA_QUEUE and RMQ_WREA_QUEUE must be defined as environment variable",
   );
 }
 
@@ -78,7 +78,7 @@ async function handleArea(areaPacket: AreaPacket) {
     type: LogType,
     errorMessage: string,
     status: LogStatus,
-    replacedVariables?: { [key: string]: any }
+    replacedVariables?: { [key: string]: any },
   ) => {
     await mongoDB.addLogToArea(areaPacket.user_id, areaPacket.area._id, {
       type: type,
@@ -91,7 +91,7 @@ async function handleArea(areaPacket: AreaPacket) {
 
   const handleExceptionError = async (
     error: AxiosError | any,
-    type: LogType
+    type: LogType,
   ) => {
     const errorMessage = JSON.stringify(
       isAxiosError(error)
@@ -106,7 +106,7 @@ async function handleArea(areaPacket: AreaPacket) {
               message: error.message,
               description: "Request was made but no response received.",
             }
-        : { message: error.message }
+        : { message: error.message },
     );
     console.error(errorMessage);
     await addLogToAreaWrapper(type, errorMessage, "exception_error");
@@ -137,7 +137,7 @@ async function handleArea(areaPacket: AreaPacket) {
   }
 
   console.log(
-    `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`
+    `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`,
   );
 
   let updatedPacket: AreaPacket | null = null;
@@ -172,9 +172,9 @@ async function handleArea(areaPacket: AreaPacket) {
 
       infos[key as keyof ReactionInfos] = replaceField(
         infos[key as keyof ReactionInfos] as string,
-        updatedPacket.data
+        updatedPacket.data,
       ) as any; // petit bypass mais je verifie le type donc c'est fine
-    }
+    },
   );
 
   console.log(`Updated reaction: `, updatedPacket.area.reaction.informations);
@@ -190,13 +190,13 @@ async function handleArea(areaPacket: AreaPacket) {
       await addLogToAreaWrapper(
         "reaction",
         `Reaction ${areaPacket.area.reaction.informations.type} executed successfully (id: ${updatedPacket.area._id})`,
-        "success"
+        "success",
       );
     } else {
       await addLogToAreaWrapper(
         "reaction",
         `Reaction ${areaPacket.area.reaction.informations.type} executed unsuccessfully (id: ${updatedPacket.area._id})`,
-        "validation_error"
+        "validation_error",
       );
     }
   } catch (error: AxiosError | any) {

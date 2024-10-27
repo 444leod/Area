@@ -72,7 +72,7 @@ describe("AreasHelper", () => {
             status: "success",
             message: "This is a example log",
           },
-        ]
+        ],
       };
 
       const dto = areasHelper.toDto(area);
