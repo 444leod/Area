@@ -147,10 +147,6 @@ async function handleArea(areaPacket: AreaPacket) {
     await handleExceptionError(error, "action");
   }
   if (!updatedPacket) {
-    await handleValidationError(
-      "action",
-      "Action failed because of invalid inputs."
-    );
     return;
   }
 
