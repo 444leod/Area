@@ -1,5 +1,4 @@
 import SpotifyWebApi from "spotify-web-api-node";
-import util from "util";
 
 export class Playlist {
   id: string;
