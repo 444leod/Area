@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
-import Error from "../../routes/+error.svelte";
+import Error from '../../routes/+error.svelte';
 
 describe('Error Page', () => {
 	it('should render with default message', () => {

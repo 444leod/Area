@@ -51,23 +51,19 @@
 						>
 					</div>
 				</div>
-					<button
-							class="btn btn-hover variant-outline-error absolute right-5 top-5"
-							on:click={handleLogout}
-					>
-						<LogOut class="w-6 h-6 mr-3" aria-hidden="true" />
-						Logout
-					</button>
+				<button
+					class="btn btn-hover variant-outline-error absolute right-5 top-5"
+					on:click={handleLogout}
+				>
+					<LogOut class="w-6 h-6 mr-3" aria-hidden="true" />
+					Logout
+				</button>
 			</div>
 
 			<h3 class="h3 areas-title mb-8 text-center">Your Areas</h3>
 
 			{#each profile.areas as area, index (area._id)}
-				<div
-					class="area-card mb-6 card p-5"
-					role="article"
-					tabindex="0"
-				>
+				<div class="area-card mb-6 card p-5" role="article" tabindex="0">
 					<div class="flex justify-between items-center mb-4">
 						<h4 class="h4">{area.action.informations.type} → {area.reaction.informations.type}</h4>
 						<span class="chip {area.active ? 'variant-filled-success' : 'variant-filled-error'}">
