@@ -12,8 +12,8 @@
 		>
 			<p
 				class="font-semibold text-sm lg:text-base {currentStep >= i
-					? 'text-primary-500'
-					: 'text-surface-500'}"
+					? 'text-primary-600-300-token'
+					: 'text-secondary-800-100-token'}"
 			>
 				{step.label}
 			</p>
