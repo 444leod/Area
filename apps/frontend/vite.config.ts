@@ -43,16 +43,12 @@ export default defineConfig({
 			clean: true,
 			all: true,
 			extension: ['.js', '.ts', '.svelte'],
-			resolveSourceMapLocations: [
-				'src/**/*.ts',
-				'src/**/*.js',
-				'src/**/*.svelte'
-			]
+			resolveSourceMapLocations: ['src/**/*.ts', 'src/**/*.js', 'src/**/*.svelte']
 		},
 		resolve: {
 			alias: {
-				'$lib': path.resolve(__dirname, './src/lib'),
-				'$routes': path.resolve(__dirname, './src/routes')
+				$lib: path.resolve(__dirname, './src/lib'),
+				$routes: path.resolve(__dirname, './src/routes')
 			}
 		}
 	}

@@ -2,33 +2,33 @@ import { vi } from 'vitest';
 
 // Tous les vi.mock() doivent être au tout début, avant tout autre import
 vi.mock('$app/stores', async () => {
-    const writable = (await import('svelte/store')).writable;
-    return {
-        page: writable({ form: undefined })
-    };
+	const writable = (await import('svelte/store')).writable;
+	return {
+		page: writable({ form: undefined })
+	};
 });
 
 vi.mock('$app/navigation', () => ({
-    goto: vi.fn()
+	goto: vi.fn()
 }));
 
 vi.mock('$lib/modules/oauthGoogle', () => ({
-    oauthGoogle: vi.fn()
+	oauthGoogle: vi.fn()
 }));
 
 vi.mock('$lib/store/authStore', () => ({
-    authStore: {
-        set: vi.fn(),
-        subscribe: vi.fn()
-    }
+	authStore: {
+		set: vi.fn(),
+		subscribe: vi.fn()
+	}
 }));
 
 vi.mock('$lib/store/errorMessage', () => ({
-    setError: vi.fn()
+	setError: vi.fn()
 }));
 
 vi.mock('$app/forms', () => ({
-    enhance: vi.fn(() => vi.fn())
+	enhance: vi.fn(() => vi.fn())
 }));
 
 // Imports après tous les vi.mock()
@@ -43,66 +43,66 @@ import { setError } from '$lib/store/errorMessage';
 import Page from '../../../routes/signup/+page.svelte';
 
 describe('Signup Page', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-        page.set({ form: undefined });
-    });
+	beforeEach(() => {
+		vi.clearAllMocks();
+		page.set({ form: undefined });
+	});
 
-    it('should render signup form', async () => {
-        const { getByPlaceholderText, getByText } = render(Page);
-        await tick();
+	it('should render signup form', async () => {
+		const { getByPlaceholderText, getByText } = render(Page);
+		await tick();
 
-        expect(getByPlaceholderText('John')).toBeTruthy();
-        expect(getByPlaceholderText('Doe')).toBeTruthy();
-        expect(getByPlaceholderText('your@email.com')).toBeTruthy();
-        expect(getByText('Create an Account')).toBeTruthy();
-    });
+		expect(getByPlaceholderText('John')).toBeTruthy();
+		expect(getByPlaceholderText('Doe')).toBeTruthy();
+		expect(getByPlaceholderText('your@email.com')).toBeTruthy();
+		expect(getByText('Create an Account')).toBeTruthy();
+	});
 
-    it('should handle Google OAuth button click', async () => {
-        const { getByText } = render(Page);
-        await tick();
+	it('should handle Google OAuth button click', async () => {
+		const { getByText } = render(Page);
+		await tick();
 
-        const googleButton = getByText('Continue with Google');
-        await fireEvent.click(googleButton);
+		const googleButton = getByText('Continue with Google');
+		await fireEvent.click(googleButton);
 
-        expect(oauthGoogle).toHaveBeenCalled();
-    });
+		expect(oauthGoogle).toHaveBeenCalled();
+	});
 
-    it('should handle success redirect', async () => {
-        page.set({ form: { success: true } });
-        render(Page);
-        await tick();
+	it('should handle success redirect', async () => {
+		page.set({ form: { success: true } });
+		render(Page);
+		await tick();
 
-        expect(authStore.set).toHaveBeenCalledWith(true);
+		expect(authStore.set).toHaveBeenCalledWith(true);
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        expect(goto).toHaveBeenCalledWith('/dashboard');
-    });
+		await new Promise((resolve) => setTimeout(resolve, 1500));
+		expect(goto).toHaveBeenCalledWith('/dashboard');
+	});
 
-    it('should handle error', async () => {
-        const errorMessage = 'Test error';
-        page.set({ form: { error: errorMessage } });
+	it('should handle error', async () => {
+		const errorMessage = 'Test error';
+		page.set({ form: { error: errorMessage } });
 
-        render(Page);
-        await tick();
+		render(Page);
+		await tick();
 
-        expect(setError).toHaveBeenCalledWith(errorMessage);
-    });
+		expect(setError).toHaveBeenCalledWith(errorMessage);
+	});
 
-    it('should validate password match', async () => {
-        const { getByPlaceholderText, getByText } = render(Page);
-        await tick();
+	it('should validate password match', async () => {
+		const { getByPlaceholderText, getByText } = render(Page);
+		await tick();
 
-        await fireEvent.input(getByPlaceholderText('Create a strong password'), {
-            target: { value: 'password123' }
-        });
-        await fireEvent.input(getByPlaceholderText('Confirm your password'), {
-            target: { value: 'password456' }
-        });
+		await fireEvent.input(getByPlaceholderText('Create a strong password'), {
+			target: { value: 'password123' }
+		});
+		await fireEvent.input(getByPlaceholderText('Confirm your password'), {
+			target: { value: 'password456' }
+		});
 
-        const form = getByText('Sign Up').closest('form');
-        await fireEvent.submit(form!);
+		const form = getByText('Sign Up').closest('form');
+		await fireEvent.submit(form!);
 
-        expect(form?.checkValidity()).toBe(false);
-    });
+		expect(form?.checkValidity()).toBe(false);
+	});
 });
