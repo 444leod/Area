@@ -42,6 +42,9 @@ export const handleCreateGoogleTaskReaction: ReactionFunction = async (
       requestBody: {
         title: title,
         notes: body,
+        due: reaction.due_date
+          ? new Date(reaction.due_date).toISOString()
+          : null,
       },
     });
   } catch (error: any) {
