@@ -24,9 +24,8 @@ export const handleSendAlbumsReportByMailReaction: ReactionFunction = async (
 
   if (Number.isNaN(nb_albums))
     throw new ValidationError(
-      "Invalid number of albums to display, fix the dynamic variable"
+      "Invalid number of albums to display, fix the dynamic variable",
     );
-    
 
   const data = await getWeeklyAlbums(
     reaction.username,

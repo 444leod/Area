@@ -23,8 +23,8 @@ export const handleCommentGithubIssueReaction: ReactionFunction = async (
   const reaction = area.reaction.informations as CommentGithubIssueInfos;
 
   if (isNaN(Number(reaction.issue_number))) {
-    throw new ValidationError(`Invalid issue number: ${reaction.issue_number}`);
-  }
+    throw new ValidationError(`Invalid issue number: ${reaction.issue_number}`),
+  };
 
   await commentGithubIssue(
     token,
