@@ -166,6 +166,7 @@
 									value={$areaStore.actionDetails?.params[param.name]}
 									updateParamValue={(name, value) => handleUpdateActionParam(name, value)}
 									required={param.required}
+									isAction={true}
 								/>
 							{:else if param.type === 'text'}
 								<TextInput
@@ -173,6 +174,7 @@
 									value={$areaStore.actionDetails?.params[param.name]}
 									updateParamValue={(name, value) => handleUpdateActionParam(name, value)}
 									required={param.required}
+									isAction={true}
 								/>
 							{:else if param.type === 'enum'}
 								<Select
@@ -180,6 +182,7 @@
 									value={$areaStore.actionDetails?.params[param.name]}
 									on:change={(e) => areaStore.updateActionParam(param.name, e.detail)}
 									required={param.required}
+									isAction={true}
 								/>
 							{/if}
 							{#if actionErrors.includes(`${param.name} is required`)}
@@ -222,6 +225,7 @@
 									updateParamValue={(name, value) => handleUpdateReactionParam(name, value)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{:else if param.type === 'text'}
 								<TextInput
@@ -230,6 +234,7 @@
 									updateParamValue={(name, value) => handleUpdateReactionParam(name, value)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{:else if param.type === 'enum'}
 								<Select
@@ -238,6 +243,7 @@
 									on:change={(e) => areaStore.updateReactionParam(param.name, e.detail)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{/if}
 							{#if reactionErrors.includes(`${param.name} is required`)}

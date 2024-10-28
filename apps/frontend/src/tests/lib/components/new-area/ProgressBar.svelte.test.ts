@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/svelte';
-import ProgressBar from '../../../../lib/components/new-area/ProgressBar.svelte';
+import ProgressBar from '../../../../lib/components/new-area/ProgressBarSlug.svelte';
 
 describe('ProgressBar', () => {
 	const mockSteps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
