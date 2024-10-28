@@ -11,6 +11,7 @@ import { SendAlbumsReportByEmailInfos } from "./last-fm/send-albums-report-by-em
 import { SendArtistsReportByEmailInfos } from "./last-fm/send-artists-report-by-email.class";
 import { CommentGithubIssueInfos } from "./github/comment-github-issue.class";
 import { CommentYoutubeVideoInfos } from "./youtube/comment-youtube-video.class";
+import { PlayRandomLikedSongOnSpotifyInfos } from "./spotify/play-random-liked-song-on-spotify.class";
 
 export class BaseReactionInfos {
   @ApiProperty()
