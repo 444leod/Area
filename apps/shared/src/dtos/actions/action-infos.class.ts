@@ -10,7 +10,6 @@ import { OnPullRequestStateInfos } from "./github/on-pull-request-state.class";
 import { OnNewVideoInPlaylistInfos } from "./youtube/on-video-in-playlist.class";
 import { OnNewGoogleTaskInfos } from "./google-tasks/on-new-google-task.class";
 import { OnGoogleTaskExpiredInfos } from "./google-tasks/on-google-task-expired.class";
-import { OnNewGoogleTaskInfos } from "./google-tasks/on-new-google-task.class";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class BaseActionInfos {
