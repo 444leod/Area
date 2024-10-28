@@ -25,7 +25,15 @@ export default defineConfig({
 				'vite.config.ts'
 			],
 			include: [
+				// Routes
 				'src/routes/**/*.server.ts',
+				'src/routes/**/*.svelte',
+				'src/routes/**/*.{js,ts}',
+
+				// Components
+				'src/lib/components/**/*.svelte',
+
+				// Autres fichiers
 				'src/lib/utils/**',
 				'src/lib/modules/**',
 				'src/lib/store/**'
@@ -34,16 +42,13 @@ export default defineConfig({
 			enabled: true,
 			clean: true,
 			all: true,
-			// Spécifier les patterns de fichiers source
 			extension: ['.js', '.ts', '.svelte'],
-			// Utiliser des chemins absolus
 			resolveSourceMapLocations: [
 				'src/**/*.ts',
 				'src/**/*.js',
 				'src/**/*.svelte'
 			]
 		},
-		// Ajout de la résolution des chemins
 		resolve: {
 			alias: {
 				'$lib': path.resolve(__dirname, './src/lib'),
