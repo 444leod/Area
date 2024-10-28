@@ -26,4 +26,5 @@ export const reactionsMap: ReactionMap = {
   SEND_ARTISTS_REPORT_BY_MAIL: handleSendArtistsReportByMailReaction,
   COMMENT_YOUTUBE_VIDEO: handleCommentYoutubeVideoReaction,
   CREATE_JIRA_TICKET: handleCreateJiraTicketReaction,
+  PLAY_RANDOM_SPOTIFY_LIKED_SONG: handlePlayRandomSpotifyLikedSongReaction,
 };

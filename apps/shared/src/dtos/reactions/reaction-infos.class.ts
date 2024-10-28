@@ -30,3 +30,4 @@ export type ReactionInfos =
   | SendArtistsReportByEmailInfos
   | CreateJiraTicketInfos
   | CommentYoutubeVideoInfos
+  | PlayRandomLikedSongOnSpotifyInfos;
