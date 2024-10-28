@@ -31,6 +31,7 @@ export class AreasHelper {
       action: action,
       reaction: reaction,
       active: true,
+      logs: [],
     };
   }
 
@@ -47,6 +48,7 @@ export class AreasHelper {
         service_id: area.reaction.service_id,
         informations: area.reaction.informations,
       },
+      logs: area.logs,
     };
   }
 }

@@ -4,6 +4,7 @@ import {
   SendScrobbleReportByEmailInfos,
   sendMail,
   getWeeklyScrobbles,
+  ValidationError,
 } from "@area/shared";
 import { Liquid } from "liquidjs";
 import * as fs from "fs/promises";
@@ -21,12 +22,10 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
       ? reaction.nb_tracks
       : parseInt(reaction.nb_tracks);
 
-  if (Number.isNaN(nb_tracks)) {
-    console.error(
+  if (Number.isNaN(nb_tracks))
+    throw new ValidationError(
       "Invalid number of tracks to display, fix the dynamic variable",
     );
-    return;
-  }
 
   const data = await getWeeklyScrobbles(
     reaction.username,
@@ -34,8 +33,7 @@ export const handleSendScrobbleReportByMailReaction: ReactionFunction = async (
   );
 
   if (!data) {
-    console.error("No data found for the given username");
-    return;
+    throw new ValidationError("No data found for the given username");
   }
 
   const tracks = data.weeklytrackchart.track || [];

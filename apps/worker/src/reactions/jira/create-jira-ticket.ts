@@ -7,6 +7,7 @@ import {
   JiraAPI,
   JiraTicketCreate,
   CreateJiraTicketInfos,
+  ValidationError,
 } from "@area/shared";
 
 export const handleCreateJiraTicketReaction: ReactionFunction = async (
@@ -31,9 +32,10 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
     (issueType) => issueType.name === reaction.issue_type || "Task",
   );
 
-  if (!issueTypes) {
-    throw new Error(`Issue type ${reaction.issue_type || "Task"} not found`);
-  }
+  if (!issueTypes)
+    throw new ValidationError(
+      `Issue type ${reaction.issue_type || "Task"} not found`,
+    );
 
   const ticket: JiraTicketCreate = {
     fields: {
@@ -52,9 +54,8 @@ export const handleCreateJiraTicketReaction: ReactionFunction = async (
       (member) => member.displayName === reaction.assignee_name,
     );
 
-    if (!assignee) {
-      throw new Error(`Assignee ${reaction.assignee_name} not found`);
-    }
+    if (!assignee)
+      throw new ValidationError(`Assignee ${reaction.assignee_name} not found`);
 
     ticket.fields.assignee = {
       accountId: assignee.accountId,
