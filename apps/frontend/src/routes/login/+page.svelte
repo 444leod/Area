@@ -17,7 +17,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-10 items-center justify-center p-6">
+<div data-testid="main-container" class="flex flex-col gap-10 items-center justify-center p-6">
 	<div class="card p-8 w-full max-w-md shadow-xl">
 		<h2 class="h2 mb-4 text-center">Welcome Back!</h2>
 		<form method="POST" use:enhance class="space-y-4">
