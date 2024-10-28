@@ -95,7 +95,10 @@
 
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 		{#each Object.entries(stats) as [key, value], i}
-			<div class="card variant-ghost-secondary p-6" in:fly={{ y: 20, duration: 300, delay: i * 100 }}>
+			<div
+				class="card variant-ghost-secondary p-6"
+				in:fly={{ y: 20, duration: 300, delay: i * 100 }}
+			>
 				<h3 class="h4 mb-3 opacity-75">
 					{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
 				</h3>
@@ -151,7 +154,9 @@
 		{:else}
 			<div class="  p-4">
 				{#if areas.length === 0}
-					<p class="text-center h3 text-surface-400 py-8">No automations found, create a new one !</p>
+					<p class="text-center h3 text-surface-400 py-8">
+						No automations found, create a new one !
+					</p>
 				{:else}
 					<table class="table table-hover">
 						<thead>
