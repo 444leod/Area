@@ -11,4 +11,5 @@ export * from "./last-fm/send-artists-report-by-email.class";
 export * from "./github/comment-github-issue.class";
 export * from "./youtube/comment-youtube-video.class";
 export * from "./jira/create-jira-ticket.class";
+export * from "./spotify/play-random-liked-song-on-spotify.class";
 export * from "./reaction.decorator";

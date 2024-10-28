@@ -13,12 +13,28 @@ export class Playlist {
   uri: string;
 }
 
-export class PlaylistTrack {
+export class SpotifyTrack {
   id: string;
   name: string;
   artists: { name: string }[];
-  album: { name: string };
+  album: {
+    name: string;
+    images: { url: string }[];
+    album_type: string;
+    artists: { name: string }[];
+  };
   uri: string;
+}
+
+export class PlayingTrack {
+  timestamp: number;
+  progress_ms: number;
+  item: SpotifyTrack;
+  is_playing: boolean;
+  currently_playing_type: string;
+}
+
+export class PlaylistTrack extends SpotifyTrack {
   added_at: string;
   added_by: { id: string; display_name: string; uri: string };
   type?: string;
@@ -104,6 +120,9 @@ export class SpotifyAPI {
       }),
       album: {
         name: track.album.name,
+        images: track.album.images as { url: string }[],
+        album_type: track.album.album_type,
+        artists: track.album.artists as { name: string }[],
       },
       uri: track.uri,
       added_at: "",
@@ -144,17 +163,12 @@ export class SpotifyAPI {
         return {
           id: item.track.id,
           name: item.track.name,
-          artists: item.track.artists.map(
-            (artist: { id: any; name: any; uri: any }) => {
-              return {
-                id: artist.id,
-                name: artist.name,
-                uri: artist.uri,
-              };
-            },
-          ),
+          artists: item.track.artists as { id: any; name: any; uri: any }[],
           album: {
             name: item.track.album.name,
+            album_type: item.track.album.album_type,
+            images: item.track.album.images as { url: string }[],
+            artists: item.track.album.artists as { name: string }[],
           },
           uri: item.track.uri,
           added_at: item.added_at,
@@ -190,6 +204,7 @@ export class SpotifyAPI {
     do {
       const response = await this.spotify.getMySavedTracks({
         offset: tracks.length,
+        limit: limit === null ? 50 : Math.min(50, limit - tracks.length),
       });
       tracks = tracks.concat(response.body.items);
       total = response.body.total;
@@ -201,16 +216,13 @@ export class SpotifyAPI {
       return {
         id: item.track.id,
         name: item.track.name,
-        artists: item.track.artists.map(
-          (artist: { id: any; name: any; uri: any }) => {
-            return {
-              id: artist.id,
-              name: artist.name,
-              uri: artist.uri,
-            };
-          },
-        ),
-        album: { name: item.track.album.name },
+        artists: item.track.artists as { id: any; name: any; uri: any }[],
+        album: {
+          name: item.track.album.name,
+          album_type: item.track.album.album_type,
+          images: item.track.album.images as { url: string }[],
+          artists: item.track.album.artists as { name: string }[],
+        },
         uri: item.track.uri,
         added_at: item.added_at,
         added_by: { id: me.id, display_name: me.display_name, uri: me.uri },
@@ -270,5 +282,28 @@ export class SpotifyAPI {
   ): Promise<SpotifyApi.ArtistObjectFull> {
     const response = await this.spotify.searchArtists(artistName);
     return response.body.artists.items[0];
+  }
+
+  async getCurrentlyPlaying(): Promise<PlayingTrack | null> {
+    const response = await this.spotify.getMyCurrentPlayingTrack();
+    return response.body as PlayingTrack;
+  }
+
+  async playRandomLikedTrack() {
+    const devices = (await this.spotify.getMyDevices()).body.devices;
+
+    const activeDevice = devices.find((device) => device.is_active);
+    if (!activeDevice) throw new Error("No active Spotify device found.");
+
+    const likedTracks = await this.getLikedTracks(200);
+    if (likedTracks.length === 0) throw new Error("No liked tracks available.");
+
+    const randomTrack =
+      likedTracks[Math.floor(Math.random() * likedTracks.length)];
+
+    await this.spotify.play({
+      device_id: activeDevice.id,
+      uris: [randomTrack.uri],
+    });
   }
 }

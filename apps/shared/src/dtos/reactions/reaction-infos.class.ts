@@ -29,4 +29,5 @@ export type ReactionInfos =
   | SendAlbumsReportByEmailInfos
   | SendArtistsReportByEmailInfos
   | CreateJiraTicketInfos
-  | CommentYoutubeVideoInfos;
+  | CommentYoutubeVideoInfos
+  | PlayRandomLikedSongOnSpotifyInfos;
