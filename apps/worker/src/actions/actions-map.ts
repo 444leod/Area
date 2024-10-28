@@ -8,6 +8,7 @@ import { handleNewGithubRepositoryAction } from "./github/on-new-github-reposito
 import { handleOnPullRequestStateAction } from "./github/on-pull-request-state";
 import { handleOnNewYoutubeVideoInPlaylistAction } from "./youtube/on-video-in-playlist";
 import { handleOnNewGoogleTaskAction } from "./google-tasks/on-new-google-task";
+import { handleOnGoogleTaskExpiredAction } from "./google-tasks/on-google-task-expired";
 
 type ActionMap = {
   [string: string]: ActionFunction;
@@ -23,4 +24,5 @@ export const actionsMap: ActionMap = {
   ON_PULL_REQUEST_STATE: handleOnPullRequestStateAction,
   ON_NEW_VIDEO_IN_PLAYLIST: handleOnNewYoutubeVideoInPlaylistAction,
   ON_NEW_GOOGLE_TASK: handleOnNewGoogleTaskAction,
+  ON_GOOGLE_TASK_EXPIRED: handleOnGoogleTaskExpiredAction,
 };
