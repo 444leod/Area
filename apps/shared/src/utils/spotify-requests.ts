@@ -17,7 +17,12 @@ export class SpotifyTrack {
   id: string;
   name: string;
   artists: { name: string }[];
-  album: { name: string, images: { url: string }[], album_type: string, artists: { name: string }[] };
+  album: {
+    name: string;
+    images: { url: string }[];
+    album_type: string;
+    artists: { name: string }[];
+  };
   uri: string;
 }
 
@@ -287,17 +292,18 @@ export class SpotifyAPI {
   async playRandomLikedTrack() {
     const devices = (await this.spotify.getMyDevices()).body.devices;
 
-    const activeDevice = devices.find(device => device.is_active);
+    const activeDevice = devices.find((device) => device.is_active);
     if (!activeDevice) throw new Error("No active Spotify device found.");
 
     const likedTracks = await this.getLikedTracks(200);
     if (likedTracks.length === 0) throw new Error("No liked tracks available.");
 
-    const randomTrack = likedTracks[Math.floor(Math.random() * likedTracks.length)];
+    const randomTrack =
+      likedTracks[Math.floor(Math.random() * likedTracks.length)];
 
     await this.spotify.play({
       device_id: activeDevice.id,
-      uris: [randomTrack.uri]
+      uris: [randomTrack.uri],
     });
   }
 }
