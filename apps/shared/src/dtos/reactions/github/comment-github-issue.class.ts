@@ -3,9 +3,9 @@ import { BaseReactionInfos } from "../reaction-infos.class";
 import { ReactionTypes } from "../reaction-types.enum";
 import { RegisterReaction } from "../reaction.decorator";
 
-@RegisterReaction(ReactionTypes.CREATE_PULL_REQUEST_COMMENT)
-export class CreatePullRequestCommentInfos extends BaseReactionInfos {
-  type: ReactionTypes.CREATE_PULL_REQUEST_COMMENT;
+@RegisterReaction(ReactionTypes.COMMENT_GITHUB_ISSUE)
+export class CommentGithubIssueInfos extends BaseReactionInfos {
+  type: ReactionTypes.COMMENT_GITHUB_ISSUE;
 
   @IsString()
   @IsNotEmpty()
@@ -17,7 +17,7 @@ export class CreatePullRequestCommentInfos extends BaseReactionInfos {
 
   @IsString()
   @IsNotEmpty()
-  pull_request_number: string;
+  issue_number: string;
 
   @IsString()
   @IsNotEmpty()

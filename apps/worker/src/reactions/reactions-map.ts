@@ -6,9 +6,10 @@ import { handleSendMessageToDiscordWebhookReaction } from "./discord/send-messag
 import { handleSendScrobbleReportByMailReaction } from "./last-fm/send-scrobble-report-by-mail";
 import { handleSendAlbumsReportByMailReaction } from "./last-fm/send-albums-report-by-mail";
 import { handleSendArtistsReportByMailReaction } from "./last-fm/send-artists-report-by-mail";
-import { handleCreatePullRequestCommentReaction } from "./github/create-pull-request-comment";
+import { handleCommentGithubIssueReaction } from "./github/comment-github-issue";
 import { handleCommentYoutubeVideoReaction } from "./youtube/comment-youtube-video";
 import { handleCreateJiraTicketReaction } from "./jira/create-jira-ticket";
+import { handlePlayRandomSpotifyLikedSongReaction } from "./spotify/play-random-liked-song-on-spotify";
 
 type ReactionMap = {
   [string: string]: ReactionFunction;
@@ -19,7 +20,7 @@ export const reactionsMap: ReactionMap = {
   CREATE_GOOGLE_TASK: handleCreateGoogleTaskReaction,
   SEND_EMAIL: handleSendEmailReaction,
   SEND_MESSAGE_TO_DISCORD_WEBHOOK: handleSendMessageToDiscordWebhookReaction,
-  CREATE_PULL_REQUEST_COMMENT: handleCreatePullRequestCommentReaction,
+  COMMENT_GITHUB_ISSUE: handleCommentGithubIssueReaction,
   SEND_SCROBBLE_REPORT_BY_MAIL: handleSendScrobbleReportByMailReaction,
   SEND_ALBUMS_REPORT_BY_MAIL: handleSendAlbumsReportByMailReaction,
   SEND_ARTISTS_REPORT_BY_MAIL: handleSendArtistsReportByMailReaction,

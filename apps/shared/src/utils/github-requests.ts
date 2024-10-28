@@ -68,9 +68,10 @@ export async function getRepositoryPullRequests(params: {
     );
 
     return response.data;
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch (error: any) {
+    throw new Error(
+      `Error in getting repository pull requests: ${error.message}`,
+    );
   }
 }
 
@@ -88,9 +89,8 @@ export async function getUserRepositories(
     );
 
     return response.data as ReducedRepository[];
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch (error: any) {
+    throw new Error(`Error in getting user repositories: ${error.message}`);
   }
 }
 
@@ -116,22 +116,21 @@ export async function getSortedUserRepositoriesSince(
     );
 
     return response.data as ReducedRepository[];
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch (error: any) {
+    throw new Error(`Error in getting user repositories: ${error.message}`);
   }
 }
 
-export async function createPullRequestComment(
+export async function commentGithubIssue(
   token: string,
   owner: string,
   repository: string,
-  pullRequestNumber: number,
+  issueNumber: number,
   body: string,
 ): Promise<void> {
   try {
     await axios.post(
-      `https://api.github.com/repos/${owner}/${repository}/issues/${pullRequestNumber}/comments`,
+      `https://api.github.com/repos/${owner}/${repository}/issues/${issueNumber}/comments`,
       { body },
       {
         headers: {
@@ -139,7 +138,7 @@ export async function createPullRequestComment(
         },
       },
     );
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    throw new Error(`Error in commenting on github issue: ${error.message}`);
   }
 }

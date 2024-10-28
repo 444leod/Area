@@ -2,7 +2,7 @@ import { Db, MongoClient, ObjectId, ClientSession } from "mongodb";
 import { Area, AuthorizationsTypes } from "../dtos";
 import fs from "fs";
 import dotenv from "dotenv";
-import { TokenDto, AuthorizationDto } from "../dtos";
+import { TokenDto, AuthorizationDto, Log, User } from "../dtos";
 
 dotenv.config();
 
@@ -120,7 +120,7 @@ export class MongoDBService {
   async updateAreaHistory(userId: ObjectId, area: Area): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
-        .collection("users")
+        .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "areas._id": new ObjectId(area._id) },
           { $set: { "areas.$.action.history": area.action.history } },
@@ -134,7 +134,7 @@ export class MongoDBService {
   ): Promise<AuthorizationDto | null> {
     return this.executeWithSession(async () => {
       const user = await this._db
-        .collection("users")
+        .collection<User>("users")
         .findOne({ _id: new ObjectId(userId) });
       if (!user) return null;
       const tokens = user.authorizations as AuthorizationDto[];
@@ -154,10 +154,25 @@ export class MongoDBService {
   ): Promise<void> {
     await this.executeWithSession(async () => {
       await this._db
-        .collection("users")
+        .collection<User>("users")
         .updateOne(
           { _id: new ObjectId(userId), "authorizations.type": type },
           { $set: { "authorizations.$.data": data } },
+        );
+    });
+  }
+
+  async addLogToArea(
+    userId: ObjectId,
+    areaId: ObjectId,
+    log: Log,
+  ): Promise<void> {
+    await this.executeWithSession(async () => {
+      await this._db
+        .collection<User>("users")
+        .updateOne(
+          { _id: new ObjectId(userId), "areas._id": new ObjectId(areaId) },
+          { $push: { "areas.$.logs": log } },
         );
     });
   }
