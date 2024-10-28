@@ -3,11 +3,9 @@
 	export let currentStep: number;
 </script>
 
-<div class="hidden md:flex ">
+<div class="hidden md:flex">
 	{#each steps as step, i}
-		<div
-			class="flex-1"
-		>
+		<div class="flex-1">
 			<p
 				class="font-semibold text-sm lg:text-base {currentStep >= i
 					? 'text-primary-600-300-token'

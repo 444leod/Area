@@ -37,15 +37,15 @@
 	}
 
 	$: dateVariables = dynamicVariables.filter(
-			(v) =>
-					v.type === 'date' ||
-					v.name.toLowerCase().includes('date') ||
-					v.name.toLowerCase().includes('time')
+		(v) =>
+			v.type === 'date' ||
+			v.name.toLowerCase().includes('date') ||
+			v.name.toLowerCase().includes('time')
 	);
 
 	$: selectedVariableDetails = selectedVariable
-			? dateVariables.find((v) => v.name === selectedVariable)
-			: null;
+		? dateVariables.find((v) => v.name === selectedVariable)
+		: null;
 
 	$: if (isUsingVariable && selectedVariable && value !== `{{${selectedVariable}}}`) {
 		updateParamValue(param.name, `{{${selectedVariable}}}`);
@@ -61,11 +61,11 @@
 		</div>
 		<div class="relative">
 			<input
-					type="datetime-local"
-					class="input w-full"
-					{value}
-					on:change={handleDateChange}
-					{required}
+				type="datetime-local"
+				class="input w-full"
+				{value}
+				on:change={handleDateChange}
+				{required}
 			/>
 			<div class="absolute right-2 top-1/2 -translate-y-1/2 text-surface-500">
 				<Calendar class="w-4 h-4" />
@@ -78,11 +78,11 @@
 		<div class="flex justify-between items-center">
 			<div class="flex items-center gap-2">
 				<button
-						type="button"
-						class="btn variant-soft-primary btn-sm"
-						class:variant-filled-primary={isUsingVariable}
-						on:click={toggleVariableMode}
-						title={isUsingVariable ? 'Switch to static date' : 'Use dynamic variable'}
+					type="button"
+					class="btn variant-soft-primary btn-sm"
+					class:variant-filled-primary={isUsingVariable}
+					on:click={toggleVariableMode}
+					title={isUsingVariable ? 'Switch to static date' : 'Use dynamic variable'}
 				>
 					{#if isUsingVariable}
 						<Variable class="w-4 h-4 mr-2" />
@@ -114,10 +114,10 @@
 			{#if isUsingVariable}
 				<div class="space-y-2">
 					<select
-							class="select w-full"
-							value={selectedVariable}
-							on:change={handleVariableSelect}
-							{required}
+						class="select w-full"
+						value={selectedVariable}
+						on:change={handleVariableSelect}
+						{required}
 					>
 						<option value="">Choose a date/time variable...</option>
 						{#each dateVariables as variable}
@@ -136,11 +136,11 @@
 			{:else}
 				<div class="relative">
 					<input
-							type="datetime-local"
-							class="input w-full"
-							{value}
-							on:change={handleDateChange}
-							{required}
+						type="datetime-local"
+						class="input w-full"
+						{value}
+						on:change={handleDateChange}
+						{required}
 					/>
 					<div class="absolute right-2 top-1/2 -translate-y-1/2 text-surface-500">
 						<Calendar class="w-4 h-4" />
