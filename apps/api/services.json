@@ -935,7 +935,40 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Comment issue/pull request",
+        "description": "Comment on an issue or pull request",
+        "type": "COMMENT_GITHUB_ISSUE",
+        "authorizations": ["GITHUB"],
+        "params": [
+          {
+            "name": "owner",
+            "details": "owner of the repository",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "repository",
+            "details": "repository name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_number",
+            "details": "number of the issue",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "content",
+            "details": "Comment to post",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Discord",
