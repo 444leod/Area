@@ -4,94 +4,95 @@ import { setError } from '../../../lib/store/errorMessage';
 
 // Mock @sveltejs/kit error
 vi.mock('@sveltejs/kit', () => ({
-    error: (status: number, message: string) => ({ status, message })
+	error: (status: number, message: string) => ({ status, message })
 }));
 
 // Mock errorMessage store
 vi.mock('$lib/store/errorMessage', () => ({
-    setError: vi.fn()
+	setError: vi.fn()
 }));
 
 describe('Dashboard Server Load', () => {
-    const mockFetch = vi.fn();
-    const mockCookies = {
-        get: vi.fn()
-    };
+	const mockFetch = vi.fn();
+	const mockCookies = {
+		get: vi.fn()
+	};
 
-    beforeEach(() => {
-        vi.clearAllMocks();
-        // Mock de l'URL de l'API locale
-        vi.stubGlobal('VITE_API_URL', 'http://localhost:8080');
-    });
+	beforeEach(() => {
+		vi.clearAllMocks();
+		// Mock de l'URL de l'API locale
+		vi.stubGlobal('VITE_API_URL', 'http://localhost:8080');
+	});
 
-    it('should load services successfully', async () => {
-        const mockServices = [{ id: 1, name: 'Service 1' }];
-        mockCookies.get.mockReturnValue('test-token');
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: () => Promise.resolve(mockServices)
-        });
+	it('should load services successfully', async () => {
+		const mockServices = [{ id: 1, name: 'Service 1' }];
+		mockCookies.get.mockReturnValue('test-token');
+		mockFetch.mockResolvedValue({
+			ok: true,
+			json: () => Promise.resolve(mockServices)
+		});
 
-        const result = await load({ fetch: mockFetch, cookies: mockCookies });
+		const result = await load({ fetch: mockFetch, cookies: mockCookies });
 
-        expect(result.services).toEqual(mockServices);
-        expect(result.token).toBe('test-token');
-        expect(mockFetch).toHaveBeenCalledWith(
-            'http://localhost:8080/areas',
-            expect.objectContaining({
-                headers: {
-                    Authorization: 'Bearer test-token'
-                }
-            })
-        );
-    });
+		expect(result.services).toEqual(mockServices);
+		expect(result.token).toBe('test-token');
+		expect(mockFetch).toHaveBeenCalledWith(
+			'http://localhost:8080/areas',
+			expect.objectContaining({
+				headers: {
+					Authorization: 'Bearer test-token'
+				}
+			})
+		);
+	});
 
-    it('should handle unauthorized access', async () => {
-        mockCookies.get.mockReturnValue(null);
+	it('should handle unauthorized access', async () => {
+		mockCookies.get.mockReturnValue(null);
 
-        await expect(load({
-            fetch: mockFetch,
-            cookies: mockCookies
-        })).rejects.toEqual({
-            status: 401,
-            message: 'Unauthorized'
-        });
-    });
+		await expect(
+			load({
+				fetch: mockFetch,
+				cookies: mockCookies
+			})
+		).rejects.toEqual({
+			status: 401,
+			message: 'Unauthorized'
+		});
+	});
 
-    it('should handle network errors', async () => {
-        mockCookies.get.mockReturnValue('test-token');
-        mockFetch.mockRejectedValue(new Error('Network error'));
+	it('should handle network errors', async () => {
+		mockCookies.get.mockReturnValue('test-token');
+		mockFetch.mockRejectedValue(new Error('Network error'));
 
-        await expect(load({
-            fetch: mockFetch,
-            cookies: mockCookies
-        })).rejects.toEqual({
-            status: 500,
-            message: 'Internal Server Error'
-        });
+		await expect(
+			load({
+				fetch: mockFetch,
+				cookies: mockCookies
+			})
+		).rejects.toEqual({
+			status: 500,
+			message: 'Internal Server Error'
+		});
 
-        expect(setError).toHaveBeenCalledWith('Network error');
-    });
+		expect(setError).toHaveBeenCalledWith('Network error');
+	});
 
-    it('should make API request with correct headers', async () => {
-        mockCookies.get.mockReturnValue('test-token');
-        mockFetch.mockResolvedValue({
-            ok: true,
-            json: () => Promise.resolve([])
-        });
+	it('should make API request with correct headers', async () => {
+		mockCookies.get.mockReturnValue('test-token');
+		mockFetch.mockResolvedValue({
+			ok: true,
+			json: () => Promise.resolve([])
+		});
 
-        await load({
-            fetch: mockFetch,
-            cookies: mockCookies
-        });
+		await load({
+			fetch: mockFetch,
+			cookies: mockCookies
+		});
 
-        expect(mockFetch).toHaveBeenCalledWith(
-            'http://localhost:8080/areas',
-            {
-                headers: {
-                    Authorization: 'Bearer test-token'
-                }
-            }
-        );
-    });
+		expect(mockFetch).toHaveBeenCalledWith('http://localhost:8080/areas', {
+			headers: {
+				Authorization: 'Bearer test-token'
+			}
+		});
+	});
 });
