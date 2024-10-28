@@ -99,7 +99,6 @@
 			window.location.reload();
 		} catch (err) {
 			console.error('Error disconnecting service:', err);
-			// Handle error (show notification, etc.)
 		}
 	}
 

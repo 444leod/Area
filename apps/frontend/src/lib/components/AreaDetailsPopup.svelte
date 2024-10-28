@@ -233,6 +233,7 @@
 
 	.loader-sm {
 		border: 2px solid #f3f3f3;
+
 		border-top: 2px solid #ffffff;
 		border-radius: 50%;
 		width: 16px;

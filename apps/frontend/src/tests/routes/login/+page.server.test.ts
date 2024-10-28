@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { actions } from '../../routes/login/+page.server';
+import { actions } from '../../../routes/login/+page.server';
 import { fail } from '@sveltejs/kit';
 
 describe('Login Server Actions', () => {

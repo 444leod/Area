@@ -1,14 +1,10 @@
 <script lang="ts">
 	import { User, Mail, Box, LogOut, Zap } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
-	import { browser } from '$app/environment';
+	import { fly } from 'svelte/transition';
 
 	export let data;
 	const { profile } = data;
-
-	let container;
-	let gsap;
-	let ScrollTrigger;
 
 	async function handleLogout() {
 		const response = await fetch('/api/logout', { method: 'POST' });
@@ -16,34 +12,14 @@
 			goto('/login');
 		}
 	}
-
-	function animateCard(event) {
-		if (browser && gsap) {
-			gsap.to(event.currentTarget, {
-				scale: 1.05,
-				boxShadow: '0 10px 20px rgb(var(--color-surface-500) / 0.2)',
-				duration: 0.3
-			});
-		}
-	}
-
-	function resetCard(event) {
-		if (browser && gsap) {
-			gsap.to(event.currentTarget, {
-				scale: 1,
-				boxShadow: '0 4px 6px rgb(var(--color-surface-500) / 0.1)',
-				duration: 0.3
-			});
-		}
-	}
 </script>
 
-<div class="relative min-h-screen" bind:this={container}>
+<div in:fly class="relative min-h-screen">
 	<div class="container mx-auto px-4 py-12 relative z-10">
 		<div class="max-w-4xl mx-auto">
 			<h1 class="h1 mb-12 text-center">Your Profile</h1>
 
-			<div class="card profile-card p-8 mb-12">
+			<div class="card profile-card p-8 mb-12 relative">
 				<div class="flex flex-col md:flex-row items-center mb-8">
 					<div
 						class="w-32 h-32 bg-primary-500 rounded-full flex items-center justify-center text-white text-5xl font-bold mb-4 md:mb-0 md:mr-8 shadow"
@@ -75,6 +51,13 @@
 						>
 					</div>
 				</div>
+					<button
+							class="btn btn-hover variant-outline-error absolute right-5 top-5"
+							on:click={handleLogout}
+					>
+						<LogOut class="w-6 h-6 mr-3" aria-hidden="true" />
+						Logout
+					</button>
 			</div>
 
 			<h3 class="h3 areas-title mb-8 text-center">Your Areas</h3>
@@ -82,11 +65,8 @@
 			{#each profile.areas as area, index (area._id)}
 				<div
 					class="area-card mb-6 card p-5"
-					on:mouseenter={animateCard}
-					on:mouseleave={resetCard}
 					role="article"
 					tabindex="0"
-					aria-label={`Area: ${area.action.informations.type} to ${area.reaction.informations.type}`}
 				>
 					<div class="flex justify-between items-center mb-4">
 						<h4 class="h4">{area.action.informations.type} → {area.reaction.informations.type}</h4>
@@ -121,18 +101,6 @@
 					</div>
 				</div>
 			{/each}
-
-			<div class="mt-12 flex justify-center">
-				<button
-					class="btn btn-hover variant-filled-error"
-					color="error"
-					size="lg"
-					on:click={handleLogout}
-				>
-					<LogOut class="w-6 h-6 mr-3" aria-hidden="true" />
-					Logout
-				</button>
-			</div>
 		</div>
 	</div>
 </div>

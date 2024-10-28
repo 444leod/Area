@@ -27,10 +27,10 @@
 	}
 </script>
 
-<button class="btn variant-soft-surface flex items-center gap-4 p-4 shadow-md" on:click={onClick}>
+<button class="card card-hover variant-soft-secondary flex items-center gap-4 p-4 shadow-md" on:click={onClick}>
 	<Icon icon={iconName} class="text-3xl text-primary opacity-80" width="48" height="48" />
 	<div class="flex flex-col items-start w-full">
-		<span class="text-base md:text-lg font-semibold text-primary-dark">{item}</span>
+		<span class="text-base text-left md:text-lg font-semibold text-primary-dark">{item}</span>
 		{#if description}
 			<p class="mt-1 text-sm opacity-70 text-gray-600 pl-1 md:pl-2">{description}</p>
 		{/if}

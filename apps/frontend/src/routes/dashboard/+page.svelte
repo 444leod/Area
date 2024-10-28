@@ -104,7 +104,7 @@
 		{/each}
 	</div>
 
-	<div class="card variant-glass-surface p-6 mb-8" in:fade={{ duration: 300 }}>
+	<div class="variant-ghost-secondary card p-6 mb-8" in:fade={{ duration: 300 }}>
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
 			<h2 class="h2 mb-4 sm:mb-0">Your Automations</h2>
 			<a
@@ -149,7 +149,7 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="card variant-ringed-surface p-4">
+			<div class="  p-4">
 				{#if areas.length === 0}
 					<p class="text-center text-surface-400 py-8">No automations found, create a new one!</p>
 				{:else}

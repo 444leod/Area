@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import { goto } from '$app/navigation';
 import { authStore } from '$lib/store/authStore';
-import Page from '../../routes/login/+page.svelte';
+import Page from '../../../routes/login/+page.svelte';
 
 vi.mock('$app/stores', () => ({
     page: {
