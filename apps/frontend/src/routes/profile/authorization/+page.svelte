@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { oauthGoogle } from '$lib/modules/oauthGoogle';
 	import { oauthAtlassian } from '$lib/modules/oauthAtlassian';
 	import { oauthGithub } from '$lib/modules/oauthGithub';
 	import { oauthSpotify } from '$lib/modules/oauthSpotify';
 	import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
 	import ServiceModal from '$lib/components/ServiceModal.svelte';
 	import { Search } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { setError } from '$lib/store/errorMessage';
+	import { simpleOauthGoogle } from '$lib/modules/simpleOauthGoogle';
 
 	export let data;
 
@@ -37,7 +39,7 @@
 			name: 'Google',
 			description: 'Connect to use Google services (YouTube, Gmail, Tasks) in your automations',
 			icon: 'devicon:google',
-			oauthFunction: oauthGoogle,
+			oauthFunction: simpleOauthGoogle,
 			...getRelatedServices('Google')
 		},
 		{
@@ -82,24 +84,48 @@
 		service.oauthFunction();
 	}
 
-	async function disconnectService(service) {
+	async function fetchToken() {
 		try {
-			const formData = new FormData();
-			formData.append('service', service.name);
-
-			const response = await fetch('?/disconnect', {
-				method: 'POST',
-				body: formData
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to disconnect service');
+			const response = await fetch('/api/get-token');
+			if (response.ok) {
+				const data = await response.json();
+				const token = data.token;
+				if (token) {
+					return token;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
 			}
+		} catch (error) {
+			setError(error);
+			return null;
+		}
+	}
 
-			window.location.reload();
-		} catch (err) {
-			console.error('Error disconnecting service:', err);
-			// Handle error (show notification, etc.)
+	async function disconnectService(service) {
+		const token = await fetchToken();
+		const type = service.name.toUpperCase();
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({ type: type })
+			});
+			if (response.ok) {
+				await response.json();
+				alert('Successfully disconnected');
+				goto('/profile');
+				service.connected = false;
+			} else {
+				throw new Error(`Error during disconnection`);
+			}
+		} catch (error) {
+			throw new Error(`Error during disconnection`);
 		}
 	}
 

@@ -16,6 +16,7 @@ import {
   AuthorizationsOkOptions,
 } from "./swagger-content";
 import { User } from "@area/shared";
+
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
