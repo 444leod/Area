@@ -7,7 +7,7 @@ export enum RiotRegion {
   AMERICAS,
   ASIA,
   EUROPE,
-  SEA
+  SEA,
 }
 
 @RegisterAction(ActionTypes.ON_RIOT_GAME_END)
@@ -23,5 +23,5 @@ export class OnRiotGameEndInfos extends BaseActionInfos {
   player_tag: string;
 
   @IsEnum(RiotRegion)
-  region: string
+  region: string;
 }
