@@ -118,7 +118,7 @@
 			});
 			if (response.ok) {
 				await response.json();
-				alert('Deconnexion reussis');
+				alert('Successfully disconnected');
 				goto('/profile');
 				service.connected = false;
 			} else {
