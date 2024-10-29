@@ -5,7 +5,13 @@ import { CreateGoogleTaskInfos } from "./google-tasks/create-google-task.class";
 import { ReactionTypes } from "./reaction-types.enum";
 import { ApiProperty } from "@nestjs/swagger";
 import { SendMessageToDiscordWebhookInfos } from "./discord/send-message-to-discord-webhook.class";
-import { CreatePullRequestCommentClass } from "./github/create-pull-request-comment.class";
+import { CreateJiraTicketInfos } from "./jira/create-jira-ticket.class";
+import { SendScrobbleReportByEmailInfos } from "./last-fm/send-scrobble-report-by-email.class";
+import { SendAlbumsReportByEmailInfos } from "./last-fm/send-albums-report-by-email.class";
+import { SendArtistsReportByEmailInfos } from "./last-fm/send-artists-report-by-email.class";
+import { CommentGithubIssueInfos } from "./github/comment-github-issue.class";
+import { CommentYoutubeVideoInfos } from "./youtube/comment-youtube-video.class";
+import { PlayRandomLikedSongOnSpotifyInfos } from "./spotify/play-random-liked-song-on-spotify.class";
 
 export class BaseReactionInfos {
   @ApiProperty()
@@ -18,4 +24,10 @@ export type ReactionInfos =
   | SendEmailReactionInfos
   | CreateGoogleTaskInfos
   | SendMessageToDiscordWebhookInfos
-  | CreatePullRequestCommentClass;
+  | CommentGithubIssueInfos
+  | SendScrobbleReportByEmailInfos
+  | SendAlbumsReportByEmailInfos
+  | SendArtistsReportByEmailInfos
+  | CreateJiraTicketInfos
+  | CommentYoutubeVideoInfos
+  | PlayRandomLikedSongOnSpotifyInfos;

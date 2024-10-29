@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { oauthGoogle } from '$lib/modules/oauthGoogle';
 	import { oauthAtlassian } from '$lib/modules/oauthAtlassian';
 	import { oauthGithub } from '$lib/modules/oauthGithub';
 	import { oauthSpotify } from '$lib/modules/oauthSpotify';
-	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-	import type { ModalSettings } from '@skeletonlabs/skeleton';
 	import ServiceCard from '$lib/components/authorization/ServiceCard.svelte';
+	import ServiceModal from '$lib/components/ServiceModal.svelte';
 	import { Search } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { setError } from '$lib/store/errorMessage';
@@ -15,31 +13,55 @@
 
 	export let data;
 
-	const modalStore = getModalStore();
+	let showModal = false;
+	let selectedService = null;
+
+	function getRelatedServices(serviceName: string) {
+		const serviceMap = {
+			Google: ['Google task', 'YouTube', 'Mail'],
+			Atlassian: ['Atlassian'],
+			Github: ['Github'],
+			Spotify: ['Spotify'],
+			Discord: ['Discord']
+		};
+		const relatedNames = serviceMap[serviceName] || [serviceName];
+		const relatedServices = relatedNames
+			.map((name) => data.services.find((s) => s.name === name))
+			.filter(Boolean);
+		return {
+			actions: relatedServices.flatMap((s) => s.actions || []),
+			reactions: relatedServices.flatMap((s) => s.reactions || [])
+		};
+	}
+
 	const allServices = [
 		{
 			name: 'Google',
-			description: 'Connect to use Google services in your automations',
+			description: 'Connect to use Google services (YouTube, Gmail, Tasks) in your automations',
 			icon: 'devicon:google',
-			oauthFunction: simpleOauthGoogle
+			oauthFunction: simpleOauthGoogle,
+			...getRelatedServices('Google')
 		},
 		{
 			name: 'Atlassian',
 			description: 'Connect to use Atlassian in your automations',
 			icon: 'logos:atlassian',
-			oauthFunction: oauthAtlassian
+			oauthFunction: oauthAtlassian,
+			...getRelatedServices('Atlassian')
 		},
 		{
 			name: 'Github',
 			description: 'Connect to use Github in your automations',
 			icon: 'logos:github-icon',
-			oauthFunction: oauthGithub
+			oauthFunction: oauthGithub,
+			...getRelatedServices('Github')
 		},
 		{
 			name: 'Spotify',
 			description: 'Connect to use Spotify in your automations',
 			icon: 'logos:spotify-icon',
-			oauthFunction: oauthSpotify
+			oauthFunction: oauthSpotify,
+			...getRelatedServices('Spotify')
 		}
 	];
 
@@ -62,66 +84,40 @@
 		service.oauthFunction();
 	}
 
-	async function fetchToken() {
-		try {
-			const response = await fetch('/api/get-token');
-			if (response.ok) {
-				const data = await response.json();
-				const token = data.token;
-				if (token) {
-					return token;
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} catch (error) {
-			setError(error);
-			return null;
-		}
-	}
-
 	async function disconnectService(service) {
-		const token = await fetchToken();
-		const type = service.name.toUpperCase();
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
-				},
-				body: JSON.stringify({ type: type })
+			const formData = new FormData();
+			formData.append('service', service.name);
+
+			const response = await fetch('?/disconnect', {
+				method: 'POST',
+				body: formData
 			});
-			if (response.ok) {
-				await response.json();
-				alert('Deconnexion reussis');
-				goto('/profile');
-				service.connected = false;
-			} else {
-				throw new Error(`Error during disconnection`);
+
+			if (!response.ok) {
+				throw new Error('Failed to disconnect service');
 			}
-		} catch (error) {
-			throw new Error(`Error during disconnection`);
+
+			window.location.reload();
+		} catch (err) {
+			console.error('Error disconnecting service:', err);
+			// Handle error (show notification, etc.)
 		}
 	}
 
 	function openServiceModal(service) {
-		const modal: ModalSettings = {
-			type: 'alert',
-			title: `${service.name} Details`,
-			body: `
-                <div class="p-4">
-                    <p>${service.description}</p>
-                    <p class="mt-4"><strong>Status:</strong> ${service.connected ? 'Connected' : 'Not Connected'}</p>
-                </div>
-            `,
-			buttonTextConfirm: 'Close',
-			modalClasses: 'w-modal shadow-xl',
-			backdropClasses: 'bg-surface-500/30'
+		selectedService = {
+			...service,
+			description: `${service.description}\n\nIncludes services: ${getRelatedServices(service.name)
+				.relatedServices?.map((s) => s.name)
+				.join(', ')}`
 		};
-		modalStore.trigger(modal);
+		showModal = true;
+	}
+
+	function closeModal() {
+		showModal = false;
+		selectedService = null;
 	}
 </script>
 
@@ -163,4 +159,4 @@
 	</div>
 </div>
 
-<Modal />
+<ServiceModal show={showModal} service={selectedService} onClose={closeModal} />

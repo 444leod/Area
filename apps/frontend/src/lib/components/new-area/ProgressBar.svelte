@@ -15,7 +15,7 @@
 					? 'text-primary-500'
 					: 'text-surface-500'}"
 			>
-				{step}
+				{step.label}
 			</p>
 		</div>
 	{/each}

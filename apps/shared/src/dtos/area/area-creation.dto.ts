@@ -1,23 +1,25 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from "@nestjs/swagger";
 import {
   ActionInfos,
-  ActionTypes,
   BaseActionInfos,
   EachXSecondsActionInfos,
   ExampleActionInfos,
-  OnNewJiraTicketClass,
-  OnYoutubeVideoPostedClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnNewJiraTicketInfos,
+  OnYoutubeVideoPostedInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 } from "../actions";
 import {
   BaseReactionInfos,
   CreateGoogleTaskInfos,
+  CreateJiraTicketInfos,
   ExampleReactionInfos,
   ReactionInfos,
-  ReactionTypes,
   SendEmailReactionInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
 } from "../reactions";
 import {
   IsNotEmpty,
@@ -26,21 +28,27 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { ActionRegistry } from "../actions/action.decorator";
+import { ReactionRegistry } from "../reactions";
 
 @ApiExtraModels(
   ExampleActionInfos,
   EachXSecondsActionInfos,
-  OnYoutubeVideoPostedClass,
-  OnNewJiraTicketClass,
-  OnNewJiraTicketClass,
-  OnNewGithubRepositoryClass,
-  OnPullRequestStateClass,
+  OnYoutubeVideoPostedInfos,
+  OnNewJiraTicketInfos,
+  OnNewJiraTicketInfos,
+  OnNewGithubRepositoryInfos,
+  OnPullRequestStateInfos,
 )
 @ApiExtraModels(
   ExampleReactionInfos,
   SendEmailReactionInfos,
   CreateGoogleTaskInfos,
   SendMessageToDiscordWebhookInfos,
+  SendScrobbleReportByEmailInfos,
+  SendAlbumsReportByEmailInfos,
+  SendArtistsReportByEmailInfos,
+  CreateJiraTicketInfos,
 )
 export class AreaCreationDto {
   @ApiProperty()
@@ -52,11 +60,11 @@ export class AreaCreationDto {
     oneOf: [
       { $ref: getSchemaPath(ExampleActionInfos) },
       { $ref: getSchemaPath(EachXSecondsActionInfos) },
-      { $ref: getSchemaPath(OnYoutubeVideoPostedClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewJiraTicketClass) },
-      { $ref: getSchemaPath(OnNewGithubRepositoryClass) },
-      { $ref: getSchemaPath(OnPullRequestStateClass) },
+      { $ref: getSchemaPath(OnYoutubeVideoPostedInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewJiraTicketInfos) },
+      { $ref: getSchemaPath(OnNewGithubRepositoryInfos) },
+      { $ref: getSchemaPath(OnPullRequestStateInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -65,24 +73,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: [
-        { value: ExampleActionInfos, name: ActionTypes.EXAMPLE_ACTION },
-        { value: EachXSecondsActionInfos, name: ActionTypes.EACH_X_SECONDS },
-        {
-          value: OnYoutubeVideoPostedClass,
-          name: ActionTypes.ON_YOUTUBE_VIDEO_POSTED,
-        },
-        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_TICKET },
-        { value: OnNewJiraTicketClass, name: ActionTypes.ON_NEW_JIRA_PROJECT },
-        {
-          value: OnNewGithubRepositoryClass,
-          name: ActionTypes.ON_NEW_GITHUB_REPOSITORY,
-        },
-        {
-          value: OnPullRequestStateClass,
-          name: ActionTypes.ON_PULL_REQUEST_STATE,
-        },
-      ],
+      subTypes: ActionRegistry.sub_types,
     },
   })
   action: ActionInfos;
@@ -93,6 +84,10 @@ export class AreaCreationDto {
       { $ref: getSchemaPath(SendEmailReactionInfos) },
       { $ref: getSchemaPath(CreateGoogleTaskInfos) },
       { $ref: getSchemaPath(SendMessageToDiscordWebhookInfos) },
+      { $ref: getSchemaPath(SendScrobbleReportByEmailInfos) },
+      { $ref: getSchemaPath(SendAlbumsReportByEmailInfos) },
+      { $ref: getSchemaPath(SendArtistsReportByEmailInfos) },
+      { $ref: getSchemaPath(CreateJiraTicketInfos) },
     ],
   })
   @IsNotEmptyObject()
@@ -101,18 +96,7 @@ export class AreaCreationDto {
     keepDiscriminatorProperty: true,
     discriminator: {
       property: "type",
-      subTypes: [
-        { value: ExampleReactionInfos, name: ReactionTypes.EXAMPLE_REACTION },
-        { value: SendEmailReactionInfos, name: ReactionTypes.SEND_EMAIL },
-        {
-          value: CreateGoogleTaskInfos,
-          name: ReactionTypes.CREATE_GOOGLE_TASK,
-        },
-        {
-          value: SendMessageToDiscordWebhookInfos,
-          name: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK,
-        },
-      ],
+      subTypes: ReactionRegistry.sub_types,
     },
   })
   reaction: ReactionInfos;
