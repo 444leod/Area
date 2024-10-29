@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "func-tests": "MONGODB_DB_NAME=dev_testing ts-node tests/funcTestingSetup.ts; MONGODB_DB_NAME=dev_testing RMQ_QUEUE=queue_testing ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",

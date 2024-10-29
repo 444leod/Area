@@ -29,8 +29,10 @@
     "front:dev": "npm run dev -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",
     "task-manager:start": "npm run start -w @area/manager",
+    "task-manager:func-tests": "npm run func-tests -w @area/manager",
     "worker:start": "npm run start -w @area/worker",
-    "worker:example_worker": "npm run example_worker -w @area/worker"
+    "worker:example_worker": "npm run example_worker -w @area/worker",
+    "worker:func-tests": "npm run func-tests -w @area/worker"
   },
   "devDependencies": {
     "rimraf": "3.0.2",

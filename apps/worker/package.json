@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "func-tests": "MONGODB_DB_NAME=dev_testing RMQ_QUEUE=queue_testing ts-node tests/funcWorkerTest.ts",
     "example_worker": "ts-node src/example_worker.ts"
   },
   "keywords": [],
