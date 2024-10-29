@@ -9,3 +9,4 @@ export * from "./last-fm-requests";
 export * from "./github-requests";
 export * from "./token-functions";
 export * from "./riot-requests"
+export * from "./spotify-requests";
