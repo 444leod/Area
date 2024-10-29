@@ -17,6 +17,7 @@
   "dependencies": {
     "@nestjs/mongoose": "^10.0.10",
     "@nestjs/swagger": "^7.4.2",
+    "@types/spotify-web-api-node": "^5.0.11",
     "amqplib": "^0.10.4",
     "axios": "^1.7.7",
     "class-transformer": "^0.5.1",
@@ -24,9 +25,12 @@
     "dotenv": "^16.4.5",
     "googleapis": "^144.0.0",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.7.0"
+    "mongoose": "^8.7.0",
+    "nodemailer": "^6.9.15",
+    "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.16",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",

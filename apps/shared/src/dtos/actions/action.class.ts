@@ -1,11 +1,11 @@
 import { ObjectId } from "mongodb";
 import { ActionInfos } from "./action-infos.class";
-import { AnyHistoryDTO } from "../history/any-history.dto";
+import { AnyHistory } from "../history";
 
 export class Action {
   service_id: ObjectId;
   informations: ActionInfos;
-  history: AnyHistoryDTO;
+  history: AnyHistory;
   is_webhook: boolean;
 }
 

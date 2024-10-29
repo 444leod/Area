@@ -1,7 +1,7 @@
 import { ActionFunction } from "../action-function";
 import {
   EachXSecondsActionInfos,
-  EachXSecondsHistoryDTO,
+  EachXSecondsHistory,
   MongoDBService,
   AreaPacket,
 } from "@area/shared";
@@ -12,7 +12,7 @@ export const handleEachXSecondsAction: ActionFunction = async (
 ) => {
   const area = packet.area;
   const action = area.action.informations as EachXSecondsActionInfos;
-  const history = area.action.history as EachXSecondsHistoryDTO;
+  const history = area.action.history as EachXSecondsHistory;
 
   let execute: boolean = false;
 

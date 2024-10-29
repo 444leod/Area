@@ -1,6 +1,5 @@
 [
   {
-    "_id": "6703d148ddf654a6d482dafb",
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [
@@ -99,12 +98,132 @@
             "template": "https://img.youtube.com/vi/videoID/default.jpg"
           }
         ]
+      },
+      {
+        "name": "New video in playlist",
+        "description": "When a new video is added to a playlist",
+        "type": "ON_NEW_VIDEO_IN_PLAYLIST",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "playlist_id",
+            "details": "ID of the playlist (LL for liked videos, WL & HL won't work)",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "video_id",
+            "description": "ID of the video",
+            "type": "string",
+            "template": "0q6s_P-E13U"
+          },
+          {
+            "name": "title",
+            "description": "title of the video",
+            "type": "string",
+            "template": "My video title"
+          },
+          {
+            "name": "description",
+            "description": "description of the video",
+            "type": "string",
+            "template": "My video description"
+          },
+          {
+            "name": "url",
+            "description": "URL of the video",
+            "type": "string",
+            "template": "https://www.youtube.com/watch?v=videoID"
+          },
+          {
+            "name": "published_at",
+            "description": "date the video was published",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "publication_time",
+            "description": "time the video was published",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "publication_date",
+            "description": "date the video was published",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "channel_title",
+            "description": "name of the video creator's channel",
+            "type": "string",
+            "template": "My Channel"
+          },
+          {
+            "name": "channel_id",
+            "description": "ID of the video creator's channel",
+            "type": "string",
+            "template": "UC1234567890"
+          },
+          {
+            "name": "thumbnail_url",
+            "description": "URL of the video thumbnail",
+            "type": "string",
+            "template": "https://img.youtube.com/vi/videoID/default.jpg"
+          }
+        ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Comment a video",
+        "description": "Comment a video",
+        "type": "COMMENT_YOUTUBE_VIDEO",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "video_id",
+            "details": "ID of the video",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "content",
+            "details": "Comment to post",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ]
   },
   {
-    "_id": "6703d313722dee796788baa3",
     "name": "Timer",
     "description": "Service for Timer actions",
     "actions": [
@@ -157,19 +276,18 @@
     "reactions": []
   },
   {
-    "_id": "6703f2e0bc8055c868eaf474",
     "name": "Mail",
     "description": "Service for Email actions",
     "actions": [],
     "reactions": [
       {
-        "name": "sendemail",
+        "name": "Send email",
         "description": "send an email",
         "type": "SEND_EMAIL",
         "params": [
           {
             "name": "to",
-            "details": "email adress of the target",
+            "details": "email address of the target",
             "type": "string",
             "required": true
           },
@@ -190,10 +308,234 @@
     ]
   },
   {
-    "_id": "6703f3dabc8055c868eaf47e",
     "name": "Google task",
     "description": "Service for Google task actions",
-    "actions": [],
+    "actions": [
+      {
+        "name": "On new task",
+        "description": "When a task has been created",
+        "type": "ON_NEW_GOOGLE_TASK",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "list_name",
+            "details": "name of the list (will retrieve from personal list if not provided)",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "task_id",
+            "description": "ID of the task",
+            "type": "string",
+            "template": "1234567890"
+          },
+          {
+            "name": "title",
+            "description": "title of the task",
+            "type": "string",
+            "template": "My task title"
+          },
+          {
+            "name": "body",
+            "description": "body of the task",
+            "type": "string",
+            "template": "My task details"
+          },
+          {
+            "name": "list_name",
+            "description": "name of the list",
+            "type": "string",
+            "template": "My list"
+          },
+          {
+            "name": "list_id",
+            "description": "ID of the list",
+            "type": "string",
+            "template": "1234567890"
+          },
+          {
+            "name": "due_date",
+            "description": "due date of the task",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "due_time_string",
+            "description": "due time of the task",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "due_date_string",
+            "description": "due date of the task as a string",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "status",
+            "description": "status of the task",
+            "type": "string",
+            "template": "completed"
+          },
+          {
+            "name": "created_at",
+            "description": "date of the creation of the task",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "creation_time",
+            "description": "time of the creation of the task",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "creation_date",
+            "description": "date of the creation of the task",
+            "type": "string",
+            "template": "22/10/2024"
+          }
+        ]
+      },
+      {
+        "name": "On expired task",
+        "description": "When a task's due date has passed (Will not take into account the due hour, only the due date)",
+        "type": "ON_GOOGLE_TASK_EXPIRED",
+        "authorizations": ["GOOGLE"],
+        "params": [
+          {
+            "name": "list_name",
+            "details": "name of the list (will retrieve from personal list if not provided)",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "task_id",
+            "description": "ID of the task",
+            "type": "string",
+            "template": "1234567890"
+          },
+          {
+            "name": "title",
+            "description": "title of the task",
+            "type": "string",
+            "template": "My task title"
+          },
+          {
+            "name": "body",
+            "description": "body of the task",
+            "type": "string",
+            "template": "My task details"
+          },
+          {
+            "name": "list_name",
+            "description": "name of the list",
+            "type": "string",
+            "template": "My list"
+          },
+          {
+            "name": "list_id",
+            "description": "ID of the list",
+            "type": "string",
+            "template": "1234567890"
+          },
+          {
+            "name": "due_date",
+            "description": "due date of the task",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "due_time_string",
+            "description": "due time of the task",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "due_date_string",
+            "description": "due date of the task as a string",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "status",
+            "description": "status of the task",
+            "type": "string",
+            "template": "completed"
+          },
+          {
+            "name": "updated_at",
+            "description": "date of the last update of the task",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "update_time",
+            "description": "time of the last update of the task",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "update_date",
+            "description": "date of the last update of the task",
+            "type": "string",
+            "template": "22/10/2024"
+          }
+        ]
+      }
+    ],
     "reactions": [
       {
         "name": "Create new task",
@@ -220,7 +562,6 @@
     ]
   },
   {
-    "_id": "670e71ff92b0948adfdca0b3",
     "name": "Atlassian",
     "description": "for all Atlassian action",
     "actions": [
@@ -439,10 +780,47 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Create issue",
+        "description": "Create a new issue in a given Jira project",
+        "type": "CREATE_JIRA_TICKET",
+        "params": [
+          {
+            "name": "project_key",
+            "details": "Key of the project where the issue will be created",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_type",
+            "details": "Type of the issue to be created (e.g., Bug, Task, Story)",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "title",
+            "details": "Title of the issue",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "details": "Description of the issue",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "assignee_name",
+            "details": "Name of the assignee for the issue",
+            "type": "string",
+            "required": false
+          }
+        ]
+      }
+    ]
   },
   {
-    "_id": "670f8cbd7920482a14597bc7",
     "name": "Github",
     "description": "for all Github action",
     "actions": [
@@ -685,10 +1063,42 @@
         ]
       }
     ],
-    "reactions": []
+    "reactions": [
+      {
+        "name": "Comment issue/pull request",
+        "description": "Comment on an issue or pull request",
+        "type": "COMMENT_GITHUB_ISSUE",
+        "authorizations": ["GITHUB"],
+        "params": [
+          {
+            "name": "owner",
+            "details": "owner of the repository",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "repository",
+            "details": "repository name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "issue_number",
+            "details": "number of the issue",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "content",
+            "details": "Comment to post",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ]
   },
   {
-    "_id": "670f8cbd7920482a14597111",
     "name": "Discord",
     "description": "Discord interactions",
     "actions": [],
@@ -735,6 +1145,362 @@
             "required": false
           }
         ]
+      }
+    ]
+  },
+  {
+    "name": "LastFM",
+    "description": "Service for LastFM actions and reactions",
+    "actions": [],
+    "reactions": [
+      {
+        "name": "Send Scrobble report by mail",
+        "description": "Sends a report of a user's last week scrobbles by mail",
+        "type": "SEND_SCROBBLE_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_tracks",
+            "details": "number of tracks to analyse",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Send albums report by mail",
+        "description": "Sends a report of a user's last week albums by mail",
+        "type": "SEND_ALBUMS_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_albums",
+            "details": "number of albums to analyse",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Send artists report by mail",
+        "description": "Sends a report of a user's last week artists by mail",
+        "type": "SEND_ARTISTS_REPORT_BY_MAIL",
+        "authorizations": [],
+        "params": [
+          {
+            "name": "to",
+            "details": "email address of the target",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "subject",
+            "details": "subject of the email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "username",
+            "details": "LasfFM username",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "nb_artists",
+            "details": "number of artists to analyse",
+            "type": "number",
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Spotify",
+    "description": "Spotify interactions",
+    "actions": [
+      {
+        "name": "On playlist update",
+        "description": "When a playlist is updated (either a song added/removed, new title or new description)",
+        "type": "ON_SPOTIFY_PLAYLIST_UPDATE",
+        "authorizations": ["SPOTIFY"],
+        "params": [
+          {
+            "name": "update_type",
+            "details": "Type of update (add, remove, title, description)",
+            "type": "enum",
+            "items": ["add", "remove", "title", "description", "any"],
+            "required": true
+          },
+          {
+            "name": "playlist_id",
+            "details": "ID of the playlist (empty for liked songs)",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "full date of the trigger",
+            "type": "date",
+            "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "date of the trigger",
+            "type": "string",
+            "template": "22/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "time of the trigger",
+            "type": "string",
+            "template": "12:00"
+          },
+          {
+            "name": "playlist_name",
+            "description": "name of the playlist",
+            "type": "string",
+            "template": "My playlist"
+          },
+          {
+            "name": "playlist_id",
+            "description": "ID of the playlist",
+            "type": "string",
+            "template": "0q6s_P-E13U"
+          },
+          {
+            "name": "playlist_url",
+            "description": "URL of the playlist",
+            "type": "string",
+            "template": "https://open.spotify.com/playlist/playlistID"
+          },
+          {
+            "name": "update_type",
+            "description": "Type of update (add, remove, title, description)",
+            "type": "string",
+            "template": "add"
+          },
+          {
+            "name": "title",
+            "description": "title of the playlist",
+            "type": "string",
+            "template": "My playlist title"
+          },
+          {
+            "name": "old_title",
+            "description": "old title of the playlist",
+            "type": "string",
+            "template": "My old playlist title"
+          },
+          {
+            "name": "description",
+            "description": "description of the playlist",
+            "type": "string",
+            "template": "My playlist description"
+          },
+          {
+            "name": "old_description",
+            "description": "old description of the playlist",
+            "type": "string",
+            "template": "My old playlist description"
+          },
+          {
+            "name": "playlist_url",
+            "description": "URL of the playlist",
+            "type": "string",
+            "template": "https://open.spotify.com/playlist/playlistID"
+          },
+          {
+            "name": "last_added_track_name",
+            "description": "name of the last added track",
+            "type": "string",
+            "template": "Track name"
+          },
+          {
+            "name": "last_added_track_artists",
+            "description": "artists of the last added track",
+            "type": "string",
+            "template": "Artist 1, Artist 2"
+          },
+          {
+            "name": "last_added_track_url",
+            "description": "URL of the last added track",
+            "type": "string",
+            "template": "https://open.spotify.com/track/trackID"
+          },
+          {
+            "name": "last_removed_track_name",
+            "description": "name of the last removed track",
+            "type": "string",
+            "template": "My track"
+          },
+          {
+            "name": "last_removed_track_artists",
+            "description": "artists of the last removed track",
+            "type": "string",
+            "template": "Artist 1, Artist 2"
+          },
+          {
+            "name": "last_removed_track_url",
+            "description": "URL of the last removed track",
+            "type": "string",
+            "template": "https://open.spotify.com/track/songID"
+          }
+        ]
+      },
+      {
+        "name": "On new artist release",
+        "description": "When an artist drops new content (album or single).",
+        "type": "ON_NEW_ARTIST_CONTENT",
+        "authorizations": ["SPOTIFY"],
+        "params": [
+          {
+            "name": "artist_name",
+            "details": "Name of the artist",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "content_type",
+            "details": "Type of content",
+            "type": "enum",
+            "items": ["album", "single", "any"],
+            "required": true
+          }
+        ],
+        "variables": [
+          {
+            "name": "area_name",
+            "description": "Name of the area",
+            "type": "string",
+            "template": "My AREA #1"
+          },
+          {
+            "name": "full_execution_date",
+            "description": "Full date of the trigger",
+            "type": "date",
+            "template": "Sat Oct 27 2024 12:00:00 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "execution_date",
+            "description": "Date of the trigger",
+            "type": "string",
+            "template": "27/10/2024"
+          },
+          {
+            "name": "execution_time",
+            "description": "Time of the trigger",
+            "type": "string",
+            "template": "12:00:00"
+          },
+          {
+            "name": "name",
+            "description": "Name of the content (album/single)",
+            "type": "string",
+            "template": "My New Album"
+          },
+          {
+            "name": "artists",
+            "description": "List of artists",
+            "type": "string",
+            "template": "Artist 1, Artist 2"
+          },
+          {
+            "name": "url",
+            "description": "URL of the content",
+            "type": "string",
+            "template": "https://open.spotify.com/album/albumID123"
+          },
+          {
+            "name": "tracks_number",
+            "description": "Total number of tracks in the content",
+            "type": "number",
+            "template": "10"
+          },
+          {
+            "name": "type",
+            "description": "Type of the content (album/single)",
+            "type": "string",
+            "template": "album"
+          },
+          {
+            "name": "cover_url",
+            "description": "Cover URL of the content (temporary url)",
+            "type": "string",
+            "template": "https://image.url/cover.jpg"
+          },
+          {
+            "name": "released_at",
+            "description": "Release date of the content",
+            "type": "string",
+            "template": "Mon Oct 01 2024 00:00:00 GMT+0200 (Central European Summer Time)"
+          },
+          {
+            "name": "release_date",
+            "description": "Formatted release date",
+            "type": "string",
+            "template": "01/10/2024"
+          },
+          {
+            "name": "release_time",
+            "description": "Formatted release time",
+            "type": "string",
+            "template": "00:00:00"
+          }
+        ]
+      }
+    ],
+    "reactions": [
+      {
+        "name": "Play random liked song",
+        "description": "Play a random liked song from your Spotify library",
+        "type": "PLAY_RANDOM_SPOTIFY_LIKED_SONG",
+        "authorizations": ["SPOTIFY"],
+        "params": []
       }
     ]
   }

@@ -1,7 +1,9 @@
 import { IsNotEmpty, IsString, IsOptional } from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
 import { ReactionTypes } from "../reaction-types.enum";
+import { RegisterReaction } from "../reaction.decorator";
 
+@RegisterReaction(ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK)
 export class SendMessageToDiscordWebhookInfos extends BaseReactionInfos {
   type: ReactionTypes.SEND_MESSAGE_TO_DISCORD_WEBHOOK;
 
@@ -28,9 +30,4 @@ export class SendMessageToDiscordWebhookInfos extends BaseReactionInfos {
   @IsString()
   @IsOptional()
   thumbnail_url?: string;
-
-  //
-  // @ValidateIf((obj) => obj.date !== undefined)
-  // @IsDateOrMatchesRegex(/{{(.*?)}}/g, { message: 'Must be a valid date or be a {{variable}}' })
-  // date?: string;
 }

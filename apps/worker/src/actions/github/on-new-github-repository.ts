@@ -2,7 +2,7 @@ import { ActionFunction } from "../action-function";
 import {
   MongoDBService,
   AreaPacket,
-  OnNewGithubRepositoryHistoryDTO,
+  OnNewGithubRepositoryHistory,
   getSortedUserRepositoriesSince,
   getAuthorizationToken,
   AuthorizationsTypes,
@@ -19,7 +19,7 @@ export const handleNewGithubRepositoryAction: ActionFunction = async (
   );
 
   const area = packet.area;
-  const history = area.action.history as OnNewGithubRepositoryHistoryDTO;
+  const history = area.action.history as OnNewGithubRepositoryHistory;
 
   if (
     history.lastCreationTimestamp === null ||
