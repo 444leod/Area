@@ -29,6 +29,8 @@
     "front:dev": "npm run dev -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",
     "front:cov": "npm run test:coverage -w @area/frontend",
+    "mobile:test": "npm run test -w @area/mobileexpo",
+    "mobile:cov": "npm run test:coverage -w @area/mobileexpo",
     "task-manager:start": "npm run start -w @area/manager",
     "worker:start": "npm run start -w @area/worker",
     "worker:example_worker": "npm run example_worker -w @area/worker"
