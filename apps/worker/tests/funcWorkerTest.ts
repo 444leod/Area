@@ -46,31 +46,28 @@ const mockArea: AreaPacket = {
 };
 
 async function handleArea(area: AreaPacket) {
-    console.log(count);
-    if (count === maxCount - 1) {
-      // Signal the consumption loop to stop
-      return true;
-    }
-  
-    assert(JSON.stringify(area) === JSON.stringify(mockArea));
-    console.log(`area ${count} received in a proper way`);
-    count++;
-    return false; // Continue the consumption loop
-  }
-  
-  rabbitMQ
-    .connect()
-    .then(async () => {
-      let shouldStop = false;
-      await rabbitMQ.consumePacket(process.env.RMQ_QUEUE || "", async (area) => {
-        shouldStop = await handleArea(area);
-        if (shouldStop) {
-          // Close the connection after the consumption loop stops
-          await rabbitMQ.close();
-          console.log(`Stopped consuming messages after handling the ${maxCount} number of areas.`);
-        }
-      });
-    })
-    .catch((error) => {
-      console.error("Something went wrong: ", error);
+  if (count === maxCount - 1) return true;
+
+  assert(JSON.stringify(area) === JSON.stringify(mockArea));
+  console.log(`area ${count} received in a proper way`);
+  count++;
+  return false;
+}
+
+rabbitMQ
+  .connect()
+  .then(async () => {
+    let shouldStop = false;
+    await rabbitMQ.consumePacket(process.env.RMQ_QUEUE || "", async (area) => {
+      shouldStop = await handleArea(area);
+      if (shouldStop) {
+        await rabbitMQ.close();
+        console.log(
+          `Stopped consuming messages after handling the ${maxCount} number of areas.`
+        );
+      }
     });
+  })
+  .catch((error) => {
+    console.error("Something went wrong: ", error);
+  });
