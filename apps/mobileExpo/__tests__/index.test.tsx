@@ -8,22 +8,18 @@ const wrapper = ({ children }) => {
     return children;
 };
 
-// Mock des animations React Native Reanimated
 jest.mock('react-native-reanimated', () => {
     const Reanimated = require('react-native-reanimated/mock');
-    Reanimated.default.call = jest.fn(); // Disable all animated calls
+    Reanimated.default.call = jest.fn();
     return Reanimated;
 });
 
-
-// Mock de LinearGradient
 jest.mock('expo-linear-gradient', () => ({
     LinearGradient: 'LinearGradient',
 }));
 
 const mockReplace = jest.fn();
 
-// Mock d'expo-router
 jest.mock('expo-router', () => ({
     useRouter: () => ({
         replace: mockReplace,
@@ -31,13 +27,10 @@ jest.mock('expo-router', () => ({
     }),
 }));
 
-// Mock de l'authentification Google
 jest.mock('expo-auth-session/providers/google', () => ({
     useAuthRequest: jest.fn(() => [null, null, jest.fn().mockResolvedValue({ type: 'cancel' })])
 }));
 
-
-// Mock d'AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
     setItem: jest.fn(() => Promise.resolve()),
     getItem: jest.fn(() => Promise.resolve(null)),
@@ -45,7 +38,6 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
     clear: jest.fn(() => Promise.resolve()),
 }));
 
-// Mock Alert
 jest.mock('react-native', () => {
     const rn = jest.requireActual('react-native');
     rn.Alert.alert = jest.fn();
@@ -62,7 +54,6 @@ describe('LoginScreen', () => {
         mockUseAuthRequest = jest.fn().mockReturnValue([null, null, mockPromptAsync]);
         jest.spyOn(Google, 'useAuthRequest').mockImplementation(mockUseAuthRequest);
 
-        // Reset fetch mock before each test
         global.fetch = jest.fn(() =>
             Promise.resolve({
                 ok: true,
@@ -87,7 +78,6 @@ describe('LoginScreen', () => {
     it('should handle successful login', async () => {
         const mockToken = 'fake-token-123';
 
-        // Configure le mock fetch pour simuler une réponse réussie
         global.fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
@@ -97,12 +87,10 @@ describe('LoginScreen', () => {
 
         const { getByPlaceholderText, getByText } = render(<LoginScreen />, { wrapper });
 
-        // Récupère les éléments du formulaire
         const emailInput = getByPlaceholderText('Email');
         const passwordInput = getByPlaceholderText('Password');
         const loginButton = getByText('Login');
 
-        // Simule la saisie et le clic avec act()
         await act(async () => {
             fireEvent.changeText(emailInput, 'test@example.com');
         });
@@ -115,9 +103,7 @@ describe('LoginScreen', () => {
             fireEvent.press(loginButton);
         });
 
-        // Attendre que les promesses soient résolues
         await waitFor(() => {
-            // Vérifie l'appel API
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.stringContaining('/auth/login'),
                 expect.objectContaining({
@@ -132,10 +118,8 @@ describe('LoginScreen', () => {
                 })
             );
 
-            // Vérifie le stockage du token
             expect(AsyncStorage.setItem).toHaveBeenCalledWith('userToken', mockToken);
 
-            // Vérifie la redirection
             expect(mockReplace).toHaveBeenCalledWith('/(auth)/');
         });
     });
