@@ -11,6 +11,6 @@ export * from "./jira/on-new-jira-ticket.class";
 export * from "./jira/on-new-jira-project.class";
 export * from "./github/on-new-github-repository.class";
 export * from "./github/on-pull-request-state.class";
-export * from "./riot/on-game-end.class"
+export * from "./riot/on-game-end.class";
 export * from "./spotify/on-new-artist-content.class";
 export * from "./spotify/on-spotify-playlist-update.class";

@@ -24,12 +24,7 @@
             "name": "region",
             "details": "the region the account is in.",
             "type": "enum",
-            "items": [
-              "EUROPE",
-              "AMERICAS",
-              "ASIA",
-              "SEA"
-            ],
+            "items": ["EUROPE", "AMERICAS", "ASIA", "SEA"],
             "required": true
           }
         ],
@@ -113,9 +108,7 @@
         "name": "videoPosted",
         "description": "When video was posted by a given channel",
         "type": "ON_YOUTUBE_VIDEO_POSTED",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "user_id",
@@ -209,9 +202,7 @@
         "name": "New video in playlist",
         "description": "When a new video is added to a playlist",
         "type": "ON_NEW_VIDEO_IN_PLAYLIST",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "playlist_id",
@@ -313,9 +304,7 @@
         "name": "Comment a video",
         "description": "Comment a video",
         "type": "COMMENT_YOUTUBE_VIDEO",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "video_id",
@@ -425,9 +414,7 @@
         "name": "On new task",
         "description": "When a task has been created",
         "type": "ON_NEW_GOOGLE_TASK",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "list_name",
@@ -539,9 +526,7 @@
         "name": "On expired task",
         "description": "When a task's due date has passed (Will not take into account the due hour, only the due date)",
         "type": "ON_GOOGLE_TASK_EXPIRED",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "list_name",
@@ -655,9 +640,7 @@
         "name": "Create new task",
         "description": "for create new task",
         "type": "CREATE_GOOGLE_TASK",
-        "authorizations": [
-          "GOOGLE"
-        ],
+        "authorizations": ["GOOGLE"],
         "params": [
           {
             "name": "title",
@@ -684,9 +667,7 @@
         "description": "when new issue created",
         "type": "ON_NEW_JIRA_TICKET",
         "params": [],
-        "authorizations": [
-          "ATLASSIAN"
-        ],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -815,9 +796,7 @@
         "description": "when new project created",
         "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
-        "authorizations": [
-          "ATLASSIAN"
-        ],
+        "authorizations": ["ATLASSIAN"],
         "variables": [
           {
             "name": "area_name",
@@ -943,9 +922,7 @@
         "description": "when new repository created",
         "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
-        "authorizations": [
-          "GITHUB"
-        ],
+        "authorizations": ["GITHUB"],
         "variables": [
           {
             "name": "area_name",
@@ -1037,19 +1014,13 @@
         "name": "a pull request state has changed to the one selected",
         "description": "when pull request state changed",
         "type": "ON_PULL_REQUEST_STATE",
-        "authorizations": [
-          "GITHUB"
-        ],
+        "authorizations": ["GITHUB"],
         "params": [
           {
             "name": "state",
             "details": "state of the pull request",
             "type": "enum",
-            "items": [
-              "all",
-              "open",
-              "closed"
-            ],
+            "items": ["all", "open", "closed"],
             "required": true
           },
           {
@@ -1182,9 +1153,7 @@
         "name": "Comment issue/pull request",
         "description": "Comment on an issue or pull request",
         "type": "COMMENT_GITHUB_ISSUE",
-        "authorizations": [
-          "GITHUB"
-        ],
+        "authorizations": ["GITHUB"],
         "params": [
           {
             "name": "owner",
