@@ -18,10 +18,4 @@ export class CreateGoogleTaskInfos extends BaseReactionInfos {
   @IsString()
   @IsNotEmpty()
   body: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDateOrVariable()
-  @IsOptional()
-  due_date?: string;
 }

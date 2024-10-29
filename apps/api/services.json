@@ -552,12 +552,6 @@
             "details": "body of the task",
             "type": "string",
             "required": true
-          },
-          {
-            "name": "due_date",
-            "details": "due date of the task",
-            "type": "date",
-            "required": false
           }
         ]
       }

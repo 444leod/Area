@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Action, ActionDto } from "../actions";
 import { Reaction } from "../reactions";
-import { AuthorizationsTypes } from "../authorizations";
 import { Log } from "../log";
 
 export class Area {
