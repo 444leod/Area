@@ -1,5 +1,106 @@
 [
   {
+    "name": "Riot Games",
+    "description": "Service for Riot Games actions",
+    "actions": [
+      {
+        "name": "Game end",
+        "description": "Triggers when a player finished a game.",
+        "type": "ON_RIOT_GAME_END",
+        "params": [
+          {
+            "name": "player_name",
+            "details": "the name of the riot account.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "player_tag",
+            "details": "the tag of the riot account.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "region",
+            "details": "the region the account is in.",
+            "type": "enum",
+            "items": ["EUROPE", "AMERICAS", "ASIA", "SEA"],
+            "required": true
+          }
+        ]
+      }
+    ],
+    "reactions": [],
+    "variables": [
+      {
+        "name": "area_name",
+        "description": "name of the area",
+        "type": "string",
+        "template": "My AREA #1"
+      },
+      {
+        "name": "full_execution_date",
+        "description": "full date of the trigger",
+        "type": "date",
+        "template": "Tue Oct 22 2024 10:58:16 GMT+0200 (Central European Summer Time)"
+      },
+      {
+        "name": "execution_date",
+        "description": "date of the trigger",
+        "type": "string",
+        "template": "22/10/2024"
+      },
+      {
+        "name": "execution_time",
+        "description": "time of the trigger",
+        "type": "string",
+        "template": "12:00"
+      },
+      {
+        "name": "player",
+        "description": "The Riot id of the player",
+        "type": "string",
+        "template": "PlayerName#EUW"
+      },
+      {
+        "name": "gamemode",
+        "description": "The mode of the game.",
+        "type": "string",
+        "template": "CLASSIC"
+      },
+      {
+        "name": "win",
+        "description": "Wether the player won the game.",
+        "type": "boolean",
+        "template": "true"
+      },
+      {
+        "name": "kills",
+        "description": "The amount of kills the player got in that game",
+        "type": "number",
+        "template": "8"
+      },
+      {
+        "name": "deaths",
+        "description": "The amount of deaths the player got in that game",
+        "type": "number",
+        "template": "5"
+      },
+      {
+        "name": "assists",
+        "description": "The amount of assists the player got in that game",
+        "type": "number",
+        "template": "12"
+      },
+      {
+        "name": "champion",
+        "description": "The name of the champion the player played as",
+        "type": "string",
+        "template": "Garen"
+      }
+    ]
+  },
+  {
     "name": "YouTube",
     "description": "Service for YouTube actions",
     "actions": [

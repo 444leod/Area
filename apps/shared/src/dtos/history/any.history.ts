@@ -8,6 +8,7 @@ import { OnPullRequestStateHistory } from "./github/on-pull-request-state.histor
 import { OnNewVideoInPlaylistHistory } from "./youtube/on-video-in-playlist.history";
 import { OnNewGoogleTaskHistory } from "./google-tasks/on-new-google-task.history";
 import { OnGoogleTaskExpiredHistory } from "./google-tasks/on-google-task-expired.history";
+import { OnRiotGameEndHistory } from "./riot/game-end-history.class";
 
 export type AnyHistory =
   | ExampleActionHistory
@@ -19,4 +20,5 @@ export type AnyHistory =
   | OnPullRequestStateHistory
   | OnNewVideoInPlaylistHistory
   | OnNewGoogleTaskHistory
-  | OnGoogleTaskExpiredHistory;
+  | OnGoogleTaskExpiredHistory
+  | OnRiotGameEndHistory;
