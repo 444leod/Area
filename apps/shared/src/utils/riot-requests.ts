@@ -33,6 +33,8 @@ export async function getPlayerAccount(
   region: string,
   token: string
 ): Promise<RiotAccountResponse> {
+  name = encodeURIComponent(name);
+  tag = encodeURIComponent(tag);
   const base_url = `https://${region.toLowerCase()}.api.riotgames.com/`;
   const param_url = `riot/account/v1/accounts/by-riot-id/${name}/${tag}`;
   const res: AxiosResponse<RiotAccountResponse> = await axios.get(
