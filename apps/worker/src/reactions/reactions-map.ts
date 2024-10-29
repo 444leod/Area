@@ -9,6 +9,7 @@ import { handleSendArtistsReportByMailReaction } from "./last-fm/send-artists-re
 import { handleCommentGithubIssueReaction } from "./github/comment-github-issue";
 import { handleCommentYoutubeVideoReaction } from "./youtube/comment-youtube-video";
 import { handleCreateJiraTicketReaction } from "./jira/create-jira-ticket";
+import { handlePlayRandomSpotifyLikedSongReaction } from "./spotify/play-random-liked-song-on-spotify";
 
 type ReactionMap = {
   [string: string]: ReactionFunction;
@@ -25,4 +26,5 @@ export const reactionsMap: ReactionMap = {
   SEND_ARTISTS_REPORT_BY_MAIL: handleSendArtistsReportByMailReaction,
   COMMENT_YOUTUBE_VIDEO: handleCommentYoutubeVideoReaction,
   CREATE_JIRA_TICKET: handleCreateJiraTicketReaction,
+  PLAY_RANDOM_SPOTIFY_LIKED_SONG: handlePlayRandomSpotifyLikedSongReaction,
 };
