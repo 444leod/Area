@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/svelte';
-import Page from '../routes/+page.svelte';
+import Page from '../../routes/+page.svelte';
 
 describe('+page.svelte', () => {
 	beforeEach(() => {
