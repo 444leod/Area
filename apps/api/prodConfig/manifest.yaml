@@ -1,0 +1,160 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: area-api-config
+data:
+  MONGODB_HOST: "138.68.183.159"
+  MONGODB_PORT: "27017"
+  MONGODB_AUTH_SOURCE: "admin"
+  MONGODB_DB_NAME: "dev"
+  FRONTEND_URL: "http://localhost:8081"
+  RMQ_WREA_QUEUE: "webhooks"
+  RMQ_HOST: "rabbitmq"
+  GOOGLE_CALLBACK_URL: "http://localhost:8081/login/oauth"
+  GOOGLE_REDIRECT_URL: "http://localhost:8081/dashboard"
+  ATLASSIAN_CALLBACK_URL: "http://localhost:8080/auth/atlassian/callback"
+  ATLASSIAN_REDIRECT_URL: "http://localhost:8081/profile/authorization"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: area-api-secrets
+type: Opaque
+stringData:
+  JWT_SECRET: "secret"
+  SECRET_SESSION: "secret"
+  MONGODB_USER: "admin"
+  MONGODB_PASSWORD: "area"
+  RMQ_USER: "user"
+  RMQ_PASS: "password"
+  GOOGLE_CLIENT_ID: "825177499555-t5r2vd2u6sud877v1a63kmus89j8vh41.apps.googleusercontent.com"
+  GOOGLE_CLIENT_SECRET: "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"
+  ATLASSIAN_CLIENT_ID: "m930BhmUp6A8VER2jBE1KI3Fa9ru9E6Q"
+  ATLASSIAN_CLIENT_SECRET: "ATOAGar4kzpX4VE9KrUyQ351VbqukMduamuG8rGWuSeA1uvbUz9a5fmra5f1IAObqj5NFCABB4D5"
+  SPOTIFY_CLIENT_ID: "c492c8e69e99485bb8b0be0f558e3648"
+  SPOTIFY_CLIENT_SECRET: "22a96c7d2aed409b908060b54d2b305c"
+  GITHUB_CLIENT_ID: "Ov23liBNjNSBdooODldz"
+  GITHUB_CLIENT_SECRET: "2dfaa163f260cbd091296c63a6c3c4d8eee263d4"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-ca-config
+data:
+  mongodb-ca.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIIF3TCCA8WgAwIBAgIUMhOlzdkSBUvuUDKgG9+8bfZBAuwwDQYJKoZIhvcNAQEL
+    BQAwfjELMAkGA1UEBhMCRlIxDTALBgNVBAgMBE5vcmQxDjAMBgNVBAcMBUxpbGxl
+    MQ0wCwYDVQQKDARhcmVhMQ0wCwYDVQQLDARhcmVhMQ0wCwYDVQQDDARhcmVhMSMw
+    IQYJKoZIhvcNAQkBFhRtYWdpa2JvYXJkQGdtYWlsLmNvbTAeFw0yNDA5MjgxMDA4
+    MTVaFw0yNTA5MjgxMDA4MTVaMH4xCzAJBgNVBAYTAkZSMQ0wCwYDVQQIDAROb3Jk
+    MQ4wDAYDVQQHDAVMaWxsZTENMAsGA1UECgwEYXJlYTENMAsGA1UECwwEYXJlYTEN
+    MAsGA1UEAwwEYXJlYTEjMCEGCSqGSIb3DQEJARYUbWFnaWtib2FyZEBnbWFpbC5j
+    b20wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCc9XzaaKP8WeNBSiWF
+    i1twjJBR4LwqWB93DYgeLSKhScYo+f/PN1xAa8Enw/gT/VnibW9Lb+xT0TvRhbeU
+    Q0CEzTgN1D4whrKF+Zbu7WpPgZTSUn1r7XeekLTQLYOIkH++F8/5d5SDgXRNVFhP
+    FN/MJXLXcAwy7LkT6SH+HtUXaxtJGVDYzXWUtKWl7/+V70xhufrG2owzyTm91sF6
+    58lbBiFaHfvioj6OU+aTdOoNHlmMO3nzq8yPowdB0Ag0dA7lKCY1IgTQOgdq1iQx
+    azOO3ZcDpksBeDIC76flkKLJkRHJ5QB+qebbOhN8k8e8VLhRDEXrNPLxidJU8gHz
+    McSHOgDvdrzAcI/IoobeNZQ2vtcO3cY9sm3nS/T7iHjtA65LU6Ue/xr4PiBVX9QI
+    +nXdCS8Aa9SEaUfKhKFGgXUGBj6rmOYRqIIRkCWQDMcNMLGJ4wA4Nk9KuSADNi9v
+    /tAslLBT9+rW25gM3a+IIHG//UPxUAb9WfiHAjXj9KYlsgh8G3d1F4JTcoDAVXha
+    HeVoyqkEAqaYKklgmzyim4HDxW+1ibSTDRVByVc2znEJM/Z+AMbkSURbK2bm5erB
+    91QRvFGk/hnXR4K6ZUVH5iOni7SiV+iSVNU7MsJRZ/fqr/I1oJvLLZz4YvMiqfnK
+    g+xjapEGBiQMKZQAii67KFA9dQIDAQABo1MwUTAdBgNVHQ4EFgQUx2U4A9ygcOUs
+    V4VnxfDj02LEfTwwHwYDVR0jBBgwFoAUx2U4A9ygcOUsV4VnxfDj02LEfTwwDwYD
+    VR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAJi97aHkEXu96H9K6X9mz
+    IlwZQCQM3acnFZTKFuQKEkvJaOKpKbGQLhgouwn6ncFv7Oq107l3p/C3Ud4qqomr
+    cTz4c4HiAVj3VZlfjVUsDDhTkw8lYFIgMNHOoEDXAq+z8XUZweaxE7P9ph2uusVG
+    6j4rF+aFy+d9/5bKwOVmsis5Stsm8Ypsa05DMV2aHhu7E3hv0/crXKOZIvYFqXe5
+    sEwp4G3wQPVHgFROoS7mXEBO1lhOB+VGlTkvHRVKH4oGYUFWb7AWnn8Ph7l+2FvD
+    p0dBWL1tfl3xIze8pFI8x+Tj9dsnRSK8G8/ruE/eyaVRby9JC1fdjIkwzRM6ZQHw
+    2+r05BMGCjz0CJcAu+a5j4QIle+iXORvM+XttylVBIEFCXPH05Ng/DId9CfItUKP
+    +5LjnvkwVwxins+wexZQXgN6pLs1doyMEDgNI9Y0dBuSzCxqZBsGYAHFEF+YpiWl
+    YQu8c+jSGTIjro8yWTVQrAaZu/CaK/Sje7hTTyMBZHRtxWiGBes1jOxHcHiPIl6w
+    EjUILcwP3JfRWhrMU0cQIy/jbVF4aKfod5LyBFAGxGej51ZvfimuN5Muy1bh4iww
+    aiCWDtHLGv1yTwfP0azVI4jO3KPWkXnAt55/3AiQ6wtnbVvj/lhdOKAtEFEmpkvH
+    H6S41Q6cOc0qjVlztFmcdkA=
+    -----END CERTIFICATE-----
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: area-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: area-api
+  template:
+    metadata:
+      labels:
+        app: area-api
+    spec:
+      containers:
+        - name: api
+          image: gcr.io/area-cluster/area-api:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: area-api-config
+            - secretRef:
+                name: area-api-secrets
+          env:
+            - name: MONGODB_TLS_CA_FILE
+              value: "/etc/ssl/mongodb-ca.pem"
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=2048"
+            - name: NODE_ENV
+              value: "development"
+          volumeMounts:
+            - name: mongodb-ca
+              mountPath: /etc/ssl/mongodb-ca.pem
+              subPath: mongodb-ca.pem
+              readOnly: true
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+      volumes:
+        - name: mongodb-ca
+          configMap:
+            name: mongodb-ca-config
+            items:
+              - key: mongodb-ca.pem
+                path: mongodb-ca.pem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: area-api
+spec:
+  selector:
+    app: area-api
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
