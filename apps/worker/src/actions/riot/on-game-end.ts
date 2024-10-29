@@ -1,4 +1,4 @@
-import { getPlayerAccount, getPlayerGamesIds, OnRiotGameEndInfos, OnRiotGameEndHistory, getGameResults, RiotGameResults } from "@area/shared";
+import { getPlayerAccount, getPlayerGamesIds, OnRiotGameEndInfos, OnRiotGameEndHistory, getGameResults, RiotGameResults, ValidationError } from "@area/shared";
 import { ActionFunction } from "../action-function";
 
 export const handleRiotGameEnd: ActionFunction = async (packet, db) => {
@@ -12,14 +12,16 @@ export const handleRiotGameEnd: ActionFunction = async (packet, db) => {
     infos.region,
     token
   );
-  console.log("RIOT ACCOUNT:", account);
 
-  const gamesIds = await getPlayerGamesIds(
-    account.puuid,
-    infos.region,
-    token
-  );
-  console.log("GAME IDS:", gamesIds);
+  let gamesIds: string[] = [];
+  getPlayerGamesIds(account.puuid, infos.region, token)
+    .then((res) => {
+      gamesIds = res
+    })
+    .catch(() => {
+      throw new ValidationError("Player name and/or tag is incorrect.");
+    });
+
   if (gamesIds.length == 0 || history.last_game_id == gamesIds[0])
     return null;
   if (history.last_game_id === null) {
