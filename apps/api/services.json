@@ -4,8 +4,8 @@
     "description": "Service for Riot Games actions",
     "actions": [
       {
-        "name": "Game end",
-        "description": "Triggers when a player finished a game.",
+        "name": "LoL - Game end",
+        "description": "Triggers when a player finished a League of Legends game.",
         "type": "ON_RIOT_GAME_END",
         "params": [
           {

@@ -11,7 +11,7 @@ interface RiotGameParticipant {
   kills: number,
   deaths: number,
   assists: number,
-  champion: string,
+  championName: string,
   win: boolean
 }
 
