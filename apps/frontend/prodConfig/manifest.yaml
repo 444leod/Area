@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: frontend-config
 data:
-  VITE_API_URL: "http://34.140.49.18"
+  VITE_API_URL: "/api"
   VITE_GOOGLE_CLIENT_ID: "825177499555-t5r2vd2u6sud877v1a63kmus89j8vh41.apps.googleusercontent.com"
   VITE_ATLASSIAN_CLIENT_ID: "m930BhmUp6A8VER2jBE1KI3Fa9ru9E6Q"
   VITE_GITHUB_CLIENT_ID: "Ov23liBNjNSBdooODldz"
@@ -68,4 +68,4 @@ spec:
   ports:
     - port: 80
       targetPort: 8081
-  type: LoadBalancer
+  type: ClusterIP

@@ -106,7 +106,7 @@ spec:
             - name: MONGODB_TLS_CA_FILE
               value: "/etc/ssl/mongodb-ca.pem"
             - name: NODE_OPTIONS
-              value: "--max-old-space-size=2048"
+              value: "--max-old-space-size=768"
             - name: NODE_ENV
               value: "development"
           volumeMounts:
@@ -116,11 +116,11 @@ spec:
               readOnly: true
           resources:
             requests:
-              cpu: "250m"
-              memory: "1Gi"
+              cpu: "50m"
+              memory: "768Mi"
             limits:
-              cpu: "1"
-              memory: "2Gi"
+              cpu: "200m"
+              memory: "1Gi"
           startupProbe:
             httpGet:
               path: /health
@@ -157,4 +157,4 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-  type: LoadBalancer
+  type: ClusterIP
