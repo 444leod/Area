@@ -119,13 +119,13 @@
 			});
 
 			if (response.ok) {
-				alert('Deconnexion reussis');
+				alert('Disconnection successful');
 				await goto('/profile');
 			} else {
-				throw new Error(`Error during disconnection`);
+				setError(`Error during disconnection`);
 			}
 		} catch (error) {
-			throw new Error(`Error during disconnection ` + error);
+			setError(`Error during disconnection ` + error);
 		}
 	}
 
