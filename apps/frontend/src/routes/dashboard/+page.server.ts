@@ -1,10 +1,10 @@
-import { error, fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 import { setError } from '../../lib/store/errorMessage';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-export const load: PageServerLoad = async ({ fetch, cookies, url }) => {
+export const load: PageServerLoad = async ({ fetch, cookies }) => {
 	const token = cookies.get('token');
 	if (!token) {
 		throw error(401, 'Unauthorized');
