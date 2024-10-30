@@ -99,6 +99,7 @@ const SignUpScreen = () => {
             style={styles.input}
             mode="outlined"
             theme={{ colors: { primary: theme.colors.primary } }}
+            testID="signup-firstname-input"
           />
           <TextInput
             label="Nom"
@@ -107,6 +108,7 @@ const SignUpScreen = () => {
             style={styles.input}
             mode="outlined"
             theme={{ colors: { primary: theme.colors.primary } }}
+            testID={"signup-lastname-input"}
           />
           <TextInput
             label="Email"
@@ -117,6 +119,7 @@ const SignUpScreen = () => {
             keyboardType="email-address"
             autoCapitalize="none"
             theme={{ colors: { primary: theme.colors.primary } }}
+            testID={"signup-email-input"}
           />
           <TextInput
             label="Mot de passe"
@@ -126,6 +129,7 @@ const SignUpScreen = () => {
             mode="outlined"
             secureTextEntry
             theme={{ colors: { primary: theme.colors.primary } }}
+            testID={"signup-password-input"}
           />
 
           <Button
@@ -134,6 +138,7 @@ const SignUpScreen = () => {
             style={styles.button}
             loading={loading}
             disabled={loading}
+            testID="signup-submit-button"
           >
             S'inscrire
           </Button>
@@ -143,6 +148,7 @@ const SignUpScreen = () => {
             onPress={() => router.push("/")}
             style={styles.linkButton}
             labelStyle={styles.linkButtonText}
+            testID="signup-login-button"
           >
             Déjà un compte ? Se connecter
           </Button>
