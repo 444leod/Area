@@ -16,7 +16,7 @@
 
 	let isUsingVariable = false;
 	let selectedVariable = '';
-	let textValue = value;
+	let textValue = value || '';
 
 	function handleTextareaChange(e: Event) {
 		const target = e.target as HTMLTextAreaElement;
