@@ -91,10 +91,9 @@ describe('LoginScreen', () => {
         const passwordInput = getByPlaceholderText('Password');
         const loginButton = getByText('Login');
 
-        // Simule la saisie et le clic avec act()
-        await act(async () => {
-            fireEvent.changeText(emailInput, 'test@example.com');
-        });
+    await act(async () => {
+      fireEvent.changeText(emailInput, "test@example.com");
+    });
 
         await act(async () => {
             fireEvent.changeText(passwordInput, 'password123');
@@ -104,30 +103,26 @@ describe('LoginScreen', () => {
             fireEvent.press(loginButton);
         });
 
-        // Attendre que les promesses soient résolues
-        await waitFor(() => {
-            // Vérifie l'appel API
-            expect(global.fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/auth/login'),
-                expect.objectContaining({
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'test@example.com',
-                        password: 'password123',
-                    }),
-                })
-            );
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining("/auth/login"),
+        expect.objectContaining({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "test@example.com",
+            password: "password123",
+          }),
+        }),
+      );
 
-            // Vérifie le stockage du token
-            expect(AsyncStorage.setItem).toHaveBeenCalledWith('userToken', mockToken);
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith("userToken", mockToken);
 
-            // Vérifie la redirection
-            expect(mockReplace).toHaveBeenCalledWith('/(auth)/');
-        });
+      expect(mockReplace).toHaveBeenCalledWith("/(auth)/");
     });
+  });
 
     it('should handle login failure', async () => {
         global.fetch.mockImplementationOnce(() =>
@@ -209,16 +204,16 @@ describe('LoginScreen', () => {
         const { getByTestId } = render(<LoginScreen />, { wrapper });
         const googleButton = getByTestId('google-button');
 
-        expect(googleButton.props.style).toEqual(
-            expect.objectContaining({
-                backgroundColor: '#4285F4',
-                borderRadius: 25,
-                padding: 15,
-                alignItems: 'center',
-                marginBottom: 10,
-            })
-        );
-    });
+    expect(googleButton.props.style).toEqual(
+      expect.objectContaining({
+        backgroundColor: "#4285F4",
+        borderRadius: 25,
+        padding: 15,
+        alignItems: "center",
+        marginBottom: 10,
+      }),
+    );
+  });
 });
 
 const waitForAnimations = () => new Promise(resolve => setTimeout(resolve, 0));
