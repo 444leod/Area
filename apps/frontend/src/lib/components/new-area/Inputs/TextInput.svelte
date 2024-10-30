@@ -41,7 +41,7 @@
 
 	// Update the value when it changes externally
 	$: {
-		if (!value.includes('{{')) {
+		if (value !== undefined && value !== null && !String(value).includes('{{')) {
 			textValue = value;
 		}
 	}
