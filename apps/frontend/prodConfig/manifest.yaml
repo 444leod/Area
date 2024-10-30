@@ -3,12 +3,12 @@ kind: ConfigMap
 metadata:
   name: frontend-config
 data:
-  VITE_API_URL: "/api"
-  VITE_GOOGLE_CLIENT_ID: "825177499555-t5r2vd2u6sud877v1a63kmus89j8vh41.apps.googleusercontent.com"
-  VITE_ATLASSIAN_CLIENT_ID: "m930BhmUp6A8VER2jBE1KI3Fa9ru9E6Q"
-  VITE_GITHUB_CLIENT_ID: "Ov23liBNjNSBdooODldz"
-  VITE_SPOTIFY_CLIENT_ID: "c492c8e69e99485bb8b0be0f558e3648"
-  VITE_DISCORD_CLIENT_ID: "1298669583082852382"
+  VITE_API_URL: '/api'
+  VITE_GOOGLE_CLIENT_ID: '825177499555-t5r2vd2u6sud877v1a63kmus89j8vh41.apps.googleusercontent.com'
+  VITE_ATLASSIAN_CLIENT_ID: 'm930BhmUp6A8VER2jBE1KI3Fa9ru9E6Q'
+  VITE_GITHUB_CLIENT_ID: 'Ov23liBNjNSBdooODldz'
+  VITE_SPOTIFY_CLIENT_ID: 'c492c8e69e99485bb8b0be0f558e3648'
+  VITE_DISCORD_CLIENT_ID: '1298669583082852382'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,11 +34,11 @@ spec:
                 name: frontend-config
           resources:
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: '50m'
+              memory: '128Mi'
             limits:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: '100m'
+              memory: '256Mi'
           startupProbe:
             httpGet:
               path: /

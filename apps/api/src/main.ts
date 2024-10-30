@@ -15,16 +15,15 @@ async function bootstrap() {
   // CORS doit être configuré en premier
   app.enableCors({
     origin: [
-      "http://34.140.49.18",  // API
-      "http://34.79.27.38",   // Frontend
-      "http://localhost:8081"
+      "http://34.140.49.18", // API
+      "http://34.79.27.38", // Frontend
+      "http://localhost:8081",
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: false,
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
     exposedHeaders: ["Authorization"],
   });
-
 
   app.use(
     session({
