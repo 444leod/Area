@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
       const user: AuthentifiedUser = {
         id: payload.sub,
         email: payload.email,
-        roles: payload.roles.map(v => Role[v])
+        roles: payload.roles?.map(v => Role[v])
       };
       request["user"] = user;
     } catch {
