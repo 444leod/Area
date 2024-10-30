@@ -91,6 +91,7 @@ describe('LoginScreen', () => {
         const passwordInput = getByPlaceholderText('Password');
         const loginButton = getByText('Login');
 
+        // Simule la saisie et le clic avec act()
         await act(async () => {
             fireEvent.changeText(emailInput, 'test@example.com');
         });
@@ -103,7 +104,9 @@ describe('LoginScreen', () => {
             fireEvent.press(loginButton);
         });
 
+        // Attendre que les promesses soient résolues
         await waitFor(() => {
+            // Vérifie l'appel API
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.stringContaining('/auth/login'),
                 expect.objectContaining({
@@ -118,8 +121,10 @@ describe('LoginScreen', () => {
                 })
             );
 
+            // Vérifie le stockage du token
             expect(AsyncStorage.setItem).toHaveBeenCalledWith('userToken', mockToken);
 
+            // Vérifie la redirection
             expect(mockReplace).toHaveBeenCalledWith('/(auth)/');
         });
     });
@@ -214,8 +219,6 @@ describe('LoginScreen', () => {
             })
         );
     });
-
-
 });
 
 const waitForAnimations = () => new Promise(resolve => setTimeout(resolve, 0));
