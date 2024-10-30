@@ -9,7 +9,7 @@ interface CommandToTest {
 function createCmd(
   envVar: [string, string],
   expectedReturn = 1,
-  baseCmd = "npm run start"
+  baseCmd = "npm run start",
 ): CommandToTest {
   return {
     cmd: baseCmd,
@@ -44,8 +44,8 @@ async function runCommand(commandConfig: CommandToTest): Promise<void> {
       } else if (code !== expectedReturn) {
         reject(
           new Error(
-            `Command "${cmd}" exited with code ${code}, but expected ${expectedReturn}`
-          )
+            `Command "${cmd}" exited with code ${code}, but expected ${expectedReturn}`,
+          ),
         );
       } else {
         console.log(`Command "${cmd}" exited with expected code ${code}`);
@@ -57,7 +57,7 @@ async function runCommand(commandConfig: CommandToTest): Promise<void> {
 
 async function runCommandsInBatches(
   commands: CommandToTest[],
-  batchSize: number
+  batchSize: number,
 ) {
   for (let i = 0; i < commands.length; i += batchSize) {
     const batch = commands.slice(i, i + batchSize);

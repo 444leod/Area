@@ -63,7 +63,7 @@ rabbitMQ
       if (shouldStop) {
         await rabbitMQ.close();
         console.log(
-          `Stopped consuming messages after handling the ${maxCount} number of areas.`
+          `Stopped consuming messages after handling the ${maxCount} number of areas.`,
         );
       }
     });

@@ -1,10 +1,5 @@
 import { ObjectId } from "mongodb";
-import {
-  MongoDBService,
-  User,
-  ReactionTypes,
-  ActionTypes,
-} from "@area/shared";
+import { MongoDBService, User, ReactionTypes, ActionTypes } from "@area/shared";
 
 const user01: User = {
   first_name: "user01",
@@ -132,16 +127,13 @@ const mongoDB = new MongoDBService();
 
 async function main() {
   await mongoDB.connect();
-  
+
   try {
     // Clear the collection and insert the test users
     mongoDB.deleteCollection("users");
     mongoDB.createCollection("users");
     await mongoDB.executeWithSession(async () => {
-      await mongoDB
-        .db()
-        .collection<User>("users")
-        .insertMany([user01, user02]);
+      await mongoDB.db().collection<User>("users").insertMany([user01, user02]);
     });
   } catch (err) {
     console.error(err);
@@ -149,6 +141,5 @@ async function main() {
     await mongoDB.close();
   }
 }
-
 
 main().catch(console.error);
