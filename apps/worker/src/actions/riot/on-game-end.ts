@@ -21,14 +21,9 @@ export const handleRiotGameEnd: ActionFunction = async (packet, db) => {
     token,
   );
 
-  let gamesIds: string[] = [];
-  getPlayerGamesIds(account.puuid, infos.region, token)
-    .then((res) => {
-      gamesIds = res;
-    })
-    .catch(() => {
-      throw new ValidationError("Player name and/or tag is incorrect.");
-    });
+  let gamesIds: string[] = await getPlayerGamesIds(account.puuid, infos.region, token);
+
+  console.log("GAMEIDS:", gamesIds);
 
   if (gamesIds.length == 0 || history.last_game_id == gamesIds[0]) return null;
   if (history.last_game_id === null) {
