@@ -45,7 +45,7 @@ export const handleRiotGameEnd: ActionFunction = async (packet, db) => {
   );
   packet.data = {
     player: `${infos.player_name}#${infos.player_tag}`,
-    ...results
+    ...results,
   };
 
   history.last_game_id = gamesIds[0];
