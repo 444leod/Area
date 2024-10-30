@@ -106,26 +106,26 @@
 
 	async function disconnectService(service) {
 		const token = await fetchToken();
-		const type = service.name.toUpperCase();
+		const type = service.name.toUpperCase()
+
 		try {
 			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
+					'Authorization': `Bearer ${token}`
 				},
 				body: JSON.stringify({ type: type })
 			});
+
 			if (response.ok) {
-				await response.json();
-				alert('Successfully disconnected');
-				goto('/profile');
-				service.connected = false;
+				alert("Deconnexion reussis")
+				await goto('/profile');
 			} else {
 				throw new Error(`Error during disconnection`);
 			}
 		} catch (error) {
-			throw new Error(`Error during disconnection`);
+			throw new Error(`Error during disconnection ` + error);
 		}
 	}
 
