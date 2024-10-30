@@ -1,4 +1,4 @@
-import { Area, User, AuthorizationDto } from "@area/shared";
+import { Area, User, AuthorizationDto, ActionTypes, ReactionTypes, AreaTypesCount } from "@area/shared";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Document } from "mongoose";
@@ -70,5 +70,41 @@ export class AreasService {
     const area = await this.getUserArea(_user, id);
     area.active = !area.active;
     return await this.updateUserArea(_user, area);
+  }
+
+  async getAreasCounts(): Promise<{all: number, active: number}> {
+    const users = await this.userModel.find({}, { "areas._id": 1 });
+    let all_count: number = 0;
+    let active_count: number = 0;
+
+    for (const u of users) {
+      all_count += u.areas.length
+      active_count += u.areas.filter(a => a.active == true).length;
+    }
+    return {
+      all: all_count,
+      active: active_count
+    }
+  }
+
+  async getAreaTypesCount(): Promise<{actions: AreaTypesCount, reactions: AreaTypesCount}> {
+    const users = await this.userModel.find({}, { "areas.action.type": 1, "areas.reaction.type": 1 });
+    const actionsTypes: ActionTypes[] = [];
+    const reactionsTypes: ReactionTypes[] = [];
+    const actionsCount: AreaTypesCount = {};
+    const reactionsCount: AreaTypesCount = {};
+
+    for (const u of users) {
+      actionsTypes.push(...(u.areas.map(a => a.action.informations.type)));
+      reactionsTypes.push(...(u.areas.map(a => a.reaction.informations.type)));
+    }
+    for (const action of actionsTypes)
+      actionsCount[action] = actionsCount[action] ? actionsCount[action] + 1 : 1;
+    for (const reaction of reactionsTypes)
+      reactionsCount[reaction] = reactionsCount[reaction] ? reactionsCount[reaction] + 1 : 1;
+    return {
+      actions: actionsCount,
+      reactions: reactionsCount
+    }
   }
 }

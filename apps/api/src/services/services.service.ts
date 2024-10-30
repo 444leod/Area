@@ -62,4 +62,9 @@ export class ServicesService {
     if (!service) throw new NotFoundException("Unknown service.");
     return service;
   }
+
+  async getServicesNamesByReactionTypes(types: ReactionTypes[]): Promise<string[]> {
+    const services = await this.serviceModel.find({ "reactions.type": { "$in": types } }, { "name": 1 })
+    return services.map(service => service.name);
+  }
 }

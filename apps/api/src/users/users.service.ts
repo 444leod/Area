@@ -39,6 +39,10 @@ export class UsersService {
     if (!user) throw new UnauthorizedException();
   }
 
+  async countUsers(): Promise<number> {
+    return await this.userModel.countDocuments();
+  }
+
   //TODO: rename with google
   async findOrCreateUser(userData: {
     email: string;
