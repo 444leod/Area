@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export interface RiotAccountResponse {
   puuid: string;
@@ -12,12 +12,20 @@ interface RiotGameParticipant {
   deaths: number;
   assists: number;
   championName: string;
+  champLevel: number;
+  individualPosition: string;
   win: boolean;
 }
 
 export interface RiotGameResults {
   gamemode: string;
-  player: RiotGameParticipant;
+  win: "VICTORY" | "DEFEAT";
+  champion: string;
+  position: string;
+  level: string;
+  kills: string;
+  deaths: string;
+  assists: string;
 }
 
 interface RiotGameResponse {
@@ -79,9 +87,16 @@ export async function getGameResults(
       },
     },
   );
+  const player = res.data.info.participants.find((p) => p.puuid === puuid);
   const result: RiotGameResults = {
     gamemode: res.data.info.gameMode,
-    player: res.data.info.participants.find((p) => p.puuid === puuid),
+    win: player.win ? "VICTORY" : "DEFEAT",
+    champion: player.championName,
+    position: player.individualPosition,
+    level: player.champLevel.toString(),
+    kills: player.kills.toString(),
+    deaths: player.deaths.toString(),
+    assists: player.assists.toString(),
   };
   return result;
 }

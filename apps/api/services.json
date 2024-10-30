@@ -68,32 +68,44 @@
           {
             "name": "win",
             "description": "Wether the player won the game.",
-            "type": "boolean",
-            "template": "true"
+            "type": "string",
+            "template": "VICTORY"
           },
           {
             "name": "kills",
             "description": "The amount of kills the player got in that game",
-            "type": "number",
+            "type": "string",
             "template": "8"
           },
           {
             "name": "deaths",
             "description": "The amount of deaths the player got in that game",
-            "type": "number",
+            "type": "string",
             "template": "5"
           },
           {
             "name": "assists",
             "description": "The amount of assists the player got in that game",
-            "type": "number",
+            "type": "string",
             "template": "12"
           },
           {
             "name": "champion",
             "description": "The name of the champion the player played as",
             "type": "string",
-            "template": "Garen"
+            "template": "Shyvana"
+          },
+          {
+            "name": "position",
+            "description": "The team position the player played as",
+            "type": "string",
+            "template": "JUNGLE"
+          },
+          {
+            "name": "level",
+            "description": "The max level the player reached during the game",
+            "type": "string",
+            "template": "16"
           }
         ]
       }
@@ -1208,7 +1220,7 @@
           {
             "name": "body",
             "details": "body of the message",
-            "type": "string",
+            "type": "text",
             "required": false
           },
           {
