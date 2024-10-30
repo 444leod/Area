@@ -21,7 +21,11 @@ export const handleRiotGameEnd: ActionFunction = async (packet, db) => {
     token,
   );
 
-  let gamesIds: string[] = await getPlayerGamesIds(account.puuid, infos.region, token);
+  let gamesIds: string[] = await getPlayerGamesIds(
+    account.puuid,
+    infos.region,
+    token,
+  );
 
   console.log("GAMEIDS:", gamesIds);
 
