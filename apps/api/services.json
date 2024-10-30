@@ -411,7 +411,7 @@
           {
             "name": "body",
             "details": "body of the email",
-            "type": "string",
+            "type": "text",
             "required": true
           }
         ]
@@ -663,7 +663,7 @@
           {
             "name": "body",
             "details": "body of the task",
-            "type": "string",
+            "type": "text",
             "required": true
           }
         ]
