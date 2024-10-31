@@ -18,6 +18,7 @@ module.exports = {
         "!**/coverage/**",
         "!**/node_modules/**",
         "!**/babel.config.js",
-        "!**/jest.setup.js"
-    ]
+        "!**/components/inputs/**",
+        "!**/modules/**",
+    ],
 };

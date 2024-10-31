@@ -135,7 +135,7 @@ export default function LoginScreen() {
         throw new Error("Login error");
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Error during login:", error.message());
       Alert.alert("Error", "Unable to login. Please check your credentials.");
     } finally {
       setLoading(false);
