@@ -5,7 +5,7 @@ import { Service } from "./service.schema";
 import { describe, mock } from "node:test";
 import { AuthorizationsTypes } from "@area/shared";
 
-describe('Services', () => {
+describe('Services Service', () => {
   let mocked_values: Service[] = [];
   let serviceModel = {
     find: mock.fn(() => { return {

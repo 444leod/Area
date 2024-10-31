@@ -5,7 +5,7 @@ import { getModelToken } from "@nestjs/mongoose";
 import { Service } from "./service.schema";
 import { mock } from "node:test";
 
-describe('Services', () => {
+describe('Services Controller', () => {
   let mocked_values: Service[] = [];
   let serviceModel = {
     find: mock.fn(() => { return {
