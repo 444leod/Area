@@ -1,1 +1,1 @@
-export * from "./admin-dashboard.class"
+export * from "./admin-dashboard.class";

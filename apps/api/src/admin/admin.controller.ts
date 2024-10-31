@@ -10,7 +10,7 @@ import { AdminDashOkResponse } from "./swagger-content";
 @ApiTags("Admin")
 @Controller("admin")
 export class AdminController {
-  constructor(private readonly adminService: AdminService) { }
+  constructor(private readonly adminService: AdminService) {}
 
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)

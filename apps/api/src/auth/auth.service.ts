@@ -45,11 +45,11 @@ export class AuthService {
     const payload: TokenPayload = {
       sub: user._id.toHexString(),
       email: user.email,
-      roles: user.roles
+      roles: user.roles,
     };
     return {
-      token: await this.jwtService.signAsync(payload)
-    }
+      token: await this.jwtService.signAsync(payload),
+    };
   }
 
   async login(dto: UserLoginDto) {
@@ -63,7 +63,8 @@ export class AuthService {
 
   async register(dto: UserRegistrationDto) {
     const searched_user = await this.usersService.findByEmail(dto.email);
-    if (searched_user != undefined) throw new ConflictException("User already exists");
+    if (searched_user != undefined)
+      throw new ConflictException("User already exists");
     const newUser = await this.usersService.createUser(dto);
     return await this.generateUserToken(newUser);
   }
