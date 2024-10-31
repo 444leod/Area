@@ -15,10 +15,14 @@ import { Model } from "mongoose";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { AuthentifiedUser } from "src/auth/auth-interfaces";
+import { ServicesService } from "src/services/services.service";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly servicesService: ServicesService,
+  ) {}
 
   async createUser(dto: UserRegistrationDto): Promise<User> {
     dto.password = await bcrypt.hash(dto.password, 10);
@@ -120,5 +124,24 @@ export class UsersService {
     }
 
     return await user.save();
+  }
+
+  async removeAuthorization(
+    _user: AuthentifiedUser,
+    authType: AuthorizationsTypes,
+  ): Promise<void> {
+    const user = await this.userModel.findById(_user.id);
+    if (!user) throw new UnauthorizedException();
+    user.authorizations = user.authorizations.filter(
+      (auth) => auth.type != authType,
+    );
+    const bannedTypes =
+      await this.servicesService.getAreaTypesFromAuthType(authType);
+    user.areas = user.areas.filter(
+      (area) =>
+        !bannedTypes.actionTypes.includes(area.action.informations.type) &&
+        !bannedTypes.reactionTypes.includes(area.reaction.informations.type),
+    );
+    user.save();
   }
 }

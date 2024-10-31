@@ -17,6 +17,7 @@ import {
 } from "./swagger-content";
 import { User } from "@area/shared";
 import { AuthRequest } from "src/auth/auth-interfaces";
+
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {

@@ -2,28 +2,41 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Post,
   Req,
+  Request,
+  UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { UserLoginDto, UserRegistrationDto } from "@area/shared";
+import {
+  DisconnectServiceDto,
+  UserLoginDto,
+  UserRegistrationDto,
+} from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
+import { AuthGuard } from "./auth.guard";
+import { UsersService } from "src/users/users.service";
+import { AuthRequest } from "./auth-interfaces";
 
 @ApiTags("Auth")
-@Controller("/auth")
+@Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post("/login")
+  @Post("login")
   async login(@Body() loginDto: UserLoginDto) {
     if (!loginDto) throw new BadRequestException();
     return this.authService.login(loginDto);
   }
 
-  @Post("/atlassian")
+  @Post("atlassian")
   async atlassianconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
       throw new BadRequestException("Atlassian authorization code is required");
@@ -32,7 +45,7 @@ export class AuthController {
     return this.authService.connectAtlassian(code, req);
   }
 
-  @Post("/github")
+  @Post("github")
   async githubconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
       throw new BadRequestException("GitHub authorization code is required");
@@ -41,7 +54,7 @@ export class AuthController {
     return this.authService.connectGithub(code, req);
   }
 
-  @Post("/spotify")
+  @Post("spotify")
   async spotifyconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
       throw new BadRequestException("Spotify authorization code is required");
@@ -50,7 +63,7 @@ export class AuthController {
     return this.authService.connectSpotify(code, req);
   }
 
-  @Post("/simpleAuthGoogle")
+  @Post("simpleAuthGoogle")
   async googleconnection(@Body("code") code: string, @Req() req: Request) {
     if (!code) {
       throw new BadRequestException("Google authorization code is required");
@@ -59,7 +72,7 @@ export class AuthController {
     return this.authService.connectGoogle(code, req);
   }
 
-  @Post("/google")
+  @Post("google")
   async googleCallback(@Body("code") code: string) {
     if (!code) {
       throw new BadRequestException("Google authorization code is required");
@@ -67,7 +80,7 @@ export class AuthController {
     return this.authService.handleGoogleCallback(code);
   }
 
-  @Post("/google/mobile")
+  @Post("google/mobile")
   async googleMobileAuth(
     @Body("token") token: string,
     @Body("isMobile") isMobile: boolean,
@@ -85,9 +98,19 @@ export class AuthController {
     );
   }
 
-  @Post("/register")
+  @Post("register")
   async register(@Body() registerDto: UserRegistrationDto) {
     if (!registerDto) throw new BadRequestException();
     return this.authService.register(registerDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete("disconnect")
+  @HttpCode(204)
+  async disconnectUserService(
+    @Request() req: AuthRequest,
+    @Body() dto: DisconnectServiceDto,
+  ) {
+    return this.usersService.removeAuthorization(req.user, dto.type);
   }
 }

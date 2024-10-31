@@ -3,12 +3,14 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import {
   ActionTypes,
+  AuthorizationsTypes,
   ReactionTypes,
   Service,
   ShortService,
 } from "@area/shared";
 import { ObjectId } from "mongodb";
 import * as fs from "fs";
+import { ServiceTypeList } from "./service-type-list.interface";
 
 @Injectable()
 export class ServicesService {
@@ -66,5 +68,27 @@ export class ServicesService {
   async getServicesNamesByReactionTypes(types: ReactionTypes[]): Promise<string[]> {
     const services = await this.serviceModel.find({ "reactions.type": { "$in": types } }, { "name": 1 })
     return services.map(service => service.name);
+  }
+
+  async getAreaTypesFromAuthType(
+    authType: AuthorizationsTypes,
+  ): Promise<ServiceTypeList> {
+    let service: Service;
+    const types: ServiceTypeList = {
+      actionTypes: [],
+      reactionTypes: [],
+    };
+    service = await this.serviceModel
+      .findOne({ "actions.authorizations": authType }, { "actions.$": 1 })
+      .exec();
+    if (service)
+      for (const action of service.actions) types.actionTypes.push(action.type);
+    service = await this.serviceModel
+      .findOne({ "reactions.authorizations": authType }, { "reactions.$": 1 })
+      .exec();
+    if (service)
+      for (const reaction of service.reactions)
+        types.reactionTypes.push(reaction.type);
+    return types;
   }
 }
