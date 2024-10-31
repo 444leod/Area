@@ -107,6 +107,7 @@
 	async function disconnectService(service) {
 		const token = await fetchToken();
 		const type = service.name.toUpperCase();
+
 		try {
 			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
 				method: 'DELETE',
@@ -116,16 +117,15 @@
 				},
 				body: JSON.stringify({ type: type })
 			});
+
 			if (response.ok) {
-				await response.json();
-				alert('Successfully disconnected');
-				goto('/profile');
-				service.connected = false;
+				alert('Disconnection successful');
+				await goto('/profile');
 			} else {
-				throw new Error(`Error during disconnection`);
+				setError(`Error during disconnection`);
 			}
 		} catch (error) {
-			throw new Error(`Error during disconnection`);
+			setError(`Error during disconnection ` + error);
 		}
 	}
 
