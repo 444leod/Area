@@ -12,7 +12,7 @@ const authorizationRegenerator: {
   GOOGLE: getNewGoogleTokens,
   ATLASSIAN: getNewAtlassianTokens,
   GITHUB: getNonRenewableToken,
-  SPOTIFY: getNonRenewableToken,
+  SPOTIFY: getNewSpotifyTokens,
 };
 
 export async function getAuthorizationToken(
@@ -89,6 +89,36 @@ async function getNewAtlassianTokens(oldToken: TokenDto): Promise<TokenDto> {
   return {
     token: access_token,
     refresh_token,
+    expiration_date: expirationDate,
+    created_at: createdAt,
+  };
+}
+
+async function getNewSpotifyTokens(oldToken: TokenDto): Promise<TokenDto> {
+  const response = await axios.post(
+    "https://accounts.spotify.com/api/token",
+    new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: oldToken.refresh_token!,
+      client_id: process.env.SPOTIFY_CLIENT_ID!,
+      client_secret: process.env.SPOTIFY_CLIENT_SECRET!,
+    }),
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    },
+  );
+
+  const { access_token, expires_in } = response.data;
+
+  const expirationDate = new Date();
+  expirationDate.setSeconds(expirationDate.getSeconds() + expires_in);
+  const createdAt = new Date();
+
+  return {
+    token: access_token,
+    refresh_token: oldToken.refresh_token, // Spotify refresh tokens remain valid until explicitly expired.
     expiration_date: expirationDate,
     created_at: createdAt,
   };

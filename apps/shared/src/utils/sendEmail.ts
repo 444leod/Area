@@ -22,9 +22,5 @@ export const sendMail = async (
     subject: subject,
     ...(format === "html" ? { html: body } : { text: body }),
   };
-  try {
-    await transporter.sendMail(fullMail);
-  } catch (error) {
-    console.error("Error on sending mail:", error);
-  }
+  await transporter.sendMail(fullMail);
 };
