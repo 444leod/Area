@@ -82,9 +82,7 @@ export class SpotifyAPI {
   }
 
   async getLikedTrackPlaylist(): Promise<Playlist> {
-    console.log("fetching me");
     const me = await this.getUserInformations();
-    console.log("fetching me");
 
     return {
       id: "",
