@@ -11,7 +11,6 @@ export const actions: Actions = {
 		const confirmPassword = formData.get('confirmPassword');
 		const first_name = formData.get('first_name');
 		const last_name = formData.get('last_name');
-
 		if (password !== confirmPassword) {
 			return fail(400, { error: 'Passwords do not match' });
 		}
