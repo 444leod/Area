@@ -29,6 +29,37 @@ const initialState: AreaStore = {
 	reactionDetails: null
 };
 
+function initializeParams(action: Action): Record<string, any> {
+	const params: Record<string, any> = {};
+
+	// Initialize each parameter with a default value based on its type
+	action.params.forEach(param => {
+		switch (param.type) {
+			case 'string':
+			case 'text':
+				params[param.name] = '';
+				break;
+			case 'number':
+				params[param.name] = 0;
+				break;
+			case 'boolean':
+				params[param.name] = false;
+				break;
+			case 'date':
+				params[param.name] = new Date().toISOString();
+				break;
+			case 'enum':
+				// Si des items sont définis, prendre le premier comme valeur par défaut
+				params[param.name] = param.items && param.items.length > 0 ? param.items[0] : '';
+				break;
+			default:
+				params[param.name] = '';
+		}
+	});
+
+	return params;
+}
+
 function createAreaStore() {
 	const { subscribe, set, update } = writable<AreaStore>(initialState);
 
@@ -42,7 +73,7 @@ function createAreaStore() {
 				selectedTrigger: trigger,
 				actionDetails: {
 					type: trigger.type,
-					params: {}
+					params: initializeParams(trigger)
 				}
 			})),
 		setSelectedAction: (action: Action) =>
@@ -51,7 +82,7 @@ function createAreaStore() {
 				selectedAction: action,
 				reactionDetails: {
 					type: action.type,
-					params: {}
+					params: initializeParams(action)
 				}
 			})),
 		setAutomationName: (name: string) =>
