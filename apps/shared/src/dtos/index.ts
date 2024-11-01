@@ -6,3 +6,4 @@ export * from "./area";
 export * from "./service";
 export * from "./authorizations";
 export * from "./log";
+export * from "./admin";

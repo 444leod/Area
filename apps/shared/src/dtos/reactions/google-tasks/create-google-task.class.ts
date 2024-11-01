@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { BaseReactionInfos } from "../reaction-infos.class";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDateOrVariable } from "../../../validators";
 import { ReactionTypes } from "../reaction-types.enum";
 import { RegisterReaction } from "../reaction.decorator";
 

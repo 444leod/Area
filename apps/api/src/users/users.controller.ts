@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
-import { AuthGuard, AuthRequest } from "../auth/auth.guard";
+import { AuthGuard } from "../auth/auth.guard";
 import { UsersService } from "./users.service";
 import { ApiBearerAuth, ApiTags, ApiResponse } from "@nestjs/swagger";
 import {
@@ -16,6 +16,7 @@ import {
   AuthorizationsOkOptions,
 } from "./swagger-content";
 import { User } from "@area/shared";
+import { AuthRequest } from "src/auth/auth-interfaces";
 
 @ApiTags("Users")
 @Controller("users")

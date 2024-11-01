@@ -17,8 +17,9 @@ import {
   UserRegistrationDto,
 } from "@area/shared";
 import { ApiTags } from "@nestjs/swagger";
-import { AuthGuard, AuthRequest } from "./auth.guard";
+import { AuthGuard } from "./auth.guard";
 import { UsersService } from "src/users/users.service";
+import { AuthRequest } from "./auth-interfaces";
 
 @ApiTags("Auth")
 @Controller("auth")
