@@ -33,7 +33,7 @@ function initializeParams(action: Action): Record<string, any> {
 	const params: Record<string, any> = {};
 
 	// Initialize each parameter with a default value based on its type
-	action.params.forEach(param => {
+	action.params.forEach((param) => {
 		switch (param.type) {
 			case 'string':
 			case 'text':
