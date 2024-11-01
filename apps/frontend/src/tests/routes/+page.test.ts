@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/svelte';
-import Page from '../routes/+page.svelte';
+import Page from '../../routes/+page.svelte';
 
 describe('+page.svelte', () => {
 	beforeEach(() => {
@@ -33,7 +33,7 @@ describe('+page.svelte', () => {
 	it('renders the "Get Started" and "Learn More" buttons', async () => {
 		await waitFor(() => {
 			expect(screen.getByText(/Get Started/i)).toBeTruthy();
-			expect(screen.getByText(/Learn More/i)).toBeTruthy();
+			expect(screen.getByText(/Login/i)).toBeTruthy();
 		});
 	});
 
@@ -47,7 +47,7 @@ describe('+page.svelte', () => {
 
 	it('renders the integration section', async () => {
 		await waitFor(() => {
-			expect(screen.getByText(/Integrate with Your Favorite Tools/i)).toBeTruthy();
+			expect(screen.getByText(/Our Integrations/i)).toBeTruthy();
 		});
 	});
 });

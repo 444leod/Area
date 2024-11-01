@@ -124,6 +124,7 @@
 			} else {
 				setError(`Error during disconnection`);
 			}
+			window.location.reload();
 		} catch (error) {
 			setError(`Error during disconnection ` + error);
 		}
