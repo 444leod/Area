@@ -12,6 +12,19 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // CORS doit être configuré en premier
+  app.enableCors({
+    origin: [
+      "http://34.140.49.18", // API
+      "http://34.79.27.38", // Frontend
+      "http://localhost:8081",
+    ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    credentials: false,
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    exposedHeaders: ["Authorization"],
+  });
+
   app.use(
     session({
       secret: process.env.SECRET_SESSION,
@@ -46,8 +59,6 @@ async function bootstrap() {
   SwaggerModule.setup("swagger", app, document, options);
 
   app.useGlobalPipes(new ValidationPipe());
-
-  app.enableCors();
 
   await app.listen(8080, "0.0.0.0");
   console.log(`Application is running on: ${await app.getUrl()}`);
