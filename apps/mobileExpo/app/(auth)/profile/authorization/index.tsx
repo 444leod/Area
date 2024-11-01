@@ -10,7 +10,13 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export const ServiceCard = ({ name, description, icon, webUrl, customColor }) => {
+export const ServiceCard = ({
+  name,
+  description,
+  icon,
+  webUrl,
+  customColor,
+}) => {
   const openWebVersion = () => {
     Linking.openURL(webUrl);
   };
