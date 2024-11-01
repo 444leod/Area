@@ -17,4 +17,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN sh ./build.sh $SKIP_MOBILE_COMPILATION
+RUN chmod +x ./build.sh || echo "Warning: build.sh not found"
+
+RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ] && [ -f "./build.sh" ]; then \
+        sh ./build.sh $SKIP_MOBILE_COMPILATION; \
+    else \
+        echo "Skipping mobile compilation (SKIP_MOBILE_COMPILATION=$SKIP_MOBILE_COMPILATION)"; \
+    fi
