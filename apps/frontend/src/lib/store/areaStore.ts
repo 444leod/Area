@@ -32,7 +32,7 @@ const initialState: AreaStore = {
 function initializeParams(action: Action): Record<string, any> {
 	const params: Record<string, any> = {};
 
-	action.params.forEach(param => {
+	action.params.forEach((param) => {
 		switch (param.type) {
 			case 'string':
 			case 'text':
