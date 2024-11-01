@@ -3,7 +3,7 @@ import { BaseReactionInfos } from "../reaction-infos.class";
 import { ReactionTypes } from "../reaction-types.enum";
 import { RegisterReaction } from "../reaction.decorator";
 import { IsNumberOrVariable } from "../../../validators";
-import {ApiProperty} from "@nestjs/swagger";
+import { ApiProperty } from "@nestjs/swagger";
 
 @RegisterReaction(ReactionTypes.COMMENT_GITHUB_ISSUE)
 export class CommentGithubIssueInfos extends BaseReactionInfos {
