@@ -32,7 +32,6 @@ const initialState: AreaStore = {
 function initializeParams(action: Action): Record<string, any> {
 	const params: Record<string, any> = {};
 
-	// Initialize each parameter with a default value based on its type
 	action.params.forEach(param => {
 		switch (param.type) {
 			case 'string':
@@ -49,7 +48,6 @@ function initializeParams(action: Action): Record<string, any> {
 				params[param.name] = new Date().toISOString();
 				break;
 			case 'enum':
-				// Si des items sont définis, prendre le premier comme valeur par défaut
 				params[param.name] = param.items && param.items.length > 0 ? param.items[0] : '';
 				break;
 			default:
