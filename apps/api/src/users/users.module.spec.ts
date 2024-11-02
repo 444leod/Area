@@ -9,32 +9,32 @@ import { JwtModule } from "@nestjs/jwt";
 import { ObjectId } from "mongodb";
 import { AuthentifiedUser, AuthRequest } from "../auth/auth.guard";
 
-describe('Areas', () => {
+describe("Areas", () => {
   let mocked_users: User[];
   let userModel = {
     find: mock.fn(() => {
       return {
         exec: async () => {
           return mocked_users;
-        }
-      }
+        },
+      };
     }),
     findById: mock.fn((id: string | ObjectId) => {
       return {
         exec: async () => {
-          return mocked_users.find(s => s._id.equals(id));
-        }
-      }
+          return mocked_users.find((s) => s._id.equals(id));
+        },
+      };
     }),
     create: mock.fn((s: User) => mocked_users.push(s)),
     findByIdAndDelete: mock.fn((id) => {
       return {
         exec: async () => {
-          const user = mocked_users.find(u => u._id.equals(id));
-          mocked_users = mocked_users.filter(u => !u._id.equals(id));
+          const user = mocked_users.find((u) => u._id.equals(id));
+          mocked_users = mocked_users.filter((u) => !u._id.equals(id));
           return user;
-        }
-      }
+        },
+      };
     }),
   };
 
@@ -44,18 +44,18 @@ describe('Areas', () => {
       return {
         exec: async () => {
           return mocked_services;
-        }
-      }
+        },
+      };
     }),
     findById: mock.fn((id) => {
       return {
         exec: async () => {
-          return mocked_services.find(s => s._id.equals(id));
-        }
-      }
+          return mocked_services.find((s) => s._id.equals(id));
+        },
+      };
     }),
-    deleteMany: mock.fn(() => mocked_services = []),
-    create: mock.fn((s: Service) => mocked_services.push(s))
+    deleteMany: mock.fn(() => (mocked_services = [])),
+    create: mock.fn((s: Service) => mocked_services.push(s)),
   };
   let controller: UsersController;
   let service: UsersService;
@@ -71,8 +71,8 @@ describe('Areas', () => {
         authorizations: [
           {
             type: AuthorizationsTypes.GOOGLE,
-            data: {} as any
-          }
+            data: {} as any,
+          },
         ],
         areas: [
           {
@@ -81,16 +81,16 @@ describe('Areas', () => {
             active: true,
             action: {} as any,
             reaction: {} as any,
-            logs: []
-          }
-        ]
-      }
+            logs: [],
+          },
+        ],
+      },
     ];
     const module = await Test.createTestingModule({
       imports: [
         JwtModule.register({
-          secret: 'test-secret',
-          signOptions: { expiresIn: '1h' },
+          secret: "test-secret",
+          signOptions: { expiresIn: "1h" },
         }),
       ],
       providers: [
@@ -103,7 +103,7 @@ describe('Areas', () => {
           provide: getModelToken(User.name),
           useValue: userModel,
         },
-        UsersService
+        UsersService,
       ],
       controllers: [UsersController],
     }).compile();
@@ -111,8 +111,7 @@ describe('Areas', () => {
     service = module.get(UsersService);
   });
 
-  describe('Controller', () => {
-
+  describe("Controller", () => {
     let user: User;
     let authUser: AuthentifiedUser;
     let authRequest: AuthRequest;
@@ -120,54 +119,53 @@ describe('Areas', () => {
       user = mocked_users[0];
       authUser = {
         id: user._id.toHexString(),
-        email: user.email
-      }
+        email: user.email,
+      };
       authRequest = {
-        user: authUser
-      }
+        user: authUser,
+      };
     });
 
-    it('should be defined', () => {
+    it("should be defined", () => {
       expect(controller).toBeDefined();
     });
 
-    describe('getUserProfile', () => {
-      it('should the auth user infos', async () => {
+    describe("getUserProfile", () => {
+      it("should the auth user infos", async () => {
         const profile = await controller.getUserProfile(authRequest);
         expect(profile).toBeDefined();
         expect(profile).toBe(user);
-      })
+      });
     });
 
-    describe('getUserAuthorizations', () => {
-      it('should gather auth user auths', async () => {
+    describe("getUserAuthorizations", () => {
+      it("should gather auth user auths", async () => {
         const auths = await controller.getUserAuthorizations(authRequest);
         expect(auths).toBeDefined();
-        expect(auths).toStrictEqual(user.authorizations.map(a => a.type));
-      })
+        expect(auths).toStrictEqual(user.authorizations.map((a) => a.type));
+      });
     });
 
-    describe('deleteUser', () => {
-      it('should delete auth user account', async () => {
+    describe("deleteUser", () => {
+      it("should delete auth user account", async () => {
         await controller.deleteUser(authRequest);
         expect(mocked_users.length).toBe(0);
-      })
+      });
     });
   });
 
-  describe('Service', () => {
-
+  describe("Service", () => {
     let user: User;
     let authUser: AuthentifiedUser;
     beforeEach(() => {
       user = mocked_users[0];
       authUser = {
         id: user._id.toHexString(),
-        email: user.email
-      }
-    })
+        email: user.email,
+      };
+    });
 
-    it('should be defined', () => {
+    it("should be defined", () => {
       expect(service).toBeDefined();
     });
 
@@ -221,5 +219,4 @@ describe('Areas', () => {
       });
     });*/
   });
-
 });
