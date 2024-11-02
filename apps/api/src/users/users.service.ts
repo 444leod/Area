@@ -14,8 +14,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { AuthentifiedUser } from "src/auth/auth.guard";
-import { ServicesService } from "src/services/services.service";
+import { AuthentifiedUser } from "../auth/auth.guard";
+import { ServicesService } from "../services/services.service";
 
 @Injectable()
 export class UsersService {
@@ -39,7 +39,7 @@ export class UsersService {
   }
 
   async deleteUser(_user: AuthentifiedUser): Promise<void> {
-    const user = await this.userModel.findByIdAndDelete(_user.id);
+    const user = await this.userModel.findByIdAndDelete(_user.id).exec();
     if (!user) throw new UnauthorizedException();
   }
 
@@ -81,7 +81,7 @@ export class UsersService {
   }
 
   async getUserAuthorizations(_user: AuthentifiedUser): Promise<string[]> {
-    const user: User = await this.userModel.findById(_user.id);
+    const user: User = await this.userModel.findById(_user.id).exec();
     if (!user) throw new UnauthorizedException("Invalid user");
     return user.authorizations.map((auth) => auth.type);
   }
@@ -103,7 +103,7 @@ export class UsersService {
       throw new Error("Missing user ID in token");
     }
 
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).exec();
 
     if (!user) {
       throw new NotFoundException("User not found");
@@ -126,7 +126,7 @@ export class UsersService {
     _user: AuthentifiedUser,
     authType: AuthorizationsTypes,
   ): Promise<void> {
-    const user = await this.userModel.findById(_user.id);
+    const user = await this.userModel.findById(_user.id).exec();
     if (!user) throw new UnauthorizedException();
     user.authorizations = user.authorizations.filter(
       (auth) => auth.type != authType,

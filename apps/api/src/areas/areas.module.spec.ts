@@ -2,7 +2,7 @@ import { Test } from "@nestjs/testing"
 import { AreasController } from "./areas.controller"
 import { AreasService } from "./areas.service"
 import { getModelToken } from "@nestjs/mongoose";
-import { ActionTypes, Service, User } from "@area/shared"
+import { Service, User } from "@area/shared"
 import { mock } from "node:test";
 import { AreasHelper } from "./areas.helper";
 import { ServicesService } from "../services/services.service";
@@ -10,7 +10,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { ObjectId } from "mongodb";
 import { AuthentifiedUser, AuthRequest } from "../auth/auth.guard";
 
-describe('Area', () => {
+describe('Areas', () => {
   let mocked_users: User[] = [
     {
       _id: new ObjectId(),
