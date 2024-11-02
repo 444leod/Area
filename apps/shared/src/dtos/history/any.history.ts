@@ -10,6 +10,7 @@ import { OnNewArtistContentHistory } from "./spotify/on-new-artist-content.histo
 import { OnSpotifyPlaylistUpdateHistory } from "./spotify/on-spotify-playlist-update.history";
 import { OnNewGoogleTaskHistory } from "./google-tasks/on-new-google-task.history";
 import { OnGoogleTaskExpiredHistory } from "./google-tasks/on-google-task-expired.history";
+import { OnRiotGameEndHistory } from "./riot/game-end-history.class";
 
 export type AnyHistory =
   | ExampleActionHistory
@@ -23,4 +24,5 @@ export type AnyHistory =
   | OnNewArtistContentHistory
   | OnSpotifyPlaylistUpdateHistory
   | OnNewGoogleTaskHistory
-  | OnGoogleTaskExpiredHistory;
+  | OnGoogleTaskExpiredHistory
+  | OnRiotGameEndHistory;
