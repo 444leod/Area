@@ -23,7 +23,7 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly servicesService: ServicesService,
-  ) { }
+  ) {}
 
   async createUser(dto: UserRegistrationDto): Promise<User> {
     dto.password = await bcrypt.hash(dto.password, 10);
@@ -82,7 +82,7 @@ export class UsersService {
           data: userData.token,
         },
       ],
-      roles: [Role.USER]
+      roles: [Role.USER],
     });
     return await newUser.save();
   }
