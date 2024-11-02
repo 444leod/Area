@@ -61,7 +61,7 @@ export class AreasController {
   @ApiOkResponse(GetAreasOkOptions)
   @ApiUnauthorizedResponse(AreasUnauthorizedOptions)
   @ApiNotFoundResponse(AreasUserNotFoundOptions)
-  async getUserAreas(@Request() req): Promise<AreaDto[]> {
+  async getUserAreas(@Request() req: AuthRequest): Promise<AreaDto[]> {
     const areas = await this.areasService.getUserAreas(req.user);
     return areas.map((area) => this.areasHelper.toDto(area));
   }

@@ -12,7 +12,7 @@ export class AreasService {
   async findCurrentUser(
     user: AuthentifiedUser,
   ): Promise<Document<unknown, unknown, User> & User> {
-    const u = await this.userModel.findById(user.id);
+    const u = await this.userModel.findById(user.id).exec();
     if (!u) throw new NotFoundException("User not found");
     return u;
   }
