@@ -8,7 +8,7 @@ import { AreasHelper } from "./areas.helper";
 import { ServicesService } from "../services/services.service";
 import { JwtModule } from "@nestjs/jwt";
 import { ObjectId } from "mongodb";
-import { AuthentifiedUser, AuthRequest } from "../auth/auth.guard";
+import { AuthentifiedUser, AuthRequest } from "../auth/auth-interfaces";
 
 describe("Areas", () => {
   let mocked_users: User[] = [
@@ -19,6 +19,7 @@ describe("Areas", () => {
       email: "john.doe@gmail.com",
       password: "hashed_password",
       authorizations: [],
+      roles: [],
       areas: [
         {
           _id: new ObjectId(),
@@ -119,6 +120,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
+        roles: user.roles
       };
       authRequest = {
         user: authUser,
@@ -169,6 +171,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
+        roles: user.roles
       };
     });
 

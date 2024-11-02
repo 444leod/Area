@@ -18,7 +18,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "../auth/auth.guard";
 import { Area, AreaCreationDto, AreaDto } from "@area/shared";
 import { AreasHelper } from "./areas.helper";
 import { ObjectId } from "mongodb";
@@ -32,7 +32,7 @@ import {
   AreasNoContentOptions,
   AreasToggleOkOptions,
 } from "./swagger-content";
-import { AuthRequest } from "src/auth/auth-interfaces";
+import { AuthRequest } from "../auth/auth-interfaces";
 
 @ApiTags("Areas")
 @Controller("/areas")

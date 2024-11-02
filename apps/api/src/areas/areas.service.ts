@@ -80,7 +80,7 @@ export class AreasService {
   }
 
   async getAreasCounts(): Promise<{ all: number; active: number }> {
-    const users = await this.userModel.find({}, { "areas._id": 1 });
+    const users = await this.userModel.find({}, { "areas._id": 1 }).exec();
     let all_count: number = 0;
     let active_count: number = 0;
 
@@ -104,7 +104,7 @@ export class AreasService {
         "areas.action.informations.type": 1,
         "areas.reaction.informations.type": 1,
       },
-    );
+    ).exec();
     const actionsTypes: ActionTypes[] = [];
     const reactionsTypes: ReactionTypes[] = [];
     const actionsCount: AreaTypesCount = {};

@@ -7,7 +7,7 @@ import { mock } from "node:test";
 import { ServicesService } from "../services/services.service";
 import { JwtModule } from "@nestjs/jwt";
 import { ObjectId } from "mongodb";
-import { AuthentifiedUser, AuthRequest } from "../auth/auth.guard";
+import { AuthentifiedUser, AuthRequest } from "../auth/auth-interfaces";
 
 describe("Areas", () => {
   let mocked_users: User[];
@@ -57,6 +57,7 @@ describe("Areas", () => {
     deleteMany: mock.fn(() => (mocked_services = [])),
     create: mock.fn((s: Service) => mocked_services.push(s)),
   };
+
   let controller: UsersController;
   let service: UsersService;
 
@@ -68,6 +69,7 @@ describe("Areas", () => {
         last_name: "Doe",
         email: "john.doe@gmail.com",
         password: "hashed_password",
+        roles: [],
         authorizations: [
           {
             type: AuthorizationsTypes.GOOGLE,
@@ -120,6 +122,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
+        roles: user.roles
       };
       authRequest = {
         user: authUser,
@@ -162,6 +165,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
+        roles: user.roles
       };
     });
 

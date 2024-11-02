@@ -44,7 +44,7 @@ export class UsersService {
   }
 
   async countUsers(): Promise<number> {
-    return await this.userModel.countDocuments();
+    return await this.userModel.countDocuments().exec();
   }
 
   //TODO: rename with google
