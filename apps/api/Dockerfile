@@ -14,4 +14,6 @@ RUN npm install -g typescript
 RUN tsc -b apps/shared
 RUN npm run api:build
 
+ENV HOST=0.0.0.0
+
 CMD npm run api:start

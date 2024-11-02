@@ -7,18 +7,6 @@
 	function handleClose() {
 		clearError();
 	}
-
-	let modalElement: HTMLDivElement;
-
-	function shake(node: HTMLElement, { duration = 300 }) {
-		return {
-			duration,
-			css: (t: number) => {
-				const eased = elasticOut(t);
-				return `transform: translate(${Math.sin(t * 10) * (1 - eased) * 5}px, 0px);`;
-			}
-		};
-	}
 </script>
 
 {#if $errorMessage}
@@ -28,7 +16,6 @@
 		transition:fade={{ duration: 200 }}
 	>
 		<div
-			bind:this={modalElement}
 			class="bg-gradient-to-br from-error-900 to-error-700 p-6 rounded-xl shadow-2xl max-w-md w-full border border-error-500"
 			on:click|stopPropagation
 			in:fly={{ y: -50, duration: 400, easing: elasticOut }}

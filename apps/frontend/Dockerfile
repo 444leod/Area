@@ -13,4 +13,6 @@ RUN npm install -g typescript
 RUN tsc -b apps/shared
 RUN npm run front:build
 
+ENV HOST=0.0.0.0
+
 CMD mv /shared/client.apk /app/apps/frontend/static; npm run front:start

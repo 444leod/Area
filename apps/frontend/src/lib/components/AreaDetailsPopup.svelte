@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { X, Trash2, Copy, ToggleLeft, ToggleRight, Plus, Minus, ArrowDown } from 'lucide-svelte';
-	import { getAreaById } from '$lib/modules/getAreaById';
-	import { deleteAreaById } from '$lib/modules/deleteAreaById';
-	import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
 	import { setError } from '$lib/store/errorMessage';
 
 	export let areaId: string;
@@ -18,7 +15,11 @@
 
 	onMount(async () => {
 		try {
-			area = await getAreaById(areaId, token);
+			const response = await fetch(`/api/areas/${areaId}`);
+			if (!response.ok) {
+				throw new Error('Failed to fetch area');
+			}
+			area = await response.json();
 			loading = false;
 		} catch (e) {
 			error = e.message;
@@ -37,7 +38,14 @@
 
 		deleteLoading = true;
 		try {
-			await deleteAreaById(areaId, token);
+			const response = await fetch(`/api/areas/${areaId}`, {
+				method: 'DELETE'
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to delete area');
+			}
+
 			dispatch('areaDeleted', { areaId });
 			close();
 		} catch (e) {
@@ -51,7 +59,14 @@
 	async function toggleAreaButton() {
 		toggleLoading = true;
 		try {
-			await toggleAreaStatus(areaId, token);
+			const response = await fetch(`/api/areas/${areaId}`, {
+				method: 'PATCH'
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to toggle area');
+			}
+
 			area.active = !area.active;
 			dispatch('areaUpdated', { areaId, active: area.active });
 		} catch (e) {
