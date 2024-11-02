@@ -27,13 +27,13 @@ describe("Admin", () => {
           active: true,
           action: {
             informations: {
-              type: ActionTypes.EXAMPLE_ACTION
-            }
+              type: ActionTypes.EXAMPLE_ACTION,
+            },
           } as any,
           reaction: {
             informations: {
-              type: ReactionTypes.EXAMPLE_REACTION
-            }
+              type: ReactionTypes.EXAMPLE_REACTION,
+            },
           } as any,
           logs: [],
         },
@@ -52,9 +52,9 @@ describe("Admin", () => {
       return {
         exec: async () => {
           return mocked_users.length;
-        }
-      }
-    })
+        },
+      };
+    }),
   };
 
   let mocked_services: Service[] = [];
@@ -100,9 +100,9 @@ describe("Admin", () => {
         },
         UsersService,
         AreasService,
-        AdminService
+        AdminService,
       ],
-      controllers: [AdminController]
+      controllers: [AdminController],
     }).compile();
 
     controller = module.get<AdminController>(AdminController);
@@ -121,11 +121,11 @@ describe("Admin", () => {
         expect(infos.user_count).toBeGreaterThan(0);
       });
     });
-  })
+  });
 
   describe("Service", () => {
     it("should be defined", () => {
       expect(service).toBeDefined();
     });
-  })
+  });
 });

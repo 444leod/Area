@@ -98,13 +98,15 @@ export class AreasService {
     actions: AreaTypesCount;
     reactions: AreaTypesCount;
   }> {
-    const users = await this.userModel.find(
-      {},
-      {
-        "areas.action.informations.type": 1,
-        "areas.reaction.informations.type": 1,
-      },
-    ).exec();
+    const users = await this.userModel
+      .find(
+        {},
+        {
+          "areas.action.informations.type": 1,
+          "areas.reaction.informations.type": 1,
+        },
+      )
+      .exec();
     const actionsTypes: ActionTypes[] = [];
     const reactionsTypes: ReactionTypes[] = [];
     const actionsCount: AreaTypesCount = {};

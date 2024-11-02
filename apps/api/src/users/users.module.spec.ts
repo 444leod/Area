@@ -122,7 +122,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
-        roles: user.roles
+        roles: user.roles,
       };
       authRequest = {
         user: authUser,
@@ -165,7 +165,7 @@ describe("Areas", () => {
       authUser = {
         id: user._id.toHexString(),
         email: user.email,
-        roles: user.roles
+        roles: user.roles,
       };
     });
 
