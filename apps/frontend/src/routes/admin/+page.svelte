@@ -9,15 +9,19 @@
 	export let data: PageData;
 	const { user_count, areas_count, popular_actions, popular_reactions } = data.adminData;
 
-	const mostUsedActions = Object.keys(popular_actions).map((name) => ({
-		name,
-		number: popular_actions[name]
-	})).sort((a, b) => b.number - a.number);
+	const mostUsedActions = Object.keys(popular_actions)
+		.map((name) => ({
+			name,
+			number: popular_actions[name]
+		}))
+		.sort((a, b) => b.number - a.number);
 
-	const mostUsedReactions = Object.keys(popular_reactions).map((name) => ({
-		name,
-		number: popular_reactions[name]
-	})).sort((a, b) => b.number - a.number);
+	const mostUsedReactions = Object.keys(popular_reactions)
+		.map((name) => ({
+			name,
+			number: popular_reactions[name]
+		}))
+		.sort((a, b) => b.number - a.number);
 
 	Chart.register(...registerables);
 
@@ -53,15 +57,14 @@
 			}
 		}, duration / steps);
 	}
-
 </script>
 
 <main class="container mx-auto p-4 space-y-8">
 	<strong class="h3 uppercase py-10 text-center">Admin Dashboard</strong>
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-4" in:fade={{ duration: 300 }}>
 		<div
-				class="card p-4 variant-ghost-secondary flex items-center"
-				in:fly={{ y: 50, duration: 300, delay: 0 }}
+			class="card p-4 variant-ghost-secondary flex items-center"
+			in:fly={{ y: 50, duration: 300, delay: 0 }}
 		>
 			<Icon icon="mdi:account-group" width="48" height="48" class="mr-4" />
 			<div>
@@ -70,8 +73,8 @@
 			</div>
 		</div>
 		<div
-				class="card p-4 variant-ghost-secondary flex items-center"
-				in:fly={{ y: 50, duration: 300, delay: 100 }}
+			class="card p-4 variant-ghost-secondary flex items-center"
+			in:fly={{ y: 50, duration: 300, delay: 100 }}
 		>
 			<Icon icon="mdi:robot" width="48" height="48" class="mr-4" />
 			<div>
@@ -80,8 +83,8 @@
 			</div>
 		</div>
 		<div
-				class="card p-4 variant-ghost-secondary flex items-center"
-				in:fly={{ y: 50, duration: 300, delay: 200 }}
+			class="card p-4 variant-ghost-secondary flex items-center"
+			in:fly={{ y: 50, duration: 300, delay: 200 }}
 		>
 			<Icon icon="mdi:robot-excited" width="48" height="48" class="mr-4" />
 			<div>
@@ -126,18 +129,18 @@
 		<div class="hidden md:block mb-4">
 			<table class="table table-compact w-full">
 				<thead>
-				<tr>
-					<th>Actions</th>
-					<th class="text-right">Total</th>
-				</tr>
+					<tr>
+						<th>Actions</th>
+						<th class="text-right">Total</th>
+					</tr>
 				</thead>
 				<tbody>
-				{#each mostUsedActions as automation}
-					<tr>
-						<td>{automation.name}</td>
-						<td class="text-right">{automation.number}</td>
-					</tr>
-				{/each}
+					{#each mostUsedActions as automation}
+						<tr>
+							<td>{automation.name}</td>
+							<td class="text-right">{automation.number}</td>
+						</tr>
+					{/each}
 				</tbody>
 			</table>
 		</div>
@@ -145,21 +148,20 @@
 		<div class="hidden md:block">
 			<table class="table table-compact w-full">
 				<thead>
-				<tr>
-					<th>Reactions</th>
-					<th class="text-right">Total</th>
-				</tr>
+					<tr>
+						<th>Reactions</th>
+						<th class="text-right">Total</th>
+					</tr>
 				</thead>
 				<tbody>
-				{#each mostUsedReactions as automation}
-					<tr>
-						<td>{automation.name}</td>
-						<td class="text-right">{automation.number}</td>
-					</tr>
-				{/each}
+					{#each mostUsedReactions as automation}
+						<tr>
+							<td>{automation.name}</td>
+							<td class="text-right">{automation.number}</td>
+						</tr>
+					{/each}
 				</tbody>
 			</table>
 		</div>
-
 	</div>
 </main>
