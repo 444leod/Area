@@ -1,12 +1,20 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-// Mock SvelteKit's load function
+// Mock enhance action
+vi.mock('$app/forms', () => ({
+	enhance: () => vi.fn()
+}));
+
+// Mock SvelteKit modules that might be used in components
 vi.mock('@sveltejs/kit', async () => {
 	const actual = await vi.importActual('@sveltejs/kit');
 	return {
 		...actual,
-		load: vi.fn()
+		browser: true,
+		building: false,
+		dev: true,
+		version: 'test'
 	};
 });
 
@@ -20,3 +28,10 @@ global.matchMedia =
 			removeListener: function () {}
 		};
 	};
+
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+	observe() {}
+	unobserve() {}
+	disconnect() {}
+};

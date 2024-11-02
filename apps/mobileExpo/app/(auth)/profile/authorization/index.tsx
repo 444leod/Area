@@ -10,14 +10,23 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const ServiceCard = ({ name, description, icon, webUrl, customColor }) => {
+export const ServiceCard = ({
+  name,
+  description,
+  icon,
+  webUrl,
+  customColor,
+}) => {
   const openWebVersion = () => {
     Linking.openURL(webUrl);
   };
 
   return (
     <View style={styles.card}>
-      <View style={[styles.webOnlyBadge, { backgroundColor: customColor }]}>
+      <View
+        style={[styles.webOnlyBadge, { backgroundColor: customColor }]}
+        testID="web-only-badge"
+      >
         <Ionicons name="desktop-outline" size={16} color="#fff" />
         <Text style={styles.webOnlyText}>Web Only</Text>
       </View>
@@ -42,6 +51,7 @@ const ServiceCard = ({ name, description, icon, webUrl, customColor }) => {
       <TouchableOpacity
         style={[styles.webButton, { backgroundColor: customColor }]}
         onPress={openWebVersion}
+        testID="web-button"
       >
         <Ionicons
           name="open-outline"

@@ -124,7 +124,7 @@
 	<strong class="h3 uppercase py-10 text-center">Welcome Admin user</strong>
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-4" in:fade={{ duration: 300 }}>
 		<div
-			class="card p-4 variant-soft flex items-center"
+			class="card p-4 variant-ghost-secondary flex items-center"
 			in:fly={{ y: 50, duration: 300, delay: 0 }}
 		>
 			<Icon icon="mdi:account-group" width="48" height="48" class="mr-4" />
@@ -134,7 +134,7 @@
 			</div>
 		</div>
 		<div
-			class="card p-4 variant-soft flex items-center"
+			class="card p-4 variant-ghost-secondary flex items-center"
 			in:fly={{ y: 50, duration: 300, delay: 100 }}
 		>
 			<Icon icon="mdi:robot" width="48" height="48" class="mr-4" />
@@ -144,7 +144,7 @@
 			</div>
 		</div>
 		<div
-			class="card p-4 variant-soft flex items-center"
+			class="card p-4 variant-ghost-secondary flex items-center"
 			in:fly={{ y: 50, duration: 300, delay: 200 }}
 		>
 			<Icon icon="mdi:robot-excited" width="48" height="48" class="mr-4" />
@@ -156,18 +156,18 @@
 	</div>
 
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-8" in:fade={{ duration: 300, delay: 300 }}>
-		<div class="card p-4 variant-soft lg:h-[30rem]">
+		<div class="card p-4 variant-ghost-secondary lg:h-[30rem]">
 			<h3 class="h3 mb-4 text-center">User Growth</h3>
 			<canvas id="userGrowthChart"></canvas>
 		</div>
-		<div class="card p-4 variant-soft lg:h-[30rem] relative">
+		<div class="card p-4 variant-ghost-secondary lg:h-[30rem] relative">
 			<h3 class="h3 mb-4 text-center">Automations by Service</h3>
 			<canvas class="lg:absolute left-0 right-0 mx-auto w-full" id="automationsByServiceChart"
 			></canvas>
 		</div>
 	</div>
 
-	<div class="card p-4 variant-soft" in:fade={{ duration: 300, delay: 600 }}>
+	<div class="card p-4 variant-ghost-secondary" in:fade={{ duration: 300, delay: 600 }}>
 		<h3 class="h3 mb-4">Recent Automations</h3>
 
 		<!-- Mobile view -->

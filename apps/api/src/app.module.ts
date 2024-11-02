@@ -7,6 +7,7 @@ import { UsersModule } from "./users/users.module";
 import { ServicesModule } from "./services/services.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AppController } from "./app.controller";
+import { AdminModule } from "./admin/admin.module";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AppController } from "./app.controller";
     WebhooksModule,
     UsersModule,
     ServicesModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [],

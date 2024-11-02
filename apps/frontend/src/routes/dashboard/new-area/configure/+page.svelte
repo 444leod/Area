@@ -9,7 +9,6 @@
 	import { getIconForApp } from '$lib/utils/getIconName';
 	import StringInput from '$lib/components/new-area/Inputs/StringInput.svelte';
 	import NumberInput from '$lib/components/new-area/Inputs/NumberInput.svelte';
-	import BooleanInput from '$lib/components/new-area/Inputs/BooleanInput.svelte';
 	import DateInput from '$lib/components/new-area/Inputs/DateInput.svelte';
 	import Select from '$lib/components/new-area/Inputs/Select.svelte';
 	import TextInput from '$lib/components/new-area/Inputs/TextInput.svelte';
@@ -161,19 +160,13 @@
 									required={param.required}
 									isAction={true}
 								/>
-							{:else if param.type === 'boolean'}
-								<BooleanInput
-									{param}
-									value={$areaStore.actionDetails?.params[param.name]}
-									updateParamValue={(name, value) => handleUpdateActionParam(name, value)}
-									required={param.required}
-								/>
 							{:else if param.type === 'date'}
 								<DateInput
 									{param}
 									value={$areaStore.actionDetails?.params[param.name]}
 									updateParamValue={(name, value) => handleUpdateActionParam(name, value)}
 									required={param.required}
+									isAction={true}
 								/>
 							{:else if param.type === 'text'}
 								<TextInput
@@ -181,6 +174,7 @@
 									value={$areaStore.actionDetails?.params[param.name]}
 									updateParamValue={(name, value) => handleUpdateActionParam(name, value)}
 									required={param.required}
+									isAction={true}
 								/>
 							{:else if param.type === 'enum'}
 								<Select
@@ -188,6 +182,7 @@
 									value={$areaStore.actionDetails?.params[param.name]}
 									on:change={(e) => areaStore.updateActionParam(param.name, e.detail)}
 									required={param.required}
+									isAction={true}
 								/>
 							{/if}
 							{#if actionErrors.includes(`${param.name} is required`)}
@@ -223,14 +218,6 @@
 									dynamicVariables={$dynamicVariablesStore}
 									isAction={false}
 								/>
-							{:else if param.type === 'boolean'}
-								<BooleanInput
-									{param}
-									value={$areaStore.reactionDetails?.params[param.name]}
-									updateParamValue={(name, value) => handleUpdateReactionParam(name, value)}
-									required={param.required}
-									dynamicVariables={$dynamicVariablesStore}
-								/>
 							{:else if param.type === 'date'}
 								<DateInput
 									{param}
@@ -238,6 +225,7 @@
 									updateParamValue={(name, value) => handleUpdateReactionParam(name, value)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{:else if param.type === 'text'}
 								<TextInput
@@ -246,6 +234,7 @@
 									updateParamValue={(name, value) => handleUpdateReactionParam(name, value)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{:else if param.type === 'enum'}
 								<Select
@@ -254,6 +243,7 @@
 									on:change={(e) => areaStore.updateReactionParam(param.name, e.detail)}
 									required={param.required}
 									dynamicVariables={$dynamicVariablesStore}
+									isAction={false}
 								/>
 							{/if}
 							{#if reactionErrors.includes(`${param.name} is required`)}
