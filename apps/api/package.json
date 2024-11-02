@@ -77,7 +77,10 @@
       "!auth/**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "coverageReporters": ["json", "html"],
+    "coverageReporters": [
+      "json",
+      "html"
+    ],
     "testEnvironment": "node"
   }
 }
