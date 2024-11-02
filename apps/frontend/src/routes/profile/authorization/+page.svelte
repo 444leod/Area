@@ -84,49 +84,33 @@
 		service.oauthFunction();
 	}
 
-	async function fetchToken() {
-		try {
-			const response = await fetch('/api/get-token');
-			if (response.ok) {
-				const data = await response.json();
-				const token = data.token;
-				if (token) {
-					return token;
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} catch (error) {
-			setError(error);
-			return null;
-		}
-	}
-
 	async function disconnectService(service) {
-		const token = await fetchToken();
-		const type = service.name.toUpperCase();
-
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/disconnect`, {
+			const response = await fetch(`/api/auth/oauth/disconnect`, {
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
+					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ type: type })
+				body: JSON.stringify({
+					type: service.name.toUpperCase()
+				})
 			});
 
 			if (response.ok) {
-				alert('Disconnection successful');
-				await goto('/profile');
+				const result = await response.json();
+				if (result.success) {
+					services = services.map(s => ({
+						...s,
+						connected: s.name === service.name ? false : s.connected
+					}));
+					await goto('/profile/authorization', { replaceState: true });
+				}
 			} else {
-				setError(`Error during disconnection`);
+				const error = await response.json();
+				throw new Error(error.message || 'Failed to disconnect service');
 			}
-			window.location.reload();
 		} catch (error) {
-			setError(`Error during disconnection ` + error);
+			setError(`Error during disconnection: ${error.message}`);
 		}
 	}
 

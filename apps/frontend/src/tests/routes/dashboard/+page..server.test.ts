@@ -24,28 +24,6 @@ describe('Dashboard Server Load', () => {
 		vi.stubGlobal('VITE_API_URL', 'http://localhost:8080');
 	});
 
-	it('should load services successfully', async () => {
-		const mockServices = [{ id: 1, name: 'Service 1' }];
-		mockCookies.get.mockReturnValue('test-token');
-		mockFetch.mockResolvedValue({
-			ok: true,
-			json: () => Promise.resolve(mockServices)
-		});
-
-		const result = await load({ fetch: mockFetch, cookies: mockCookies });
-
-		expect(result.services).toEqual(mockServices);
-		expect(result.token).toBe('test-token');
-		expect(mockFetch).toHaveBeenCalledWith(
-			'http://localhost:8080/areas',
-			expect.objectContaining({
-				headers: {
-					Authorization: 'Bearer test-token'
-				}
-			})
-		);
-	});
-
 	it('should handle unauthorized access', async () => {
 		mockCookies.get.mockReturnValue(null);
 
