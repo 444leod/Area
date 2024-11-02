@@ -4,7 +4,7 @@
 	import { Rocket, Zap, Puzzle } from 'lucide-svelte';
 	import Icon from '@iconify/svelte';
 
-	$:console.log(import.meta.env.VITE_API_URL);
+	$: console.log(import.meta.env.VITE_API_URL);
 
 	let visible = false;
 	onMount(() => {

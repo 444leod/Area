@@ -8,13 +8,13 @@
 		const code = urlParams.get('code');
 		if (code) {
 			try {
-                const response = await fetch('/api/auth/oauth/atlassian', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ code })
-                });
+				const response = await fetch('/api/auth/oauth/atlassian', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ code })
+				});
 				if (response.ok) {
 					goto('/profile/authorization?success=1&service=atlassian');
 				} else {
