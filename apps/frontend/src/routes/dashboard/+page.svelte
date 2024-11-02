@@ -97,10 +97,6 @@
 <div class="container mx-auto px-4 py-8">
 	<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
 		<h1 class="h1">Dashboard</h1>
-		<button class="btn variant-ghost-surface hover:variant-soft-surface" on:click={handleLogout}>
-			<LogOut class="w-4 h-4 mr-2" />
-			Logout
-		</button>
 	</div>
 
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
