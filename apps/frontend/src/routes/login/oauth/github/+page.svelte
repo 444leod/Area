@@ -9,13 +9,13 @@
 
 		if (code) {
 			try {
-                const response = await fetch('/api/auth/oauth/github', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ code })
-                });
+				const response = await fetch('/api/auth/oauth/github', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ code })
+				});
 
 				if (response.ok) {
 					await response.json();

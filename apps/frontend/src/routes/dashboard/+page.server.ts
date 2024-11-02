@@ -44,7 +44,7 @@ export const actions: Actions = {
 			const response = await fetch(`${API_URL}/areas/${areaId}/toggle`, {
 				method: 'PATCH',
 				headers: {
-					'Authorization': `Bearer ${token}`
+					Authorization: `Bearer ${token}`
 				}
 			});
 			const resData = await response.json();

@@ -75,6 +75,8 @@ services:
     container_name: mobile-expo
     env_file:
       - ./apps/mobileExpo/.env
+    environment:
+      SKIP_MOBILE_COMPILATION: ${SKIP_MOBILE_COMPILATION:-0}
     volumes:
       - apk-volume:/shared
     networks:
