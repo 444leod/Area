@@ -17,7 +17,7 @@ if [ "$1" = "0" ]; then
     echo "Installing eas-cli..."
     npm install --global eas-cli
     echo "Building android app..."
-    eas build --local --non-interactive --platform android --profile production --output dist/client.apk
+    eas build --local --non-interactive --platform android --profile production --output /shared/client.apk
     echo "Build completed successfully!"
 else
     echo "Skipping mobile compilation (flag=$1)..."
