@@ -1,5 +1,6 @@
 import client, { Channel, Connection } from "amqplib";
 import { AreaPacket } from "../dtos";
+import { MongoDBService } from "./MongoDBService";
 
 export class RabbitMQService {
   connection!: Connection;
@@ -70,7 +71,8 @@ export class RabbitMQService {
 
   async consumePacket(
     queue: string,
-    handlePacket: (packet: AreaPacket) => void,
+    handlePacket: (packet: AreaPacket, mongoDB: MongoDBService) => void,
+    mongoDB: MongoDBService,
   ): Promise<void> {
     await this.channel.assertQueue(queue, {
       durable: false,
@@ -85,7 +87,7 @@ export class RabbitMQService {
           }
           try {
             const packet = JSON.parse(msg.content.toString());
-            handlePacket(packet);
+            handlePacket(packet, mongoDB);
           } catch (error) {
             console.error(`Error in handling packet: ${error}`);
           }

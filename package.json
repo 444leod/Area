@@ -28,6 +28,9 @@
     "front:start": "PORT=8081 node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",
     "front:test": "npm run test -w @area/frontend",
+    "front:cov": "npm run test:coverage -w @area/frontend",
+    "mobile:test": "npm run test -w @area/mobileexpo",
+    "mobile:cov": "npm run test:coverage -w @area/mobileexpo",
     "task-manager:start": "npm run start -w @area/manager",
     "task-manager:func-tests": "npm run func-tests -w @area/manager",
     "task-manager:mocking-setup": "npm run mocking-setup -w @area/manager",
@@ -36,6 +39,8 @@
     "worker:mocked-worker": "npm run func-tests -w @area/worker"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.3",
+    "@vitest/ui": "^2.1.3",
     "rimraf": "3.0.2",
     "tslib": "^2.4.0",
     "typescript": "^4.9.5"

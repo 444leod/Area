@@ -4,5 +4,5 @@ import { History } from "../history.decorator";
 @History(ActionTypes.ON_PULL_REQUEST_STATE)
 export class OnPullRequestStateHistory {
   type: ActionTypes.ON_PULL_REQUEST_STATE;
-  lastUpdateTimestamp: number = 0;
+  lastUpdateTimestamp: number | null = null;
 }

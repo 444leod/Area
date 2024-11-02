@@ -17,7 +17,6 @@
 	let searchQuery = '';
 	let selectedCategory = 'All';
 
-	$: categories = ['All', ...Object.keys(data.groupedServices || {})];
 	$: filteredServices = Object.entries(data.groupedServices || {})
 		.flatMap(([category, services]) =>
 			selectedCategory === 'All' || selectedCategory === category ? services : []
@@ -58,17 +57,6 @@
 				placeholder="Search services..."
 				class="input pl-10 w-full"
 			/>
-		</div>
-
-		<div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-			{#each categories as category}
-				<button
-					class="btn ${selectedCategory === category ? 'variant-filled-primary' : 'variant-soft'}"
-					on:click={() => (selectedCategory = category)}
-				>
-					{category}
-				</button>
-			{/each}
 		</div>
 	</div>
 

@@ -14,7 +14,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { AuthentifiedUser } from "src/auth/auth.guard";
+import { AuthentifiedUser } from "src/auth/auth-interfaces";
 import { ServicesService } from "src/services/services.service";
 
 @Injectable()
@@ -41,6 +41,10 @@ export class UsersService {
   async deleteUser(_user: AuthentifiedUser): Promise<void> {
     const user = await this.userModel.findByIdAndDelete(_user.id);
     if (!user) throw new UnauthorizedException();
+  }
+
+  async countUsers(): Promise<number> {
+    return await this.userModel.countDocuments();
   }
 
   //TODO: rename with google

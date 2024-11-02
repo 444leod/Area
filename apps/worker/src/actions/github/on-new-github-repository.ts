@@ -40,7 +40,9 @@ export const handleNewGithubRepositoryAction: ActionFunction = async (
   if (!repos) return null;
 
   repos = repos.filter((repo: any) => {
-    return new Date(repo.created_at).getTime() > history.lastCreationTimestamp;
+    return (
+      new Date(repo.created_at).getTime() > (history.lastCreationTimestamp || 0)
+    );
   });
 
   if (repos.length === 0) return null;
