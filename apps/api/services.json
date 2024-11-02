@@ -4,7 +4,7 @@
     "description": "Service for YouTube actions",
     "actions": [
       {
-        "name": "videoPosted",
+        "name": "New youtube channel video",
         "description": "When video was posted by a given channel",
         "type": "ON_YOUTUBE_VIDEO_POSTED",
         "authorizations": ["GOOGLE"],
@@ -226,7 +226,7 @@
     "description": "Service for Timer actions",
     "actions": [
       {
-        "name": "each X second",
+        "name": "Each given seconds",
         "description": "make the reaction every X second",
         "type": "EACH_X_SECONDS",
         "params": [
@@ -298,7 +298,7 @@
           {
             "name": "body",
             "details": "body of the email",
-            "type": "string",
+            "type": "text",
             "required": true
           }
         ]
@@ -310,7 +310,7 @@
     "description": "Service for Google task actions",
     "actions": [
       {
-        "name": "On new task",
+        "name": "On new google task",
         "description": "When a task has been created",
         "type": "ON_NEW_GOOGLE_TASK",
         "authorizations": ["GOOGLE"],
@@ -422,7 +422,7 @@
         ]
       },
       {
-        "name": "On expired task",
+        "name": "On expired google task",
         "description": "When a task's due date has passed (Will not take into account the due hour, only the due date)",
         "type": "ON_GOOGLE_TASK_EXPIRED",
         "authorizations": ["GOOGLE"],
@@ -536,7 +536,7 @@
     ],
     "reactions": [
       {
-        "name": "Create new task",
+        "name": "Create new google task",
         "description": "for create new task",
         "type": "CREATE_GOOGLE_TASK",
         "authorizations": ["GOOGLE"],
@@ -550,7 +550,7 @@
           {
             "name": "body",
             "details": "body of the task",
-            "type": "string",
+            "type": "text",
             "required": true
           }
         ]
@@ -562,7 +562,7 @@
     "description": "for all Atlassian action",
     "actions": [
       {
-        "name": "new issue",
+        "name": "On new jira ticket/issue",
         "description": "when new issue created",
         "type": "ON_NEW_JIRA_TICKET",
         "params": [],
@@ -691,7 +691,7 @@
         ]
       },
       {
-        "name": "new project",
+        "name": "On new jira project",
         "description": "when new project created",
         "type": "ON_NEW_JIRA_PROJECT",
         "params": [],
@@ -774,7 +774,7 @@
     ],
     "reactions": [
       {
-        "name": "Create issue",
+        "name": "Create jira issue/ticket",
         "description": "Create a new issue in a given Jira project",
         "type": "CREATE_JIRA_TICKET",
         "params": [
@@ -799,7 +799,7 @@
           {
             "name": "description",
             "details": "Description of the issue",
-            "type": "string",
+            "type": "text",
             "required": false
           },
           {
@@ -817,7 +817,7 @@
     "description": "for all Github action",
     "actions": [
       {
-        "name": "new repository",
+        "name": "On new github repository",
         "description": "when new repository created",
         "type": "ON_NEW_GITHUB_REPOSITORY",
         "params": [],
@@ -910,7 +910,7 @@
         ]
       },
       {
-        "name": "a pull request state has changed to the one selected",
+        "name": "On pull request state change",
         "description": "when pull request state changed",
         "type": "ON_PULL_REQUEST_STATE",
         "authorizations": ["GITHUB"],
@@ -1088,7 +1088,7 @@
     "actions": [],
     "reactions": [
       {
-        "name": "send message",
+        "name": "Send discord message to webhook",
         "description": "send message to discord",
         "type": "SEND_MESSAGE_TO_DISCORD_WEBHOOK",
         "params": [
@@ -1107,7 +1107,7 @@
           {
             "name": "body",
             "details": "body of the message",
-            "type": "string",
+            "type": "text",
             "required": false
           },
           {
@@ -1283,24 +1283,6 @@
             "description": "time of the trigger",
             "type": "string",
             "template": "12:00"
-          },
-          {
-            "name": "playlist_name",
-            "description": "name of the playlist",
-            "type": "string",
-            "template": "My playlist"
-          },
-          {
-            "name": "playlist_id",
-            "description": "ID of the playlist",
-            "type": "string",
-            "template": "0q6s_P-E13U"
-          },
-          {
-            "name": "playlist_url",
-            "description": "URL of the playlist",
-            "type": "string",
-            "template": "https://open.spotify.com/playlist/playlistID"
           },
           {
             "name": "update_type",
