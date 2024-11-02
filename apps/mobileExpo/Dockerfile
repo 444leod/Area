@@ -1,24 +1,26 @@
-FROM node:16.17.1-alpine3.15
-
-WORKDIR /app
-
-COPY apps/mobileExpo .
+FROM saschpe/android-ndk:35-jdk22.0.2_9-ndk27.0.12077973-cmake3.22.1
 
 ARG SKIP_MOBILE_COMPILATION=0
 
 RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ]; then \
-      npm install -g expo-cli eas-cli && \
-      npm i && \
-      apk add git jq && \
-      git init; \
+    export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update -qq \
+    && apt-get upgrade -y -qq \
+    && apt-get install -y -qq \
+        curl \
+        unzip \
+        nodejs \
+        npm; \
+fi
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x ./build.sh || echo "Warning: build.sh not found"
+
+RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ] && [ -f "./build.sh" ]; then \
+        sh ./build.sh $SKIP_MOBILE_COMPILATION; \
     else \
-      echo "Skipping installation and initialization steps"; \
+        echo "Skipping mobile compilation (SKIP_MOBILE_COMPILATION=$SKIP_MOBILE_COMPILATION)"; \
     fi
-
-RUN sh ./build.sh $SKIP_MOBILE_COMPILATION
-
-RUN mkdir -p /shared
-
-RUN mv client.apk /shared
-
-CMD echo "APK is ready"
