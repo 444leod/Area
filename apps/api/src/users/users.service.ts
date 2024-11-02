@@ -4,6 +4,7 @@ import {
   TokenDto,
   AuthorizationDto,
   AuthorizationsTypes,
+  Role,
 } from "@area/shared";
 import {
   Injectable,
@@ -22,11 +23,12 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly servicesService: ServicesService,
-  ) {}
+  ) { }
 
   async createUser(dto: UserRegistrationDto): Promise<User> {
     dto.password = await bcrypt.hash(dto.password, 10);
     const user = new this.userModel(dto);
+    user.roles = [Role.USER];
     return await user.save();
   }
 
@@ -80,6 +82,7 @@ export class UsersService {
           data: userData.token,
         },
       ],
+      roles: [Role.USER]
     });
     return await newUser.save();
   }
