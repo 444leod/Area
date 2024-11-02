@@ -4,14 +4,20 @@ import {
   MongoDBService,
   replaceField,
   ReactionInfos,
-  LogType,
-  LogStatus,
   ValidationError,
+  Area,
 } from "@area/shared";
 import dotenv from "dotenv";
 import { actionsMap } from "./actions/actions-map";
+import { ActionFunction } from "./actions/action-function";
 import { reactionsMap } from "./reactions/reactions-map";
-import { AxiosError, isAxiosError } from "axios";
+import { ReactionFunction } from "./reactions/reaction-function";
+import {
+  handleExceptionError,
+  handleValidationError,
+  addLogToAreaWrapper,
+} from "./log";
+import { AxiosError } from "axios";
 
 dotenv.config();
 
@@ -21,12 +27,11 @@ if (!process.env.RMQ_AREA_QUEUE || !process.env.RMQ_WREA_QUEUE) {
   );
 }
 
-const rabbitMQ = new RabbitMQService();
-const mongoDB = new MongoDBService();
-
-let isRunning = true;
-
-async function run() {
+export async function run(
+  mongoDB: MongoDBService,
+  rabbitMQ: RabbitMQService,
+  isRunning: boolean,
+) {
   try {
     console.log(`Connecting to MongoDB`);
     await mongoDB.connect();
@@ -51,7 +56,9 @@ async function run() {
         ? process.env.RMQ_AREA_QUEUE
         : process.env.RMQ_WREA_QUEUE;
 
-    rabbitMQ.consumePacket(selectedQueue || "", handleArea).then(() => {});
+    rabbitMQ
+      .consumePacket(selectedQueue || "", handleArea, mongoDB)
+      .then(() => {});
 
     process.on("SIGINT", async () => {
       isRunning = false;
@@ -72,70 +79,94 @@ async function run() {
   }
 }
 
-run().catch(console.dir);
+/**
+ * Update the reaction fields
+ * Replace the fields in the reaction infos with the one in the area packet data
+ *
+ * @param areaPacket
+ * @param reactionInfos
+ */
+export function updateReactionFields(
+  areaPacket: AreaPacket,
+  reactionInfos: ReactionInfos,
+) {
+  areaPacket.data.area_name = areaPacket.area.name;
+  areaPacket.data.full_execution_date = new Date().toString();
+  areaPacket.data.execution_date = new Date().toLocaleDateString();
+  areaPacket.data.execution_time = new Date().toLocaleTimeString();
 
-async function handleArea(areaPacket: AreaPacket) {
-  const addLogToAreaWrapper = async (
-    type: LogType,
-    errorMessage: string,
-    status: LogStatus,
-    replacedVariables?: { [key: string]: any },
-  ) => {
-    await mongoDB.addLogToArea(areaPacket.user_id, areaPacket.area._id, {
-      type: type,
-      date: new Date().toISOString(),
-      status: status,
-      message: errorMessage,
-      replacedVariables: replacedVariables,
-    });
-  };
+  Object.keys(reactionInfos).forEach((key: string) => {
+    if (
+      key === "type" ||
+      !(key in reactionInfos) ||
+      typeof reactionInfos[key as keyof ReactionInfos] !== "string" ||
+      !reactionInfos[key as keyof ReactionInfos]
+    ) {
+      return;
+    }
 
-  const handleExceptionError = async (
-    error: AxiosError | any,
-    type: LogType,
-  ) => {
-    const errorMessage = JSON.stringify(
-      isAxiosError(error)
-        ? error.response
-          ? {
-              message: error.message,
-              url: error.config?.url,
-              status: error.response.status,
-              statusText: error.response.statusText,
-            }
-          : {
-              message: error.message,
-              description: "Request was made but no response received.",
-            }
-        : { message: error.message },
-    );
-    console.error(errorMessage);
-    await addLogToAreaWrapper(type, errorMessage, "exception_error");
-  };
+    reactionInfos[key as keyof ReactionInfos] = replaceField(
+      reactionInfos[key as keyof ReactionInfos] as string,
+      areaPacket.data,
+    ) as any; // petit bypass mais je verifie le type donc c'est fine
+  });
+}
 
-  const handleValidationError = async (type: LogType, errorMessage: string) => {
-    console.error(errorMessage);
-    await addLogToAreaWrapper(type, errorMessage, "validation_error");
-  };
-
-  const actionType = areaPacket?.area.action?.informations?.type;
-  const reactionType = areaPacket?.area.reaction?.informations?.type;
+/**
+ * Get the action and reaction functions from the area
+ *
+ * @param area
+ *
+ * @returns if not supported, return null
+ * @returns if supported, return the action and reaction functions
+ */
+export function getAreaFunctionsByArea(area: Area): {
+  actionFunction: ActionFunction;
+  reactionFunction: ReactionFunction;
+} | null {
+  const actionType = area.action?.informations?.type;
+  const reactionType = area.reaction?.informations?.type;
 
   if (!actionType || !reactionType) {
     console.error("Action or reaction type not found.");
-    return;
+    return null;
   }
 
   const actionFunction = actionsMap[actionType];
   if (!actionFunction) {
     console.error(`Action ${actionType} not supported.`);
-    return;
+    return null;
   }
   const reactionFunction = reactionsMap[reactionType];
   if (!reactionFunction) {
     console.error(`Reaction ${reactionType} not supported.`);
+    return null;
+  }
+  return { actionFunction: actionFunction, reactionFunction: reactionFunction };
+}
+
+/**
+ * Handle the area packet
+ * Retrieve the action and reaction functions
+ * Execute the action function
+ * Update the reaction fields
+ * Execute the reaction function
+ * Add logs to the area
+ *
+ * @param areaPacket
+ * @param mongoDB
+ */
+export async function handleArea(
+  areaPacket: AreaPacket,
+  mongoDB: MongoDBService,
+) {
+  const area = areaPacket.area;
+
+  const functions = getAreaFunctionsByArea(area);
+  if (!functions) {
     return;
   }
+  const { actionFunction, reactionFunction } = functions;
 
   console.log(
     `Handling area: ${areaPacket.area.action.informations.type} -> ${areaPacket.area.reaction.informations.type}`,
@@ -145,38 +176,15 @@ async function handleArea(areaPacket: AreaPacket) {
   try {
     updatedPacket = await actionFunction(areaPacket, mongoDB);
   } catch (error: AxiosError | any) {
-    await handleExceptionError(error, "action");
+    await handleExceptionError(areaPacket, mongoDB, error, "action");
   }
   if (!updatedPacket) {
     return;
   }
 
-  updatedPacket.data.area_name = updatedPacket.area.name;
-  updatedPacket.data.full_execution_date = new Date().toString();
-  updatedPacket.data.execution_date = new Date().toLocaleDateString();
-  updatedPacket.data.execution_time = new Date().toLocaleTimeString();
-
   console.log(`Reaction: `, updatedPacket.area.reaction.informations);
 
-  Object.keys(updatedPacket.area.reaction.informations).forEach(
-    (key: string) => {
-      const infos = updatedPacket.area.reaction.informations;
-
-      if (
-        key === "type" ||
-        !(key in infos) ||
-        typeof infos[key as keyof ReactionInfos] !== "string" ||
-        !infos[key as keyof ReactionInfos]
-      ) {
-        return;
-      }
-
-      infos[key as keyof ReactionInfos] = replaceField(
-        infos[key as keyof ReactionInfos] as string,
-        updatedPacket.data,
-      ) as any; // petit bypass mais je verifie le type donc c'est fine
-    },
-  );
+  updateReactionFields(updatedPacket, updatedPacket.area.reaction.informations);
 
   console.log(`Updated reaction: `, updatedPacket.area.reaction.informations);
 
@@ -184,11 +192,20 @@ async function handleArea(areaPacket: AreaPacket) {
 
   console.log(actionSuccess);
 
-  addLogToAreaWrapper("action", actionSuccess, "success", updatedPacket.data);
+  await addLogToAreaWrapper(
+    areaPacket,
+    mongoDB,
+    "action",
+    actionSuccess,
+    "success",
+    updatedPacket.data,
+  );
 
   try {
     await reactionFunction(updatedPacket, mongoDB);
     await addLogToAreaWrapper(
+      areaPacket,
+      mongoDB,
       "reaction",
       `Reaction ${areaPacket.area.reaction.informations.type} executed successfully (id: ${updatedPacket.area._id})`,
       "success",
@@ -196,11 +213,13 @@ async function handleArea(areaPacket: AreaPacket) {
   } catch (error: ValidationError | AxiosError | any) {
     if (error instanceof ValidationError) {
       await handleValidationError(
+        areaPacket,
+        mongoDB,
         "reaction",
         `Reaction ${areaPacket.area.reaction.informations.type} executed unsuccessfully (id: ${updatedPacket.area._id})\nReason:\n${error.message}`,
       );
     } else {
-      await handleExceptionError(error, "reaction");
+      await handleExceptionError(areaPacket, mongoDB, error, "reaction");
     }
   }
 }
