@@ -4,7 +4,7 @@ import { createReadStream, existsSync } from 'fs';
 import { stat } from 'fs/promises';
 
 export const GET: RequestHandler = async () => {
-	const apkPath = '/shared/client.apk';
+	const apkPath = 'J/client.apk';
 
 	try {
 		if (!existsSync(apkPath)) {
