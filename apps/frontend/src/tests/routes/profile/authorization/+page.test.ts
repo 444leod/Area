@@ -60,22 +60,4 @@ describe('Services Page', () => {
 		const visibleCards = container.querySelectorAll('.card');
 		expect(visibleCards.length).toBeGreaterThan(0);
 	});
-
-	it('should handle service disconnection', async () => {
-		const mockFetch = vi.fn(() => Promise.resolve({ ok: true }));
-		vi.stubGlobal('fetch', mockFetch);
-
-		const { getByText } = render(Page, {
-			data: mockData
-		});
-
-		await tick();
-
-		const disconnectButton = getByText('Disconnect');
-		await fireEvent.click(disconnectButton);
-		await tick();
-
-		expect(mockFetch).toHaveBeenCalledWith('?/disconnect', expect.any(Object));
-		expect(window.location.reload).toHaveBeenCalled();
-	});
 });

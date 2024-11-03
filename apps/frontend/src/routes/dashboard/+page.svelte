@@ -102,8 +102,8 @@
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 		{#each Object.entries(stats) as [key, value], i}
 			<div
-					class="card variant-ghost-secondary p-6"
-					in:fly={{ y: 20, duration: 300, delay: i * 100 }}
+				class="card variant-ghost-secondary p-6"
+				in:fly={{ y: 20, duration: 300, delay: i * 100 }}
 			>
 				<h3 class="h4 mb-3 opacity-75">
 					{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
@@ -132,24 +132,20 @@
 						<div class="flex justify-between items-center mb-4">
 							<h3 class="h3">{getAreaName(area)}</h3>
 							<button
-									class="btn-icon variant-soft hover:variant-filled-surface"
-									on:click={() => showAreaDetails(area._id)}
+								class="btn-icon variant-soft hover:variant-filled-surface"
+								on:click={() => showAreaDetails(area._id)}
 							>
 								<Info class="w-4 h-4" />
 							</button>
 						</div>
-						<form
-								method="POST"
-								action="?/toggleArea"
-								use:enhance={handleToggleSubmit(area)}
-						>
+						<form method="POST" action="?/toggleArea" use:enhance={handleToggleSubmit(area)}>
 							<input type="hidden" name="areaId" value={area._id} />
 							<button
-									type="submit"
-									class="btn w-full {area.active
+								type="submit"
+								class="btn w-full {area.active
 									? 'variant-filled-success hover:variant-soft-success'
 									: 'variant-filled-warning hover:variant-soft-warning'} transition-colors duration-200"
-									disabled={toggleLoadingMap.get(area._id)}
+								disabled={toggleLoadingMap.get(area._id)}
 							>
 								{#if toggleLoadingMap.get(area._id)}
 									<div class="loader-sm mr-2" />
@@ -173,56 +169,56 @@
 				{:else}
 					<table class="table table-hover">
 						<thead>
-						<tr>
-							<th class="!p-4">Name</th>
-							<th class="!p-4">Status</th>
-							<th class="text-right !p-4">Actions</th>
-						</tr>
+							<tr>
+								<th class="!p-4">Name</th>
+								<th class="!p-4">Status</th>
+								<th class="text-right !p-4">Actions</th>
+							</tr>
 						</thead>
 						<tbody>
-						{#each areas as area, i (area._id)}
-							<tr
+							{#each areas as area, i (area._id)}
+								<tr
 									class="hover:variant-soft-surface transition-colors duration-200"
 									in:fly={{ y: 20, duration: 300, delay: i * 50 }}
-							>
-								<td class="!p-4">
-									<span class="font-semibold h3">{getAreaName(area)}</span>
-								</td>
-								<td class="!p-4">
-									<form
+								>
+									<td class="!p-4">
+										<span class="font-semibold h3">{getAreaName(area)}</span>
+									</td>
+									<td class="!p-4">
+										<form
 											method="POST"
 											action="?/toggleArea"
 											use:enhance={handleToggleSubmit(area)}
-									>
-										<input type="hidden" name="areaId" value={area._id} />
-										<button
+										>
+											<input type="hidden" name="areaId" value={area._id} />
+											<button
 												type="submit"
 												class="btn {area.active
 													? 'variant-filled-success hover:variant-soft-success'
 													: 'variant-filled-warning hover:variant-soft-warning'} transition-all duration-200"
 												disabled={toggleLoadingMap.get(area._id)}
-										>
-											{#if toggleLoadingMap.get(area._id)}
-												<div class="loader-sm mr-2" />
-											{:else if area.active}
-												<ToggleRight class="w-5 h-5 mr-2" />
-											{:else}
-												<ToggleLeft class="w-5 h-5 mr-2" />
-											{/if}
-											{area.active ? 'Active' : 'Inactive'}
-										</button>
-									</form>
-								</td>
-								<td class="!p-4 text-right">
-									<button
+											>
+												{#if toggleLoadingMap.get(area._id)}
+													<div class="loader-sm mr-2" />
+												{:else if area.active}
+													<ToggleRight class="w-5 h-5 mr-2" />
+												{:else}
+													<ToggleLeft class="w-5 h-5 mr-2" />
+												{/if}
+												{area.active ? 'Active' : 'Inactive'}
+											</button>
+										</form>
+									</td>
+									<td class="!p-4 text-right">
+										<button
 											class="btn-icon variant-soft hover:variant-filled-surface transition-colors duration-200"
 											on:click={() => showAreaDetails(area._id)}
-									>
-										<Info class="w-4 h-4" />
-									</button>
-								</td>
-							</tr>
-						{/each}
+										>
+											<Info class="w-4 h-4" />
+										</button>
+									</td>
+								</tr>
+							{/each}
 						</tbody>
 					</table>
 				{/if}
@@ -233,11 +229,11 @@
 
 {#if showDetailsPopup && selectedAreaId}
 	<AreaDetailsPopup
-			areaId={selectedAreaId}
-			token={data.token}
-			on:close={closeDetailsPopup}
-			on:areaDeleted={handleAreaDeleted}
-			on:areaUpdated={({ detail }) => {
+		areaId={selectedAreaId}
+		token={data.token}
+		on:close={closeDetailsPopup}
+		on:areaDeleted={handleAreaDeleted}
+		on:areaUpdated={({ detail }) => {
 			areas = areas.map((area) =>
 				area._id === detail.areaId ? { ...area, active: detail.active } : area
 			);

@@ -99,7 +99,7 @@
 			if (response.ok) {
 				const result = await response.json();
 				if (result.success) {
-					services = services.map(s => ({
+					services = services.map((s) => ({
 						...s,
 						connected: s.name === service.name ? false : s.connected
 					}));
