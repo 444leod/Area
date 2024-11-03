@@ -151,7 +151,7 @@ jobs:
   push_to_mirror:
     name: Push to mirror
     if: ${{ github.ref_name == 'main' && github.event_name == 'push' }}
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: cleanup old checkout
