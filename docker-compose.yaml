@@ -75,7 +75,7 @@ services:
     image: mobile-expo
     container_name: mobile-expo
     volumes:
-      - apk-volume:/shared:rw
+      - ./shared/mobile:/shared
     networks:
       - area-network
     healthcheck:
@@ -84,7 +84,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
   client_web:
     build:
       dockerfile: ./apps/frontend/Dockerfile
@@ -106,7 +105,3 @@ services:
 networks:
   area-network:
     driver: bridge
-
-volumes:
-  apk-volume:
-    driver: local
