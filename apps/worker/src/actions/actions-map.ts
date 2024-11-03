@@ -11,6 +11,7 @@ import { handleOnSpotifyPlaylistUpdateAction } from "./spotify/on-spotify-playli
 import { handleOnNewArtistContentAction } from "./spotify/on-artiste-new-content";
 import { handleOnNewGoogleTaskAction } from "./google-tasks/on-new-google-task";
 import { handleOnGoogleTaskExpiredAction } from "./google-tasks/on-google-task-expired";
+import { handleRiotGameEnd } from "./riot/on-game-end";
 
 type ActionMap = {
   [string: string]: ActionFunction;
@@ -29,4 +30,5 @@ export const actionsMap: ActionMap = {
   ON_NEW_ARTIST_CONTENT: handleOnNewArtistContentAction,
   ON_NEW_GOOGLE_TASK: handleOnNewGoogleTaskAction,
   ON_GOOGLE_TASK_EXPIRED: handleOnGoogleTaskExpiredAction,
+  ON_RIOT_GAME_END: handleRiotGameEnd,
 };

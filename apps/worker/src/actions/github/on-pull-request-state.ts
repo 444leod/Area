@@ -45,7 +45,9 @@ export const handleOnPullRequestStateAction: ActionFunction = async (
   if (!prs) return null;
 
   prs = prs.filter((pr: any) => {
-    return new Date(pr.updated_at).getTime() > history.lastUpdateTimestamp;
+    return (
+      new Date(pr.updated_at).getTime() > (history.lastUpdateTimestamp || 0)
+    );
   });
 
   if (prs.length === 0) return null;

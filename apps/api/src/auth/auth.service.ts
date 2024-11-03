@@ -102,10 +102,7 @@ export class AuthService {
         } as TokenDto,
       });
 
-      const payload = { sub: user._id.toHexString(), email: user.email };
-      return {
-        token: await this.jwtService.signAsync(payload),
-      };
+      return await this.generateUserToken(user);
     } catch {
       throw new InternalServerErrorException(
         "Error processing Google callback",

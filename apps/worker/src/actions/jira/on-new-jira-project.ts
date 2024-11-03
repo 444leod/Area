@@ -38,7 +38,7 @@ export const handleNewJiraProjectAction: ActionFunction = async (
   }
 
   const differenceProjects = projects.filter(
-    (project: any) => !history.projectList.includes(project.key),
+    (project: any) => !history.projectList?.includes(project.key),
   );
 
   if (differenceProjects.length === 0) {

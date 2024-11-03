@@ -24,6 +24,7 @@
     "api:start": "npm run start -w @area/api",
     "api:dev": "npm run start:dev -w @area/api",
     "api:test": "npm run test -w @area/api",
+    "api:cov": "npm run test:cov -w @area/api",
     "front:build": "npm run build -w @area/frontend",
     "front:start": "PORT=8081 node apps/frontend/build",
     "front:dev": "npm run dev -w @area/frontend",

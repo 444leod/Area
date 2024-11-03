@@ -8,7 +8,7 @@ import {
 } from "@area/shared";
 import { Injectable } from "@nestjs/common";
 import { ObjectId } from "mongodb";
-import { ServicesService } from "src/services/services.service";
+import { ServicesService } from "../services/services.service";
 
 @Injectable()
 export class AreasHelper {

@@ -13,6 +13,7 @@ import { OnSpotifyPlaylistUpdateInfos } from "./spotify/on-spotify-playlist-upda
 import { OnNewGoogleTaskInfos } from "./google-tasks/on-new-google-task.class";
 import { OnGoogleTaskExpiredInfos } from "./google-tasks/on-google-task-expired.class";
 import { ApiProperty } from "@nestjs/swagger";
+import { OnRiotGameEndInfos } from "./riot/on-game-end.class";
 
 export class BaseActionInfos {
   @ApiProperty()
@@ -32,4 +33,5 @@ export type ActionInfos =
   | OnNewArtistContentInfos
   | OnSpotifyPlaylistUpdateInfos
   | OnGoogleTaskExpiredInfos
-  | OnNewGoogleTaskInfos;
+  | OnNewGoogleTaskInfos
+  | OnRiotGameEndInfos;

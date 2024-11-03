@@ -1,7 +1,7 @@
 import { AdminDashboardInfos } from "@area/shared";
 import { Injectable } from "@nestjs/common";
-import { AreasService } from "src/areas/areas.service";
-import { UsersService } from "src/users/users.service";
+import { AreasService } from "../areas/areas.service";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class AdminService {

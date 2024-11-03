@@ -1,13 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { AreaPacket, RabbitMQService } from "@area/shared";
 
 @Injectable()
-export class QueueService {
+export class QueueService implements OnModuleInit {
   private rabbit_service: RabbitMQService = null;
+
+  onModuleInit() {
+    this.rabbit_service.connect();
+  }
 
   constructor() {
     this.rabbit_service = new RabbitMQService();
-    this.rabbit_service.connect();
   }
 
   send(packet: AreaPacket) {

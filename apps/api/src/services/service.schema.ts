@@ -4,3 +4,5 @@ import { HydratedDocument } from "mongoose";
 
 export type ServiceDocument = HydratedDocument<Service>;
 export const ServiceSchema = SchemaFactory.createForClass(Service);
+
+export { Service };

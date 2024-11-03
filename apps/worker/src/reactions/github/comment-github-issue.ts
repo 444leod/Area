@@ -31,7 +31,7 @@ export const handleCommentGithubIssueReaction: ReactionFunction = async (
     reaction.owner,
     reaction.repository,
     Number(reaction.issue_number),
-    reaction.body,
+    reaction.content,
   );
   return;
 };
