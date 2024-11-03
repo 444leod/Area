@@ -26,7 +26,7 @@ describe('oauthSpotify', () => {
 
 		const expectedRedirectUri = encodeURIComponent('http://localhost:8080/login/oauth/spotify');
 		const expectedScope = encodeURIComponent(
-			'user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private'
+			'user-read-private user-read-email playlist-read-private playlist-modify-public playlist-modify-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played'
 		);
 		const expectedUrl = `https://accounts.spotify.com/authorize?client_id=test-client-id&response_type=code&redirect_uri=${expectedRedirectUri}&scope=${expectedScope}&access_type=offline`;
 

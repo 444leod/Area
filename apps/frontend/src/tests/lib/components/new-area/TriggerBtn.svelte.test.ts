@@ -39,7 +39,7 @@ describe('TriggerBtn', () => {
 		const { container } = render(TriggerBtn, defaultProps);
 
 		const button = container.querySelector('button');
-		expect(button).toHaveClass('variant-soft-secondary');
+		expect(button).toHaveClass('variant-ghost');
 		expect(button).toHaveClass('shadow-md');
 	});
 });
