@@ -4,10 +4,6 @@
 	import { Chart, registerables } from 'chart.js';
 	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
-	import type { PageData } from './$types';
-	export let data: PageData;
-
-	console.log(data);
 
 	import type { PageData } from './$types';
 	export let data: PageData;
