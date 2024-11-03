@@ -95,7 +95,7 @@ services:
       server:
         condition: service_started
     volumes:
-      - apk-volume:/shared:ro
+      - ./shared/mobile:/shared:ro
     networks:
       - area-network
     ports:

@@ -78,4 +78,3 @@ dist/
 *.pem
 /apps/queue/run.sh
 openapi.json
-client.apk
