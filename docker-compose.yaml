@@ -81,6 +81,10 @@ services:
       - apk-volume:/shared
     networks:
       - area-network
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 4096
 
   client_web:
     build:
