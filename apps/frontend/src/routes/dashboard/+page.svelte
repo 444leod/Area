@@ -2,8 +2,9 @@
 	import { PlusCircle, LogOut, Info, ToggleLeft, ToggleRight } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
+	import type { SubmitFunction } from '@app/forms';
 	import AreaDetailsPopup from '$lib/components/AreaDetailsPopup.svelte';
-	import { toggleAreaStatus } from '$lib/modules/toggleAreaStatus';
+	import { enhance } from '$app/forms';
 	import { setError } from '$lib/store/errorMessage';
 	import { fade, fly } from 'svelte/transition';
 
@@ -59,26 +60,35 @@
 		selectedAreaId = null;
 	}
 
-	async function toggleAreaButton(area) {
-		if (toggleLoadingMap.get(area._id)) return;
+	function handleToggleSubmit(area): SubmitFunction {
+		return async ({ form, action, cancel }) => {
+			if (toggleLoadingMap.get(area._id)) {
+				cancel();
+				return;
+			}
 
-		toggleLoadingMap.set(area._id, true);
-		areas = [...areas]; // Trigger reactivity
-
-		try {
-			await toggleAreaStatus(area._id, data.token);
-			areas = areas.map((a) => {
-				if (a._id === area._id) {
-					return { ...a, active: !a.active };
-				}
-				return a;
-			});
-		} catch (e) {
-			setError(`Error toggling area status: ${e.message}`);
-		} finally {
-			toggleLoadingMap.set(area._id, false);
+			toggleLoadingMap.set(area._id, true);
 			areas = [...areas];
-		}
+
+			return ({ result, update }) => {
+				try {
+					if (result.type === 'success') {
+						areas = areas.map((a) => {
+							if (a._id === area._id) {
+								return { ...a, active: !a.active };
+							}
+							return a;
+						});
+						update();
+					} else {
+						setError('Failed to toggle area status');
+					}
+				} finally {
+					toggleLoadingMap.set(area._id, false);
+					areas = [...areas];
+				}
+			};
+		};
 	}
 </script>
 
@@ -87,10 +97,6 @@
 <div class="container mx-auto px-4 py-8">
 	<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
 		<h1 class="h1">Dashboard</h1>
-		<button class="btn variant-ghost-surface hover:variant-soft-surface" on:click={handleLogout}>
-			<LogOut class="w-4 h-4 mr-2" />
-			Logout
-		</button>
 	</div>
 
 	<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -132,27 +138,30 @@
 								<Info class="w-4 h-4" />
 							</button>
 						</div>
-						<button
-							on:click={() => toggleAreaButton(area)}
-							class="btn w-full {area.active
-								? 'variant-filled-success hover:variant-soft-success'
-								: 'variant-filled-warning hover:variant-soft-warning'} transition-colors duration-200"
-							disabled={toggleLoadingMap.get(area._id)}
-						>
-							{#if toggleLoadingMap.get(area._id)}
-								<div class="loader-sm mr-2" />
-							{:else if area.active}
-								<ToggleRight class="w-5 h-5 mr-2" />
-							{:else}
-								<ToggleLeft class="w-5 h-5 mr-2" />
-							{/if}
-							{area.active ? 'Active' : 'Inactive'}
-						</button>
+						<form method="POST" action="?/toggleArea" use:enhance={handleToggleSubmit(area)}>
+							<input type="hidden" name="areaId" value={area._id} />
+							<button
+								type="submit"
+								class="btn w-full {area.active
+									? 'variant-filled-success hover:variant-soft-success'
+									: 'variant-filled-warning hover:variant-soft-warning'} transition-colors duration-200"
+								disabled={toggleLoadingMap.get(area._id)}
+							>
+								{#if toggleLoadingMap.get(area._id)}
+									<div class="loader-sm mr-2" />
+								{:else if area.active}
+									<ToggleRight class="w-5 h-5 mr-2" />
+								{:else}
+									<ToggleLeft class="w-5 h-5 mr-2" />
+								{/if}
+								{area.active ? 'Active' : 'Inactive'}
+							</button>
+						</form>
 					</div>
 				{/each}
 			</div>
 		{:else}
-			<div class="  p-4">
+			<div class="p-4">
 				{#if areas.length === 0}
 					<p class="text-center h3 text-surface-400 py-8">
 						No automations found, create a new one !
@@ -176,22 +185,29 @@
 										<span class="font-semibold h3">{getAreaName(area)}</span>
 									</td>
 									<td class="!p-4">
-										<button
-											on:click={() => toggleAreaButton(area)}
-											class="btn {area.active
-												? 'variant-filled-success hover:variant-soft-success'
-												: 'variant-filled-warning hover:variant-soft-warning'} transition-all duration-200"
-											disabled={toggleLoadingMap.get(area._id)}
+										<form
+											method="POST"
+											action="?/toggleArea"
+											use:enhance={handleToggleSubmit(area)}
 										>
-											{#if toggleLoadingMap.get(area._id)}
-												<div class="loader-sm mr-2" />
-											{:else if area.active}
-												<ToggleRight class="w-5 h-5 mr-2" />
-											{:else}
-												<ToggleLeft class="w-5 h-5 mr-2" />
-											{/if}
-											{area.active ? 'Active' : 'Inactive'}
-										</button>
+											<input type="hidden" name="areaId" value={area._id} />
+											<button
+												type="submit"
+												class="btn {area.active
+													? 'variant-filled-success hover:variant-soft-success'
+													: 'variant-filled-warning hover:variant-soft-warning'} transition-all duration-200"
+												disabled={toggleLoadingMap.get(area._id)}
+											>
+												{#if toggleLoadingMap.get(area._id)}
+													<div class="loader-sm mr-2" />
+												{:else if area.active}
+													<ToggleRight class="w-5 h-5 mr-2" />
+												{:else}
+													<ToggleLeft class="w-5 h-5 mr-2" />
+												{/if}
+												{area.active ? 'Active' : 'Inactive'}
+											</button>
+										</form>
 									</td>
 									<td class="!p-4 text-right">
 										<button

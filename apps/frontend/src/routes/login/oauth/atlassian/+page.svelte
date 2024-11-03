@@ -3,43 +3,18 @@
 	import { goto } from '$app/navigation';
 	import { setError } from '$lib/store/errorMessage';
 
-	async function fetchToken() {
-		try {
-			const response = await fetch('/api/get-token');
-			if (response.ok) {
-				const data = await response.json();
-				const token = data.token;
-
-				if (token) {
-					return token;
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} catch (error) {
-			setError(error);
-			return null;
-		}
-	}
-
 	onMount(async () => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
-		const token = await fetchToken();
-
-		if (code && token) {
+		if (code) {
 			try {
-				const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/atlassian`, {
+				const response = await fetch('/api/auth/oauth/atlassian', {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`
+						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({ code })
 				});
-				const data = await response.json();
 				if (response.ok) {
 					goto('/profile/authorization?success=1&service=atlassian');
 				} else {

@@ -8,11 +8,6 @@ describe('+page.svelte', () => {
 		render(Page);
 	});
 
-	it('renders without crashing', async () => {
-		const mainContainer = screen.getByTestId('main-container');
-		expect(mainContainer).toBeTruthy();
-	});
-
 	it('contains a div with the correct class', async () => {
 		const mainDiv = screen.getByTestId('main-container');
 		expect(mainDiv).toHaveClass('container mx-auto px-4 py-12');

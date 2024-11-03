@@ -2,16 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, fireEvent } from '@testing-library/svelte';
 import { goto } from '$app/navigation';
 import Dashboard from '../../../routes/dashboard/+page.svelte';
-import { toggleAreaStatus } from '../../../lib/modules/toggleAreaStatus';
-
 import { tick } from 'svelte';
 
 vi.mock('$app/navigation', () => ({
 	goto: vi.fn()
-}));
-
-vi.mock('$lib/modules/toggleAreaStatus', () => ({
-	toggleAreaStatus: vi.fn()
 }));
 
 vi.mock('$lib/store/errorMessage', () => ({
@@ -52,23 +46,6 @@ describe('Dashboard', () => {
 		expect(getByText('Active Automations')).toBeTruthy();
 		expect(getByText('1')).toBeTruthy();
 		expect(getByText('80.0%')).toBeTruthy();
-	});
-
-	it('should handle logout', async () => {
-		const { getByText } = render(Dashboard, { props: { data: mockData } });
-
-		await fireEvent.click(getByText('Logout'));
-		expect(global.fetch).toHaveBeenCalledWith('/api/logout', { method: 'POST' });
-		expect(goto).toHaveBeenCalledWith('/login');
-	});
-
-	it('should toggle area status', async () => {
-		const { getAllByText } = render(Dashboard, { props: { data: mockData } });
-
-		const toggleButton = getAllByText('Active')[0];
-		await fireEvent.click(toggleButton);
-
-		expect(toggleAreaStatus).toHaveBeenCalledWith('1', 'test-token');
 	});
 
 	it('should show area details popup', async () => {

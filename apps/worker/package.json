@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/entrypoint.ts",
     "mocked-worker": "MONGODB_DB_NAME=dev_testing RMQ_QUEUE=queue_testing ts-node tests/funcWorkerTest.ts",
     "example_worker": "ts-node src/example_worker.ts",
     "test": "jest --silent",

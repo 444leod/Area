@@ -31,11 +31,10 @@
 
 		if (code && token) {
 			try {
-				const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/spotify`, {
+				const response = await fetch('/api/auth/oauth/spotify', {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`
+						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({ code })
 				});

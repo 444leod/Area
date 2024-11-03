@@ -3,40 +3,16 @@
 	import { goto } from '$app/navigation';
 	import { setError } from '$lib/store/errorMessage';
 
-	async function fetchToken() {
-		try {
-			const response = await fetch('/api/get-token');
-			if (response.ok) {
-				const data = await response.json();
-				const token = data.token;
-
-				if (token) {
-					return token;
-				} else {
-					return null;
-				}
-			} else {
-				setError('Error during token retrieving');
-				return null;
-			}
-		} catch (error) {
-			setError(error);
-			return null;
-		}
-	}
-
 	onMount(async () => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const code = urlParams.get('code');
-		const token = await fetchToken();
 
-		if (code && token) {
+		if (code) {
 			try {
-				const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/github`, {
+				const response = await fetch('/api/auth/oauth/github', {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`
+						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({ code })
 				});
@@ -58,4 +34,4 @@
 	});
 </script>
 
-<div>Traitement de l'authentification google...</div>
+<div>Traitement de l'authentification github...</div>

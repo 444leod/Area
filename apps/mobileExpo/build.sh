@@ -2,23 +2,28 @@
 
 set -e
 
-if [ "$1" = "0" ]; then
-    echo "Starting mobile build process..."
-    if ! command -v npm >/dev/null 2>&1; then
-        echo "Error: npm is not installed"
-        exit 1
-    }
-    echo "Installing npm dependencies..."
-    npm install
+echo "Starting mobile build process..."
+echo "Installing npm dependencies..."
+npm i --legacy-peer-deps
 
-    echo "Cleaning dist directory..."
-    rm -rf dist/*
+git init
 
-    echo "Installing eas-cli..."
-    npm install --global eas-cli
-    echo "Building android app..."
-    eas build --local --non-interactive --platform android --profile production --output dist/client.apk
-    echo "Build completed successfully!"
+echo "Cleaning dist directory..."
+rm -rf dist/*
+mkdir -p dist
+
+echo "Installing eas-cli..."
+npm install --global eas-cli
+echo "Building android app..."
+eas build --local --non-interactive --platform android --profile production --output dist/client.apk
+
+echo "Checking if APK was created..."
+if [ -f "dist/client.apk" ]; then
+    echo "APK successfully created"
+    ls -l dist/client.apk
 else
-    echo "Skipping mobile compilation (flag=$1)..."
+    echo "Failed to create APK"
+    exit 1
 fi
+
+echo "Build completed successfully!"
