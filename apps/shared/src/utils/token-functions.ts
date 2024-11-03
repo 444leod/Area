@@ -118,7 +118,7 @@ async function getNewSpotifyTokens(oldToken: TokenDto): Promise<TokenDto> {
 
   return {
     token: access_token,
-    refresh_token: oldToken.refresh_token, // Spotify refresh tokens remain valid until explicitly expired.
+    refresh_token: oldToken.refresh_token,
     expiration_date: expirationDate,
     created_at: createdAt,
   };

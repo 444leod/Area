@@ -16,7 +16,7 @@
 
 	let isUsingVariable = false;
 	let selectedVariable = '';
-	let textValue = value;
+	let textValue = value || '';
 
 	function handleTextareaChange(e: Event) {
 		const target = e.target as HTMLTextAreaElement;
@@ -41,7 +41,7 @@
 
 	// Update the value when it changes externally
 	$: {
-		if (!value.includes('{{')) {
+		if (value !== undefined && value !== null && !String(value).includes('{{')) {
 			textValue = value;
 		}
 	}
