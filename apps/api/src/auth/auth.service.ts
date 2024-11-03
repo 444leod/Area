@@ -102,7 +102,7 @@ export class AuthService {
         } as TokenDto,
       });
 
-      return this.generateUserToken(user);
+      return await this.generateUserToken(user);
     } catch {
       throw new InternalServerErrorException(
         "Error processing Google callback",
