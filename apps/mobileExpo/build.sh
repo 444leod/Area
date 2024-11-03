@@ -6,6 +6,8 @@ echo "Starting mobile build process..."
 echo "Installing npm dependencies..."
 npm i --legacy-peer-deps
 
+git init
+
 echo "Cleaning dist directory..."
 rm -rf dist/*
 
