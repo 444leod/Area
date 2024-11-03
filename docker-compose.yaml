@@ -78,7 +78,7 @@ services:
     environment:
       SKIP_MOBILE_COMPILATION: ${SKIP_MOBILE_COMPILATION:-0}
     volumes:
-      - apk-volume:/shared
+      - apk-volume:/shared:rw
     networks:
       - area-network
     ulimits:
@@ -99,7 +99,7 @@ services:
       server:
         condition: service_started
     volumes:
-      - apk-volume:/shared
+      - apk-volume:/shared:ro
     networks:
       - area-network
     expose:
@@ -113,3 +113,4 @@ networks:
 
 volumes:
   apk-volume:
+    driver: local

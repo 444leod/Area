@@ -15,6 +15,9 @@ fi
 
 WORKDIR /app
 
+# Créer le répertoire shared
+RUN mkdir -p /shared && chmod 777 /shared
+
 COPY apps/mobileExpo .
 
 RUN chmod +x ./build.sh || echo "Warning: build.sh not found"
