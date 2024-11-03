@@ -17,16 +17,13 @@ npm install --global eas-cli
 echo "Building android app..."
 eas build --local --non-interactive --platform android --profile production --output dist/client.apk
 
-# Création du répertoire shared et copie de l'APK
-mkdir -p /shared
-cp dist/client.apk /shared/client.apk
-chmod 644 /shared/client.apk
-
-echo "Checking if APK was copied to shared volume..."
-if [ -f "/shared/client.apk" ]; then
-    echo "APK successfully copied to shared volume"
-    ls -l /shared/client.apk
+echo "Checking if APK was created..."
+if [ -f "dist/client.apk" ]; then
+    echo "APK successfully created"
+    ls -l dist/client.apk
 else
-    echo "Failed to copy APK to shared volume"
+    echo "Failed to create APK"
     exit 1
 fi
+
+echo "Build completed successfully!"
