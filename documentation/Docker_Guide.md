@@ -134,7 +134,7 @@ Additional tips:
 
 Run the following command to force a rebuild of all services:
 ```sh
-docker compose up --build --force-recreate
+docker compose up --build --no-cache --force-recreate
 ```
 
 Also works with specific services:

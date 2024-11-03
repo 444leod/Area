@@ -19,19 +19,10 @@ WORKDIR /app
 # Créer le répertoire shared
 RUN mkdir -p /shared && chmod 777 /shared
 
-# Copier d'abord le .env
 COPY apps/mobileExpo/.env .env
-
-# Puis copier le reste des fichiers
 COPY apps/mobileExpo .
 
 RUN chmod +x ./build.sh || echo "Warning: build.sh not found"
-
-# Export des variables d'environnement du .env
-RUN if [ -f ".env" ]; then \
-    export $(cat .env | xargs) \
-    && echo "Environment variables loaded from .env"; \
-fi
 
 # Build pendant la phase de construction
 RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ] && [ -f "./build.sh" ]; then \
@@ -44,4 +35,14 @@ RUN if [ "$SKIP_MOBILE_COMPILATION" = "0" ] && [ -f "./build.sh" ]; then \
         echo "Skipping mobile compilation (SKIP_MOBILE_COMPILATION=$SKIP_MOBILE_COMPILATION)"; \
     fi
 
-CMD ["tail", "-f", "/dev/null"]
+# Script pour signaler la complétion
+COPY <<EOF /completion-script.sh
+#!/bin/sh
+echo "Mobile build completed successfully" > /shared/build-complete
+touch /shared/client.apk.ready
+exit 0
+EOF
+
+RUN chmod +x /completion-script.sh
+
+CMD ["/completion-script.sh"]
