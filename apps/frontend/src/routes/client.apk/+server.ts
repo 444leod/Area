@@ -6,16 +6,14 @@ import { setError } from '$lib/store/errorMessage';
 import fs from 'fs';
 
 export const GET: RequestHandler = async () => {
-
 	try {
-
 		const filecontent = await fs.promises.readFile('/shared/client.apk');
 
 		return new Response(filecontent, {
 			headers: {
-			  'Content-Type': 'application/vnd.android.package-archive',
-			  'Content-Disposition': `attachment; filename="area.apk"`,
-			},
+				'Content-Type': 'application/vnd.android.package-archive',
+				'Content-Disposition': `attachment; filename="area.apk"`
+			}
 		});
 	} catch (e) {
 		setError('Error serving APK');
