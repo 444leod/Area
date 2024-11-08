@@ -2,28 +2,23 @@ import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { createReadStream, existsSync } from 'fs';
 import { stat } from 'fs/promises';
+import { setError } from '$lib/store/errorMessage';
+import fs from 'fs';
 
 export const GET: RequestHandler = async () => {
-	const apkPath = '/client.apk';
 
 	try {
-		if (!existsSync(apkPath)) {
-			console.error('APK file not found at:', apkPath);
-			throw error(404, 'APK file not found');
-		}
 
-		const stats = await stat(apkPath);
-		const stream = createReadStream(apkPath);
+		const filecontent = await fs.promises.readFile('/shared/client.apk');
 
-		return new Response(stream as any, {
+		return new Response(filecontent, {
 			headers: {
-				'Content-Type': 'application/vnd.android.package-archive',
-				'Content-Disposition': 'attachment; filename="client.apk"',
-				'Content-Length': stats.size.toString()
-			}
+			  'Content-Type': 'application/vnd.android.package-archive',
+			  'Content-Disposition': `attachment; filename="area.apk"`,
+			},
 		});
 	} catch (e) {
-		console.error('Error serving APK:', e);
+		setError('Error serving APK');
 		throw error(500, 'Error serving APK file');
 	}
 };
