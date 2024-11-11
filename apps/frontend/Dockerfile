@@ -12,37 +12,7 @@ COPY apps/frontend apps/frontend
 COPY package.json .
 COPY tsconfig*.json .
 
-# Install dependencies first
 RUN npm i
-RUN npm install -g typescript
-
-# Compile shared typescript
-RUN tsc -b apps/shared
-
-# Modified startup script to handle APK first
-COPY <<EOF /start.sh
-#!/bin/sh
-
-# Wait for APK and copy it first
-while [ ! -f /shared/client.apk.ready ]; do
-    echo "Waiting for APK..."
-    sleep 2
-done
-
-echo "APK is ready, copying to static directory..."
-cp /shared/client.apk /app/apps/frontend/static/
-chmod 644 /app/apps/frontend/static/client.apk
-
-# Now build and start the application
-echo "Building frontend application..."
-npm run front:build
-
-echo "Starting frontend application..."
-exec npm run front:start
-EOF
-
-RUN chmod +x /start.sh
-
+RUN npm run front:build
 ENV HOST=0.0.0.0
-
-CMD ["/start.sh"]
+CMD ./apps/frontend/run.sh

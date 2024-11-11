@@ -3,6 +3,10 @@
 set -e
 
 echo "Starting mobile build process..."
+
+echo "Exporting env..."
+export $(cat .env | xargs)
+
 echo "Installing npm dependencies..."
 npm i --legacy-peer-deps
 
