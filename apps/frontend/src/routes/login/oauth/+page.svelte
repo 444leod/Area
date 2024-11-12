@@ -13,9 +13,11 @@
 
 		if (code) {
 			try {
-				const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/google`, {
+				const response = await fetch('/api/auth/oauth/googleSimple', {
 					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
+					headers: {
+						'Content-Type': 'application/json'
+					},
 					body: JSON.stringify({ code })
 				});
 
