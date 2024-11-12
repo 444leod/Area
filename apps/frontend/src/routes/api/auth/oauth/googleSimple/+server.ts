@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const response = await fetch(`${API_URL}/auth/google`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ code })
 		});
